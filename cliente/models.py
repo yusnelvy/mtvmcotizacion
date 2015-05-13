@@ -13,7 +13,6 @@ class Cliente(models.Model):
     adicional2 = models.CharField(max_length=50, blank=True)
     adicional3 = models.CharField(max_length=50, blank=True)
     adicional4 = models.CharField(max_length=50, blank=True)
-    email = models.EmailField()
     activo = models.BooleanField(default=True)
 
     def __unicode__(self):
@@ -21,3 +20,12 @@ class Cliente(models.Model):
 
     class Meta:
         verbose_name_plural = "Clientes"
+
+
+class Email(models.Model):
+
+    email = models.EmailField()
+    cliente = models.ForeignKey(Cliente, default=1, on_delete=models.PROTECT)
+
+    def __unicode__(self):
+        return self.email

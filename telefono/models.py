@@ -4,6 +4,9 @@ from cliente.models import Cliente
 
 # Create your models here.
 class Tipo_telefono(models.Model):
+    """docstring for Tipo_telefono"""
+    def __init__(self, *args, **kwargs):
+        super(Tipo_telefono, self).__init__(*args, **kwargs)
 
     tipo_telefono = models.CharField(max_length=50)
 
@@ -16,9 +19,9 @@ class Tipo_telefono(models.Model):
 
 class Telefono(models.Model):
 
-    tipo_telefono = models.ForeignKey(Tipo_telefono, default=1)
+    tipo_telefono = models.ForeignKey(Tipo_telefono, default=1, on_delete=models.PROTECT)
     numero = models.CharField(max_length=50)
-    cliente = models.ForeignKey(Cliente)
+    cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
 
     def __unicode__(self):
         return self.numero
