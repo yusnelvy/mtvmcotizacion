@@ -95,7 +95,7 @@ class Direccion(models.Model):
     zona = models.ForeignKey(Zona, on_delete=models.PROTECT)
     zip1 = models.CharField(max_length=100)
     punto_referencia = models.CharField(max_length=250)
-    cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
+    cliente = models.ForeignKey(Cliente)
 
     def __unicode__(self):
         return self.direccion
