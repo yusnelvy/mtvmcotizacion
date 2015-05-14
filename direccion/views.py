@@ -16,6 +16,7 @@ import django.db
 # Create your views here.
 # lista
 def lista_pais(request):
+    """docstring"""
 
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -49,6 +50,7 @@ def lista_pais(request):
 
 
 def lista_provincia(request):
+    """docstring"""
 
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -78,6 +80,7 @@ def lista_provincia(request):
 
 
 def lista_ciudad(request):
+    """docstring"""
 
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -107,6 +110,7 @@ def lista_ciudad(request):
 
 
 def lista_zona(request):
+    """docstring"""
 
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -136,6 +140,7 @@ def lista_zona(request):
 
 
 def lista_tipo_direccion(request):
+    """docstring"""
 
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -165,6 +170,7 @@ def lista_tipo_direccion(request):
 
 
 def lista_direccion(request):
+    """docstring"""
 
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -194,6 +200,7 @@ def lista_direccion(request):
 
 
 def lista_tipo_inmueble(request):
+    """docstring"""
 
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -223,6 +230,7 @@ def lista_tipo_inmueble(request):
 
 
 def lista_complejidad_inmueble(request):
+    """docstring"""
 
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -252,6 +260,7 @@ def lista_complejidad_inmueble(request):
 
 
 def lista_inmueble(request):
+    """docstring"""
 
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -282,6 +291,7 @@ def lista_inmueble(request):
 
 # agregar nuevo
 def add_pais(request):
+    """docstring"""
     if request.method == 'POST':
         form_pais = PaisForm(request.POST)
         if form_pais.is_valid():
@@ -290,11 +300,12 @@ def add_pais(request):
     else:
         form_pais = PaisForm()
     return render_to_response('direccion/pais_add.html',
-        {'form_pais':form_pais, 'create':True},
-        context_instance=RequestContext(request))
+                              {'form_pais': form_pais, 'create': True},
+                              context_instance=RequestContext(request))
 
 
 def add_provincia(request):
+    """docstring"""
     if request.method == 'POST':
         form_provincia = ProvinciaForm(request.POST)
         if form_provincia.is_valid():
@@ -303,11 +314,12 @@ def add_provincia(request):
     else:
         form_provincia = ProvinciaForm()
     return render_to_response('direccion/provincia_add.html',
-        {'form_provincia': form_provincia, 'create': True},
-        context_instance=RequestContext(request))
+                              {'form_provincia': form_provincia, 'create': True},
+                              context_instance=RequestContext(request))
 
 
 def add_ciudad(request):
+    """docstring"""
     if request.method == 'POST':
         form_ciudad = CiudadForm(request.POST)
         if form_ciudad.is_valid():
@@ -316,11 +328,12 @@ def add_ciudad(request):
     else:
         form_ciudad = CiudadForm()
     return render_to_response('direccion/ciudad_add.html',
-        {'form_ciudad': form_ciudad, 'create': True},
-        context_instance=RequestContext(request))
+                              {'form_ciudad': form_ciudad, 'create': True},
+                              context_instance=RequestContext(request))
 
 
 def add_zona(request):
+    """docstring"""
     if request.method == 'POST':
         form_zona = ZonaForm(request.POST, request.FILES)
         if form_zona.is_valid():
@@ -329,11 +342,12 @@ def add_zona(request):
     else:
         form_zona = ZonaForm()
     return render_to_response('direccion/zona_add.html',
-        {'form_zona': form_zona, 'create': True},
-        context_instance=RequestContext(request))
+                              {'form_zona': form_zona, 'create': True},
+                              context_instance=RequestContext(request))
 
 
 def add_tipo_direccion(request):
+    """docstring"""
     if request.method == 'POST':
         form_tipodireccion = TipoDireccionForm(request.POST)
         if form_tipodireccion.is_valid():
@@ -341,12 +355,14 @@ def add_tipo_direccion(request):
             return HttpResponseRedirect(reverse('udireciones:lista_tipo_direccion'))
     else:
         form_tipodireccion = TipoDireccionForm()
+
     return render_to_response('direccion/tipodireccion_add.html',
-        {'form_tipodireccion':form_tipodireccion, 'create': True},
-        context_instance=RequestContext(request))
+                              {'form_tipodireccion': form_tipodireccion, 'create': True},
+                              context_instance=RequestContext(request))
 
 
 def add_direccion(request):
+    """docstring"""
     if request.method == 'POST':
         form_direccion = DireccionForm(request.POST)
         if form_direccion.is_valid():
@@ -355,11 +371,12 @@ def add_direccion(request):
     else:
         form_direccion = DireccionForm()
     return render_to_response('direccion/direccion_add.html',
-        {'form_direccion':form_direccion, 'create': True},
-        context_instance=RequestContext(request))
+                              {'form_direccion':form_direccion, 'create': True},
+                              context_instance=RequestContext(request))
 
 
 def add_tipo_inmueble(request):
+    """docstring"""
     if request.method == 'POST':
         form_tipo_inmueble = TipoInmuebleForm(request.POST)
         if form_tipo_inmueble.is_valid():
@@ -369,11 +386,12 @@ def add_tipo_inmueble(request):
         form_tipo_inmueble = TipoInmuebleForm()
 
     return render_to_response('direccion/tipo_inmueble_add.html',
-        {'form_tipo_inmueble': form_tipo_inmueble, 'create': True},
-        context_instance=RequestContext(request))
+                              {'form_tipo_inmueble': form_tipo_inmueble, 'create': True},
+                              context_instance=RequestContext(request))
 
 
 def add_complejidad_inmueble(request):
+    """docstring"""
     if request.method == 'POST':
         form_complejidad = ComplejidadInmuebleForm(request.POST)
         if form_complejidad.is_valid():
@@ -383,11 +401,12 @@ def add_complejidad_inmueble(request):
         form_complejidad = ComplejidadInmuebleForm()
 
     return render_to_response('direccion/complejidad_inmueble_add.html',
-        {'form_complejidad': form_complejidad, 'create': True},
-        context_instance=RequestContext(request))
+                              {'form_complejidad': form_complejidad, 'create': True},
+                              context_instance=RequestContext(request))
 
 
 def add_inmueble(request):
+    """docstring"""
     if request.method == 'POST':
         form_inmueble = InmuebleForm(request.POST)
         if form_inmueble.is_valid():
@@ -397,14 +416,14 @@ def add_inmueble(request):
         form_inmueble = InmuebleForm()
 
     return render_to_response('direccion/inmueble_add.html',
-        {'form_inmueble': form_inmueble, 'create': True},
-        context_instance=RequestContext(request))
+                              {'form_inmueble': form_inmueble, 'create': True},
+                              context_instance=RequestContext(request))
 
 
 # editar registro
 def edit_pais(request, pk):
-
-    pais = Pais.objects.get(pk = pk)
+    """docstring"""
+    pais = Pais.objects.get(pk=pk)
 
     if request.method == 'POST':
         # formulario enviado
@@ -421,12 +440,12 @@ def edit_pais(request, pk):
         form_edit_pais = PaisForm(instance=pais)
 
     return render_to_response('direccion/pais_edit.html',
-        {'form_edit_pais': form_edit_pais, 'create': False},
-        context_instance=RequestContext(request))
+                              {'form_edit_pais': form_edit_pais, 'create': False},
+                              context_instance=RequestContext(request))
 
 
 def edit_provincia(request, pk):
-
+    """docstring"""
     provincia = Provincia.objects.get(pk=pk)
 
     if request.method == 'POST':
@@ -444,13 +463,13 @@ def edit_provincia(request, pk):
         form_edit_provincia = ProvinciaForm(instance=provincia)
 
     return render_to_response('direccion/provincia_edit.html',
-        {'form_edit_provincia': form_edit_provincia, 'create': False},
-        context_instance=RequestContext(request))
+                              {'form_edit_provincia': form_edit_provincia, 'create': False},
+                              context_instance=RequestContext(request))
 
 
 def edit_ciudad(request, pk):
-
-    ciudad = Ciudad.objects.get(pk = pk)
+    """docstring"""
+    ciudad = Ciudad.objects.get(pk=pk)
 
     if request.method == 'POST':
         # formulario enviado
@@ -467,13 +486,13 @@ def edit_ciudad(request, pk):
         form_edit_ciudad = CiudadForm(instance=ciudad)
 
     return render_to_response('direccion/ciudad_edit.html',
-        {'form_edit_ciudad': form_edit_ciudad, 'create': False},
-        context_instance=RequestContext(request))
+                              {'form_edit_ciudad': form_edit_ciudad, 'create': False},
+                              context_instance=RequestContext(request))
 
 
 def edit_zona(request, pk):
-
-    zona = Zona.objects.get(pk = pk)
+    """docstring"""
+    zona = Zona.objects.get(pk=pk)
 
     if request.method == 'POST':
         # formulario enviado
@@ -490,12 +509,12 @@ def edit_zona(request, pk):
         form_edit_zona = ZonaForm(instance=zona)
 
     return render_to_response('direccion/zona_edit.html',
-        {'form_edit_zona': form_edit_zona, 'create': False},
-        context_instance=RequestContext(request))
+                              {'form_edit_zona': form_edit_zona, 'create': False},
+                              context_instance=RequestContext(request))
 
 
 def edit_tipo_direccion(request, pk):
-
+    """docstring"""
     tipodireccion = Tipo_direccion.objects.get(pk=pk)
 
     if request.method == 'POST':
@@ -513,12 +532,12 @@ def edit_tipo_direccion(request, pk):
         form_edit_tipodireccion = TipoDireccionForm(instance=tipodireccion)
 
     return render_to_response('direccion/tipodireccion_edit.html',
-        {'form_edit_tipodireccion': form_edit_tipodireccion, 'create': False},
-        context_instance=RequestContext(request))
+                              {'form_edit_tipodireccion': form_edit_tipodireccion, 'create': False},
+                              context_instance=RequestContext(request))
 
 
 def edit_direccion(request, pk):
-
+    """docstring"""
     direccion = Direccion.objects.get(pk=pk)
 
     if request.method == 'POST':
@@ -536,12 +555,12 @@ def edit_direccion(request, pk):
         form_edit_direccion = DireccionForm(instance=direccion)
 
     return render_to_response('direccion/direccion_edit.html',
-        {'form_edit_direccion': form_edit_direccion, 'create': False},
-        context_instance=RequestContext(request))
+                              {'form_edit_direccion': form_edit_direccion, 'create': False},
+                              context_instance=RequestContext(request))
 
 
 def edit_tipo_inmueble(request, pk):
-
+    """docstring"""
     tipo_inmueble = Tipo_Inmueble.objects.get(pk=pk)
 
     if request.method == 'POST':
@@ -553,11 +572,12 @@ def edit_tipo_inmueble(request, pk):
         form_edit_tipo_inmueble = TipoInmuebleForm(instance=tipo_inmueble)
 
     return render_to_response('direccion/tipo_inmueble_edit.html',
-        {'form_edit_tipo_inmueble': form_edit_tipo_inmueble, 'create': True},
-        context_instance=RequestContext(request))
+                              {'form_edit_tipo_inmueble': form_edit_tipo_inmueble,
+                               'create': True}, context_instance=RequestContext(request))
 
 
 def edit_complejidad_inmueble(request, pk):
+    """docstring"""
 
     complejidad_inmueble = Complejidad_Inmueble.objects.get(pk=pk)
 
@@ -570,12 +590,12 @@ def edit_complejidad_inmueble(request, pk):
         form_edit_complejidad_inmueble = ComplejidadInmuebleForm(instance=complejidad_inmueble)
 
     return render_to_response('direccion/complejidad_inmueble_edit.html',
-        {'form_edit_complejidad_inmueble': form_edit_complejidad_inmueble, 'create': True},
-        context_instance=RequestContext(request))
+                              {'form_edit_complejidad_inmueble': form_edit_complejidad_inmueble,
+                               'create': True}, context_instance=RequestContext(request))
 
 
 def edit_inmueble(request, pk):
-
+    """docstring"""
     inmueble = Inmueble.objects.get(pk=pk)
 
     if request.method == 'POST':
@@ -587,35 +607,5 @@ def edit_inmueble(request, pk):
         form_edit_inmueble = InmuebleForm()
 
     return render_to_response('direccion/inmueble_add.html',
-        {'form_edit_inmueble': form_edit_inmueble, 'create': True},
-        context_instance=RequestContext(request))
-
-
-# eliminar un registro
-def delete_pais(request, pk, template_name='server_confirm_delete.html'):
-    pais = get_object_or_404(Pais, pk=pk)
-    if request.method == 'POST':
-        pais.delete()
-        return HttpResponseRedirect(reverse('udireciones:lista_tipo_direccion'))
-    return render(request, template_name, {'object':pais})
-
-def delete_provincia(request, pk, template_name='server_confirm_delete.html'):
-    provincia = get_object_or_404(Provincia, pk=pk)
-    if request.method == 'POST':
-        provincia.delete()
-        return HttpResponseRedirect(reverse('udireciones:lista_provincia'))
-    return render(request, template_name, {'object':provincia})
-
-def delete_ciudad(request, pk, template_name='server_confirm_delete.html'):
-    ciudad = get_object_or_404(Ciudad, pk=pk)
-    if request.method == 'POST':
-        ciudad.delete()
-        return HttpResponseRedirect(reverse('udireciones:lista_ciudad'))
-    return render(request, template_name, {'object':ciudad})
-
-def delete_zona(request, pk, template_name='server_confirm_delete.html'):
-    zona = get_object_or_404(Zona, pk=pk)
-    if request.method == 'POST':
-        zona.delete()
-        return HttpResponseRedirect(reverse('udireciones:lista_zona'))
-    return render(request, template_name, {'object':zona})
+                              {'form_edit_inmueble': form_edit_inmueble, 'create': True},
+                              context_instance=RequestContext(request))
