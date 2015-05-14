@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block contenido_index %} {% endblock contenido_index %}
+{% block ver_datos_basicos %}
+<div class="col-md-1">
+      <style>
+  .form-group>p>#id_cliente,.form-group>p>#id_direc, .form-group>p>label[for="id_cliente"],.form-group>p>label[for="id_direc"],.form-group>p>#id_sede1,.form-group>p>label[for="id_sede1"]{
+    display: none;
+  }
+  </style>
+</div>
+<div class="col-md-4">
+   <h2>Editar direccion cliente</h2>
+   <form action="" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-default">Registrar</button>
+    <a href="../../../" class="btn btn-default">Regresar</a><br><br>
+    <div class="form-group">
+        {{form_edit_direccion.as_p}}
+        {{form_edit_sede.as_p}}
+        {{clidir_form.as_p}}
+    </div>
+    <button type="submit" class="btn btn-default">Registrar</button>
+    <a href="../../../" class="btn btn-default">Regresar</a><br><br>
+</form>
+</div>
+{% endblock ver_datos_basicos %}

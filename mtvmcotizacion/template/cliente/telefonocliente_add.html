@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block contenido_index %} {% endblock contenido_index %}
+{% block ver_datos_basicos %}
+<div class="col-md-1">
+  <style>
+  .form-group>p>#id_cliente,.form-group>p>#id_telefono, .form-group>p>label[for="id_cliente"],.form-group>p>label[for="id_telefono"]{
+    display: none;
+  }
+  </style>
+</div>
+<div class="col-md-4">
+  <h2>Agregar telefono</h2>
+  <form action="" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-default">Registrar</button>
+    <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
+    <br><br>
+    <div class="form-group">
+      {{telefono_form.as_p}}
+      {{clitel_form.as_p}}
+    </div>
+    <!--{{ telefono_formset.management_form }}
+    {{ clitel_formset.management_form }}
+
+    {% for form in telefono_formset %}
+      {{ form.as_p }}
+
+    {% endfor %}
+
+    {% for form in clitel_formset %}
+      {{ form.as_p }}
+
+      {% endfor %}-->
+      <button type="submit" class="btn btn-default">Registrar</button>
+      <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
+      <br><br>
+    </form>
+  </div>
+  {% endblock ver_datos_basicos %}

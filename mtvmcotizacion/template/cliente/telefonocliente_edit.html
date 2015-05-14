@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block contenido_index %} {% endblock contenido_index %}
+{% block ver_datos_basicos %}
+<div class="col-md-1"></div>
+<div class="col-md-4">
+    <h2>Editar telefono cliente</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-default">Guardar</button>
+        <a href="../../../" class="btn btn-default">Regresar</a><br><br>
+        <div class="form-group">{{form_edit_telefono.as_p}}
+        </div>
+        <button type="submit" class="btn btn-default">Registrar</button>
+        <a href="../../../" class="btn btn-default">Regresar</a><br><br><br>
+    <!--{{ telefono_formset.management_form }}
+    {{ clitel_formset.management_form }}
+
+    {% for form in telefono_formset %}
+      {{ form.as_p }}
+
+    {% endfor %}
+
+    {% for form in clitel_formset %}
+      {{ form.as_p }}
+
+      {% endfor %}-->
+  </form>
+</div>
+{% endblock ver_datos_basicos %}

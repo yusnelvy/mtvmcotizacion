@@ -1,5 +1,5 @@
 from django.db import models
-from cliente import Cliente
+from cliente.models import Cliente
 
 
 # Create your models here.
@@ -24,7 +24,7 @@ class Provincia(models.Model):
         super(Provincia, self).__init__(*args, **kwargs)
 
     provincia = models.CharField(max_length=100, unique=True)
-    pais = models.ForeignKey(Pais)
+    pais = models.ForeignKey(Pais, on_delete=models.PROTECT)
 
     def __unicode__(self):
         return self.provincia
@@ -40,7 +40,7 @@ class Ciudad(models.Model):
         super(Ciudad, self).__init__(*args, **kwargs)
 
     ciudad = models.CharField(max_length=100, unique=True)
-    provincia = models.ForeignKey(Provincia)
+    provincia = models.ForeignKey(Provincia, on_delete=models.PROTECT)
 
     def __unicode__(self):
         return self.ciudad
@@ -56,7 +56,7 @@ class Zona(models.Model):
         super(Zona, self).__init__(*args, **kwargs)
 
     zona = models.CharField(max_length=100, unique=True)
-    cuidad = models.ForeignKey(Ciudad)
+    cuidad = models.ForeignKey(Ciudad, on_delete=models.PROTECT)
 
     def __unicode__(self):
         return self.zona
@@ -91,11 +91,11 @@ class Direccion(models.Model):
     numero = models.CharField(max_length=100)
     piso = models.CharField(max_length=100)
     adicional = models.CharField(max_length=250)
-    tipo_direccion = models.ForeignKey(Tipo_direccion)
-    zona = models.ForeignKey(Zona)
+    tipo_direccion = models.ForeignKey(Tipo_direccion, on_delete=models.PROTECT)
+    zona = models.ForeignKey(Zona, on_delete=models.PROTECT)
     zip1 = models.CharField(max_length=100)
     punto_referencia = models.CharField(max_length=250)
-    cliente = models.ForeignKey(Cliente)
+    cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
 
     def __unicode__(self):
         return self.direccion
@@ -105,7 +105,7 @@ class Direccion(models.Model):
         verbose_name_plural = "Direcciones"
 
 
-class Tipo_Inmueble(object):
+class Tipo_Inmueble(models.Model):
     """docstring for Tipo_Inmueble"""
     def __init__(self, *args, **kwargs):
         super(Tipo_Inmueble, self).__init__(*args, **kwargs)
@@ -142,17 +142,17 @@ class Inmueble(models.Model):
         super(Inmueble, self).__init__(*args, **kwargs)
 
     inmueble = models.CharField(max_length=100)
-    tipo_inmueble = models.ForeignKey(Tipo_Inmueble)
-    direccion = models.ForeignKey(Direccion)
+    tipo_inmueble = models.ForeignKey(Tipo_Inmueble, on_delete=models.PROTECT)
+    direccion = models.ForeignKey(Direccion, on_delete=models.PROTECT)
     numero_ambientes = models.IntegerField()
     pisos = models.IntegerField()
     pisos_escalera = models.IntegerField()
-    rampa = models.BooleanField()
-    ascensor = models.BooleanField()
-    ascensor_servicio = models.BooleanField()
+    rampa = models.BooleanField(default=False)
+    ascensor = models.BooleanField(default=False)
+    ascensor_servicio = models.BooleanField(default=False)
     pisos_ascensor_servicio = models.IntegerField()
     pisos_ascensor = models.IntegerField()
-    complejidad = models.ForeignKey(Complejidad_Inmueble)
+    complejidad = models.ForeignKey(Complejidad_Inmueble, on_delete=models.PROTECT)
     distancia_vehiculo = models.IntegerField()
 
     def __unicode__(self):
