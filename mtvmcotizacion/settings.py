@@ -39,7 +39,8 @@ INSTALLED_APPS = (
     'direccion',
     'cliente',
     'telefono',
-
+    'ambiente',
+    'servicio',
 )
 
 MIDDLEWARE_CLASSES = (
