@@ -11,6 +11,7 @@ import simplejson as json
 # Create your views here.
 # lista
 def lista_tipotelefono(request):
+    """docstring"""
 
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -39,6 +40,7 @@ def lista_tipotelefono(request):
 
 
 def lista_telefono(request):
+    """docstring"""
 
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -68,6 +70,7 @@ def lista_telefono(request):
 
 # agregar nuevo
 def add_tipotelefono(request):
+    """docstring"""
 
     if request.method == 'POST':
         form_tipotelefono = TipoTelefonoForm(request.POST)
@@ -78,11 +81,12 @@ def add_tipotelefono(request):
     else:
         form_tipotelefono = TipoTelefonoForm()
     return render_to_response('telefono/tipotelefono_add.html',
-        {'form_tipotelefono': form_tipotelefono, 'create': True},
-        context_instance=RequestContext(request))
+                              {'form_tipotelefono': form_tipotelefono, 'create': True},
+                              context_instance=RequestContext(request))
 
 
 def add_telefono(request):
+    """docstring"""
 
     if request.method == 'POST':
         form_telefono = TelefonoForm(request.POST)
@@ -92,12 +96,13 @@ def add_telefono(request):
     else:
         form_telefono = TelefonoForm()
     return render_to_response('telefono/telefono_add.html',
-        {'form_telefono': form_telefono, 'create': True},
-        context_instance=RequestContext(request))
+                              {'form_telefono': form_telefono, 'create': True},
+                              context_instance=RequestContext(request))
 
 
 # editar
 def edit_tipotelefono(request, pk):
+    """docstring"""
 
     id_tipo = Tipo_telefono.objects.get(pk=pk)
 
@@ -115,11 +120,12 @@ def edit_tipotelefono(request, pk):
         form_edit_tipotelefono = TipoTelefonoForm(instance=id_tipo)
 
     return render_to_response('telefono/tipotelefono_edit.html',
-        {'form_edit_tipotelefono': form_edit_tipotelefono, 'create': False},
-        context_instance=RequestContext(request))
+                              {'form_edit_tipotelefono': form_edit_tipotelefono, 'create': False},
+                              context_instance=RequestContext(request))
 
 
 def edit_telefono(request, pk):
+    """docstring"""
 
     id_telefono = Telefono.objects.get(pk=pk)
 
@@ -137,5 +143,5 @@ def edit_telefono(request, pk):
         form_edit_telefono = TelefonoForm(instance=id_telefono)
 
     return render_to_response('telefono/telefono_edit.html',
-        {'form_edit_telefono': form_edit_telefono, 'create': False},
-        context_instance=RequestContext(request))
+                              {'form_edit_telefono': form_edit_telefono, 'create': False},
+                              context_instance=RequestContext(request))

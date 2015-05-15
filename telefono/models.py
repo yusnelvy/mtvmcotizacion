@@ -21,7 +21,7 @@ class Telefono(models.Model):
 
     tipo_telefono = models.ForeignKey(Tipo_telefono, default=1, on_delete=models.PROTECT)
     numero = models.CharField(max_length=50)
-    cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
+    cliente = models.ForeignKey(Cliente)
 
     def __unicode__(self):
         return self.numero
