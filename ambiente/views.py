@@ -7,7 +7,6 @@ from direccion.models import Tipo_Inmueble
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
-from django.core.exceptions import ObjectDoesNotExist
 import simplejson as json
 import django.db
 

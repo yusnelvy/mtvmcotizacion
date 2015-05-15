@@ -29,3 +29,6 @@ class Email(models.Model):
 
     def __unicode__(self):
         return self.email
+
+    class Meta:
+        verbose_name_plural = "Emails"

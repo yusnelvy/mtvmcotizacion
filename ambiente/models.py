@@ -15,7 +15,7 @@ class Tipo_ambiente(models.Model):
 
     class Meta:
         verbose_name = "Tipo de ambiente"
-        verbose_name_plural = "Tipos de ambientes"
+        verbose_name_plural = "Tipos de ambiente"
 
 
 class Ambiente(models.Model):
@@ -47,4 +47,4 @@ class Ambiente_Tipo_inmueble(models.Model):
 
     class Meta:
         verbose_name = "Ambiente - Tipo inmueble"
-        verbose_name_plural = "Ambientes - Tipos inmuebles"
+        verbose_name_plural = "Ambientes - Tipos de inmueble"
