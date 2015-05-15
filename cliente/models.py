@@ -25,7 +25,7 @@ class Cliente(models.Model):
 class Email(models.Model):
 
     email = models.EmailField()
-    cliente = models.ForeignKey(Cliente, default=1, on_delete=models.PROTECT)
+    cliente = models.ForeignKey(Cliente, default=1)
 
     def __unicode__(self):
         return self.email

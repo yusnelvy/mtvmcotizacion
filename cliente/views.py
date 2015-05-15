@@ -3,9 +3,10 @@ from cliente.models import Cliente, Email
 from telefono.models import Telefono
 from direccion.models import Direccion
 from cliente.forms import ClienteForm, EmailForm
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
+from django.core.exceptions import ObjectDoesNotExist
 
 
 # Create your views here.
@@ -53,16 +54,93 @@ def add_cliente(request):
     if request.method == 'POST':
         try:
             cliente_form = ClienteForm(request.POST)
+
             if cliente_form.is_valid():
                 cliente_form.save()
+
                 return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
 
-        except Exception, e:
+        except Exception, ex:
             cliente_form = ClienteForm()
-            mensaje = 'Ocurrio un error ' + e
+            mensaje = "se ha producido un error"+str(ex)
 
     else:
         cliente_form = ClienteForm()
+        mensaje = ''
+
     return render_to_response('cliente_add.html',
                               {'cliente_form': cliente_form, 'create': True, 'mensaje': mensaje},
+                              context_instance=RequestContext(request))
+
+
+def add_email(request):
+
+    if request.method == 'POST':
+        try:
+            email_form = EmailForm(request.POST)
+            if email_form.is_valid():
+                email_form.save()
+                return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
+        except Exception, ex:
+            email_form = EmailForm()
+            mensaje = "se ha producido un error"+str(ex)
+
+    else:
+        email_form = EmailForm()
+        mensaje = ''
+
+    return render_to_response('cliente_add.html',
+                              {'email_form': email_form, 'create': True, 'mensaje': mensaje},
+                              context_instance=RequestContext(request))
+
+
+# editar un registro
+def edit_cliente(request, pk):
+
+    try:
+        id_clie = Cliente.objects.get(pk=pk)
+    except ObjectDoesNotExist, ex:
+        mensaje = "El cliente no existe"
+    except Exception, ex:
+        mensaje = "se ha producido un error"+str(ex)
+
+    if request.method == 'POST':
+        # formulario enviado
+        editar_clie = ClienteForm(request.POST, instance=id_clie)
+
+        if editar_clie.is_valid():
+            # formulario validado correctamente
+            editar_clie.save()
+
+            return HttpResponseRedirect(reverse('uclientes:list_cliente'))
+
+    else:
+        # formulario inicial
+        editar_clie = ClienteForm(instance=id_clie)
+
+    return render_to_response('cliente_edit.html',
+                              {'editar_clie': editar_clie, 'id_cli': pk, 'create': False, 'mensaje': mensaje},
+                              context_instance=RequestContext(request))
+
+
+def edit_email(request, id_cli, pk):
+
+    id_email = Email.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        # formulario enviado
+        form_edit_email = EmailForm(request.POST, instance=id_email)
+
+        if form_edit_email.is_valid():
+            # formulario validado correctamente
+            form_edit_email.save()
+
+            #return HttpResponseRedirect(reverse('uclientes:lista_email'))
+            return HttpResponseRedirect('../../../')
+    else:
+        # formulario inicial
+        form_edit_email = EmailForm(instance=id_email)
+
+    return render_to_response('emailcliente_edit.html',
+                              {'form_edit_email': form_edit_email, 'create': False},
                               context_instance=RequestContext(request))

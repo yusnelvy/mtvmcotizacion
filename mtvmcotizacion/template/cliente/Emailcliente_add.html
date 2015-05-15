@@ -1,6 +1,3 @@
-{% extends "base.html" %}
-{% block contenido_index %}{% endblock contenido_index %}
-{% block ver_datos_basicos %}
 <style>
 #id_cliente, .form-group>p>label[for=id_cliente]{
     display: none;
@@ -13,10 +10,9 @@
         {% csrf_token %}
         <button type="submit" class="btn btn-default">Registrar</button>
         <a href="javascript:history.back()" class="btn btn-default">Regresar</a><br><br>
-        <div class="form-group">{{ emailform.as_p }}
+        <div class="form-group">{{ email_form.as_p }}
         </div>
         <button type="submit" class="btn btn-default">Registrar</button>
         <a href="javascript:history.back()" class="btn btn-default">Regresar</a><br><br>
     </form>
 </div>
-{% endblock ver_datos_basicos %}
