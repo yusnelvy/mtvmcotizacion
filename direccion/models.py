@@ -116,8 +116,8 @@ class Tipo_Inmueble(models.Model):
         return self.tipo_inmueble
 
     class Meta:
-        verbose_name = "Tipo inmueble"
-        verbose_name_plural = "Tipo inmuebles"
+        verbose_name = "Tipo de inmueble"
+        verbose_name_plural = "Tipos de inmueble"
 
 
 class Complejidad_Inmueble(models.Model):
@@ -133,7 +133,7 @@ class Complejidad_Inmueble(models.Model):
 
     class Meta:
         verbose_name = "complejidad del inmueble"
-        verbose_name_plural = "complejidades del inmuebles"
+        verbose_name_plural = "complejidades del inmueble"
 
 
 class Inmueble(models.Model):

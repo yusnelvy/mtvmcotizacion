@@ -47,8 +47,8 @@ class Servicio_Material(models.Model):
         return u' %s - %s' % (self.servicio, self.material)
 
     class Meta:
-        verbose_name = "Servicio Material"
-        verbose_name_plural = "Servicios Materiales"
+        verbose_name = "Material del Servicio"
+        verbose_name_plural = "Materiales del Servicio"
 
 
 class Complejidad(models.Model):
@@ -79,5 +79,5 @@ class Complejidad_Servicio(models.Model):
         return self.complejidad
 
     class Meta:
-        verbose_name = "Complejidad_Servicio"
-        verbose_name_plural = "Complejidad_Servicios"
+        verbose_name = "Complejidad del Servicio"
+        verbose_name_plural = "Complejidades del Servicio"
