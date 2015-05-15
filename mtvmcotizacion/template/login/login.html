@@ -17,13 +17,28 @@
 </div>
 <div data-role="page" id="dashboard">
     <div data-role="header">
-        <h1>Insert Page Title Here</h1>
+        <h2>Dashboard</h2>
+    <div data-role="navbar">
+    <ul>
+      <li><a href="#anylink">Home</a></li>
+      <li><a href="#anylink">Nueva Cotizacion</a></li>
+      <li><a href="#anylink">Buscar</a></li>
+      <li><a href="#anylink">LogOut</a></li>
+    </ul>
+  </div>
     </div>
+
     <div data-role="main" class="ui-content">
-        <p>Insert Content Here</p>
+        <h2>lista de cotizaciones</h2>
+    <ul data-role="listview" data-inset="true">
+      <li><a href="#">cotizacion 1</a></li>
+      <li><a href="#">cotizacion 2</a></li>
+      <li><a href="#">cotizacion 3</a></li>
+    </ul>
     </div>
+
     <div data-role="footer">
-        <h1>Insert Footer Text Here</h1>
+        <h4>Insert Footer Text Here</h4>
     </div>
 </div>
 {% endblock%}
