@@ -14,7 +14,7 @@ class Tipo_telefono(models.Model):
         return self.tipo_telefono
 
     class Meta:
-        verbose_name_plural = "Tipos de telefonos"
+        verbose_name_plural = "Tipos de telefono"
 
 
 class Telefono(models.Model):

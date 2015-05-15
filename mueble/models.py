@@ -15,7 +15,7 @@ class Tipo_Mueble(models.Model):
 
     class Meta:
         verbose_name = "Tipo mueble"
-        verbose_name_plural = "Tipos muebles"
+        verbose_name_plural = "Tipos de mueble"
 
 
 class Ocupacion(models.Model):
@@ -46,7 +46,7 @@ class Forma_Mueble(models.Model):
 
     class Meta:
         verbose_name = "Forma del Mueble"
-        verbose_name_plural = "Formas del Muebles"
+        verbose_name_plural = "Formas del Mueble"
 
 
 class Mueble(models.Model):
@@ -106,7 +106,7 @@ class Tamano_Mueble(models.Model):
 
     class Meta:
         verbose_name = "Tamano mueble"
-        verbose_name_plural = "Tamanos muebles"
+        verbose_name_plural = "Tamanos del mueble"
 
 
 class Mueble_Ambiente(models.Model):
@@ -121,5 +121,5 @@ class Mueble_Ambiente(models.Model):
         return u' %s - %s' % (self.mueble, self.ambiente)
 
     class Meta:
-        verbose_name = "Mueble - Ambiente"
-        verbose_name_plural = "Muebles - Ambiente"
+        verbose_name = "Mueble del Ambiente"
+        verbose_name_plural = "Muebles  del Ambiente"
