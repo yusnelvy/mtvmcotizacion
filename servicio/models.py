@@ -25,7 +25,7 @@ class Material(models.Model):
     material = models.CharField(max_length=100)
     precio = models.DecimalField(max_digits=7, decimal_places=2)
     peso = models.DecimalField(max_digits=5, decimal_places=2)
-    recuperable = models.BooleanField()
+    recuperable = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.material
@@ -40,8 +40,9 @@ class Servicio_Material(models.Model):
     def __init__(self, *args, **kwargs):
         super(Servicio_Material, self).__init__(*args, **kwargs)
 
-    servicio = models.ForeignKey(Servicio, primary_key=True)
-    material = models.ForeignKey(Material, primary_key=True)
+    servicio = models.ForeignKey(Servicio)
+    material = models.ForeignKey(Material)
+    unique_together = ("Servicio", "Material")
 
     def __unicode__(self):
         return u' %s - %s' % (self.servicio, self.material)

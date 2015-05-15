@@ -39,7 +39,7 @@ def lista_tipo_ambiente(request):
 
     lista_tipoambiente = Tipo_ambiente.objects.all()
     context = {'lista_tipoambiente': lista_tipoambiente}
-    return render(request, 'tipoambiente_lista.html', context)
+    return render(request, 'ambiente/tipoambiente_lista.html', context)
 
 
 def lista_ambiente(request):
@@ -67,7 +67,7 @@ def lista_ambiente(request):
 
     lista_ambiente = Ambiente.objects.all()
     context = {'lista_ambiente': lista_ambiente}
-    return render(request, 'ambiente_lista.html', context)
+    return render(request, 'ambiente/ambiente_lista.html', context)
 
 
 def lista_ambiente_tipo_inmueble(request):
@@ -95,7 +95,7 @@ def lista_ambiente_tipo_inmueble(request):
 
     lista_ambtipoinmueble = Ambiente_Tipo_inmueble.objects.all()
     context = {'lista_ambtipoinmueble': lista_ambtipoinmueble}
-    return render(request, 'ambiente_lista.html', context)
+    return render(request, 'ambiente/ambiente_lista.html', context)
 
 
 def buscar_ambiente(request, id_tipoinmueble):
@@ -104,7 +104,7 @@ def buscar_ambiente(request, id_tipoinmueble):
 
     lista_ambiente = Ambiente.objects.filter(tipo_inmueble_id=tipo_inmueble)
     context = {'lista_ambiente': lista_ambiente}
-    return render(request, 'ambiente_lista.html', context)
+    return render(request, 'ambiente/ambiente_lista.html', context)
 
 
 # agregar nuevo
@@ -195,7 +195,7 @@ def edit_ambiente(request, id_tipoinmueble, pk):
         # formulario inicial
         form_edit_ambiente = AmbienteForm(instance=id_ambiente)
 
-    return render_to_response('ambiente_edit.html',
+    return render_to_response('ambiente/ambiente_edit.html',
                               {'form_edit_ambiente': form_edit_ambiente, 'create': False},
                               context_instance=RequestContext(request))
 

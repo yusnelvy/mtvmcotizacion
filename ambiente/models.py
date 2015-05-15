@@ -1,5 +1,5 @@
 from django.db import models
-from mueble.models import Tipo_Mueble
+from direccion.models import Tipo_Inmueble
 
 
 # Create your models here.
@@ -40,7 +40,7 @@ class Ambiente_Tipo_inmueble(models.Model):
         super(Ambiente_Tipo_inmueble, self).__init__(*args, **kwargs)
 
     ambiente = models.ForeignKey(Ambiente)
-    tipo_inmueble = models.ForeignKey(Tipo_Mueble)
+    tipo_inmueble = models.ForeignKey(Tipo_Inmueble)
 
     def __unicode__(self):
         return u' %s - %s' % (self.ambiente, self.tipo_inmueble)
