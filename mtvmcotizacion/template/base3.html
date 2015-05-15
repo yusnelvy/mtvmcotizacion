@@ -1,19 +1,12 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <title>Proyecto Demo</title>
-    <!-- Le styles -->
-    <link href="/static/css/bootstrap.css" rel="stylesheet">
-     <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
-     <script src="/static/js/jquery.js"></script>
-    <script src="/static/js/jquery.form.min.js"></script>
-    <script src="/static/js/eliminar.js"></script>
-    <script src="/static/js/bootstrap.js"></script>
-
-  </head>
+{% block head %}{% include "head.html" %}{% endblock%}
   <body>
-    {% block content %}
-    {% endblock%}
+{% block header %}{% endblock%}
+{% block nav %}{% endblock%}
+{% block content %}{% endblock%}
+{% block footer %}{% endblock%}
+{% block script %}{% include "script.html" %}{% endblock%}
   </body>
 </html>
