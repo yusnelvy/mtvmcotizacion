@@ -1,64 +1,67 @@
  {% extends 'base3.html' %}
+ {% block header %}<h2>Tipo telefono</h2>{% endblock %}
  {% block content %}
 
 <!--IniciaModal-->
  <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
-    <h3 id="myModalLabel">Eliminar Pais</h3>
+    <h3 id="myModalLabel">Eliminar tipo telefono</h3>
     </div>
     <div class="modal-body">
-    <p>¿Realmente desea eliminar el pais <span id="modal_name"></span>?</p>
+    <p>¿Realmente desea eliminar el tipo telefono <span id="modal_name"></span>?</p>
     </div>
     <div class="modal-footer">
         <form method="post" id="frmEliminar">
             {% csrf_token %}
             <input type="hidden" id="modal_id" name="item_id">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <button class="" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+      <button type="submit" class="">Eliminar</button>
         </form>
     </div>
 </div>
 <!--EndModal-->
 {% if obj_list %}
 
-<h6>Cantidad de telefonos encontradas:
+<h6>Cantidad de tipo telefonos encontrado:
   <span class="badge">
     {{ obj_list.count }}
   </span>
 </h6>
 
-  <table class="table table-hover">
+  <table data-role="table" data-mode="" class="ui-responsive ui-shadow" id="myTabletipoambiente">
 
-   <tr class="active">
-    <th>Tipo</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
-  </tr>
+    <thead>
+    <tr>
+      <!--<th data-priority="6">Numero</th>-->
+      <th>Tipo telefono</th>
+      <th data-priority="1">Editar</th>
+      <th data-priority="2">Eliminar</th>
+    </tr>
+  </thead>
 
-  {% for i in obj_list %}
-
-  <tr id="tr{{i.id}}">
-    <td>{{ i.tipo_telefono }}</td>
-
-    <td>
-      <a href="tipo_telefono/editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
-      {# <button id ="editar" data-telid="{{i.id}}" class="btn btn-mini btn-primary" type="button">editar</button> #}
-    </td>
-    <td>
-      <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.tipo_telefono}}"><i class="icon-trash icon-white"></i>Eliminar</a>
-    </td>
-    <input type="hidden" value="{{i.id}}" id="idtele">
-  </tr>
-
+  <tbody>
+     {% for i in obj_list %}
+    <tr id="tr{{i.id}}">
+      <!-- <td>{{ i.count }}</td>-->
+      <td>{{ i.tipo_telefono }}</td>
+      <td>
+        <a href="editar/{{i.id}}/" class="ui-btn ui-icon-edit ui-btn-icon-notext">Editar</a>
+      </td>
+      <td>
+        <a href="#myModal" role="button" class="ui-btn ui-icon-delete ui-btn-icon-notext delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.tipo_telefono}}">Eliminar</a>
+      </td>
+    </tr>
+  </tbody>
   {% endfor %}
 
 </table>
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
+<br>
+<a href="nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
+<a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="../">Regresar</a>
 </div>
 
 {% else %}
-
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
+<a href="nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
 <p> No se encontro registro.</p>
 
 {% endif %}
