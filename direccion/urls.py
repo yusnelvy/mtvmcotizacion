@@ -5,7 +5,7 @@ from direccion import views
 urlpatterns = patterns('',
                        url(r'^$', views.lista_direccion, name='lista_direccion'),
                        url(r'^nuevo', views.add_direccion, name='add_direccion'),
-                       url(r'^editar', views.edit_direccion, name='edit_direccion'),
+                       url(r'^(?P<pk>\d+)/$', views.edit_direccion, name='edit_direccion'),
                        url(r'^tipo_direccion/$', views.lista_tipo_direccion,
                            name='lista_tipo_direccion'),
                        url(r'^tipo_direccion/nuevo', views.add_tipo_direccion,
