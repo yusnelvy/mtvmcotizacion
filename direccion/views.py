@@ -525,6 +525,8 @@ def edit_tipo_direccion(request, pk):
             # formulario validado correctamente
             form_edit_tipodireccion.save()
 
+            #return HttpResponseRedirect('udireciones:lista_tipo_direccion')
+
             return HttpResponseRedirect(reverse('udireciones:lista_tipo_direccion'))
 
     else:

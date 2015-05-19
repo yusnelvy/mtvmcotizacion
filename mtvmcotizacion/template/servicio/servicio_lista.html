@@ -1,22 +1,23 @@
- {% extends 'base3.html' %}
- {% block content %}
+{% extends 'base3.html' %}
+{% block header %}<h2>Servicios</h2>{% endblock %}
+{% block content %}
 
 <!--IniciaModal-->
- <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
     <h3 id="myModalLabel">Eliminar servicio</h3>
-    </div>
-    <div class="modal-body">
+  </div>
+  <div class="modal-body">
     <p>¿Realmente desea eliminar el servicio <span id="modal_name"></span>?</p>
-    </div>
-    <div class="modal-footer">
-        <form method="post" id="frmEliminar">
-            {% csrf_token %}
-            <input type="hidden" id="modal_id" name="item_id">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-            <button type="submit" class="btn btn-danger">Eliminar</button>
-        </form>
-    </div>
+  </div>
+  <div class="modal-footer">
+    <form method="post" id="frmEliminar">
+      {% csrf_token %}
+      <input type="hidden" id="modal_id" name="item_id">
+      <button class="" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+      <button type="submit" class="">Eliminar</button>
+    </form>
+  </div>
 </div>
 <!--EndModal-->
 {% if lista_servicio %}
@@ -27,38 +28,41 @@
   </span>
 </h6>
 
-  <table class="table table-hover">
+<table data-role="table" data-mode="" class="ui-responsive ui-shadow" id="myTableservicio">
 
-   <tr class="active">
-    <th>Servicio</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
-  </tr>
+  <thead>
+    <tr>
+      <!--<th data-priority="6">Numero</th>-->
+      <th>Servicios</th>
+      <th data-priority="1">Editar</th>
+      <th data-priority="2">Eliminar</th>
+    </tr>
+  </thead>
 
-  {% for i in lista_servicio %}
-
-  <tr id="tr{{i.id}}">
-    <td>{{ i.servicio }}</td>
-
-    <td>
-      <a href="servicio/editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
-      {# <button id ="editar" data-telid="{{i.id}}" class="btn btn-mini btn-primary" type="button">editar</button> #}
-    </td>
-    <td>
-      <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.servicio}}"><i class="icon-trash icon-white"></i>Eliminar</a>
-    </td>
-    <input type="hidden" value="{{i.id}}" id="idtele">
-  </tr>
+  <tbody>
+    {% for i in lista_servicio %}
+    <tr id="tr{{i.id}}">
+      <!-- <td>{{ i.count }}</td>-->
+      <td>{{ i.servicio }}</td>
+      <td>
+        <a href="editar/{{i.id}}/" class="ui-btn ui-icon-edit ui-btn-icon-notext">Editar</a>
+      </td>
+      <td>
+        <a href="#myModal" role="button" class="ui-btn ui-icon-delete ui-btn-icon-notext delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.servicio}}">Eliminar</a>
+      </td>
+    </tr>
+  </tbody>
 
   {% endfor %}
 
 </table>
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
-</div>
+<br>
+<a href="nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
+<a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="../">Regresar</a>
 
 {% else %}
 
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
+<a href="nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
 <p> No se encontro registro.</p>
 
 {% endif %}

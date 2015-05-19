@@ -3,10 +3,22 @@
 <html lang="es">
 {% block head %}{% include "head.html" %}{% endblock%}
   <body>
-{% block header %}{% endblock%}
+
+{% block page %}<div data-role="page" id="pageone">{% endblock %}
+  <div data-role="header">
+    {% block header %}{% endblock%}
+  </div>
+
 {% block nav %}{% endblock%}
-{% block content %}{% endblock%}
-{% block footer %}{% endblock%}
+   <div data-role="main" class="ui-content">
+    {% block content %}{% endblock%}
+  </div>
+
+    <div data-role="footer">
+    {% block footer %}{% endblock%}
+  </div>
+
+</div>
 {% block script %}{% include "script.html" %}{% endblock%}
   </body>
 </html>

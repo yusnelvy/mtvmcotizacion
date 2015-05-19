@@ -1,26 +1,15 @@
-<div class="col-md-1"></div>
-<div class="col-md-4">
-    <h2>Editar tipo telefono </h2>
-    <form action="" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="../../" class="btn btn-default">Regresar</a><br><br>
-        <div class="form-group">{{form_edit_tipotelefono.as_p}}
-        </div>
-        <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="../../" class="btn btn-default">Regresar</a><br><br><br>
-    <!--{{ telefono_formset.management_form }}
-    {{ clitel_formset.management_form }}
+{% extends 'base3.html' %}
+{% block header %}<h2>Editar Tipo ambiente</h2>{% endblock %}
+{% block content %}
 
-    {% for form in telefono_formset %}
-      {{ form.as_p }}
-
-    {% endfor %}
-
-    {% for form in clitel_formset %}
-      {{ form.as_p }}
-
-      {% endfor %}-->
+  <h3>Editar tipo ambiente</h3>
+  <form action="" method="post" data-ajax="false">
+    {% csrf_token %}
+    {{form_edit_tipoambiente.as_p}}
+    <button type="submit" class="ui-btn ui-btn ui-icon-check ui-btn-icon-left">Registrar</button>
+    <a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="javascript:history.back();">Regresar</a>
+    <br><br>
   </form>
-</div>
 
+{% endblock %}
+{% block footer %}{% endblock %}

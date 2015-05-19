@@ -1,4 +1,5 @@
  {% extends 'base3.html' %}
+ {% block header %}<h2>Ambiente</h2>{% endblock %}
  {% block content %}
 
 <!--IniciaModal-->
@@ -13,28 +14,30 @@
         <form method="post" id="frmEliminar">
             {% csrf_token %}
             <input type="hidden" id="modal_id" name="item_id">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <button class="" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+      <button type="submit" class="">Eliminar</button>
         </form>
     </div>
 </div>
 <!--EndModal-->
 {% if lista_ambiente %}
 
-<h6>Cantidad de telefonos encontradas:
+<h6>Cantidad de ambiente encontrados:
   <span class="badge">
     {{ lista_ambiente.count }}
   </span>
 </h6>
 
-  <table class="table table-hover">
-
-   <tr class="active">
-    <th>Ambiente</th>
+  <table data-role="table" data-mode="" class="ui-responsive ui-shadow" id="myTableambiente">
+    <thead>
+    <tr>
+      <!--<th data-priority="6">Numero</th>-->
+      <th>Ambiente</th>
     <th>Tipo</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
-  </tr>
+      <th data-priority="1">Editar</th>
+      <th data-priority="2">Eliminar</th>
+    </tr>
+  </thead>
 
   {% for i in lista_ambiente %}
 
