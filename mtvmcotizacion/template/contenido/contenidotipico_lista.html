@@ -4,7 +4,7 @@
 <!--IniciaModal-->
  <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
-    <h3 id="myModalLabel">Eliminar mueble del ambiente </h3>
+    <h3 id="myModalLabel">Eliminar relacion contenido - mueble</h3>
     </div>
     <div class="modal-body">
     <p>¿Realmente desea eliminar el registro <span id="modal_name"></span>?</p>
@@ -19,43 +19,41 @@
     </div>
 </div>
 <!--EndModal-->
-
-{% if buscar_muebleambiente %}
+{% if buscar_contenidotipico %}
 
 <h6>Cantidad de registros encontrados:
   <span class="badge">
-    {{ buscar_muebleambiente.count }}
+    {{ buscar_contenidotipico.count }}
   </span>
 </h6>
 
   <table class="table table-hover">
 
    <tr class="active">
-    <th>ambiente</th>
+    <th>contenido</th>
     <th>mueble</th>
     <th>Editar</th>
     <th>Eliminar</th>
   </tr>
 
-  {% for i in buscar_muebleambiente %}
+  {% for i in buscar_contenidotipico %}
 
   <tr id="tr{{i.id}}">
-
-    <td>{{ i.ambiente }}</td>
+    <td>{{ i.contenido }}</td>
     <td>{{ i.mueble }}</td>
 
     <td>
-      <a href="mueble/editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
+      <a href="contenido/editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
       {# <button id ="editar" data-telid="{{i.id}}" class="btn btn-mini btn-primary" type="button">editar</button> #}
     </td>
     <td>
-      <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.mueble}}"><i class="icon-trash icon-white"></i>Eliminar</a>
+      <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.contenido}}"><i class="icon-trash icon-white"></i>Eliminar</a>
     </td>
     <input type="hidden" value="{{i.id}}" id="idtele">
   </tr>
 
   {% endfor %}
-  {{ mensaje }}
+
 </table>
 <p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
 </div>
@@ -63,11 +61,8 @@
 {% else %}
 
 <p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
-  {% if mensaje %}
-   {{ mensaje }}
-  {% else %}
-  <p> No se encontro registro.</p>
+<p> No se encontro registro.</p>
 
-  {% endif %}
 {% endif %}
+
 {% endblock %}

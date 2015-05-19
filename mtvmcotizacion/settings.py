@@ -41,6 +41,10 @@ INSTALLED_APPS = (
     'telefono',
     'ambiente',
     'servicio',
+    'mueble',
+    'contenido',
+    'trabajador',
+    'cotizacion',
 )
 
 MIDDLEWARE_CLASSES = (
