@@ -3,7 +3,7 @@
 {% block content %}
 <div data-role="main" class="ui-content">
   <h2>Agregar pais</h2>
-  <form action="" method="post">
+  <form action="" method="post" data-ajax="false">
     {% csrf_token %}
     {{form_pais.as_p}}
     <button type="submit" data-icon="check" class="ui-btn ui-btn ui-icon-check ui-btn-icon-left">Registrar</button>

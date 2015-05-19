@@ -3,7 +3,7 @@
 {% block content %}
 
 <h2>Agregar cliente</h2>
-<form action="" method="post">
+<form action="" method="post" data-ajax="false">
     {% csrf_token %}
     {{ cliente_form.as_p }}
     {{ email_form.as_p }}

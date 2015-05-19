@@ -11,7 +11,7 @@
     <p>¿Realmente desea eliminar el tipo telefono <span id="modal_name"></span>?</p>
     </div>
     <div class="modal-footer">
-        <form method="post" id="frmEliminar">
+        <form method="post" id="frmEliminar" data-ajax="false">
             {% csrf_token %}
             <input type="hidden" id="modal_id" name="item_id">
             <button class="" data-dismiss="modal" aria-hidden="true">Cerrar</button>

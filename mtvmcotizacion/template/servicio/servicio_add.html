@@ -3,7 +3,7 @@
 {% block content %}
 
 <h2>Agregar servicio</h2>
-<form action="" method="post">
+<form action="" method="post" data-ajax="false">
   {% csrf_token %}
   {{ form_servicio.as_p }}
   <button type="submit" class="ui-btn ui-btn ui-icon-check ui-btn-icon-left">Registrar</button>
