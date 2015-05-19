@@ -1,4 +1,5 @@
  {% extends 'base3.html' %}
+ {% block header %}<h2>Complejidad</h2>{% endblock %}
  {% block content %}
 
 <!--IniciaModal-->
@@ -7,14 +8,14 @@
     <h3 id="myModalLabel">Eliminar complejidad</h3>
     </div>
     <div class="modal-body">
-    <p>¿Realmente desea eliminar el complejidad <span id="modal_name"></span>?</p>
+    <p>¿Realmente desea eliminar la complejidad <span id="modal_name"></span>?</p>
     </div>
     <div class="modal-footer">
         <form method="post" id="frmEliminar">
             {% csrf_token %}
             <input type="hidden" id="modal_id" name="item_id">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <button class="" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+      <button type="submit" class="">Eliminar</button>
         </form>
     </div>
 </div>
@@ -27,38 +28,38 @@
   </span>
 </h6>
 
-  <table class="table table-hover">
+  <table data-role="table" data-mode="" class="ui-responsive ui-shadow" id="myTablecomplejidad">
 
-   <tr class="active">
-    <th>complejidad</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
-  </tr>
-
-  {% for i in lista_complejidad %}
-
-  <tr id="tr{{i.id}}">
-    <td>{{ i.descripcion }}</td>
-
-    <td>
-      <a href="complejidad/editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
-      {# <button id ="editar" data-telid="{{i.id}}" class="btn btn-mini btn-primary" type="button">editar</button> #}
-    </td>
-    <td>
-      <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.descripcion}}"><i class="icon-trash icon-white"></i>Eliminar</a>
-    </td>
-    <input type="hidden" value="{{i.id}}" id="idtele">
-  </tr>
-
+    <thead>
+    <tr>
+      <!--<th data-priority="6">Numero</th>-->
+      <th>complejidad</th>
+      <th data-priority="1">Editar</th>
+      <th data-priority="2">Eliminar</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in lista_complejidad %}
+    <tr id="tr{{i.id}}">
+      <!-- <td>{{ i.count }}</td>-->
+      <td>{{ i.descripcion }}</td>
+      <td>
+        <a href="editar/{{i.id}}/" class="ui-btn ui-icon-edit ui-btn-icon-notext">Editar</a>
+      </td>
+      <td>
+        <a href="#myModal" role="button" class="ui-btn ui-icon-delete ui-btn-icon-notext delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.descripcion}}">Eliminar</a>
+      </td>
+    </tr>
+  </tbody>
   {% endfor %}
-
 </table>
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
-</div>
+<br>
+<a href="nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
+<a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="../">Regresar</a>
 
 {% else %}
 
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
+<a href="nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
 <p> No se encontro registro.</p>
 
 {% endif %}

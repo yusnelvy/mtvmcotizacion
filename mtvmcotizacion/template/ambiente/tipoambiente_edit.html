@@ -1,7 +1,7 @@
 {% extends 'base3.html' %}
 {% block header %}<h2>Editar Tipo ambiente</h2>{% endblock %}
 {% block content %}
-<div data-role="main" class="ui-content">
+
   <h3>Editar tipo ambiente</h3>
   <form action="" method="post">
     {% csrf_token %}
@@ -10,6 +10,6 @@
     <a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="javascript:history.back();">Regresar</a>
     <br><br>
   </form>
-</div>
+
 {% endblock %}
 {% block footer %}{% endblock %}
