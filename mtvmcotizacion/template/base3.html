@@ -1,24 +1,30 @@
-{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="es">
-{% block head %}{% include "head.html" %}{% endblock%}
-  <body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  {% block titulo %}<title>app</title>{% endblock %}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/estilosForm.css">
 
-{% block page %}<div data-role="page" id="pageone">{% endblock %}
-  <div data-role="header">
-    {% block header %}{% endblock%}
-  </div>
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 
-{% block nav %}{% endblock%}
-   <div data-role="main" class="ui-content">
-    {% block content %}{% endblock%}
-  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-    <div data-role="footer">
-    {% block footer %}{% endblock%}
-  </div>
+<!--<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<link href="/static/jquery.mobile-1.4.5.css" rel="stylesheet">-->
+</head>
 
-</div>
-{% block script %}{% include "script.html" %}{% endblock%}
-  </body>
+<body>
+  {% include "nav.html" %}
+
+  {% block nav %}{% endblock%}
+  {% block header %}{% endblock %}
+  {% block content %}{% endblock%}
+<script>$('#id_tipo_ambiente').focus();</script>
+</body>
 </html>

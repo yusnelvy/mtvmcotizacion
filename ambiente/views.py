@@ -163,7 +163,7 @@ def edit_tipo_ambiente(request, pk):
             # formulario validado correctamente
             form_edit_tipoambiente.save()
 
-            return HttpResponseRedirect(reverse('udireciones:lista_tipoambiente'))
+            return HttpResponseRedirect(reverse('uambientes:lista_tipo_ambiente'))
 
     else:
         # formulario inicial

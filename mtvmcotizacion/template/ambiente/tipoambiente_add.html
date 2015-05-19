@@ -1,15 +1,18 @@
-{% extends 'base3.html' %}
-{% block header %}<h2>Tipo ambiente</h2>{% endblock %}
+{% extends "base3.html" %}
+{% block titulo %}<title>Tipo ambiente</title>{% endblock %}
+{% block header %}{% endblock %}
 {% block content %}
-
-  <h3>Agregar tipo ambiente</h3>
-  <form action="" method="post" data-ajax="false">
-    {% csrf_token %}
-    {{ form_tipoambiente.as_p }}
-    <button type="submit" class="ui-btn ui-btn ui-icon-check ui-btn-icon-left">Registrar</button>
-    <a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="javascript:history.back();">Regresar</a>
-    <br><br>
-  </form>
-
+<div class="col-md-1"></div>
+<div class="col-md-4">
+     <h2>Agregar tipo ambiente</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-default">Registrar</button>
+        <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
+        <div class="form-group">{{ form_tipoambiente.as_p }}
+        </div>
+        <button type="submit" class="btn btn-default">Registrar</button>
+        <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
+    </form>
+</div>
 {% endblock %}
-{% block footer %}{% endblock %}
