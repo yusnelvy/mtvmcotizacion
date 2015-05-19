@@ -3,10 +3,12 @@ from cliente.models import Cliente, Email
 from telefono.models import Telefono
 from direccion.models import Direccion
 from cliente.forms import ClienteForm, EmailForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
+import simplejson as json
+import django.db
 
 
 # Create your views here.
@@ -29,6 +31,27 @@ def lista_email(request, id_cli):
 
 def lista_telefono_cliente(request, id_cli):
     """docstring"""
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_telefono = request.POST['item_id']
+                p = Telefono.objects.get(pk=id_telefono)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
     cliente = Cliente.objects.get(id=id_cli)
 
     lista_telefono_cliente = Telefono.objects.select_related().filter(cliente=cliente)
@@ -39,6 +62,26 @@ def lista_telefono_cliente(request, id_cli):
 
 def lista_direccioncliente(request, id_cli):
     """docstring"""
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_direccion = request.POST['item_id']
+                p = Direccion.objects.get(pk=id_direccion)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     cliente = Cliente.objects.get(id=id_cli)
 

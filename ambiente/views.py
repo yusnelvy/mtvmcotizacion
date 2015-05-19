@@ -174,12 +174,10 @@ def edit_tipo_ambiente(request, pk):
                               context_instance=RequestContext(request))
 
 
-def edit_ambiente(request, id_tipoinmueble, pk):
+def edit_ambiente(request, pk):
     """docstring"""
 
-    id_ambi = Ambiente_Tipo_inmueble.objects.values('ambiente').filter(pk=pk)
-
-    id_ambiente = Ambiente.objects.get(pk=id_ambi)
+    id_ambiente = Ambiente.objects.get(pk=pk)
 
     if request.method == 'POST':
         # formulario enviado
@@ -189,8 +187,8 @@ def edit_ambiente(request, id_tipoinmueble, pk):
             # formulario validado correctamente
             form_edit_ambiente.save()
 
-            #return HttpResponseRedirect(reverse('uclientes:lista_email'))
-            return HttpResponseRedirect('../../../')
+            return HttpResponseRedirect(reverse('uambientes:lista_email'))
+
     else:
         # formulario inicial
         form_edit_ambiente = AmbienteForm(instance=id_ambiente)
