@@ -1,13 +1,12 @@
 <div class="col-md-1"></div>
 <div class="col-md-4">
-    <h2>Agregar cliente</h2>
+    <h2>Agregar cargo</h2>
     <form action="" method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
+
         <div class="form-group">
-            {{ cliente_form.as_p }}
-            {{ mensaje }}
+            {{ form_cargotrabajador.as_p }}
+
         </div>
         <button type="submit" class="btn btn-default">Registrar</button>
         <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
