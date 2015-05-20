@@ -95,7 +95,7 @@ def lista_ambiente_tipo_inmueble(request):
 
     lista_ambtipoinmueble = Ambiente_Tipo_inmueble.objects.all()
     context = {'lista_ambtipoinmueble': lista_ambtipoinmueble}
-    return render(request, 'ambiente/ambiente_lista.html', context)
+    return render(request, 'ambiente/ambientetipoinmueble_lista.html', context)
 
 
 def buscar_ambiente(request, id_tipoinmueble):
@@ -142,7 +142,7 @@ def add_ambiente_tipoinmueble(request):
         form_ambtipoinmueble = AmbienteTipoInmuebleForm(request.POST)
         if form_ambtipoinmueble.is_valid():
             form_ambtipoinmueble.save()
-            return HttpResponseRedirect(reverse('uambientes:lista_ambiente'))
+            return HttpResponseRedirect(reverse('uambientes:lista_ambiente_tipo_inmueble'))
     else:
         form_ambtipoinmueble = AmbienteTipoInmuebleForm()
     return render_to_response('ambiente/ambientetipoinmueble_add.html',
@@ -212,7 +212,7 @@ def edit_ambiente_tipoinmueble(request, pk):
             # formulario validado correctamente
             form_edit_ambtipoinmueble.save()
 
-            return HttpResponseRedirect(reverse('udireciones:lista_ambtipoinmueble'))
+            return HttpResponseRedirect(reverse('uambientes:lista_ambiente_tipo_inmueble'))
 
     else:
         # formulario inicial

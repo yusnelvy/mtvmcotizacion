@@ -1,40 +1,50 @@
- {% extends 'base3.html' %}
-
+{% extends 'base3.html' %}
+{% block titulo %}<title>Ambiente</title>{% endblock %}
+{% block header %}{% endblock %}
  {% block ayuda %}{% endblock%}
  {% block content %}
 
 <!--IniciaModal-->
- <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+ <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
     <div class="modal-header">
-    <h3 id="myModalLabel">Eliminar Ambiente</h3>
+    <h3 id="myModalLabel"></h3>
     </div>
     <div class="modal-body">
-    <p>¿Realmente desea eliminar el Ambiente <span id="modal_name"></span>?</p>
+    <p>¿Eliminar <span id="modal_name"></span>?</p>
     </div>
     <div class="modal-footer">
         <form method="post" id="frmEliminar">
             {% csrf_token %}
             <input type="hidden" id="modal_id" name="item_id">
-            <button class="" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-      <button type="submit" class="">Eliminar</button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+            <button type="submit" class="btn btn-default">Si</button>
         </form>
     </div>
 </div>
+</div>
+</div>
 <!--EndModal-->
 {% if lista_ambiente %}
-
+<div class="col-md-1"></div>
+<div class="col-md-5">
+  <h2>Listado de tipo ambiente </h2>
+  <a href="nuevo/" class="btn btn-default">Nuevo</a>
+  <a class="btn btn-default" href="javascript:history.back();">Regresar</a>
+<br>
 <h6>Cantidad de ambiente encontrados:
   <span class="badge">
     {{ lista_ambiente.count }}
   </span>
 </h6>
 
-  <table data-role="table" data-mode="" class="ui-responsive ui-shadow" id="myTableambiente">
+  <table class="table table-hover" id="tabla">
     <thead>
     <tr>
       <!--<th data-priority="6">Numero</th>-->
       <th>Ambiente</th>
-    <th>Tipo</th>
+    <th>Tipo de ambiente</th>
       <th data-priority="1">Editar</th>
       <th data-priority="2">Eliminar</th>
     </tr>
@@ -51,7 +61,7 @@
       {# <button id ="editar" data-telid="{{i.id}}" class="btn btn-mini btn-primary" type="button">editar</button> #}
     </td>
     <td>
-      <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.ambiente}}"><i class="icon-trash icon-white"></i>Eliminar</a>
+      <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.ambiente}}"></a>
     </td>
     <input type="hidden" value="{{i.id}}" id="idtele">
   </tr>
@@ -59,7 +69,8 @@
   {% endfor %}
 
 </table>
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
+<a href="nuevo/" class="btn btn-default">Nuevo</a>
+<a class="btn btn-default" href="javascript:history.back();">Regresar</a>
 </div>
 
 {% else %}

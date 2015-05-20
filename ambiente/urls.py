@@ -19,7 +19,7 @@ urlpatterns = patterns('',
                            name='lista_ambiente_tipo_inmueble'),
                        url(r'^tipo_ambientetipoinmueble/nuevo', views.add_ambiente_tipoinmueble,
                            name='add_ambiente_tipoinmueble'),
-                       url(r'^add_ambiente_tipoinmueble/editar/(?P<pk>\d+)/$',
+                       url(r'^tipo_ambientetipoinmueble/editar/(?P<pk>\d+)/$',
                            views.edit_ambiente_tipoinmueble, name='edit_ambiente_tipoinmueble'),
 
                        )
