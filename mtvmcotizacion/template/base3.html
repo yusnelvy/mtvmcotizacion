@@ -3,22 +3,16 @@
 <html lang="es">
 {% block head %}{% include "head.html" %}{% endblock%}
   <body>
-
-{% block page %}<div data-role="page" id="pageone">{% endblock %}
-  <div data-role="header">
-    {% block header %}{% endblock%}
-  </div>
-
-{% block nav %}{% endblock%}
-   <div data-role="main" class="ui-content">
-    {% block content %}{% endblock%}
-  </div>
-
-    <div data-role="footer">
-    {% block footer %}{% endblock%}
-  </div>
-
+{% block header %}{% endblock%}
+{% block nav %}{% include "nav.html" %}{% endblock%}
+<div class="row">
+  <div class="col-md-1"></div>
+<div class="col-md-5"> {% block content %}{% endblock%}</div>
+<div class="col-md-5">{% block ayuda %}{% endblock%}
 </div>
+<div class="col-md-1"></div>
+</div>
+{% block footer %}{% endblock%}
 {% block script %}{% include "script.html" %}{% endblock%}
   </body>
 </html>
