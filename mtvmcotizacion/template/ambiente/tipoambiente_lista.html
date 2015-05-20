@@ -4,59 +4,68 @@
 {% block content %}
 
 <!--IniciaModal-->
- <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
-    <div class="modal-header">
-    <h3 id="myModalLabel"></h3>
-    </div>
-    <div class="modal-body">
-    <p>¿Eliminar <span id="modal_name"></span>?</p>
-    </div>
-    <div class="modal-footer">
+      <div class="modal-header">
+        <h3 id="myModalLabel"></h3>
+      </div>
+      <div class="modal-body">
+        <p>¿Eliminar <span id="modal_name"></span>?</p>
+      </div>
+      <div class="modal-footer">
         <form method="post" id="frmEliminar">
-            {% csrf_token %}
-            <input type="hidden" id="modal_id" name="item_id">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-            <button type="submit" class="btn btn-default">Si</button>
+          {% csrf_token %}
+          <input type="hidden" id="modal_id" name="item_id">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+          <button type="submit" class="btn btn-default">Si</button>
         </form>
+      </div>
     </div>
-</div>
-</div>
+  </div>
 </div>
 <!--EndModal-->
-{% if lista_tipoambiente %}
-<div class="col-md-1"></div>
-<div class="col-md-5">
-  <h2>Listado de tipo ambiente </h2>
-  <a href="nuevo/" class="btn btn-default">Nuevo</a>
-  <a class="btn btn-default" href="javascript:history.back();">Regresar</a>
+<h2>Tipos de ambiente </h2>
+<a href="nuevo/" class="btn btn-default">Nuevo</a>
 <br>
-    <h6>Cantidad de tipo ambiente: <span class="badge">
-      {{ lista_tipoambiente.count }}</span> </h6>
-   <table class="table table-hover" id="tabla">
-       <tr class="active">
+<h6>Cantidad de tipo ambiente: <span class="badge">
+  {{ lista_tipoambiente.count }}</span> </h6>
+
+  {% if lista_tipoambiente %}
+  <div class="">
+
+    <table class="table table-hover" id="tabla">
+      <tr class="active">
         <th>Tipo ambiente</th>
         <th>Editar</th>
         <th>Eliminar</th>
-    </tr>
-    {% for i in lista_tipoambiente %}
-    <tr id="tr{{i.id}}">
-      <td>{{ i.tipo_ambiente }}</td>
-       <td><a href="editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a></td>
-       <td>
-<a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.tipo_ambiente}}"></a>
-       </td>
-   </tr>
-   {% endfor %}
-</table>
-<a href="nuevo/" class="btn btn-default">Nuevo</a>
-<a class="btn btn-default" href="javascript:history.back();">Regresar</a>
-</div>
-{% else %}
-<p> No hay tipo ambiente registrado </p>
-<a href="nuevo/" class="btn btn-default">Nuevo</a>
-<a class="btn btn-default" href="javascript:history.back();">Regresar</a>
-{% endif %}
+      </tr>
+      {% for i in lista_tipoambiente %}
+      <tr id="tr{{i.id}}">
+        <td>{{ i.tipo_ambiente }}</td>
+        <td><a href="editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a></td>
+        <td>
+          <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.tipo_ambiente}}"></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <a href="nuevo/" class="btn btn-default">Nuevo</a>
 
-{% endblock %}
+  </div>
+  {% else %}
+  <a href="nuevo/" class="btn btn-default">Nuevo</a>
+
+  {% endif %}
+
+  {% endblock %}
+
+  {% block ayuda %}
+
+  <div class="">
+    <div class="well well-lg">
+      <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</p>
+    </div>
+  </div>
+
+  {% endblock%}

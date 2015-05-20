@@ -5,8 +5,13 @@
   <body>
 {% block header %}{% endblock%}
 {% block nav %}{% include "nav.html" %}{% endblock%}
-{% block content %}{% endblock%}
-{% block ayuda %}{% include "ayuda.html" %}{% endblock%}
+<div class="row">
+  <div class="col-md-1"></div>
+<div class="col-md-5"> {% block content %}{% endblock%}</div>
+<div class="col-md-5">{% block ayuda %}{% endblock%}
+</div>
+<div class="col-md-1"></div>
+</div>
 {% block footer %}{% endblock%}
 {% block script %}{% include "script.html" %}{% endblock%}
   </body>
