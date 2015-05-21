@@ -60,10 +60,10 @@ class Mueble(models.Model):
     forma = models.ForeignKey(Forma_Mueble)
     ocupacion = models.ForeignKey(Ocupacion)
     capacidad = models.DecimalField(max_digits=5, decimal_places=2)
-    trasladable = models.BooleanField()
-    apilable = models.BooleanField()
-    capacidad_carga = models.BooleanField()
-    capacidad_interna = models.BooleanField()
+    trasladable = models.BooleanField(default=None)
+    apilable = models.BooleanField(default=None)
+    capacidad_carga = models.BooleanField(default=None)
+    capacidad_interna = models.BooleanField(default=None)
 
     def __unicode__(self):
         return self.mueble
@@ -78,7 +78,7 @@ class Tamano(models.Model):
     def __init__(self, *args, **kwargs):
         super(Tamano, self).__init__(*args, **kwargs)
 
-    descripcion = models.CharField(max_digits=100)
+    descripcion = models.CharField(max_length=100)
 
     def __unicode__(self):
         return self.descripcion
@@ -93,13 +93,14 @@ class Tamano_Mueble(models.Model):
     def __init__(self, *args, **kwargs):
         super(Tamano_Mueble, self).__init__(*args, **kwargs)
 
-    tamano = models.ForeignKey(Tamano, primary_key=True)
-    mueble = models.ForeignKey(Mueble, primary_key=True)
+    tamano = models.ForeignKey(Tamano)
+    mueble = models.ForeignKey(Mueble)
+    unique_together = ("Tamano", "Mueble")
     ancho = models.DecimalField(max_digits=2, decimal_places=2)
     largo = models.DecimalField(max_digits=2, decimal_places=2)
     alto = models.DecimalField(max_digits=2, decimal_places=2)
     peso = models.DecimalField(max_digits=2, decimal_places=2)
-    predefinido = models.BooleanField()
+    predefinido = models.BooleanField(default=None)
 
     def __unicode__(self):
         return u' %s - %s' % (self.mueble, self.tamano)
@@ -116,6 +117,7 @@ class Mueble_Ambiente(models.Model):
 
     mueble = models.ForeignKey(Mueble)
     ambiente = models.ForeignKey(Ambiente)
+    unique_together = ("Ambiente", "Mueble")
 
     def __unicode__(self):
         return u' %s - %s' % (self.mueble, self.ambiente)

@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse
 from django.template import RequestContext
 import simplejson as json
 import django.db
-from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 
 
 # Create your views here.
@@ -41,7 +41,7 @@ def lista_tipo_mueble(request):
 
     lista_tipomueble = Tipo_Mueble.objects.all()
     context = {'lista_tipomueble': lista_tipomueble}
-    return render(request, 'tipomueble_lista.html', context)
+    return render(request, 'mueble/tipomueble_lista.html', context)
 
 
 def lista_ocupacion(request):
@@ -70,7 +70,7 @@ def lista_ocupacion(request):
 
     lista_ocupacion = Ocupacion.objects.all()
     context = {'lista_ocupacion': lista_ocupacion}
-    return render(request, 'ocupacion_lista.html', context)
+    return render(request, 'mueble/ocupacion_lista.html', context)
 
 
 def lista_forma_mueble(request):
@@ -99,7 +99,7 @@ def lista_forma_mueble(request):
 
     lista_formamueble = Forma_Mueble.objects.all()
     context = {'lista_formamueble': lista_formamueble}
-    return render(request, 'formamueble_lista.html', context)
+    return render(request, 'mueble/formamueble_lista.html', context)
 
 
 def lista_mueble(request):
@@ -128,7 +128,7 @@ def lista_mueble(request):
 
     lista_mueble = Mueble.objects.all()
     context = {'lista_mueble': lista_mueble}
-    return render(request, 'mueble_lista.html', context)
+    return render(request, 'mueble/mueble_lista.html', context)
 
 
 def lista_tamano(request):
@@ -157,10 +157,10 @@ def lista_tamano(request):
 
     lista_tamano = Tamano.objects.all()
     context = {'lista_tamano': lista_tamano}
-    return render(request, 'tamano_lista.html', context)
+    return render(request, 'mueble/tamano_lista.html', context)
 
 
-def buscar_tamano_mueble(request, idmueble, idtamano):
+def buscar_tamano_mueble(request, idmueble=0):
     """docstring"""
 
     if request.method == "POST":
@@ -184,17 +184,27 @@ def buscar_tamano_mueble(request, idmueble, idtamano):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    if idtamano | idmueble:
+    if idmueble != '0':
+        try:
+            buscar_tamanomueble = Tamano_Mueble.objects.get(mueble=idmueble)
+            mensaje = ""
+        except ObjectDoesNotExist as ex:
+            buscar_tamanomueble = ""
+            mensaje = "registro no existe"
 
-        buscar_tamanomueble = Tamano_Mueble.objects.get(Q(tamano=idtamano) | Q(mueble=idmueble))
+        except Exception as ex:
+            buscar_tamanomueble = ""
+            mensaje = "se ha producido un error"+str(ex)
+
     else:
         buscar_tamanomueble = Tamano_Mueble.objects.all()
+        mensaje = ""
 
-    context = {'buscar_tamanomueble': buscar_tamanomueble}
+    context = {'buscar_tamanomueble': buscar_tamanomueble, 'mensaje': mensaje}
     return render(request, 'mueble/tamanomueble_lista.html', context)
 
 
-def buscar_mueble_ambiente(request, idmueble, idambiente):
+def buscar_mueble_ambiente(request, idambiente=0):
     """docstring"""
 
     if request.method == "POST":
@@ -218,13 +228,22 @@ def buscar_mueble_ambiente(request, idmueble, idambiente):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    if idambiente | idmueble:
+    if idambiente != '0':
+        try:
+            buscar_muebleambiente = Mueble_Ambiente.objects.get(ambiente=idambiente)
+            mensaje = ""
+        except ObjectDoesNotExist as ex:
+            buscar_muebleambiente = ""
+            mensaje = "registro no existe"
 
-        buscar_muebleambiente = Mueble_Ambiente.objects.get(Q(ambiente=idambiente) | Q(mueble=idmueble))
+        except Exception as ex:
+            buscar_muebleambiente = ""
+            mensaje = "se ha producido un error"+str(ex)
+
     else:
         buscar_muebleambiente = Mueble_Ambiente.objects.all()
-
-    context = {'buscar_muebleambiente': buscar_muebleambiente}
+        mensaje = ""
+    context = {'buscar_muebleambiente': buscar_muebleambiente, 'mensaje': mensaje}
     return render(request, 'mueble/muebleambiente_lista.html', context)
 
 
@@ -340,7 +359,7 @@ def edit_tipo_mueble(request, pk):
             # formulario validado correctamente
             form_edit_tipomueble.save()
 
-            return HttpResponseRedirect(reverse('umuebles:lista_tipomueble'))
+            return HttpResponseRedirect(reverse('umuebles:lista_tipo_mueble'))
 
     else:
         # formulario inicial
@@ -386,7 +405,7 @@ def edit_forma_mueble(request, pk):
             # formulario validado correctamente
             form_edit_formamueble.save()
 
-            return HttpResponseRedirect(reverse('umuebles:lista_formamueble'))
+            return HttpResponseRedirect(reverse('umuebles:lista_forma_mueble'))
 
     else:
         # formulario inicial

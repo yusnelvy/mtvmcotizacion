@@ -1,5 +1,9 @@
-<div class="col-md-1"></div>
-<div class="col-md-4">
+{% extends "base3.html" %}
+{% block titulo %}<title>Editar ambiente</title>{% endblock %}
+{% block header %}{% endblock %}
+{% block content %}
+
+<div class="">
     <h2>Editar ambiente </h2>
     <form action="" method="post">
         {% csrf_token %}
@@ -13,3 +17,18 @@
   </form>
 </div>
 
+{% endblock %}
+
+{% block ayuda %}
+
+<div class="">
+    <div class="well well-lg">
+      <p>Los <strong>Ambientes</strong> son los diversos espacios que se encuentran en un <strong>Inmueble</strong>.</p>
+      <p>Cree <strong>Ambientes</strong> que no generen ambigüedades o confusiones como <i>Living</i> y <i>Living Room</i>.</p>
+      <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
+      <p>Utilice una clasificación apropiada para los <strong>Ambientes</strong> que permita su comprensión y rápida búsqueda.</p>
+      <p>IMPORTANTE: Esta clasificación es solo de uso referencial, y no será determinante al cargar información de los distintos <strong>Tipos de ambientes</strong> en los cuales se puede encontrar el mismo <strong>Ambiente</strong>.</p>
+    </div>
+  </div>
+
+{% endblock%}
