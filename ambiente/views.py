@@ -169,8 +169,9 @@ def edit_tipo_ambiente(request, pk):
         # formulario inicial
         form_edit_tipoambiente = TipoAmbienteForm(instance=tipoambiente)
 
-    return render_to_response('ambiente/tipoambiente_edit.html',
-                              {'form_edit_tipoambiente': form_edit_tipoambiente, 'create': False},
+    lista_ambiente = Ambiente.objects.filter(tipo_ambiente_id=tipoambiente)
+    context = {'lista_ambiente': lista_ambiente, 'form_edit_tipoambiente': form_edit_tipoambiente, 'create': False}
+    return render_to_response('ambiente/tipoambiente_edit.html', context,
                               context_instance=RequestContext(request))
 
 
