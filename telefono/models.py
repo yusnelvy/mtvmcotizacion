@@ -16,7 +16,7 @@ class Tipo_telefono(models.Model):
     class Meta:
         verbose_name = "Tipo de telefono"
         verbose_name_plural = "Tipos de telefono"
-        ordering = ['Tipo_telefono']
+        ordering = ['tipo_telefono']
 
 
 class Telefono(models.Model):
