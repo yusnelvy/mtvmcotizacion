@@ -1,26 +1,61 @@
-<div class="col-md-1"></div>
-<div class="col-md-4">
-    <h2>Editar tipo telefono </h2>
+{% extends "base3.html" %}
+{% block titulo %}<title>Editar tipos ambiente</title>{% endblock %}
+{% block header %}{% endblock %}
+{% block content %}
+
+<div class="">
+    <h2>Editar tipo de ambiente</h2>
     <form action="" method="post">
         {% csrf_token %}
         <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="../../" class="btn btn-default">Regresar</a><br><br>
-        <div class="form-group">{{form_edit_tipotelefono.as_p}}
+        <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
+        <br>
+        <br>
+        <div class="form-group">{{form_edit_tipoambiente.as_p}}
         </div>
         <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="../../" class="btn btn-default">Regresar</a><br><br><br>
-    <!--{{ telefono_formset.management_form }}
-    {{ clitel_formset.management_form }}
-
-    {% for form in telefono_formset %}
-      {{ form.as_p }}
-
-    {% endfor %}
-
-    {% for form in clitel_formset %}
-      {{ form.as_p }}
-
-      {% endfor %}-->
-  </form>
+        <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
+        <br>
+        <br>
+    </form>
 </div>
 
+<div class="">
+    <h6>Cantidad de ambientes clasificados bajo este tipo de ambiente:
+        <span class="badge">
+            {{ lista_ambiente.count }}
+        </span>
+    </h6>
+
+    <table class="table table-hover" id="tabla">
+        <thead>
+            <tr>
+                <th>Ambiente</th>
+            </tr>
+        </thead>
+
+        {% for i in lista_ambiente %}
+
+        <tr id="tr{{i.id}}">
+            <td>{{ i.ambiente }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+</div>
+
+{% endblock %}
+
+{% block ayuda %}
+
+<div class="">
+    <div class="well well-lg">
+        <p>Si contamos con muchos ambientes, será mucho más fácil su manejo si estos están agrupados de manera lógica.</p>
+        <p>Para ello exisen los <strong>Tipos de Ambiente</strong>, los cuales clasifican a los ambientes según su congruencia y relación.</p>
+        <p>Al editar los <strong>Tipos de ambiente</strong> ya creados se debe recordar que el dato puede haber sido utilizado para clasificar ambientes, y que es posible que haya otros <strong>Tipos de ambiente</strong> ya creados, por lo que se debe prevenir generar ambigüedades o confusiones como <i>Apartamento</i> o <i>Departamento</i>.</p>
+        <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
+    </div>
+</div>
+
+{% endblock%}

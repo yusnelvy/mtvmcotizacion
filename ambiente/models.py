@@ -10,12 +10,13 @@ class Tipo_ambiente(models.Model):
 
     tipo_ambiente = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.tipo_ambiente
 
     class Meta:
         verbose_name = "Tipo de ambiente"
         verbose_name_plural = "Tipos de ambiente"
+        ordering = ["tipo_ambiente"]
 
 
 class Ambiente(models.Model):
@@ -26,12 +27,13 @@ class Ambiente(models.Model):
     ambiente = models.CharField(max_length=100)
     tipo_ambiente = models.ForeignKey(Tipo_ambiente, on_delete=models.PROTECT)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.ambiente
 
     class Meta:
         verbose_name = "Ambiente"
         verbose_name_plural = "Ambientes"
+        ordering = ["ambiente"]
 
 
 class Ambiente_Tipo_inmueble(models.Model):
@@ -42,9 +44,10 @@ class Ambiente_Tipo_inmueble(models.Model):
     ambiente = models.ForeignKey(Ambiente)
     tipo_inmueble = models.ForeignKey(Tipo_Inmueble)
 
-    def __unicode__(self):
+    def __str__(self):
         return u' %s - %s' % (self.ambiente, self.tipo_inmueble)
 
     class Meta:
-        verbose_name = "Ambiente - Tipo inmueble"
-        verbose_name_plural = "Ambientes - Tipos de inmueble"
+        verbose_name = "Ambiente por tipo inmueble"
+        verbose_name_plural = "Ambientes por tipos de inmueble"
+        ordering = ["tipo_inmueble", "ambiente"]

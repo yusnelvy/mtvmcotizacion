@@ -1,54 +1,60 @@
  {% extends 'base3.html' %}
+
+ {% block ayuda %}{% endblock%}
  {% block content %}
 
 <!--IniciaModal-->
  <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
-    <h3 id="myModalLabel">Eliminar Pais</h3>
+    <h3 id="myModalLabel">Eliminar direccion</h3>
     </div>
     <div class="modal-body">
-    <p>¿Realmente desea eliminar el pais <span id="modal_name"></span>?</p>
+    <p>¿Realmente desea eliminar la direccion <span id="modal_name"></span>?</p>
     </div>
     <div class="modal-footer">
         <form method="post" id="frmEliminar">
             {% csrf_token %}
             <input type="hidden" id="modal_id" name="item_id">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-            <button type="submit" class="btn btn-danger">Eliminar</button>
+           <button class="" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+      <button type="submit" class="">Eliminar</button>
         </form>
     </div>
 </div>
 <!--EndModal-->
 {% if lista_direccion %}
-<div class="col-md-1"></div>
-<div class="col-md-5">
     <h2>Listado de direccion </h2>
-    <p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
-    <p><a href="tipo_direccion/" class="btn btn-default">Tipo direccion</a></p>
     <h6>Cantidad de direccion encontrados: <span class="badge">{{ lista_direccion.count }}</span> </h6>
-    <table class="table table-hover">
-       <tr class="active">
-        <th>Direccion</th>
-        <th>Punto referencia</th>
-        <th>Editar</th>
-        <th>Eliminar</th>
+    <table data-role="table" data-mode="" class="ui-responsive ui-shadow" id="myTabletipoambiente">
+        <thead>
+    <tr>
+      <!--<th data-priority="6">Numero</th>-->
+      <th>Direccion</th>
+      <th>Punto referencia</th>
+      <th data-priority="1">Editar</th>
+      <th data-priority="2">Eliminar</th>
     </tr>
+  </thead>
+    <tbody>
     {% for i in lista_direccion %}
     <tr id="tr{{i.id}}">
-        <td>calle: {{ i.calle }} numero: {{ i.numero }} piso: {{ i.piso }}</td>
-
-        <td>{{ i.punto_referencia }}</td>
-        <td><a href="{{i.id}}/" class="glyphicon glyphicon-edit">ed</a></td>
-        <td>
-            <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="calle: {{ i.calle }} numero: {{ i.numero }} piso: {{ i.piso }}"><i class="icon-trash icon-white"></i>Eliminar</a>
-        </td>
+      <!-- <td>{{ i.count }}</td>-->
+      <td>calle: {{ i.calle }} numero: {{ i.numero }} piso: {{ i.piso }}</td>
+      <td>{{ i.punto_referencia }}</td>
+      <td>
+        <a href="{{i.id}}/" class="ui-btn ui-icon-edit ui-btn-icon-notext">Editar</a>
+      </td>
+      <td>
+        <a href="#myModal" role="button" class="ui-btn ui-icon-delete ui-btn-icon-notext delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="calle: {{ i.calle }} numero: {{ i.numero }} piso: {{ i.piso }}">Eliminar</a>
+      </td>
     </tr>
+  </tbody>
     {% endfor %}
 </table>
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
-</div>
+<br>
+<a href="nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
+<a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="../">Regresar</a>
 {% else %}
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
+<a href="nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
 <p> No hay direcciones registradas.</p>
 {% endif %}
 {% endblock %}
