@@ -1,12 +1,37 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="es">
+
 {% block head %}{% include "head.html" %}{% endblock%}
-  <body>
-{% block header %}{% endblock%}
-{% block nav %}{% endblock%}
-{% block content %}{% endblock%}
-{% block footer %}{% endblock%}
-{% block script %}{% include "script.html" %}{% endblock%}
-  </body>
+
+<body>
+
+    {% block header %}{% endblock%}
+
+    {% block nav %}
+    {% include "nav.html" %}
+    {% endblock%}
+
+    <div class="row">
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-5">
+            {% block content %}{% endblock%}
+        </div>
+        <div class="col-md-5">
+            {% block ayuda %}{% endblock%}
+        </div>
+        <div class="col-md-1">
+
+        </div>
+    </div>
+
+    {% block footer %}{% endblock%}
+
+    {% block script %}
+    {% include "script.html" %}
+    {% endblock%}
+
+</body>
 </html>

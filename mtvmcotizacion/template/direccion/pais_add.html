@@ -1,16 +1,42 @@
+{% extends 'base3.html' %}
 
-<div class="col-md-1"></div>
-<div class="col-md-4">
-    <h2>Agregar pais</h2>
-    <form action="" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
-        <div class="form-group">
-            {{form_pais.as_p}}
-        </div>
-        <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
-    </form>
+{% block titulo %}
+<h2>Agregar País</h2>
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+
+<div class="">
+  <h2>Agregar País</h2>
+  <form action="" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-default">Registrar</button>
+    <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
+    <br>
+    <br>
+    <div class="form-group">
+
+    {{form_pais.as_p}}
+
+    </div>
+    <button type="submit" class="btn btn-default">Registrar</button>
+    <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
+    <br>
+    <br>
+  </form>
 </div>
 
+{% endblock %}
+
+{% block ayuda %}
+
+<div class="">
+  <div class="well well-lg">
+    <p>En esta sección se registran los <strong>Países</strong>, utilizando para ello su nombre completo en español.</p>
+    <p>La información pre-cargada contiene un listado de todos los <strong>Países</strong> existentes al momento de implementación del sistema. Es posible que existan cambios en los nombres de algunos, e incluso la necesidad de incluir otros. Por lo que se recomienda, antes de incluir un nuevo <strong>País</strong>, revisar con detenimiento dicha lista para evitar duplicados.</p>
+  </div>
+</div>
+
+{% endblock %}

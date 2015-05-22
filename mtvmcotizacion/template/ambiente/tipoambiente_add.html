@@ -1,17 +1,36 @@
-<div class="col-md-1"></div>
-<div class="col-md-4">
-  <h2>Agregar telefono</h2>
-  <form action="" method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-default">Registrar</button>
-    <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
-    <br><br>
-    <div class="form-group"> {{ form_tipoambiente.as_p }}
-    </div>
+{% extends "base3.html" %}
+{% block titulo %}<title>Agregar tipos de ambiente</title>{% endblock %}
+{% block header %}{% endblock %}
+{% block content %}
 
-      <button type="submit" class="btn btn-default">Registrar</button>
-      <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
-      <br><br>
+<div class="">
+    <h2>Agregar tipo de ambiente</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-default">Registrar</button>
+        <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
+        <br>
+        <br>
+        <div class="form-group">{{ form_tipoambiente.as_p }}
+        </div>
+        <button type="submit" class="btn btn-default">Registrar</button>
+        <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
+        <br>
+        <br>
     </form>
+</div>
+
+{% endblock %}
+
+{% block ayuda %}
+
+  <div class="">
+    <div class="well well-lg">
+      <p>Si contamos con muchos ambientes, será mucho más fácil su manejo si estos están agrupados de manera lógica.</p>
+      <p>Para ello exisen los <strong>Tipos de Ambiente</strong>, los cuales clasifican a los ambientes según su congruencia y relación.</p>
+      <p>Cree <strong>Tipos de ambiente</strong> que no generen ambigüedades o confusiones como <i>Apartamento</i> o <i>Departamento</i>.</p>
+      <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
+    </div>
   </div>
 
+{% endblock%}
