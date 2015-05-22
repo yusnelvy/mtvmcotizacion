@@ -1,3 +1,9 @@
+"""
+docstring
+
+Documentacion del proyecto
+
+"""
 from django.db import models
 from cliente.models import Cliente
 
@@ -10,12 +16,13 @@ class Pais(models.Model):
 
     pais = models.CharField(max_length=250, unique=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.pais
 
     class Meta:
         verbose_name = "Pais"
         verbose_name_plural = "Paises"
+        ordering = ['pais']
 
 
 class Provincia(models.Model):
@@ -26,12 +33,13 @@ class Provincia(models.Model):
     provincia = models.CharField(max_length=100, unique=True)
     pais = models.ForeignKey(Pais, on_delete=models.PROTECT)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.provincia
 
     class Meta:
         verbose_name = "Provincia"
         verbose_name_plural = "Provincias"
+        ordering = ['pais', 'provincia']
 
 
 class Ciudad(models.Model):
@@ -39,15 +47,16 @@ class Ciudad(models.Model):
     def __init__(self, *args, **kwargs):
         super(Ciudad, self).__init__(*args, **kwargs)
 
-    ciudad = models.CharField(max_length=100, unique=True)
+    ciudad = models.CharField(max_length=100)
     provincia = models.ForeignKey(Provincia, on_delete=models.PROTECT)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.ciudad
 
     class Meta:
         verbose_name = "Ciudad"
         verbose_name_plural = "Ciudades"
+        ordering = ['provincia', 'ciudad']
 
 
 class Zona(models.Model):
@@ -56,14 +65,15 @@ class Zona(models.Model):
         super(Zona, self).__init__(*args, **kwargs)
 
     zona = models.CharField(max_length=100, unique=True)
-    cuidad = models.ForeignKey(Ciudad, on_delete=models.PROTECT)
+    ciudad = models.ForeignKey(Ciudad, on_delete=models.PROTECT)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.zona
 
     class Meta:
         verbose_name = "Zona"
         verbose_name_plural = "Zonas"
+        ordering = ['ciudad', 'zona']
 
 
 class Tipo_direccion(models.Model):
@@ -74,12 +84,13 @@ class Tipo_direccion(models.Model):
     tipo_direccion = models.CharField(max_length=10)
     activo = models.BooleanField(default=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.tipo_direccion
 
     class Meta:
         verbose_name = "Tipo de direccion"
         verbose_name_plural = "Tipos de direccion"
+        ordering = ['tipo_direccion']
 
 
 class Direccion(models.Model):
@@ -97,12 +108,13 @@ class Direccion(models.Model):
     punto_referencia = models.CharField(max_length=250)
     cliente = models.ForeignKey(Cliente)
 
-    def __unicode__(self):
-        return self.direccion
+    def __str__(self):
+        return self.tipo_direccion
 
     class Meta:
         verbose_name = "Direccion"
         verbose_name_plural = "Direcciones"
+        ordering = ['tipo_direccion']
 
 
 class Tipo_Inmueble(models.Model):
@@ -112,12 +124,13 @@ class Tipo_Inmueble(models.Model):
 
     tipo_inmueble = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.tipo_inmueble
 
     class Meta:
         verbose_name = "Tipo de inmueble"
         verbose_name_plural = "Tipos de inmueble"
+        ordering = ['tipo_inmueble']
 
 
 class Complejidad_Inmueble(models.Model):
@@ -128,12 +141,13 @@ class Complejidad_Inmueble(models.Model):
     complejidad = models.CharField(max_length=100)
     factor = models.DecimalField(max_digits=2, decimal_places=2)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.complejidad
 
     class Meta:
         verbose_name = "complejidad del inmueble"
         verbose_name_plural = "complejidades del inmueble"
+        ordering = ['complejidad']
 
 
 class Inmueble(models.Model):
@@ -155,9 +169,10 @@ class Inmueble(models.Model):
     complejidad = models.ForeignKey(Complejidad_Inmueble, on_delete=models.PROTECT)
     distancia_vehiculo = models.IntegerField()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.inmueble
 
     class Meta:
         verbose_name = "Inmueble"
         verbose_name_plural = "Inmuebles"
+        ordering = ['inmueble']

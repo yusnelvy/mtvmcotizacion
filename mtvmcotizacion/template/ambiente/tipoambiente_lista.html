@@ -1,6 +1,11 @@
 {% extends 'base3.html' %}
-{% block titulo %}<title>Tipos de ambiente</title>{% endblock %}
+
+{% block titulo %}
+<title>Tipos de ambiente</title>
+{% endblock %}
+
 {% block header %}{% endblock %}
+
 {% block content %}
 
 <!--IniciaModal-->
@@ -25,6 +30,7 @@
   </div>
 </div>
 <!--EndModal-->
+
 <h2>Tipos de ambiente </h2>
 <a href="nuevo/" class="btn btn-default">Nuevo</a>
 <br>
@@ -32,8 +38,8 @@
   {{ lista_tipoambiente.count }}</span> </h6>
 
   {% if lista_tipoambiente %}
-  <div class="">
 
+  <div class="">
     <table class="table table-hover" id="tabla">
       <tr class="active">
         <th>Tipo de ambiente</th>
@@ -55,7 +61,6 @@
 
     </table>
     <a href="nuevo/" class="btn btn-default">Nuevo</a>
-
   </div>
 
   {% else %}
