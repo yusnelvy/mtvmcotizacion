@@ -6,6 +6,7 @@ class ClienteForm(ModelForm):
     class Meta:
         model = Cliente
         fields = '__all__'
+        search_fields = ['nombre_principal']
 
 
 class EmailForm(ModelForm):
