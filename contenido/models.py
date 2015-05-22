@@ -8,14 +8,14 @@ class Contenedor(models.Model):
     def __init__(self, *args, **kwargs):
         super(Contenedor, self).__init__(*args, **kwargs)
 
-    contenedor = models.CharField(max_length=100)
+    contenedor = models.CharField(max_length=100, unique=True)
     capacidad_volumen = models.DecimalField(max_digits=5, decimal_places=2)
     capacidad_peso = models.DecimalField(max_digits=5, decimal_places=2)
     volumen_contenedor = models.DecimalField(max_digits=5, decimal_places=2)
     peso_contenedor = models.DecimalField(max_digits=5, decimal_places=2)
     retornable = models.BooleanField(default=None)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.contenedor
 
     class Meta:
@@ -28,14 +28,14 @@ class Contenido(models.Model):
     def __init__(self, *args, **kwargs):
         super(Contenido, self).__init__(*args, **kwargs)
 
-    contenido = models.CharField(max_length=100)
+    contenido = models.CharField(max_length=100, unique=True)
     contenedor = models.ForeignKey(Contenedor)
     densidad_baja = models.DecimalField(max_digits=5, decimal_places=2)
     densidad_media = models.DecimalField(max_digits=5, decimal_places=2)
     densidad_alta = models.DecimalField(max_digits=5, decimal_places=2)
     densidad_superalta = models.DecimalField(max_digits=5, decimal_places=2)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.contenido
 
     class Meta:
@@ -53,7 +53,7 @@ class Contenido_Tipico(models.Model):
     cantidad = models.DecimalField(max_digits=2, decimal_places=2)
     unique_together = ("Contenido", "Mueble")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.contenido
 
     class Meta:

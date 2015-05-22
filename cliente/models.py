@@ -15,20 +15,22 @@ class Cliente(models.Model):
     adicional4 = models.CharField(max_length=50, blank=True)
     activo = models.BooleanField(default=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nombre_principal
 
     class Meta:
         verbose_name_plural = "Clientes"
+        ordering = ['nombre_principal']
 
 
 class Email(models.Model):
 
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     cliente = models.ForeignKey(Cliente, default=1)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.email
 
     class Meta:
         verbose_name_plural = "Emails"
+        ordering = ['cliente', 'email']

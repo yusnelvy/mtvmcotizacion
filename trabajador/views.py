@@ -1,6 +1,6 @@
 from django.shortcuts import render, render_to_response
 from trabajador.models import Cargo_trabajador
-from trabajador.models import CargotrabajadorForm
+from trabajador.forms import CargotrabajadorForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.core.urlresolvers import reverse

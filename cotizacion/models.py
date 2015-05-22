@@ -15,14 +15,15 @@ class Estado_Cotizacion(models.Model):
     def __init__(self, *args, **kwargs):
         super(Estado_Cotizacion, self).__init__(*args, **kwargs)
 
-    estado = models.CharField(max_length=100)
+    estado = models.CharField(max_length=100, unique=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.estado
 
     class Meta:
         verbose_name = "estado"
         verbose_name_plural = "estados"
+        ordering = ['estado']
 
 
 class Tiempo_Carga(models.Model):
@@ -38,12 +39,13 @@ class Tiempo_Carga(models.Model):
     peso_min = models.DecimalField(max_digits=13, decimal_places=2)
     peso_max = models.DecimalField(max_digits=13, decimal_places=2)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.tiempo_carga
 
     class Meta:
         verbose_name = "tiempo de carga"
         verbose_name_plural = "tiempos de carga"
+        ordering = ['tiempo_carga']
 
 
 class Piso(models.Model):
@@ -51,15 +53,16 @@ class Piso(models.Model):
     def __init__(self, *args, **kwargs):
         super(Piso, self).__init__(*args, **kwargs)
 
-    piso = models.CharField(max_length=100)
+    piso = models.CharField(max_length=100, unique=True)
     factor = models.DecimalField(max_digits=3, decimal_places=2)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.piso
 
     class Meta:
         verbose_name = "piso"
         verbose_name_plural = "pisos"
+        ordering = ['piso']
 
 
 class Cotizacion(models.Model):
@@ -67,7 +70,7 @@ class Cotizacion(models.Model):
     def __init__(self, *args, **kwargs):
         super(Cotizacion, self).__init__(*args, **kwargs)
 
-    numero_contrato = models.CharField(max_length=100)
+    numero_contrato = models.CharField(max_length=100, unique=True)
     estado = models.ForeignKey(Estado_Cotizacion)
     numero_cotizacion = models.CharField(max_length=100)
     inmueble = models.ForeignKey(Inmueble, on_delete=models.PROTECT)
@@ -98,12 +101,13 @@ class Cotizacion(models.Model):
     total_recorrido_tiempo = models.TimeField()
     total_recorrido_km = models.DecimalField(max_digits=7, decimal_places=2)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.numero_contrato
 
     class Meta:
         verbose_name = "Cotizacion"
         verbose_name_plural = "Cotizaciones"
+        ordering = ['numero_contrato']
 
 
 class Vehiculo(models.Model):
@@ -111,19 +115,19 @@ class Vehiculo(models.Model):
     def __init__(self, *args, **kwargs):
         super(Vehiculo, self).__init__(*args, **kwargs)
 
-    modelo = models.CharField(max_length=100)
+    modelo = models.CharField(max_length=100, unique=True)
     tarifa_hora = models.DecimalField(max_digits=7, decimal_places=2)
     tarifa_recorrido = models.DecimalField(max_digits=7, decimal_places=2)
     capacidad_volumen = models.DecimalField(max_digits=7, decimal_places=2)
     capacidad_peso = models.DecimalField(max_digits=7, decimal_places=2)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.modelo
 
     class Meta:
         verbose_name = "Vehiculo"
         verbose_name_plural = "Vehiculos"
-
+        ordering = ['modelo']
 
 class Vehiculo_Cotizacion(models.Model):
     """docstring for Vehiculo_Cotizacion"""
@@ -140,12 +144,13 @@ class Vehiculo_Cotizacion(models.Model):
     tarifa_recorrido = models.DecimalField(max_digits=7, decimal_places=2)
     costo_recorrido = models.DecimalField(max_digits=7, decimal_places=2)
 
-    def __unicode__(self):
+    def __str__(self):
         return u' %s - %s' % (self.cotizacion, self.vehiculo)
 
     class Meta:
         verbose_name = "Vehiculo de la cotizacion"
         verbose_name_plural = "Vehiculos de la cotizacion"
+        ordering = ['cotizacion', 'cotizacion']
 
 
 class Cotizacion_direccion(models.Model):
@@ -157,12 +162,13 @@ class Cotizacion_direccion(models.Model):
     direccion = models.CharField(max_length=550)
     tipo_direccion = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         return u' %s - %s' % (self.cotizacion, self.direccion)
 
     class Meta:
         verbose_name = "direccion de la cotizacion"
         verbose_name_plural = "direcciones de la cotizacion"
+        ordering = ['cotizacion', 'direccion']
 
 
 class Cotizacion_trabajador(models.Model):
@@ -181,13 +187,13 @@ class Cotizacion_trabajador(models.Model):
     recargo_fin_semana = models.DecimalField(max_digits=7, decimal_places=2)
     total_con_recargo = models.DecimalField(max_digits=7, decimal_places=2)
 
-    def __unicode__(self):
+    def __str__(self):
         return u' %s - %s' % (self.cotizacion, self.cargo)
 
     class Meta:
         verbose_name = "trabajador de la cotizacion"
         verbose_name_plural = "trabajadores de la cotizacion"
-
+        ordering = ['cotizacion', 'cargo']
 
 class Cotizacion_Ambiente(models.Model):
     """docstring for Cotizacion_Ambiente"""
@@ -208,12 +214,13 @@ class Cotizacion_Ambiente(models.Model):
     peso_materiales = models.DecimalField(max_digits=7, decimal_places=2)
     observaciones = models.TextField(blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u' %s - %s' % (self.cotizacion, self.ambiente)
 
     class Meta:
         verbose_name = "Ambiente de la cotizacion"
         verbose_name_plural = "Ambientes de la cotizacion"
+        ordering = ['cotizacion', 'ambiente']
 
 
 class Cotizacion_Mueble(models.Model):
@@ -237,12 +244,13 @@ class Cotizacion_Mueble(models.Model):
     capacidad_interna = models.BooleanField(default=None)
     observaciones = models.TextField()
 
-    def __unicode__(self):
+    def __str__(self):
         return u' %s - %s' % (self.mueble, self.cotizacion_ambiente)
 
     class Meta:
         verbose_name = "Mueble del Ambiente"
         verbose_name_plural = "Muebles del Ambiente"
+        ordering = ['cotizacion_ambiente', 'mueble']
 
 
 class Cotizacion_Servicio(models.Model):
@@ -253,12 +261,13 @@ class Cotizacion_Servicio(models.Model):
     cotizacion_mueble = models.ForeignKey(Cotizacion_Mueble)
     servicio = models.ForeignKey(Servicio)
 
-    def __unicode__(self):
+    def __str__(self):
         return u' %s - %s' % (self.cotizacion_mueble, self.servicio)
 
     class Meta:
         verbose_name = "Servicio del mueble"
         verbose_name_plural = "Servicios del mueble"
+        ordering = ['cotizacion_mueble', 'servicio']
 
 
 class Cotizacion_Material(models.Model):
@@ -275,12 +284,13 @@ class Cotizacion_Material(models.Model):
     peso_total = models.DecimalField(max_digits=5, decimal_places=2)
     recuperable = models.BooleanField(default=None)
 
-    def __unicode__(self):
+    def __str__(self):
         return u' %s - %s' % (self.cotizacion_mueble, self.material)
 
     class Meta:
         verbose_name = "Material del mueble"
         verbose_name_plural = "Materiales del mueble"
+        ordering = ['cotizacion_mueble', 'material']
 
 
 class Cotizacion_Contenedor(models.Model):
@@ -296,12 +306,13 @@ class Cotizacion_Contenedor(models.Model):
     peso_contenedor = models.DecimalField(max_digits=5, decimal_places=2)
     retornable = models.BooleanField(default=None)
 
-    def __unicode__(self):
+    def __str__(self):
         return u' %s - %s' % (self.cotizacion_mueble, self.contenedor)
 
     class Meta:
         verbose_name = "contenedor de la cotizacion"
         verbose_name_plural = "contenedores de la cotizacion"
+        ordering = ['cotizacion_mueble', 'contenedor']
 
 
 class Cotizacion_Contenido(models.Model):
@@ -316,9 +327,10 @@ class Cotizacion_Contenido(models.Model):
     peso_contenido = models.DecimalField(max_digits=5, decimal_places=2)
     porcentaje = models.DecimalField(max_digits=2, decimal_places=2)
 
-    def __unicode__(self):
+    def __str__(self):
         return u' %s - %s' % (self.cotizacion_contenedor, self.contenido)
 
     class Meta:
         verbose_name = "contenido en el contenedor"
         verbose_name_plural = "contenidos en el contenedor"
+        ordering = ['cotizacion_contenedor', 'contenido']

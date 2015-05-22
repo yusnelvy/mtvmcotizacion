@@ -15,6 +15,8 @@ urlpatterns = patterns('',
                        url(r'^servicio/', include('servicio.urls', namespace="uservicios")),
                        url(r'^mueble/', include('mueble.urls', namespace="umuebles")),
                        url(r'^contenido/', include('contenido.urls', namespace="ucontenidos")),
+                       url(r'^trabajador/', include('trabajador.urls', namespace="utrabajadores")),
+                       url(r'^cotizacion/', include('cotizacion.urls', namespace="ucotizaciones")),
                        )
 
 # se agrego para probar los estilo
