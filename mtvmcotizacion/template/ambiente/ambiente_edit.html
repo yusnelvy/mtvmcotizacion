@@ -1,18 +1,30 @@
 {% extends "base3.html" %}
+
 {% block titulo %}<title>Editar ambiente</title>{% endblock %}
+
 {% block header %}{% endblock %}
+
 {% block content %}
 
 <div class="">
     <h2>Editar ambiente </h2>
     <form action="" method="post">
+
         {% csrf_token %}
+
         <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="../../" class="btn btn-default">Regresar</a><br><br>
-        <div class="form-group">{{form_edit_ambiente.as_p}}
+        <a href="../../" class="btn btn-default">Regresar</a>
+        <br>
+        <br>
+        <div class="form-group">
+
+          {{form_edit_ambiente.as_p}}
+
         </div>
         <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="../../" class="btn btn-default">Regresar</a><br><br><br>
+        <a href="../../" class="btn btn-default">Regresar</a>
+        <br>
+        <br>
 
   </form>
 </div>

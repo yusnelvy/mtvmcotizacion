@@ -33,7 +33,7 @@ class Ambiente(models.Model):
     class Meta:
         verbose_name = "Ambiente"
         verbose_name_plural = "Ambientes"
-        ordering = ["ambiente"]
+        ordering = ["tipo_ambiente", "ambiente"]
 
 
 class Ambiente_Tipo_inmueble(models.Model):
