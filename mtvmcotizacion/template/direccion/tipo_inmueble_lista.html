@@ -3,21 +3,26 @@
 {% block content %}
 
 <!--IniciaModal-->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
     <div class="modal-header">
-        <h3 id="myModalLabel">Eliminar Tipo inmueble</h3>
+    <h3 id="myModalLabel"></h3>
     </div>
     <div class="modal-body">
-        <p>¿Realmente desea eliminar Tipo inmueble <span id="modal_name"></span>?</p>
+    <p>¿Eliminar Tipo inmueble <span id="modal_name"></span>?</p>
     </div>
     <div class="modal-footer">
         <form method="post" id="frmEliminar">
             {% csrf_token %}
             <input type="hidden" id="modal_id" name="item_id">
-            <button class="" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-            <button type="submit" class="">Eliminar</button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+            <button type="submit" class="btn btn-default">Si</button>
         </form>
     </div>
+</div>
+</div>
 </div>
 <!--EndModal-->
 
@@ -28,7 +33,7 @@
         {{ lista_tipo_inmueble.count }}
     </span>
 </h6>
-<table data-role="table" data-mode="" class="ui-responsive ui-shadow" id="myTabletipoambiente">
+<table class="table table-hover" id="tabla">
     <thead>
         <tr>
             <!--<th data-priority="6">Numero</th>-->
