@@ -100,7 +100,7 @@ def lista_complejidad(request):
     return render(request, 'servicio/complejidad_lista.html', context)
 
 
-def buscar_servicio_material(request, idserv, idmat):
+def buscar_servicio_material(request, idserv=0, idmat=0):
     """docstring"""
 
     if request.method == "POST":
@@ -124,7 +124,7 @@ def buscar_servicio_material(request, idserv, idmat):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    if idmat | idserv:
+    if idmat != '0' | idserv != '0':
 
         buscar_serviciomaterial = Servicio_Material.objects.get(Q(material=idmat) | Q(servicio=idserv))
     else:
@@ -134,7 +134,7 @@ def buscar_servicio_material(request, idserv, idmat):
     return render(request, 'servicio/serviciomaterial_lista.html', context)
 
 
-def buscar_complejidad_servicio(request, idserv, idcomp):
+def buscar_complejidad_servicio(request, idserv=0, idcomp=0):
     """docstring"""
 
     if request.method == "POST":
@@ -158,7 +158,7 @@ def buscar_complejidad_servicio(request, idserv, idcomp):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    if idcomp | idserv:
+    if idcomp != '0' | idserv != '0':
 
         buscar_complejidadservicio = Complejidad_Servicio.objects.get(Q(complejidad=idcomp) | Q(servicio=idserv))
     else:

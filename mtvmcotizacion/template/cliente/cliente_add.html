@@ -1,17 +1,16 @@
-{% extends 'base3.html' %}
-{% block header %}<h2>Cliente</h2>{% endblock %}
-{% block content %}
+<div class="col-md-1"></div>
+<div class="col-md-4">
+    <h2>Agregar cliente</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-default">Registrar</button>
+        <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
+        <div class="form-group">
+            {{ cliente_form.as_p }}
+            {{ mensaje }}
+        </div>
+        <button type="submit" class="btn btn-default">Registrar</button>
+        <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
+    </form>
+</div>
 
-<h2>Agregar cliente</h2>
-<form action="" method="post" data-ajax="false">
-    {% csrf_token %}
-    {{ cliente_form.as_p }}
-    {{ email_form.as_p }}
-    {{ mensaje }}
-    <button type="submit" class="ui-btn ui-btn ui-icon-check ui-btn-icon-left">Registrar</button>
-    <a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="javascript:history.back();">Regresar</a>
-    <br><br>
-</form>
-
-{% endblock %}
-{% block footer %}{% endblock %}
