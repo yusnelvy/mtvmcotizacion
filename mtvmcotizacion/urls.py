@@ -13,6 +13,8 @@ urlpatterns = patterns('',
                        url(r'^cliente/', include('cliente.urls', namespace="uclientes")),
                        url(r'^ambiente/', include('ambiente.urls', namespace="uambientes")),
                        url(r'^servicio/', include('servicio.urls', namespace="uservicios")),
+                       url(r'^mueble/', include('mueble.urls', namespace="umuebles")),
+                       url(r'^contenido/', include('contenido.urls', namespace="ucontenidos")),
                        )
 
 # se agrego para probar los estilo

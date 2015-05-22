@@ -1,10 +1,30 @@
 {% extends 'base3.html' %}
-{% block header %}<h2>Direccion del cliente</h2>{% endblock %}
+{% block content %}
+ <!--IniciaModal-->
+ <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+    <h3 id="myModalLabel">Eliminar direccion</h3>
+    </div>
+    <div class="modal-body">
+    <p>¿Realmente desea eliminar la direccion <span id="modal_name"></span>?</p>
+    </div>
+    <div class="modal-footer">
+        <form method="post" id="frmEliminar">
+            {% csrf_token %}
+            <input type="hidden" id="modal_id" name="item_id">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+    </div>
+</div>
+<!--EndModal-->
+
 {% if direccioncliente_lista %}
 
 <h4>Listado de direccion </h4>
 
     <h6>Cantidad de direccion encontrados: <span class="badge">{{ direccioncliente_lista.count }}</span> </h6>
+<<<<<<< HEAD
   <table data-role="table" data-mode="" class="ui-responsive ui-shadow" id="myTabletipoambiente">
      <thead>
     <tr>
@@ -34,6 +54,27 @@
 </table>
 <a href="direccion/nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
 <a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="../">Regresar</a>
+=======
+  <table class="table table-hover" id="tabla">
+   <tr class="active">
+    <th>Tipo dirección</th>
+    <th>Dirección</th>
+    <th>Editar</th>
+    <th>Eliminar</th>
+  </tr>
+  {% for i in direccioncliente_lista %}
+  <tr id="tr{{i.id}}">
+   <td>{{ i.tipo_direccion }}</td>
+   <td>calle: {{ i.calle }} numero: {{ i.numero }} piso: {{ i.piso }}</td>
+   <td><a href="../../../direccion/{{i.id}}/" class="glyphicon glyphicon-edit">ed</a></td>
+   <td>
+    <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="calle: {{ i.calle }} numero: {{ i.numero }} piso: {{ i.piso }}"><i class="icon-trash icon-white"></i>Eliminar</a>
+   </td>
+ </tr>
+ {% endfor %}
+</table>
+
+>>>>>>> 5786169fd08f59f00fae5bd05d6b27920100ae84
 
 {% else %}
 
@@ -42,3 +83,4 @@
 
 {% endif %}
 
+{% endblock %}

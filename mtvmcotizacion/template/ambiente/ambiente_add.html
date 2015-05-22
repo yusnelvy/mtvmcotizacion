@@ -1,11 +1,10 @@
 {% extends "base3.html" %}
-{% block titulo %}<title>Ambiente</title>{% endblock %}
+{% block titulo %}<title>Agregar ambiente</title>{% endblock %}
 {% block header %}{% endblock %}
-{% block ayuda %}{% endblock%}
 {% block content %}
 
 <div class="">
-     <h2>Agregar Ambiente</h2>
+    <h2>Agregar ambiente</h2>
     <form action="" method="post">
         {% csrf_token %}
         <button type="submit" class="btn btn-default">Registrar</button>
@@ -16,4 +15,19 @@
         <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
     </form>
 </div>
+
 {% endblock %}
+
+{% block ayuda %}
+
+<div class="">
+    <div class="well well-lg">
+      <p>Los <strong>Ambientes</strong> son los diversos espacios que se encuentran en un <strong>Inmueble</strong>.</p>
+      <p>Cree <strong>Ambientes</strong> que no generen ambigüedades o confusiones como <i>Living</i> y <i>Living Room</i>.</p>
+      <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
+      <p>Utilice una clasificación apropiada para los <strong>Ambientes</strong> que permita su comprensión y rápida búsqueda.</p>
+      <p>IMPORTANTE: La clasificación por <strong>Tipo de ambiente</strong> es solo de uso referencial, y no será determinante al cargar información de los distintos <strong>Tipos de inmuebles</strong> en los cuales se puede encontrar el mismo <strong>Ambiente</strong>.</p>
+    </div>
+  </div>
+
+{% endblock%}

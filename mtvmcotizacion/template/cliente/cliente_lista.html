@@ -3,21 +3,21 @@
 {% block content %}
 
 <!--IniciaModal-->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
+ <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
     <h3 id="myModalLabel">Eliminar Cliente</h3>
-  </div>
-  <div class="modal-body">
+    </div>
+    <div class="modal-body">
     <p>¿Realmente desea eliminar el cliente <span id="modal_name"></span>?</p>
-  </div>
-  <div class="modal-footer">
-    <form method="post" id="frmEliminar">
-      {% csrf_token %}
-      <input type="hidden" id="modal_id" name="item_id">
-      <button class="" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-      <button type="submit" class="">Eliminar</button>
-    </form>
-  </div>
+    </div>
+    <div class="modal-footer">
+        <form method="post" id="frmEliminar">
+            {% csrf_token %}
+            <input type="hidden" id="modal_id" name="item_id">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+    </div>
 </div>
 <!--EndModal-->
 
