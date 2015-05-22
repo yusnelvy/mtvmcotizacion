@@ -20,11 +20,15 @@ var nombre_formulario_modal = "#frmEliminar"; //id
                         alert("Eliminado!");
                         var id = response.item_id;
                         var elementos= $(nombre_tabla +' >tbody >tr').length;
+                        var count_reg = $("#count_reg").text();
+
                         if(elementos==1){
                                 location.reload();
                         }else{
                             $('#tr'+id).remove();
                             $("#myModal").modal('hide');
+                            parseInt
+                            $('#count_reg').text(count_reg-1);
 
                         }
 
