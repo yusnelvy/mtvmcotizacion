@@ -371,7 +371,7 @@ def add_direccion(request):
     else:
         form_direccion = DireccionForm()
     return render_to_response('direccion/direccion_add.html',
-                              {'form_direccion':form_direccion, 'create': True},
+                              {'form_direccion': form_direccion, 'create': True},
                               context_instance=RequestContext(request))
 
 

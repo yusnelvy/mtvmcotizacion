@@ -21,6 +21,7 @@ class Contenedor(models.Model):
     class Meta:
         verbose_name = "contenedor"
         verbose_name_plural = "contenedores"
+        ordering = ['contenedor']
 
 
 class Contenido(models.Model):
@@ -41,6 +42,7 @@ class Contenido(models.Model):
     class Meta:
         verbose_name = "contenido"
         verbose_name_plural = "contenidos"
+        ordering = ['contenido']
 
 
 class Contenido_Tipico(models.Model):
@@ -59,3 +61,4 @@ class Contenido_Tipico(models.Model):
     class Meta:
         verbose_name = "Contenido Tipico"
         verbose_name_plural = "Contenidos Tipicos"
+        ordering = ['mueble', 'contenido']
