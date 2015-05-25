@@ -24,7 +24,7 @@
 
 <h4>Telefonos</h4>
 <h6>Cantidad de telefonos encontrados:
-  <span class="badge">
+  <span class="badge" id="count_reg">
     {{ lista_telefono_cliente.count }}
   </span>
 </h6>
@@ -34,26 +34,7 @@
       <!--<th data-priority="6">Numero</th>-->
       <th>Tipo</th>
     <th>Numero</th>
-<<<<<<< HEAD
-      <th data-priority="1">Editar</th>
-      <th data-priority="2">Eliminar</th>
-    </tr>
-  </thead>
-   <tbody>
-    {% for i in lista_telefono_cliente %}
-    <tr id="tr{{i.id}}">
-      <!-- <td>{{ i.count }}</td>-->
-       <td>{{ i.telefono.tipo_telefono }}</td>
-    <td>{{ i.telefono }}</td>
-      <td>
-        <a href="editar/{{i.id}}/" class="ui-btn ui-icon-edit ui-btn-icon-notext">Editar</a>
-      </td>
-      <td>
-        <a href="#myModal" role="button" class="ui-btn ui-icon-delete ui-btn-icon-notext delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.telefono}}">Eliminar</a>
-      </td>
-    </tr>
-  </tbody>
-=======
+
     <th>Editar</th>
     <th>Eliminar</th>
   </tr>
@@ -70,25 +51,16 @@
       <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.numero}}"><i class="icon-trash icon-white"></i>Eliminar</a>
     </td>
   </tr>
->>>>>>> 5786169fd08f59f00fae5bd05d6b27920100ae84
 
   {% endfor %}
 
 </table>
-<<<<<<< HEAD
-<br>
-<a href="nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
-<a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="../">Regresar</a>
-=======
->>>>>>> 5786169fd08f59f00fae5bd05d6b27920100ae84
 
 {% else %}
 <a href="nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
-<p>Telefono no encontrado</p>
-<<<<<<< HEAD
-=======
 
->>>>>>> 5786169fd08f59f00fae5bd05d6b27920100ae84
+<p>Telefono no encontrado</p>
+
 {% endif %}
 
 {% endblock %}

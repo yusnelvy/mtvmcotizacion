@@ -26,16 +26,13 @@
 </div>
 <!--EndModal-->
 {% if lista_ambtipoinmueble %}
-<div class="col-md-1"></div>
-<div class="col-md-5">
-  <h2>Listado de tipo ambiente </h2>
-  <a href="nuevo/" class="btn btn-default">Nuevo</a>
-  <a class="btn btn-default" href="javascript:history.back();">Regresar</a>
-<br>
 
-<h6>Cantidad de telefonos encontradas:
-  <span class="badge">
-    {{ lista_ambtipoinmueble.count }}
+<h2>Ambientes por tipo de inmueble</h2>
+<h6>Cantidad de tipo inmueble encontrado:
+  <span class="badge" id="count_reg">
+
+    {{ lista_inmueble.count }}
+
   </span>
 </h6>
 
