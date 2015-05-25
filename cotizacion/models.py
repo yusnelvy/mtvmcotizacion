@@ -129,6 +129,7 @@ class Vehiculo(models.Model):
         verbose_name_plural = "Vehiculos"
         ordering = ['modelo']
 
+
 class Vehiculo_Cotizacion(models.Model):
     """docstring for Vehiculo_Cotizacion"""
     def __init__(self, *args, **kwargs):
@@ -194,6 +195,7 @@ class Cotizacion_trabajador(models.Model):
         verbose_name = "trabajador de la cotizacion"
         verbose_name_plural = "trabajadores de la cotizacion"
         ordering = ['cotizacion', 'cargo']
+
 
 class Cotizacion_Ambiente(models.Model):
     """docstring for Cotizacion_Ambiente"""
