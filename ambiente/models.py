@@ -47,8 +47,6 @@ class Ambiente_Tipo_inmueble(models.Model):
     def __str__(self):
         return u' %s - %s' % (self.ambiente, self.tipo_inmueble)
 
-
-
     class Meta:
         verbose_name = "Ambiente por tipo inmueble"
         verbose_name_plural = "Ambientes por tipos de inmueble"

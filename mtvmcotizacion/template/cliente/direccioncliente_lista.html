@@ -23,38 +23,8 @@
 
 <h4>Listado de direccion </h4>
 
-    <h6>Cantidad de direccion encontrados: <span class="badge">{{ direccioncliente_lista.count }}</span> </h6>
-<<<<<<< HEAD
-  <table data-role="table" data-mode="" class="ui-responsive ui-shadow" id="myTabletipoambiente">
-     <thead>
-    <tr>
-      <!--<th data-priority="6">Numero</th>-->
-      <th>Tipo dirección</th>
-    <th>Dirección</th>
-    <th>Sede</th>
-      <th data-priority="1">Editar</th>
-      <th data-priority="2">Eliminar</th>
-    </tr>
-  </thead>
-     <tbody>
-    {% for i in direccioncliente_lista %}
-    <tr id="tr{{i.id}}">
-      <!-- <td>{{ i.count }}</td>-->
-       <td>{{ i.tipo_direccion }}</td>
-   <td>calle: {{ i.calle }} numero: {{ i.numero }} piso: {{ i.piso }}</td>
-      <td>
-        <a href="editar/{{i.id}}/" >Editar</a>
-      </td>
-      <td>
-        <a href="#myModal" role="button" class="ui-btn ui-icon-delete ui-btn-icon-notext delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.telefono}}">Eliminar</a>
-      </td>
-    </tr>
-  </tbody>
- {% endfor %}
-</table>
-<a href="direccion/nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
-<a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="../">Regresar</a>
-=======
+    <h6>Cantidad de direccion encontrados: <span class="badge" id="count_reg">{{ direccioncliente_lista.count }}</span> </h6>
+
   <table class="table table-hover" id="tabla">
    <tr class="active">
     <th>Tipo dirección</th>
@@ -73,8 +43,6 @@
  </tr>
  {% endfor %}
 </table>
-
->>>>>>> 5786169fd08f59f00fae5bd05d6b27920100ae84
 
 {% else %}
 
