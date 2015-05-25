@@ -94,9 +94,7 @@ def lista_ambiente_tipo_inmueble(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_ambtipoinmueble = Ambiente_Tipo_inmueble.objects.all()
-    lista_ambiente = Ambiente.objects.filter()
-    lista_inmueble = Tipo_Inmueble.objects.filter()
-    context = {'lista_ambtipoinmueble': lista_ambtipoinmueble, 'lista_ambiente': lista_ambiente, 'lista_inmueble': lista_inmueble}
+    context = {'lista_ambtipoinmueble': lista_ambtipoinmueble}
     return render(request, 'ambiente/ambientetipoinmueble_lista.html', context)
 
 
