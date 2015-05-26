@@ -1,0 +1,140 @@
+ {% extends 'base3.html' %}
+ {% block content %}
+
+{% if buscar_cotizacion %}
+
+<h6>Cantidad de registros encontrados:
+  <span class="badge" id="count_reg">
+    {{ buscar_cotizacion.count }}
+  </span>
+</h6>
+
+  <table class="table table-hover" id="adm">
+
+   <tr class="active">
+    <th  colspan="2">Datos administrativos</th>
+
+  </tr>
+
+  {% for i in buscar_cotizacion %}
+
+  <tr>
+    <td>Nro de contrato</td>
+    <td>{{ i.numero_contrato }}</td>
+  </tr>
+  <tr>
+    <td>Nro de cotizacion</td>
+    <td>{{ i.numero_cotizacion }}</td>
+  </tr>
+  <tr>
+    <td>Cliente</td>
+    <td>{{ i.cliente.nombre_principal }}</td>
+  </tr>
+  <tr>
+    <td>Cotizador</td>
+    <td>{{ i.cotizador }}</td>
+  </tr>
+
+    <tr>
+      <td>Creado por</td>
+      <td>{{ i.creadopor }}</td>
+    </tr>
+    <tr>
+      <td>Fecha de creación</td>
+      <td>{{ i.fecha_creacion }}</td>
+    </tr>
+    <tr>
+      <td>Fecha de culminación</td>
+      <td>{{ i.fecha_culminacion }}</td>
+    </tr>
+    <tr>
+      <td>Fecha estimada de la mudanza</td>
+      <td>{{ i.fecha_estimadamudanza }}</td>
+    </tr>
+    <tr>
+      <td>Monto por muebles</td>
+      <td>{{ i.monto_muebles }}</td>
+    </tr>
+    <tr>
+      <td>Monto por material</td>
+      <td>{{ i.monto_material }}</td>
+    </tr>
+    <tr>
+      <td>Monto de descuento</td>
+      <td>{{ i.monto_descuento }}</td>
+    </tr>
+    <tr>
+      <td>Total sin impuesto</td>
+      <td>{{ i.total_sin_impuesto }}</td>
+    </tr>
+    <tr>
+      <td>Monto del impuesto</td>
+      <td>{{ i.monto_impuesto }}</td>
+    </tr>
+    <tr>
+      <td>Total con impuesto</td>
+      <td>{{ i.total_con_impuesto }}</td>
+    </tr>
+
+    <input type="hidden" value="{{i.id}}" id="idtele">
+  </tr>
+
+  {% endfor %}
+
+</table>
+
+<table class="table table-hover" id="mudanza">
+
+   <tr class="active">
+    <th>nro cotización</th>
+    <th>cliente</th>
+    <th>inmueble</th>
+    <th>tipo inmueble</th>
+    <th>direccion origen</th>
+    <th>direccion destino</th>
+
+  </tr>
+
+  {% for i in buscar_cotizacion %}
+
+  <tr id="tr{{i.id}}">
+    <td>{{ i.numero_cotizacion }}</td>
+    <td>{{ i.cliente.nombre_principal }}</td>
+    <td>{{ i.inmueble.inmueble }}</td>
+    <td>{{ i.inmueble.tipo_inmueble }}</td>
+
+    {% for det_dir in det_direccion %}
+
+    {% if det_dir.tipo_direccion == 'Origen' %}
+        <td>{{ det_dir.direccion }}</td>
+    {% endif %}
+
+    {% if det_dir.tipo_direccion == 'Destino' %}
+        <td>{{ det_dir.direccion }}</td>
+    {% endif %}
+
+    {% endfor %}
+
+    {{ det_direccion.count }}
+    {{ det_vehiculo.count }}
+    {{ det_trabajador.count }}
+    {{ det_ambiente.count }}
+
+
+    <input type="hidden" value="{{i.id}}" id="idtele">
+  </tr>
+
+  {% endfor %}
+
+</table>
+<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
+</div>
+
+{% else %}
+
+<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
+<p> No se encontro registro.</p>
+
+{% endif %}
+
+{% endblock %}

@@ -19,6 +19,7 @@ class Cliente(models.Model):
         return self.nombre_principal
 
     class Meta:
+        verbose_name = "Cliente"
         verbose_name_plural = "Clientes"
         ordering = ['nombre_principal']
 
@@ -32,5 +33,6 @@ class Email(models.Model):
         return self.email
 
     class Meta:
+        verbose_name = "Email"
         verbose_name_plural = "Emails"
         ordering = ['cliente', 'email']

@@ -40,7 +40,7 @@ class Tiempo_Carga(models.Model):
     peso_max = models.DecimalField(max_digits=13, decimal_places=2)
 
     def __str__(self):
-        return self.tiempo_carga
+        return str(self.tiempo_carga)
 
     class Meta:
         verbose_name = "tiempo de carga"
@@ -72,7 +72,7 @@ class Cotizacion(models.Model):
 
     numero_contrato = models.CharField(max_length=100, unique=True)
     estado = models.ForeignKey(Estado_Cotizacion)
-    numero_cotizacion = models.CharField(max_length=100)
+    numero_cotizacion = models.CharField(max_length=100, unique=True)
     inmueble = models.ForeignKey(Inmueble, on_delete=models.PROTECT)
     cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
     creadopor = models.ForeignKey(User, related_name="creadopor")
@@ -128,6 +128,7 @@ class Vehiculo(models.Model):
         verbose_name = "Vehiculo"
         verbose_name_plural = "Vehiculos"
         ordering = ['modelo']
+
 
 class Vehiculo_Cotizacion(models.Model):
     """docstring for Vehiculo_Cotizacion"""
@@ -195,6 +196,7 @@ class Cotizacion_trabajador(models.Model):
         verbose_name_plural = "trabajadores de la cotizacion"
         ordering = ['cotizacion', 'cargo']
 
+
 class Cotizacion_Ambiente(models.Model):
     """docstring for Cotizacion_Ambiente"""
     def __init__(self, *args, **kwargs):
@@ -242,7 +244,7 @@ class Cotizacion_Mueble(models.Model):
     apilable = models.BooleanField(default=None)
     capacidad_carga = models.BooleanField(default=None)
     capacidad_interna = models.BooleanField(default=None)
-    observaciones = models.TextField()
+    observaciones = models.TextField(blank=True)
 
     def __str__(self):
         return u' %s - %s' % (self.mueble, self.cotizacion_ambiente)
