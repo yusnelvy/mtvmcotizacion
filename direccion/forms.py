@@ -8,9 +8,7 @@ class PaisForm(ModelForm):
     class Meta:
         model = Pais
         fields = '__all__'
-        labels = {'pais': ('País')
-
-        }
+        labels = {'pais': ('País')}
 
 
 class ProvinciaForm(ModelForm):

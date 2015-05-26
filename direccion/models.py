@@ -47,7 +47,7 @@ class Ciudad(models.Model):
     def __init__(self, *args, **kwargs):
         super(Ciudad, self).__init__(*args, **kwargs)
 
-    ciudad = models.CharField(max_length=100)
+    ciudad = models.CharField(max_length=100, unique=True)
     provincia = models.ForeignKey(Provincia, on_delete=models.PROTECT)
 
     def __str__(self):
@@ -81,7 +81,7 @@ class Tipo_direccion(models.Model):
     def __init__(self, *args, **kwargs):
         super(Tipo_direccion, self).__init__(*args, **kwargs)
 
-    tipo_direccion = models.CharField(max_length=10)
+    tipo_direccion = models.CharField(max_length=10, unique=True)
     activo = models.BooleanField(default=True)
 
     def __str__(self):
@@ -101,7 +101,7 @@ class Direccion(models.Model):
     calle = models.CharField(max_length=100)
     numero = models.CharField(max_length=100)
     piso = models.CharField(max_length=100)
-    adicional = models.CharField(max_length=250)
+    adicional = models.CharField(max_length=250, blank=True)
     tipo_direccion = models.ForeignKey(Tipo_direccion, on_delete=models.PROTECT)
     zona = models.ForeignKey(Zona, on_delete=models.PROTECT)
     zip1 = models.CharField(max_length=100)
@@ -109,7 +109,8 @@ class Direccion(models.Model):
     cliente = models.ForeignKey(Cliente)
 
     def __str__(self):
-        return str(self.tipo_direccion)
+
+        return u' %s - %s - %s' % (self.calle, self.numero, self.piso)
 
     class Meta:
         verbose_name = "Direccion"
@@ -138,7 +139,7 @@ class Complejidad_Inmueble(models.Model):
     def __init__(self, *args, **kwargs):
         super(Complejidad_Inmueble, self).__init__(*args, **kwargs)
 
-    complejidad = models.CharField(max_length=100)
+    complejidad = models.CharField(max_length=100, unique=True)
     factor = models.DecimalField(max_digits=2, decimal_places=2)
 
     def __str__(self):
@@ -170,7 +171,7 @@ class Inmueble(models.Model):
     distancia_vehiculo = models.IntegerField()
 
     def __str__(self):
-        return self.inmueble
+        return str(self.inmueble)
 
     class Meta:
         verbose_name = "Inmueble"
