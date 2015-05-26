@@ -90,7 +90,7 @@ class Tamano(models.Model):
     class Meta:
         verbose_name = "Tamano"
         verbose_name_plural = "Tamanos"
-        ordering = ['descripcion']
+        #ordering = ['descripcion']
 
 
 class Tamano_Mueble(models.Model):

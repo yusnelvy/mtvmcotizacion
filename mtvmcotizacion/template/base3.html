@@ -2,7 +2,13 @@
 <!DOCTYPE html>
 <html lang="es">
 
-{% block head %}{% include "head.html" %}{% endblock%}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link href="/static/css/estilosForm.css" rel="stylesheet">
+    <link href="/static/bootstrap/css/bootstrap3.css" rel="stylesheet">
+    {% block titulo %}{% endblock titulo %}
+</head>
 
 <body>
 
@@ -16,10 +22,10 @@
         <div class="col-md-1">
 
         </div>
-        <div class="col-md-5">
+        <div class="col-md-6">
             {% block content %}{% endblock%}
         </div>
-        <div class="col-md-5">
+        <div class="col-md-4">
             {% block ayuda %}{% endblock%}
         </div>
         <div class="col-md-1">
