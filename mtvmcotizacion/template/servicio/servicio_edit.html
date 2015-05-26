@@ -1,15 +1,86 @@
-{% extends 'base3.html' %}
-{% block header %}<h2>Servicios</h2>{% endblock %}
-{% block content %}
+{% extends "base_edit.html" %}
 
-<h2>Editar Servicio</h2>
-<form action="" method="post" data-ajax="false">
-  {% csrf_token %}
-  {{form_edit_servicio.as_p}}
-  <button type="submit" class="ui-btn ui-btn ui-icon-check ui-btn-icon-left">Registrar</button>
-  <a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="javascript:history.back();">Regresar</a>
-  <br><br>
-</form>
+{% block titulo %}
 
-{% endblock %}
-{% block footer %}{% endblock %}
+<title>Editar servicios</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+<h2>Editar servicio</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+    {{form_edit_servicio.as_p}}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block contenido_adicional %}
+
+<div class"">
+    <h4>Materiales asociados al servicio</h4>
+    <table class="table table-hover" id="tabla">
+        <thead>
+            <tr>
+                <th>Material</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+
+        {% for i in lista_ambiente %}
+
+        <tr id="tr{{i.id}}">
+            <td>{{ i.ambiente }}</td>
+            <td>{{ i.ambiente }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+</div>
+<br>
+<div class="">
+    <h4>Tarifas asociadas al servicio</h4>
+    <table class="table table-hover" id="tabla">
+        <thead>
+            <tr>
+                <th>Tipo de tarifa</th>
+                <th>Monto</th>
+            </tr>
+        </thead>
+
+        {% for i in lista_ambiente %}
+
+        <tr id="tr{{i.id}}">
+            <td>{{ i.ambiente }}</td>
+            <td>{{ i.ambiente }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+</div>
+
+{% endblock contenido_adicional %}
+
+{% block ayuda %}
+
+<div class="">
+    <div class="well well-lg">
+        <p>Los <strong>Servicios</strong> comprenden aquellas actividades que se realizan sobre un <strong>Mueble</strong> para lograr su traslado en las mejores condiciones posibles.</p>
+        <p>Los <strong>Servicios</strong> pueden sevir para proteger, modificar o brindar un tratamiento específico a cada <strong>Mueble</strong>.</p>
+        <p>Al momento de evaluar o realizar una mudanza, los <strong>Servicios</strong> serán una parte importante de la calidad percibida por el cliente, al igual que un componente que incide sobre el precio final de la misma.</p>
+        <p>La apropiada identificación de <strong>Servicios</strong> y su relación con los <strong>Materiales</strong> que involucran, serán claves para orientar la ejecución del trabajo de campo una vez contratada la mudanza.</p>
+        <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
+        <p>Un <strong>Servicio</strong> tiene asociados <strong>Materiales</strong> y <strong>Tarifas</strong>, por lo que su modificación tendrá impacto sobre el resultado de su uso en una cotización.</p>
+    </div>
+</div>
+
+{% endblock%}

@@ -1,15 +1,35 @@
-{% extends 'base3.html' %}
-{% block header %}<h2>Complejidad</h2>{% endblock %}
-{% block content %}
+{% extends 'base_edit.html' %}
 
-  <h2>Agregar complejidad</h2>
-  <form action="" method="post" data-ajax="false">
-    {% csrf_token %}
-    {{ form_complejidad.as_p }}
-    <button type="submit" class="ui-btn ui-btn ui-icon-check ui-btn-icon-left">Registrar</button>
-    <a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="javascript:history.back();">Regresar</a>
-    <br><br>
-  </form>
+{% block titulo %}
+
+<title>Agregar nivel de complejidad</title>
 
 {% endblock %}
-{% block footer %}{% endblock %}
+
+{% block titulo_form %}
+
+<h2>Agregar complejidad</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+    {{ form_complejidad.as_p }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>Los <strong>Niveles de complejidad</strong> se refieren al nivel de esfuerzo y consumo de tiempo en los cuales se incurrirá para la aplicación de los <strong>Servicios</strong> a los <strong>Muebles</strong> y <strong>Contenidos</strong> que serán mudados.</p>
+  <p>Los <strong>Niveles de complejidad</strong> de este modo se asocian a factores de consumo de material y de consumo de tiempo, que lo llevan a tener una tarifa específica que compensa el esfuerzo para la aplicación de un <strong>Servicio</strong> específico con el <strong>Nivel de complejidad</strong> seleccionado.</p>
+  <p>Al momento de evaluar o realizar una mudanza, los <strong>Niveles de complejidad</strong> serán determinados por las características físicas del <strong>Mueble</strong> o del <strong>Contenido</strong> según la sensibilidad del cotizador basada en los indicadores a evaluar.</p>
+  <p>Los indicadores para definir <strong>Niveles de complejidad</strong> incluyen fragilidad de los objeto, necesidad de mantener un orden específico, formas irregulares difíciles de embalar, gran número de piezas para armar o desarmar, dificultad para sujetar el objeto, necesidad de que participe más de una persona, etc.</p>
+  <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
+</div>
+
+{% endblock ayuda %}

@@ -1,0 +1,57 @@
+{% extends 'base3.html' %}
+
+{% block titulo %}{% endblock titulo %}
+
+{% block header %}{% endblock header %}
+
+{% block content %}
+
+<!--IniciaModal-->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+
+        {% block titulo_modal %}{% endblock titulo_modal %}
+
+    </div>
+    <div class="modal-body">
+
+        {% block validacion_modal %}{% endblock validacion_modal %}
+
+    </div>
+    <div class="modal-footer">
+        <form method="post" id="frmEliminar">
+
+            {% csrf_token %}
+
+            <input type="hidden" id="modal_id" name="item_id">
+            <button class="" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+            <button type="submit" class="">Eliminar</button>
+        </form>
+    </div>
+</div>
+<!--EndModal-->
+
+<div class="">
+
+    {% block titulo_tabla %}{% endblock titulo_tabla %}
+
+    <a href="nuevo/" class="btn btn-default">Nuevo</a>
+    <br>
+
+    {% block cantidad_tabla %}{% endblock cantidad_tabla %}
+
+    <table class="table table-hover" id="tabla">
+
+        {% block cuerpo_tabla %}{% endblock cuerpo_tabla %}
+
+    </table>
+    <a href="nuevo/" class="btn btn-default">Nuevo</a>
+</div>
+
+{% endblock content %}
+
+<div class="">
+
+    {% block ayuda %}{% endblock ayuda %}
+
+</div>

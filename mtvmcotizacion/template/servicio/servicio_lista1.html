@@ -1,0 +1,97 @@
+{% extends 'base3.html' %}
+
+{% block titulo %}
+
+<title>Ambientes</title>
+
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+
+<!--IniciaModal-->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <h3 id="myModalLabel">Eliminar servicio</h3>
+  </div>
+  <div class="modal-body">
+    <p>¿Realmente desea eliminar el servicio <span id="modal_name"></span>?</p>
+  </div>
+  <div class="modal-footer">
+    <form method="post" id="frmEliminar">
+
+      {% csrf_token %}
+
+      <input type="hidden" id="modal_id" name="item_id">
+      <button class="" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+      <button type="submit" class="">Eliminar</button>
+    </form>
+  </div>
+</div>
+<!--EndModal-->
+
+{% if lista_servicio %}
+
+<div class="">
+  <h2>Servicios</h2>
+  <a href="nuevo/" class="btn btn-default">Nuevo</a>
+  <br>
+  <h6>Cantidad de servicios registrados:
+    <span class="badge" id="count_reg">
+      {{ lista_servicio.count }}
+    </span>
+  </h6>
+
+  <table class="table table-hover" id="tabla">
+    <thead>
+      <tr>
+        <!--<th data-priority="6">Numero</th>-->
+        <th>Servicios</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for i in lista_servicio %}
+
+      <tr id="tr{{i.id}}">
+        <td>{{ i.servicio }}</td>
+        <td>
+          <a href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
+        </td>
+        <td>
+          <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.ambiente}}"></a>
+        </td>
+        <input type="hidden" value="{{i.id}}" id="idtele">
+      </tr>
+    </tbody>
+
+    {% endfor %}
+
+  </table>
+  <a href="nuevo/" class="btn btn-default">Nuevo</a>
+
+</div>
+
+{% else %}
+
+<a href="nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
+
+{% endif %}
+
+{% endblock %}
+
+{% block ayuda %}
+
+<div class="">
+  <div class="well well-lg">
+    <p>Los <strong>Servicios</strong> comprenden aquellas actividades que se realizan sobre un <strong>Mueble</strong> para lograr su traslado en las mejores condiciones posibles.</p>
+    <p>Los <strong>Servicios</strong> pueden sevir para proteger, modificar o brindar un tratamiento específico a cada <strong>Mueble</strong>.</p>
+    <p>Al momento de evaluar o realizar una mudanza, los <strong>Servicios</strong> serán una parte importante de la calidad percibida por el cliente, al igual que un componente que incide sobre el precio final de la misma.</p>
+    <p>La apropiada identificación de <strong>Servicios</strong> y su relación con los <strong>Materiales</strong> que involucran, serán claves para orientar la ejecución del trabajo de campo una vez contratada la mudanza.</p>
+  </div>
+</div>
+
+{% endblock%}
