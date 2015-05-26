@@ -1,17 +1,34 @@
-<div class="col-md-1"></div>
-<div class="col-md-4">
+{% extends "base_edit.html" %}
+
+{% block titulo %}
+
+<title>Agregar servicios</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
   <h2>Agregar ocupacion</h2>
-  <form action="" method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-default">Registrar</button>
-    <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
-    <br><br>
-    <div class="form-group"> {{ form_ocupacion.as_p }}
-    </div>
 
-      <button type="submit" class="btn btn-default">Registrar</button>
-      <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
-      <br><br>
-    </form>
-  </div>
+{% endblock titulo_form %}
 
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ form_ocupacion.as_p }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>El <strong>Nivel de ocupación</strong> permite estimar la cantidad de contenido que tiene un <strong>Mueble</strong> de forma que se pueda determinar la cantidad de <strong>Contenedores</strong> que serán necesarios para el traslado del mismo.</p>
+  <p>El <strong>Nivel de ocupación</strong> se asume de forma estimada con un nivel de precisión que permite asignar de forma justa la cantidad de <strong>Contenedores</strong> sin perjudicar al cliente por una cantidad excesiva de estos.</p>
+  <p>La cantidad de <strong>Contenedores</strong> asignados incide sobre el precio final de la cotización.</p>
+  <p>La apropiada identificación de los <strong>Niveles de ocupación</strong> redundará en cotizaciones ágiles y justas.</p>
+</div>
+
+{% endblock%}

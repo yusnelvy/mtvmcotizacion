@@ -1,17 +1,38 @@
-<div class="col-md-1"></div>
-<div class="col-md-4">
-  <h2>editar forma de mueble</h2>
-  <form action="" method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-default">Registrar</button>
-    <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
-    <br><br>
-    <div class="form-group"> {{ form_edit_formamueble.as_p }}
-    </div>
+{% extends "base_edit.html" %}
 
-      <button type="submit" class="btn btn-default">Registrar</button>
-      <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
-      <br><br>
-    </form>
-  </div>
+{% block titulo %}
 
+<title>Editar forma de mueble</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+<h2>Editar forma de mueble</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ form_edit_formamueble.as_p }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block contenido_adicional %}
+
+<h4>Muebles clasificados en esta forma de mueble</h4>
+
+{% endblock contenido_adicional %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>La <strong>Forma de mueble</strong> es una clasificación referencial de los <strong>Muebles</strong> que permite prever su tratamiento para efectos del traslado.</p>
+  <p>Esta clasificación no afecta el precio de la cotización, pero será útil para la identificación de <strong>Muebles</strong> y su ubicación durante el traslado.</p>
+</div>
+
+{% endblock ayuda %}
