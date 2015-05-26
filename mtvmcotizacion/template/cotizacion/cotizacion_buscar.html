@@ -1,0 +1,48 @@
+ {% extends 'base3.html' %}
+ {% block content %}
+
+{% if buscar_cotizacion %}
+
+<h6>Cantidad de registros encontrados:
+  <span class="badge" id="count_reg">
+    {{ buscar_cotizacion.count }}
+  </span>
+</h6>
+
+  <table class="table table-hover" id="tabla">
+
+   <tr class="active">
+    <th>numero_contrato</th>
+    <th>cliente</th>
+    <th>inmueble</th>
+    <th>tipo inmueble</th>
+    <th>direccion</th>
+
+  </tr>
+
+  {% for i in buscar_cotizacion %}
+
+  <tr id="tr{{i.id}}">
+    <td>{{ i.numero_contrato }}</td>
+    <td>{{ i.cliente.nombre_principal }}</td>
+    <td>{{ i.inmueble.inmueble }}</td>
+    <td>{{ i.inmueble.tipo_inmueble }}</td>
+    <td>{{ i.inmueble.direccion.calle }}</td>
+
+    <input type="hidden" value="{{i.id}}" id="idtele">
+  </tr>
+
+  {% endfor %}
+
+</table>
+<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
+</div>
+
+{% else %}
+
+<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
+<p> No se encontro registro.</p>
+
+{% endif %}
+
+{% endblock %}

@@ -247,6 +247,16 @@ def buscar_mueble_ambiente(request, idambiente=0):
     return render(request, 'mueble/muebleambiente_lista.html', context)
 
 
+def buscar_mueble(request, idtipomueble):
+    """docstring"""
+
+    tipomueble = Tipo_Mueble.objects.get(id=idtipomueble)
+
+    buscar_muebleambiente = Mueble.objects.filter(tipo_mueble_id=tipomueble)
+    context = {'buscar_muebleambiente': buscar_muebleambiente}
+    return render(request, 'mueble/mueble_buscar.html', context)
+
+
 # agregar nuevo
 def add_tipo_mueble(request):
     """docstring"""

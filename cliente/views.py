@@ -15,6 +15,27 @@ import django.db
 # lista
 def lista_cliente(request):
     """docstring"""
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_cliente = request.POST['item_id']
+                p = Cliente.objects.get(pk=id_cliente)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
     lista_cliente = Cliente.objects.all()
     context = {'lista_cliente': lista_cliente}
     return render(request, 'cliente/cliente_lista.html', context)
@@ -22,6 +43,27 @@ def lista_cliente(request):
 
 def lista_email(request, id_cli):
     """docstring"""
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_email = request.POST['item_id']
+                p = Email.objects.get(pk=id_email)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
     cliente = Cliente.objects.get(id=id_cli)
 
     lista_email = Email.objects.filter(cliente_id=cliente)
