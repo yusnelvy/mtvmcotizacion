@@ -44,12 +44,13 @@ class Forma_Mueble(models.Model):
     forma = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
-        return self.descripcion
+        return self.forma
 
     class Meta:
         verbose_name = "Forma del Mueble"
         verbose_name_plural = "Formas del Mueble"
         ordering = ['forma']
+
 
 class Mueble(models.Model):
     """docstring for Mueble"""
@@ -74,6 +75,7 @@ class Mueble(models.Model):
         verbose_name = "Mueble"
         verbose_name_plural = "Muebles"
         ordering = ['mueble']
+
 
 class Tamano(models.Model):
     """docstring for Tamano"""

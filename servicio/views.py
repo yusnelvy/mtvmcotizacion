@@ -124,9 +124,9 @@ def buscar_servicio_material(request, idserv=0, idmat=0):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    if idmat != '0' | idserv != '0':
+    if int(idmat) != 0 | int(idserv) != 0:
 
-        buscar_serviciomaterial = Servicio_Material.objects.get(Q(material=idmat) | Q(servicio=idserv))
+        buscar_serviciomaterial = Servicio_Material.objects.filter(Q(material=idmat) | Q(servicio=idserv))
     else:
         buscar_serviciomaterial = Servicio_Material.objects.all()
 
@@ -158,9 +158,9 @@ def buscar_complejidad_servicio(request, idserv=0, idcomp=0):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    if idcomp != '0' | idserv != '0':
+    if int(idcomp) != 0 | int(idserv) != 0:
 
-        buscar_complejidadservicio = Complejidad_Servicio.objects.get(Q(complejidad=idcomp) | Q(servicio=idserv))
+        buscar_complejidadservicio = Complejidad_Servicio.objects.filter(Q(complejidad=idcomp) | Q(servicio=idserv))
     else:
         buscar_complejidadservicio = Complejidad_Servicio.objects.all()
 
@@ -217,7 +217,7 @@ def add_serviciomaterial(request):
         form_serviciomaterial = ServicioMaterialForm(request.POST)
         if form_serviciomaterial.is_valid():
             form_serviciomaterial.save()
-            return HttpResponseRedirect(reverse('uservicios:buscar_servicio_material'))
+            return HttpResponseRedirect(reverse('uservicios:buscar_servicio_material',args=('0','0')))
     else:
         form_serviciomaterial = ServicioMaterialForm()
     return render_to_response('servicio/serviciomaterial_add.html',
