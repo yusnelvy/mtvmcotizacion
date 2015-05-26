@@ -6,7 +6,7 @@
                 font-family: inherit;
                 font: inherit;
     }
-    .form-group>input[type=text],.form-group>p>textarea,.form-group>p>input[type=text],.form-group>p>input[type=email],.form-group>p>input[type=url],.form-group>p>select,.form-group>p>input[type=number]{
+    .form-group>input[type=number],.form-group>input[type=text],.form-group>p>textarea,.form-group>p>input[type=text],.form-group>p>input[type=email],.form-group>p>input[type=url],.form-group>p>select,.form-group>p>input[type=number]{
                     box-sizing: border-box;
                 border-radius: 6px;
                 box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;

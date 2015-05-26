@@ -109,6 +109,7 @@ class Direccion(models.Model):
     cliente = models.ForeignKey(Cliente)
 
     def __str__(self):
+
         return u' %s - %s - %s' % (self.calle, self.numero, self.piso)
 
     class Meta:

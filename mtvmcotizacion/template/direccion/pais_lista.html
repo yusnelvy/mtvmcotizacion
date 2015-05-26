@@ -1,63 +1,71 @@
 {% extends 'base3.html' %}
 
 {% block titulo %}
-<h2>Países</h2>
-{% endblock %}
 
-{% block header %}{% endblock %}
+<h2>Países</h2>
+
+{% endblock %}
 
 {% block content %}
 
 <!--IniciaModal-->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <h3 id="myModalLabel">Eliminar País</h3>
-  </div>
-  <div class="modal-body">
-    <p>¿Realmente desea eliminar el País <span id="modal_name"></span>?</p>
-  </div>
-  <div class="modal-footer">
-    <form method="post" id="frmEliminar">
-      {% csrf_token %}
-      <input type="hidden" id="modal_id" name="item_id">
-      <button class="" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-      <button type="submit" class="">Eliminar</button>
-    </form>
+<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="myModalLabel"></h3>
+      </div>
+      <div class="modal-body">
+        <p>¿Eliminar <span id="modal_name"></span>?</p>
+      </div>
+      <div class="modal-footer">
+        <form method="post" id="frmEliminar">
+
+          {% csrf_token %}
+
+          <input type="hidden" id="modal_id" name="item_id">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+          <button type="submit" class="btn btn-default">Si</button>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 
 <!--EndModal-->
 
-<h2>Países </h2>
+<h2>Listado de países </h2>
 <a href="nuevo/" class="btn btn-default">Nuevo</a>
 <br>
-<h6>Cantidad de países registrados: <span class="badge" id="count_reg">{{ lista_pais.count }}</span> </h6>
+<h6>Cantidad de países registrados:
+  <span class="badge" id="count_reg">
+
+    {{ lista_pais.count }}
+
+  </span>
+</h6>
 
 {% if lista_pais %}
 
 <div class="">
   <table class="table table-hover" id="tabla">
-    <thead>
-      <tr class="active">
-        <th>País</th>
-        <th>Editar</th>
-        <th>Eliminar</th>
-      </tr>
-    </thead>
-    <tbody>
+    <tr class="active">
+      <th>País</th>
+      <th>Editar</th>
+      <th>Eliminar</th>
+    </tr>
 
-      {% for i in lista_pais %}
+    {% for i in lista_pais %}
 
-      <tr id="tr{{i.id}}">
-        <td>{{ i.pais }}</td>
-        <td>
-          <a href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
-        </td>
-        <td>
-          <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.pais}}"></a>
-        </td>
-      </tr>
-    </tbody>
+    <tr id="tr{{i.id}}">
+      <td>{{ i.pais }}</td>
+      <td>
+        <a href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
+      </td>
+      <td>
+        <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.pais}}"></a>
+      </td>
+    </tr>
 
     {% endfor %}
 
@@ -67,7 +75,7 @@
 
 {% else %}
 
-<a href="nuevo/" class="btn btn-default">Nuevo</a>
+<p>No se encontraron registros.</p>
 
 {% endif %}
 
@@ -75,6 +83,7 @@
 
 {% block ayuda %}
 
+<br>
 <div class="">
   <div class="well well-lg">
     <p>En esta sección se registran los <strong>Países</strong>, utilizando para ello su nombre completo en español.</p>

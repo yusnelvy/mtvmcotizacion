@@ -1,60 +1,82 @@
- {% extends 'base3.html' %}
+{% extends 'base3.html' %}
 
- {% block ayuda %}{% endblock%}
- {% block content %}
+{% block titulo %}
+
+<title>Direccion</title>
+
+{% endblock %}
+
+{% block content %}
 
 <!--IniciaModal-->
- <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-    <h3 id="myModalLabel">Eliminar direccion</h3>
-    </div>
-    <div class="modal-body">
-    <p>¿Realmente desea eliminar la direccion <span id="modal_name"></span>?</p>
-    </div>
-    <div class="modal-footer">
+<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="myModalLabel"></h3>
+      </div>
+      <div class="modal-body">
+        <p>¿Eliminar <span id="modal_name"></span>?</p>
+      </div>
+      <div class="modal-footer">
         <form method="post" id="frmEliminar">
-            {% csrf_token %}
-            <input type="hidden" id="modal_id" name="item_id">
-           <button class="" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-      <button type="submit" class="">Eliminar</button>
+
+          {% csrf_token %}
+
+          <input type="hidden" id="modal_id" name="item_id">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+          <button type="submit" class="btn btn-default">Si</button>
         </form>
+      </div>
     </div>
+  </div>
 </div>
 <!--EndModal-->
+<h2>Direccion</h2>
+
 {% if lista_direccion %}
-    <h2>Listado de direccion </h2>
-    <h6>Cantidad de direccion encontrados: <span class="badge" id="count_reg">{{ lista_direccion.count }}</span> </h6>
-    <table data-role="table" data-mode="" class="ui-responsive ui-shadow" id="myTabletipoambiente">
-        <thead>
-    <tr>
-      <!--<th data-priority="6">Numero</th>-->
-      <th>Direccion</th>
-      <th>Punto referencia</th>
-      <th data-priority="1">Editar</th>
-      <th data-priority="2">Eliminar</th>
-    </tr>
-  </thead>
-    <tbody>
-    {% for i in lista_direccion %}
-    <tr id="tr{{i.id}}">
-      <!-- <td>{{ i.count }}</td>-->
-      <td>calle: {{ i.calle }} numero: {{ i.numero }} piso: {{ i.piso }}</td>
-      <td>{{ i.punto_referencia }}</td>
-      <td>
-        <a href="{{i.id}}/" class="ui-btn ui-icon-edit ui-btn-icon-notext">Editar</a>
-      </td>
-      <td>
-        <a href="#myModal" role="button" class="ui-btn ui-icon-delete ui-btn-icon-notext delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="calle: {{ i.calle }} numero: {{ i.numero }} piso: {{ i.piso }}">Eliminar</a>
-      </td>
-    </tr>
-  </tbody>
+
+<div class="panel panel-default">
+
+  {% for i in lista_direccion %}
+
+  <div class="panel-heading">
+    <h4>
+      <a href="{{i.id}}/" style="float:letf;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+      Ficha direccion
+      <a href="nuevo/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+    </h4>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <tr>
+        <td><strong>Calle: </strong>{{ i.calle }} </td>
+        <td><strong>Tipo de direccion: </strong>{{ i.tipo_direccion }}</td>
+      </tr>
+      <tr>
+        <td><strong>Numero:  </strong> {{ i.numero }}</td>
+        <td><strong>Zip1: </strong>{{ i.zip1 }}</td>
+      </tr>
+      <tr>
+        <td><strong>Piso:  </strong>{{ i.piso }}</td>
+        <td><strong>Punto de referencia: </strong>{{ i.punto_referencia }}</td>
+      </tr>
+      <tr>
+        <td><strong>Adicional: </strong>{{ i.adicional }}</td>
+        <td><strong>Cliente: </strong>{{ i.cliente }}</td>
+      </tr>
+    </table>
+
     {% endfor %}
-</table>
-<br>
-<a href="nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
-<a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="../">Regresar</a>
+
+  </div>
+</div>
+
 {% else %}
-<a href="nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
-<p> No hay direcciones registradas.</p>
+
+<p> No hay inmueble registrados. </p>
+
 {% endif %}
+
 {% endblock %}
+
