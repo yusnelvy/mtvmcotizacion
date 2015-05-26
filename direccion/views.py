@@ -259,7 +259,7 @@ def lista_complejidad_inmueble(request):
     return render(request, 'direccion/complejidad_inmueble_lista.html', context)
 
 
-def lista_inmueble(request):
+def lista_inmueble(request, iddireccion):
     """docstring"""
 
     if request.method == "POST":
@@ -284,7 +284,9 @@ def lista_inmueble(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_inmueble = Inmueble.objects.all()
+    id_direccion = Direccion.objects.get(id=iddireccion)
+    lista_inmueble = Inmueble.objects.filter(direccion_id=id_direccion)
+
     context = {'lista_inmueble': lista_inmueble}
     return render(request, 'direccion/inmueble_lista.html', context)
 
@@ -410,8 +412,9 @@ def add_inmueble(request):
     if request.method == 'POST':
         form_inmueble = InmuebleForm(request.POST)
         if form_inmueble.is_valid():
-            form_inmueble.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_inmueble'))
+            id_reg = form_inmueble.save()
+            id_di = Inmueble.objects.get(id=id_reg.id)
+            return HttpResponseRedirect(reverse('udireciones:lista_inmueble', args=(id_di.direccion.id)))
     else:
         form_inmueble = InmuebleForm()
 
@@ -606,8 +609,8 @@ def edit_inmueble(request, pk):
             form_edit_inmueble.save()
             return HttpResponseRedirect(reverse('udireciones:lista_inmueble'))
     else:
-        form_edit_inmueble = InmuebleForm()
+        form_edit_inmueble = InmuebleForm(instance=inmueble)
 
-    return render_to_response('direccion/inmueble_add.html',
+    return render_to_response('direccion/inmueble_edit.html',
                               {'form_edit_inmueble': form_edit_inmueble, 'create': True},
                               context_instance=RequestContext(request))
