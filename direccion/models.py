@@ -109,7 +109,7 @@ class Direccion(models.Model):
     cliente = models.ForeignKey(Cliente)
 
     def __str__(self):
-        return self.tipo_direccion
+        return str(self.tipo_direccion)
 
     class Meta:
         verbose_name = "Direccion"

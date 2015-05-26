@@ -371,7 +371,7 @@ def add_direccion(request):
     else:
         form_direccion = DireccionForm()
     return render_to_response('direccion/direccion_add.html',
-                              {'form_direccion':form_direccion, 'create': True},
+                              {'form_direccion': form_direccion, 'create': True},
                               context_instance=RequestContext(request))
 
 
@@ -606,8 +606,8 @@ def edit_inmueble(request, pk):
             form_edit_inmueble.save()
             return HttpResponseRedirect(reverse('udireciones:lista_inmueble'))
     else:
-        form_edit_inmueble = InmuebleForm()
+        form_edit_inmueble = InmuebleForm(instance=inmueble)
 
-    return render_to_response('direccion/inmueble_add.html',
+    return render_to_response('direccion/inmueble_edit.html',
                               {'form_edit_inmueble': form_edit_inmueble, 'create': True},
                               context_instance=RequestContext(request))

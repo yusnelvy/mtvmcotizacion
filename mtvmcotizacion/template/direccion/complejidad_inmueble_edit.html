@@ -1,14 +1,40 @@
-<div class="col-md-1"></div>
-<div class="col-md-4">
+{% extends "base3.html" %}
+
+{% block titulo %}
+
+<title>Complejidad inmueble</title>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="">
     <h2>Editar complejidad inmueble</h2>
-    <form action="" method="post" data-ajax="false">
+    <form action="" method="post">
+
         {% csrf_token %}
+
         <button type="submit" class="btn btn-default">Registrar</button>
         <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
-        <div class="form-group">{{ form_edit_complejidad_inmueble }}
-        </div>
-        <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
-    </form>
+        <div class="form-group">
+
+          {{ form_edit_complejidad_inmueble }}
+
+      </div>
+      <button type="submit" class="btn btn-default">Registrar</button>
+      <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
+  </form>
 </div>
 
+{% endblock %}
+
+{% block ayuda %}
+
+<br>
+<div class="">
+    <div class="well well-lg">
+        <p></p>
+    </div>
+</div>
+
+{% endblock%}
