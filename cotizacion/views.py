@@ -438,6 +438,26 @@ def buscar_cotizacioncontenido(request, idcotizacioncontenedor):
     return render(request, 'cotizacion/cotizacioncontenido_lista.html', context)
 
 
+def buscar_cotizacion(request, pk):
+    """docstring"""
+
+    buscar_cotizacion = Cotizacion.objects.filter(pk=pk)
+    det_direccion = Cotizacion_direccion.objects.filter(cotizacion_id=pk)
+    det_vehiculo = Vehiculo_Cotizacion.objects.filter(cotizacion_id=pk)
+    det_trabajador = Cotizacion_trabajador.objects.filter(cotizacion_id=pk)
+    det_ambiente = Cotizacion_Ambiente.objects.filter(cotizacion_id=pk)
+
+    context = {
+        'buscar_cotizacion': buscar_cotizacion,
+        'det_direccion': det_direccion,
+        'det_vehiculo': det_vehiculo,
+        'det_trabajador': det_trabajador,
+        'det_ambiente': det_ambiente,
+
+    }
+    return render(request, 'cotizacion/cotizacion_buscar.html', context)
+
+
 # agregar nuevo
 def add_estadocotizacion(request):
     """docstring"""
@@ -525,12 +545,14 @@ def add_vehiculocotizacion(request):
     if request.method == 'POST':
         form_vehiculocotizacion = VehiculoCotizacionForm(request.POST)
         if form_vehiculocotizacion.is_valid():
-            form_vehiculocotizacion.save()
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_vehiculocotizacion'))
+            id_reg = form_vehiculocotizacion.save()
+            id_cot = Vehiculo_Cotizacion.objects.get(id=id_reg.id)
+
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_vehiculocotizacion', args=(id_cot.cotizacion.id,)))
 
     else:
         form_vehiculocotizacion = VehiculoCotizacionForm()
-    return render_to_response('vehiculocotizacion/vehiculocotizacion_add.html',
+    return render_to_response('cotizacion/vehiculocotizacion_add.html',
                               {'form_vehiculocotizacion': form_vehiculocotizacion, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -541,12 +563,13 @@ def add_cotizaciondireccion(request):
     if request.method == 'POST':
         form_cotizaciondireccion = CotizaciondireccionForm(request.POST)
         if form_cotizaciondireccion.is_valid():
-            form_cotizaciondireccion.save()
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_direccioncotizacion'))
+            id_reg = form_cotizaciondireccion.save()
+            id_cot = Cotizacion_direccion.objects.get(id=id_reg.id)
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_direccioncotizacion', args=(id_cot.cotizacion.id,)))
 
     else:
         form_cotizaciondireccion = CotizaciondireccionForm()
-    return render_to_response('cotizaciondireccion/direccioncotizacion_add.html',
+    return render_to_response('cotizacion/direccioncotizacion_add.html',
                               {'form_cotizaciondireccion': form_cotizaciondireccion, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -557,8 +580,9 @@ def add_cotizaciontrabajador(request):
     if request.method == 'POST':
         form_cotizaciontrabajador = CotizaciontrabajadorForm(request.POST)
         if form_cotizaciontrabajador.is_valid():
-            form_cotizaciontrabajador.save()
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizaciontrabajador'))
+            id_reg = form_cotizaciontrabajador.save()
+            id_cot = Cotizacion_trabajador.objects.get(id=id_reg.id)
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizaciontrabajador', args=(id_cot.cotizacion.id,)))
 
     else:
         form_cotizaciontrabajador = CotizaciontrabajadorForm()
@@ -573,8 +597,9 @@ def add_cotizacionambiente(request):
     if request.method == 'POST':
         form_cotizacionambiente = CotizacionAmbienteForm(request.POST)
         if form_cotizacionambiente.is_valid():
-            form_cotizacionambiente.save()
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionambiente'))
+            id_reg = form_cotizacionambiente.save()
+            id_cot = Cotizacion_Ambiente.objects.get(id=id_reg.id)
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionambiente', args=(id_cot.cotizacion.id,)))
 
     else:
         form_cotizacionambiente = CotizacionAmbienteForm()
@@ -589,8 +614,9 @@ def add_cotizacionmueble(request):
     if request.method == 'POST':
         form_cotizacionmueble = CotizacionMuebleForm(request.POST)
         if form_cotizacionmueble.is_valid():
-            form_cotizacionmueble.save()
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionmueble'))
+            id_reg = form_cotizacionmueble.save()
+            id_cot = Cotizacion_Mueble.objects.get(id=id_reg.id)
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionmueble', args=(id_cot.cotizacion_ambiente.id,)))
 
     else:
         form_cotizacionmueble = CotizacionMuebleForm()
@@ -605,8 +631,9 @@ def add_cotizacionservicio(request):
     if request.method == 'POST':
         form_cotizacionservicio = CotizacionServicioForm(request.POST)
         if form_cotizacionservicio.is_valid():
-            form_cotizacionservicio.save()
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionservicio'))
+            id_reg = form_cotizacionservicio.save()
+            id_cot = Cotizacion_Servicio.objects.get(id=id_reg.id)
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionservicio', args=(id_cot.cotizacion_mueble.id,)))
 
     else:
         form_cotizacionservicio = CotizacionServicioForm()
@@ -621,8 +648,10 @@ def add_cotizacionmaterial(request):
     if request.method == 'POST':
         form_cotizacionmaterial = CotizacionMaterialForm(request.POST)
         if form_cotizacionmaterial.is_valid():
-            form_cotizacionmaterial.save()
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionmaterial'))
+            id_reg = form_cotizacionmaterial.save()
+            id_cot = Cotizacion_Material.objects.get(id=id_reg.id)
+
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionmaterial', args=(id_cot.cotizacion_mueble.id,)))
 
     else:
         form_cotizacionmaterial = CotizacionMaterialForm()
@@ -637,8 +666,10 @@ def add_cotizacioncontenedor(request):
     if request.method == 'POST':
         form_cotizacioncontenedor = CotizacionContenedorForm(request.POST)
         if form_cotizacioncontenedor.is_valid():
-            form_cotizacioncontenedor.save()
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacioncontenedor'))
+            id_reg = form_cotizacioncontenedor.save()
+            id_cot = Cotizacion_Contenedor.objects.get(id=id_reg.id)
+
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacioncontenedor', args=(id_cot.cotizacion_mueble.id,)))
 
     else:
         form_cotizacioncontenedor = CotizacionContenedorForm()
@@ -653,8 +684,9 @@ def add_cotizacioncontenido(request):
     if request.method == 'POST':
         form_cotizacioncontenido = CotizacionContenidoForm(request.POST)
         if form_cotizacioncontenido.is_valid():
-            form_cotizacioncontenido.save()
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacioncontenido'))
+            id_reg = form_cotizacioncontenido.save()
+            id_cot = Cotizacion_Contenido.objects.get(id=id_reg.id)
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacioncontenido', args=(id_cot.cotizacion_contenedor.id,)))
 
     else:
         form_cotizacioncontenido = CotizacionContenidoForm()
@@ -821,7 +853,7 @@ def edit_vehiculocotizacion(request, pk):
             # formulario validado correctamente
             editar_vehiculocotizacion.save()
 
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_vehiculocotizacion(0)'))
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_vehiculocotizacion', args=(id_vehiculocotizacion.cotizacion.id,)))
 
     else:
         # formulario inicial
@@ -849,7 +881,7 @@ def edit_cotizaciondireccion(request, pk):
             # formulario validado correctamente
             editar_cotizaciondireccion.save()
 
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_direccioncotizacion(0)'))
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_direccioncotizacion', args=(id_cotizaciondireccion.cotizacion.id,)))
 
     else:
         # formulario inicial
@@ -877,7 +909,7 @@ def edit_cotizaciontrabajador(request, pk):
             # formulario validado correctamente
             editar_cotizaciontrabajador.save()
 
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizaciontrabajador(0)'))
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizaciontrabajador', args=(id_cotizaciontrabajador.cotizacion.id,)))
 
     else:
         # formulario inicial
@@ -905,7 +937,7 @@ def edit_cotizacionambiente(request, pk):
             # formulario validado correctamente
             editar_cotizacionambiente.save()
 
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionambiente(0)'))
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionambiente', args=(id_cotizacionambiente.cotizacion.id,)))
 
     else:
         # formulario inicial
@@ -933,7 +965,7 @@ def edit_cotizacionmueble(request, pk):
             # formulario validado correctamente
             editar_cotizacionmueble.save()
 
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionmueble(0)'))
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionmueble', args=(id_cotizacionmueble.cotizacion_ambiente.id,)))
 
     else:
         # formulario inicial
@@ -961,7 +993,7 @@ def edit_cotizacionservicio(request, pk):
             # formulario validado correctamente
             editar_cotizacionservicio.save()
 
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionservicio(0)'))
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionservicio', args=(id_cotizacionservicio.cotizacion_mueble.id,)))
 
     else:
         # formulario inicial
@@ -989,7 +1021,7 @@ def edit_cotizacionmaterial(request, pk):
             # formulario validado correctamente
             editar_cotizacionmaterial.save()
 
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionmaterial(0)'))
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionmaterial', args=(id_cotizacionmaterial.cotizacion_mueble.id,)))
 
     else:
         # formulario inicial
@@ -1017,7 +1049,7 @@ def edit_cotizacioncontenedor(request, pk):
             # formulario validado correctamente
             editar_cotizacioncontenedor.save()
 
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacioncontenedor(0)'))
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacioncontenedor', args=(id_cotizacioncontenedor.cotizacion_mueble.id,)))
 
     else:
         # formulario inicial
@@ -1045,7 +1077,7 @@ def edit_cotizacioncontenido(request, pk):
             # formulario validado correctamente
             editar_cotizacioncontenido.save()
 
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacioncontenido(0)'))
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacioncontenido', args=(id_cotizacioncontenido.cotizacion_contenedor.id,)))
 
     else:
         # formulario inicial

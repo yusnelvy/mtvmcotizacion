@@ -451,7 +451,7 @@ def edit_mueble(request, pk):
 
 def edit_tamano(request, pk):
     """docstring"""
-    tamano = Tamano(request, pk).objects.get(pk=pk)
+    tamano = Tamano.objects.get(pk=pk)
 
     if request.method == 'POST':
         # formulario enviado
