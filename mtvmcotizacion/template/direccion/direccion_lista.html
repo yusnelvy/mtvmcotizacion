@@ -32,79 +32,51 @@
   </div>
 </div>
 <!--EndModal-->
-<h2>Listado de direccion </h2>
-<a href="../nuevo/" class="btn btn-default">Nuevo</a>
-<h6>Cantidad de direccion encontrados:
-  <span class="badge" id="count_reg">
-
-    {{ lista_direccion.count }}
-
-  </span>
-</h6>
+<h2>Direccion</h2>
 
 {% if lista_direccion %}
 
-<table class="table table-hover" id="tabla">
-  <tr class="active">
-    <th>Direccion</th>
-    <th>Adicional</th>
-    <th>Zona</th>
-    <th>ciudad</th>
-    <th>provincia</th>
-    <th>pais</th>
-    <th>Tipo de direccion</th>
-    <th>Zip</th>
-    <th>Punto referencia</th>
-    <th>Cliente</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
-  </tr>
+<div class="panel panel-default">
 
   {% for i in lista_direccion %}
 
-  <tr id="tr{{i.id}}">
-    <!-- <td>{{ i.count }}</td>-->
-    <td>calle: {{ i.calle }} numero: {{ i.numero }} piso: {{ i.piso }}</td>
-    <td>{{ i.adicional }}</td>
-    <td>{{ i.zona }}</td>
-    <td>{{ i.zona.ciudad }}</td>
-    <td>{{ i.zona.ciudad.provincia }}</td>
-    <td>{{ i.zona.ciudad.provincia.pais }}</td>
-    <td>{{ i.tipo_direccion }}</td>
-    <td>{{ i.zip1 }}</td>
-    <td>{{ i.punto_referencia }}</td>
-    <td>{{ i.cliente }}</td>
-    <td>
-      <a href="../editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a>
-    </td>
-    <td>
-      <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="calle: {{ i.calle }} numero: {{ i.numero }} piso: {{ i.piso }}"></a>
-    </td>
-  </tr>
+  <div class="panel-heading">
+    <h4>
+      <a href="{{i.id}}/" style="float:letf;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+      Ficha direccion
+      <a href="nuevo/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+    </h4>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <tr>
+        <td><strong>Calle: </strong>{{ i.calle }} </td>
+        <td><strong>Tipo de direccion: </strong>{{ i.tipo_direccion }}</td>
+      </tr>
+      <tr>
+        <td><strong>Numero:  </strong> {{ i.numero }}</td>
+        <td><strong>Zip1: </strong>{{ i.zip1 }}</td>
+      </tr>
+      <tr>
+        <td><strong>Piso:  </strong>{{ i.piso }}</td>
+        <td><strong>Punto de referencia: </strong>{{ i.punto_referencia }}</td>
+      </tr>
+      <tr>
+        <td><strong>Adicional: </strong>{{ i.adicional }}</td>
+        <td><strong>Cliente: </strong>{{ i.cliente }}</td>
+      </tr>
+    </table>
 
+    {% endfor %}
 
-  {% endfor %}
-
-</table>
-<br>
-<a href="../nuevo/" class="btn btn-default">Nuevo</a>
+  </div>
+</div>
 
 {% else %}
 
-<p>No se encontraron registros.</p>
+<p> No hay inmueble registrados. </p>
 
 {% endif %}
 
 {% endblock %}
 
-{#% block ayuda %}
-
-<br>
-<div class="">
-  <div class="well well-lg">
-    <p>Las <strong>Direcciones</strong> son unos de los requisitos clave para la mudanza  </strong>.</p>
-    <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
-  </div>
-</div>
-
-{% endblock%#}

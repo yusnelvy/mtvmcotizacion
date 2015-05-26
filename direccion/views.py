@@ -607,7 +607,7 @@ def edit_inmueble(request, pk):
         form_edit_inmueble = InmuebleForm(request.POST, instance=inmueble)
         if form_edit_inmueble.is_valid():
             form_edit_inmueble.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_inmueble'))
+            return HttpResponseRedirect(reverse('udireciones:lista_inmueble', args=(inmueble.direccion.id,)))
     else:
         form_edit_inmueble = InmuebleForm(instance=inmueble)
 

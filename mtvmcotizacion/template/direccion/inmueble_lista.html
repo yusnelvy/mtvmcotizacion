@@ -32,79 +32,99 @@
   </div>
 </div>
 <!--EndModal-->
-<h2>Listado de inmueble </h2>
-<a href="nuevo/" class="btn btn-default">Nuevo</a>
-<br>
-<h6>Cantidad de inmueble encontrados:
-  <span class="badge" id="count_reg">
-
-    {{ lista_inmueble.count }}
-
-  </span>
-</h6>
+<h2>Inmueble </h2>
 
 {% if lista_inmueble %}
 
-<table class="table table-hover" id="tabla">
- <tr class="active">
-  <th>Inmueble</th>
-  <th>Tipo de inmueble</th>
-  <th>Direccion</th>
-  <th>N° de ambientes</th>
-  <th>Pisos</th>
-  <th>Pisos escaleras</th>
-  <th>Rampa</th>
-  <th>Ascensor</th>
-  <th>Servicio ascensor</th>
-  <th>Piso ascensor servicio</th>
-  <th>Pisos ascensor</th>
-  <th>Complejidad</th>
-  <th>Distancia vehiculo</th>
-  <th>Editar</th>
-  <th>Eliminar</th>
-</tr>
+<div class="panel panel-default">
+  {% for i in lista_inmueble %}
+  <div class="panel-heading">
+    <h4>
+      <a href="../editar/{{i.id}}" style="float:center;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+      Ficha inmueble
+      <a href="../nuevo/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+    </h4>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <tr>
+        <td><strong>Inmueble: </strong>{{ i.inmueble }}</td>
+        <td><strong>Cliente:</strong> {{ i.direccion.cliente }}</td>
+      </tr>
+      <tr>
+        <td><strong>Tipo de inmueble: </strong>{{ i.tipo_inmueble }}</td>
+        <td><strong>Tipo de direccion: </strong>{{ i.direccion.tipo_direccion }}</td>
+      </tr>
+      <tr>
+        <td><strong>Numero de ambientes: </strong>{{ i.numero_ambientes }}</td>
+        <td><strong>Direccion: </strong>{{ i.direccion }}</td>
+      </tr>
+      <tr>
+        <td><strong>Piso: </strong>{{ i.pisos }}</td>
+        <td><strong>Zona: </strong>{{ i.direccion.zona }}</td>
+      </tr>
+      <tr>
+        <td><strong>Pisos escaleras: </strong>{{ i.pisos_escalera }}</td>
+        <td><strong>Ciudad: </strong>{{ i.direccion.zona.ciudad }}</td>
+      </tr>
+      <tr>
+        <td><strong>Rampa: </strong>
 
-{% for i in lista_inmueble %}
+          {% if i.rampa %}
 
-<tr id="tr{{i.id}}">
-  <td>{{ i.inmueble }}</td>
-  <td>{{ i.tipo_inmueble }}</td>
-  <td>{{ i.direccion }}</td>
-  <td>{{ i.numero_ambientes }}</td>
-  <td>{{ i.pisos }}</td>
-  <td>{{ i.pisos_escalera }}</td>
-  <td>{% if i.rampa %}
-  Si
-  {% else %}
-  No
-  {% endif %}
-  </td>
-  <td>{% if i.ascensor %}
-  Si
-  {% else %}
-  No
-  {% endif %}
-  </td>
-  <td>{% if i.ascensor_servicio %}
-  Si
-  {% else %}
-  No
-  {% endif %}
-  </td>
-  <td>{{ i.pisos_ascensor_servicio }}</td>
-  <td>{{ i.pisos_ascensor }}</td>
-  <td>{{ i.complejidad }}</td>
-  <td>{{ i.distancia_vehiculo }}</td>
-  <td><a href="{{i.id}}/" class="glyphicon glyphicon-edit"></a></td>
-  <td>
-    <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.inmueble}}"></a>
-  </td>
-</tr>
+          Si
 
-{% endfor %}
+          {% else %}
 
-</table>
-<a href="nuevo/" class="btn btn-default">Nuevo</a>
+          No
+
+          {% endif %}
+
+        </td>
+        <td><strong>Provincia: </strong>{{ i.direccion.zona.ciudad.provincia }}</td>
+      </tr>
+      <tr>
+        <td><strong>Ascensor: </strong>
+
+          {% if i.ascensor %}
+
+          Si
+
+          {% else %}
+
+          No
+
+          {% endif %}
+
+        </td>
+        <td><strong>Pais: </strong>{{ i.direccion.zona.ciudad.provincia.pais }}</td>
+      </tr>
+      <tr>
+        <td><strong>Servicio ascensor: </strong>
+
+          {% if i.ascensor_servicio %}
+
+          Si
+
+          {% else %}
+
+          No
+
+          {% endif %}
+
+        </td>
+        <td><strong>Complejidad: </strong>{{ i.complejidad }}</td>
+      </tr>
+      <tr>
+        <td><strong>Pisos ascensor servicio: </strong>{{ i.pisos_ascensor_servicio }}</td>
+        <td><strong>Pisos ascensor: </strong>{{ i.pisos_ascensor }}</td>
+      </tr>
+    </table>
+
+    {% endfor %}
+
+  </div>
+</div>
 
 {% else %}
 
