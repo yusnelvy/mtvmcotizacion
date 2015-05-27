@@ -38,14 +38,16 @@
   <br>
   <h6>Cantidad de ambientes registrados:
     <span class="badge" id="count_reg" id="count_reg">
+
       {{ lista_ambiente.count }}
+
     </span>
   </h6>
 
 {% if lista_ambiente %}
 
   <table class="table table-hover" id="tabla">
-      <tr>
+      <tr class="active">
         <th>Ambiente</th>
         <th>Tipo de ambiente</th>
         <th>Editar</th>
@@ -57,7 +59,6 @@
     <tr id="tr{{i.id}}">
       <td>{{ i.ambiente }}</td>
       <td>{{ i.tipo_ambiente }}</td>
-
       <td>
         <a href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
       </td>

@@ -148,7 +148,7 @@ class Complejidad_Inmueble(models.Model):
     class Meta:
         verbose_name = "complejidad del inmueble"
         verbose_name_plural = "complejidades del inmueble"
-        ordering = ['complejidad']
+        #ordering = ['complejidad']
 
 
 class Inmueble(models.Model):

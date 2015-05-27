@@ -414,7 +414,7 @@ def add_inmueble(request):
         if form_inmueble.is_valid():
             id_reg = form_inmueble.save()
             id_di = Inmueble.objects.get(id=id_reg.id)
-            return HttpResponseRedirect(reverse('udireciones:lista_inmueble', args=(id_di.direccion.id)))
+            return HttpResponseRedirect(reverse('udireciones:lista_inmueble', args=(id_di.direccion.id,)))
     else:
         form_inmueble = InmuebleForm()
 

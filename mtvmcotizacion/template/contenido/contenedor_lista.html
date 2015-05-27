@@ -1,37 +1,51 @@
- {% extends 'base3.html' %}
- {% block content %}
+{% extends 'base_lista.html' %}
 
-<!--IniciaModal-->
- <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-    <h3 id="myModalLabel">Eliminar contenedor</h3>
-    </div>
-    <div class="modal-body">
-    <p>¿Realmente desea eliminar el contenedor <span id="modal_name"></span>?</p>
-    </div>
-    <div class="modal-footer">
-        <form method="post" id="frmEliminar">
-            {% csrf_token %}
-            <input type="hidden" id="modal_id" name="item_id">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-            <button type="submit" class="btn btn-danger">Eliminar</button>
-        </form>
-    </div>
+{% block titulo %}
+
+<title>Contenedores</title>
+
+{% endblock titulo %}
+
+{% block titulo_modal %}
+
+<div class="modal-header">
+  <h3 id="myModalLabel">Eliminar contenedor</h3>
 </div>
-<!--EndModal-->
+
+{% endblock titulo_modal %}
+
+{% block validacion_modal %}
+
+<p>¿Realmente desea eliminar el registro: <strong id="modal_name"></strong>?</p>
+
+{% endblock validacion_modal %}
+
+{% block titulo_tabla %}
+
+<h2>Contenedores</h2>
+
+{% endblock titulo_tabla %}
+
 {% if lista_contenedor %}
 
-<h6>Cantidad de registros encontrados:
+{% block cantidad_tabla %}
+
+<h6>Contenedores registrados:
   <span class="badge" id="count_reg">
+
     {{ lista_contenedor.count }}
+
   </span>
 </h6>
 
-  <table class="table table-hover">
+{% endblock cantidad_tabla %}
+
+{% block cuerpo_tabla %}
 
    <tr class="active">
-    <th>contenedor</th>
-    <th>capacidad vol</th>
+    <th>Contenedor</th>
+    <th>Volúmen (m3)</th>
+    <th>Peso (Kgs)</th>
     <th>Editar</th>
     <th>Eliminar</th>
   </tr>
@@ -41,28 +55,29 @@
   <tr id="tr{{i.id}}">
     <td>{{ i.contenedor }}</td>
     <td>{{ i.capacidad_volumen }}</td>
-
+    <td>{{ i.capacidad_peso }}</td>
     <td>
-      <a href="contenedor/editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
-      {# <button id ="editar" data-telid="{{i.id}}" class="btn btn-mini btn-primary" type="button">editar</button> #}
+      <a href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
     </td>
     <td>
-      <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.contenedor}}"><i class="icon-trash icon-white"></i>Eliminar</a>
+      <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.contenedor}}"></a>
     </td>
     <input type="hidden" value="{{i.id}}" id="idtele">
   </tr>
 
   {% endfor %}
 
-</table>
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
-</div>
-
-{% else %}
-
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
-<p> No se encontro registro.</p>
+{% endblock cuerpo_tabla %}
 
 {% endif %}
 
-{% endblock %}
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>El <strong>Contenedor</strong> permite trasladar los <strong>Contenidos</strong> encontrados en los <strong>Muebles</strong> durante una mudanza.</p>
+  <p>Se cuenta con <strong>Contenedores</strong> retornables como los <i>Canastos</i> y descartables como las <i>Cajas de cartón</i>.</p>
+  <p>Un <strong>Contenedor</strong> retornable no incide sobre el precio de la cotización, a diferencia del contenedor no retornable que será un costo para el cliente.</p>
+  <p>De los <strong>Contenedores</strong> se considera importante para la logística el volúmen y peso que pueden llevar, así como el volúmen y peso que ellos mismos representan para la carga de los camiones.</p>
+</div>
+
+{% endblock ayuda %}

@@ -92,10 +92,9 @@ def lista_ambiente_tipo_inmueble(request):
             except:
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
-    lista_ambiente = Ambiente.objects.filter()
     lista_inmueble = Tipo_Inmueble.objects.filter()
     lista_ambtipoinmueble = Ambiente_Tipo_inmueble.objects.all()
-    context = {'lista_ambtipoinmueble': lista_ambtipoinmueble, 'lista_ambiente': lista_ambiente, 'lista_inmueble': lista_inmueble}
+    context = {'lista_ambtipoinmueble': lista_ambtipoinmueble, 'lista_inmueble': lista_inmueble}
     return render(request, 'ambiente/ambientetipoinmueble_lista.html', context)
 
 
