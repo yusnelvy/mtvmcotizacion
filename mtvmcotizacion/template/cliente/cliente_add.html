@@ -1,16 +1,35 @@
-<div class="col-md-1"></div>
-<div class="col-md-4">
-    <h2>Agregar cliente</h2>
-    <form action="" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
-        <div class="form-group">
-            {{ cliente_form.as_p }}
+{% extends "base_edit.html" %}
+
+{% block titulo %}
+
+<title>Cliente</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+  <h2>Agregar cliente</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ cliente_form.as_p }}
             {{ mensaje }}
-        </div>
-        <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
-    </form>
+
 </div>
 
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>Los <strong>Clientes</strong> son las personas que se le ofrece el servicio de <strong>mudanza</strong>. </p>
+  <p>El <strong>cliente</strong> puede estar activo o inactivo. Puede ver más detalles viendo la ficha del cliente.</p>
+  <p>Puede agregar más cliente presionando el botón nuevo.</p>
+
+</div>
+
+{% endblock ayuda %}
