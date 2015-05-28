@@ -446,7 +446,6 @@ def buscar_cotizacion(request, pk):
     det_vehiculo = Vehiculo_Cotizacion.objects.filter(cotizacion_id=pk)
     det_trabajador = Cotizacion_trabajador.objects.filter(cotizacion_id=pk)
     det_ambiente = Cotizacion_Ambiente.objects.filter(cotizacion_id=pk)
-
     det_mueble = Cotizacion_Mueble.objects.filter(cotizacion_ambiente__cotizacion_id=pk)
 
     for modelObject in buscar_cotizacion:
