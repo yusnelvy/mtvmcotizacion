@@ -1,15 +1,33 @@
-{% extends 'base3.html' %}
-{% block header %}<h2>Telefono</h2>{% endblock %}
-{% block content %}
+{% extends "base_edit.html" %}
+
+{% block titulo %}
+
+<title>Telefono</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
 
   <h2>Editar telefono</h2>
-  <form action="" method="post" data-ajax="false">
-    {% csrf_token %}
-    {{ form_edit_telefono.as_p }}
-    <button type="submit" class="ui-btn ui-btn ui-icon-check ui-btn-icon-left">Registrar</button>
-    <a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="javascript:history.back();">Regresar</a>
-    <br><br>
-  </form>
 
-{% endblock %}
-{% block footer %}{% endblock %}
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ form_edit_telefono.as_p }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<br>
+<div class="well well-lg">
+  <p>El <strong>Telefono</strong> del cliente es importante porque por medio de ellos se contacta al cliente.  </p>
+  <p>Se recomienda agregar al menos un telefono por cada cliente.</p>
+</div>
+
+{% endblock ayuda %}
