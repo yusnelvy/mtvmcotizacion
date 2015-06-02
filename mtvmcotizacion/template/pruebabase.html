@@ -1,24 +1,7 @@
-{% load staticfiles %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link href="/static/css/estilosForm.css" rel="stylesheet">
-    <link href="/static/bootstrap/css/bootstrap3.css" rel="stylesheet">
+{% extends 'base3.html' %}
 
-    {% block titulo %}{% endblock titulo %}
+{% block content %}
 
-</head>
-<body>
-
-    {% block header %}{% endblock header %}
-
-    {% block nav %}
-
-    {% include "nav.html" %}
-
-    {% endblock nav %}
 <!--IniciaModal-->
 <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
@@ -104,10 +87,10 @@
         </div>
     </div>
 
-    {% block footer %}{% endblock%}
-    {% block script %}
-    {% include "script.html" %}
-    {% endblock%}
+{% endblock content %}
 
-</body>
-</html>
+<div class="">
+
+    {% block ayuda %}{% endblock ayuda %}
+
+</div>

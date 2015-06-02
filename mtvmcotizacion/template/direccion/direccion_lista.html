@@ -36,10 +36,9 @@
 
 {% if lista_direccion %}
 
-<div class="panel panel-default">
-
   {% for i in lista_direccion %}
 
+<div class="panel panel-default">
   <div class="panel-heading">
     <h4>
       Ficha direccion
@@ -67,11 +66,10 @@
         <td><strong>Cliente: </strong>{{ i.cliente }}</td>
       </tr>
     </table>
+ </div>
+</div>
 
     {% endfor %}
-
-  </div>
-</div>
 
 {% else %}
 

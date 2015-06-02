@@ -4,6 +4,7 @@ from telefono.forms import TipoTelefonoForm, TelefonoForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
+from direccion.models import Direccion
 import django.db
 import simplejson as json
 
@@ -135,9 +136,12 @@ def edit_telefono(request, pk):
 
         if form_edit_telefono.is_valid():
             # formulario validado correctamente
-            form_edit_telefono.save()
+            id_reg = form_edit_telefono.save()
+            id_cli = Telefono.objects.get(id=id_reg.id)
 
-            return HttpResponseRedirect(reverse('utelefonos:lista_telefono'))
+            #return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
+            #return HttpResponseRedirect('../../cliente/ficha_cliente/')
+            return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
     else:
         # formulario inicial
         form_edit_telefono = TelefonoForm(instance=id_telefono)
