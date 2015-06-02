@@ -1,0 +1,31 @@
+{% extends "inicio/base3.html" %}
+
+{% block content %}
+
+<div class="">
+
+    {% block titulo_form %}{% endblock titulo_form %}
+
+    <form action="" method="post">
+
+        {% csrf_token %}
+
+        <button type="submit" class="btn btn-default">Registrar</button>
+        <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
+        <br>
+
+        {% block cuerpo_form %}{% endblock cuerpo_form %}
+
+        <button type="submit" class="btn btn-default">Registrar</button>
+        <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
+        <br>
+
+    </form>
+</div>
+<br>
+
+{% block contenido_adicional %}{% endblock contenido_adicional %}
+
+{% endblock content %}
+
+{% block ayuda %}{% endblock ayuda %}

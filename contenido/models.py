@@ -31,10 +31,10 @@ class Contenido(models.Model):
 
     contenido = models.CharField(max_length=100, unique=True)
     contenedor = models.ForeignKey(Contenedor)
-    densidad_baja = models.DecimalField(max_digits=5, decimal_places=2)
-    densidad_media = models.DecimalField(max_digits=5, decimal_places=2)
-    densidad_alta = models.DecimalField(max_digits=5, decimal_places=2)
-    densidad_superalta = models.DecimalField(max_digits=5, decimal_places=2)
+    densidad_baja = models.DecimalField(max_digits=7, decimal_places=2)
+    densidad_media = models.DecimalField(max_digits=7, decimal_places=2)
+    densidad_alta = models.DecimalField(max_digits=7, decimal_places=2)
+    densidad_superalta = models.DecimalField(max_digits=7, decimal_places=2)
 
     def __str__(self):
         return self.contenido
