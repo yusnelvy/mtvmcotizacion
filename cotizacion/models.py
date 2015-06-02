@@ -23,7 +23,6 @@ class Estado_Cotizacion(models.Model):
     class Meta:
         verbose_name = "estado"
         verbose_name_plural = "estados"
-        ordering = ['estado']
 
 
 class Tiempo_Carga(models.Model):
@@ -127,7 +126,7 @@ class Vehiculo(models.Model):
     class Meta:
         verbose_name = "Vehiculo"
         verbose_name_plural = "Vehiculos"
-        ordering = ['modelo']
+        ordering = ['-tarifa_hora']
 
 
 class Vehiculo_Cotizacion(models.Model):
