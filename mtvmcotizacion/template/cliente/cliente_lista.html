@@ -1,4 +1,4 @@
-{% extends 'base_lista.html' %}
+{% extends 'inicio/base_lista.html' %}
 
 {% block titulo %}
 
@@ -45,7 +45,6 @@
 
 <tr class="active">
       <th>Nombre</th>
-      <th>Comentarios</th>
       <th>Activo</th>
       <th>Ver ficha</th>
       <th>Editar</th>
@@ -56,7 +55,6 @@
 
 <tr id="tr{{i.id}}">
       <td>{{ i.nombre_principal }}</td>
-      <td>{{ i.comentarios }}</td>
       <td>
 
         {% if i.activo %}

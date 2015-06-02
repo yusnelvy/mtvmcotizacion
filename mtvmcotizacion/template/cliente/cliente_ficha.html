@@ -30,231 +30,210 @@
 
 {% block content1 %}
 
-{% if lista_cliente %}<!--cliente individual-->
+<div role="tabpanel">
 
-<div class="panel panel-default">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#datos" aria-controls="home" role="tab" data-toggle="tab">Datos del cliente</a></li>
+    <li role="presentation"><a href="#detalle" aria-controls="profile" role="tab" data-toggle="tab">Detalle</a></li>
+  </ul>
 
-  {% for i in lista_cliente %}<!--cliente individual-->
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="datos">
 
-  <div class="panel-heading">
-    <h4>Cliente
-      <a href="../../editar/{{i.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-    </h4>
-  </div>
-  <div class="panel-body">
-    <table class="table">
-      <tr>
-        <td><strong>Nombre: </strong>{{ i.nombre_principal }} </td>
-          <td><strong>Activo: </strong>
+      {% if lista_cliente %}<!--cliente individual-->
 
-          {% if i.activo %}
-          Si
-          {% else %}
-          No
+      <br>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <table class="table table-hover">
+
+              {% for i in lista_cliente %}
+
+              <tr>
+                <td><strong>Nombre: </strong></td>
+                <td>{{ i.nombre_principal }}</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Activo: </strong>
+                </td>
+                <td>
+
+                  {% if i.activo %}
+
+                  Si
+
+                  {% else %}
+
+                  No
+
+                  {% endif %}
+
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              {% endfor %}
+
+              {% if lista_telefono_cliente %}
+
+              {% for i in lista_telefono_cliente %}
+
+              <tr>
+                <td><strong>{{ i.tipo_telefono }}: </strong></td>
+                <td>{{ i.numero }}</td>
+                <td>
+                  <a href="../../../telefono/editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a>
+                </td>
+                <td>
+                  <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.email}}"></a>
+                </td>
+              </tr>
+
+              {% endfor %}
+
+              {% endif %}
+
+              {% if lista_email %}
+
+              {% for i in lista_email %}
+
+              <tr>
+                <td><strong>Email: </strong></td>
+                <td>{{ i.email }}</td>
+                <td>
+                  <a href="email/editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a>
+                </td>
+                <td>
+                  <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.email}}"></a>
+                </td>
+              </tr>
+
+              {% endfor %}
+
+              {% endif %}
+
+
+            </table>
+          </div>
+          <strong>Telefono</strong> <a href="../../../telefono/nuevo" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+          <span>|</span>
+          <strong>Email</strong> <a href="../../email/nuevo" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+          <span>|</span>
+          <strong>Direccion</strong> <a href="../../../direccion/nuevo" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-12">
+
+          {% if direccioncliente_lista %}
+
+          {% for i in direccioncliente_lista %}
+
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <h5><strong>Direccion </strong>{{ i.tipo_direccion }} </h5>
+              <p>
+                <strong>{{ i.zona.ciudad }}</strong> Zona del <strong>{{ i.zona }}</strong>
+                calle <strong>{{ i.calle }}</strong> numero <strong>{{ i.numero }}</strong>
+              </p>
+              <p>
+                Punto de referencia <strong>{{ i.punto_referencia }}</strong>
+              </p>
+              <a href="../../../direccion/{{i.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+            </div>
+          </div>
+
+          {% endfor %}
+
           {% endif %}
 
-        </td>
-      </tr>
-      <tr>
-        <td><strong>Comentario:  </strong> {{ i.comentario }}</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><strong>Adicional 1:  </strong>{{ i.adicional1 }}</td>
-        <td><strong>Adicional 3: </strong>{{ i.adicional3 }}</td>
-      </tr>
-      <tr>
-        <td><strong>Adicional 2: </strong>{{ i.adicional2 }}</td>
-        <td><strong>Adicional 4: </strong>{{ i.adicional4 }}</td>
-      </tr>
-    </table>
+        </div>
+      </div>
 
-    {% endfor %}
+      {% else %}
 
+      <p>no existe el cliente </p>
+
+      {% endif %}
+
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="detalle">
+
+      {% if lista_cliente %}
+
+      {% for i in lista_cliente %}
+
+      <br>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <p><strong>Comentario:  </strong> {{ i.comentarios }}</p>
+          <table class="table">
+            <tr>
+              <td><strong>Adicional 1: </strong>{{ i.adicional1 }}</td>
+              <td><strong>Adicional 3: </strong>{{ i.adicional3 }}</td>
+            </tr>
+            <tr>
+              <td><strong>Adicional 2: </strong>{{ i.adicional2 }}</td>
+              <td><strong>Adicional 4: </strong>{{ i.adicional4 }}</td>
+            </tr>
+          </table>
+          <a href="../../editar/{{i.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+        </div>
+      </div>
+
+      {% endfor %}
+
+      {% endif %}
+
+    </div>
   </div>
 </div>
-
-{% else %}
-
-<h4>Cliente no existe
-  <a href="../../../cliente/nuevo" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-</h4>
-
-{% endif %}
 
 {% endblock content1 %}
 
 {% block content2 %}
 
-{% if direccioncliente_lista %}
-
-<div class="panel panel-default">
-
-  {% for i in direccioncliente_lista %}
-
-  <div class="panel-heading">
-    <h4>Direccion
-      <a href="../../../direccion/{{i.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-    </h4>
-  </div>
-  <div class="panel-body">
-     <table class="table">
-      <tr>
-        <td><strong>Calle: </strong>{{ i.calle }} </td>
-        <td><strong>Zona: </strong>{{ i.zona }}</td>
-      </tr>
-      <tr>
-        <td><strong>Numero:  </strong> {{ i.numero }}</td>
-        <td><strong>Zip1: </strong>{{ i.zip1 }}</td>
-      </tr>
-      <tr>
-        <td><strong>Piso:  </strong>{{ i.piso }}</td>
-        <td><strong>Punto de referencia: </strong>{{ i.punto_referencia }}</td>
-      </tr>
-      <tr>
-        <td><strong>Adicional: </strong>{{ i.adicional }}</td>
-        <td><strong>Tipo de direccion:  </strong>{{ i.tipo_direccion }}</td>
-      </tr>
-
-    {% endfor %}
-
+<table class="table table-hover" id="tabla" style="text-align: center;">
+  <tr class="active">
+    <th>
+      Cotizaciones
+      <a href="#" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+    </th>
+  </tr>
+  <tr>
+    <th>Numero</th>
+    <th>Estado</th>
+    <th>Contrato</th>
+    <th>Fecha</th>
+    <th>Editar</th>
+    <th>Eliminar</th>
+  </tr>
+  <tr id="tr{{i.id}}">
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><a href="#" class="glyphicon glyphicon-edit"></a></td>
+    <td>
+      <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.email}}"></a>
+    </td>
+  </tr>
 </table>
-  </div>
-</div>
-
-{% else %}
-<div class="panel panel-default">
- <div class="panel-heading">
-    <h4>Direccion
-      <a href="../../../direccion/nuevo" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-    </h4>
-  </div>
- <div class="panel-body">
-    <table class="table">
-      <tr>
-        <td><strong>Calle: </strong>{{ i.calle }} </td>
-        <td><strong>Zona: </strong>{{ i.zona }}</td>
-      </tr>
-      <tr>
-        <td><strong>Numero:  </strong> {{ i.numero }}</td>
-        <td><strong>Zip1: </strong>{{ i.tipo_direccion }}</td>
-      </tr>
-      <tr>
-        <td><strong>Piso:  </strong>{{ i.piso }}</td>
-        <td><strong>Punto de referencia: </strong>{{ i.punto_referencia }}</td>
-      </tr>
-      <tr>
-        <td><strong>Adicional: </strong>{{ i.adicional }}</td>
-        <td><strong>Tipo de direccion:  </strong>{{ i.tipo_direccion }}</td>
-      </tr>
-</table>
-  </div>
- </div>
-{% endif %}
-
-
 
 {% endblock content2 %}
 
 {% block content3 %}
 
-{% if lista_telefono_cliente %}
-<h4>Telefono</h4>
-<a href="../../../telefono/nuevo" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-<h6>Cantidad de telefono encontrados:
-  <span class="badge" id="count_reg">
-
-    {{ lista_telefono_cliente.count }}
-
-  </span>
-</h6>
-<table class="table table-hover" id="tabla" style="text-align: center;">
-<tr class="active">
-    <th>Tipo</th>
-    <th>Numero</th>
-    <th>Cliente</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
-</tr>
-
-{% for i in lista_telefono_cliente %}
-
-<tr id="tr{{i.id}}">
-    <td>{{ i.tipo_telefono }}</td>
-    <td>{{ i.numero }}</td>
-    <td>{{ i.cliente }}</td>
-    <td><a href="../../../telefono/editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a></td>
-    <td>
-        <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.numero}}"></a>
-  </td>
-</tr>
-
-{% endfor %}
-
-</table>
-{% else %}
-<h4>Telefono <a href="../../../telefono/nuevo" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a></h4>
-<table class="table table-hover" id="tabla" style="text-align: center;">
-<tr class="active">
-    <th>Tipo</th>
-    <th>Numero</th>
-    <th>Cliente</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
-    <th></th>
-</tr>
-</table>
-{% endif %}
-
 {% endblock content3 %}
 
 {% block content4 %}
-
-{% if lista_email %}
-<h4>Email</h4>
-<a href="../../email/nuevo" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-<h6>Cantidad de Email encontrados:
-  <span class="badge" id="count_reg">
-
-    {{ lista_email.count }}
-
-  </span>
-</h6>
-<table class="table table-hover" style="text-align: center;">
-<tr class="active">
-    <th>Email</th>
-    <th>Cliente</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
-</tr>
-
-{% for i in lista_email %}
-
-<tr id="tr{{i.id}}">
-    <td>{{ i.email }}</td>
-    <td>{{ i.cliente.nombre_principal }}</td>
-    <td><a href="email/editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a></td>
-    <td>
-        <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.email}}"></a>
-  </td>
-</tr>
-
-{% endfor %}
-
-</table>
-
-{% else %}
-
-<h4>Email <a href="../../email/nuevo" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a></h4>
-<table class="table table-hover" style="text-align: center;">
-<tr class="active">
-    <th>Email</th>
-    <th>Cliente</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
-</tr>
-</table>
-
-{% endif %}
 
 {% endblock content4 %}
