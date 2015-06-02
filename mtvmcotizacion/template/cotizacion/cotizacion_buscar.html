@@ -3,15 +3,9 @@
 
 {% if buscar_cotizacion %}
 
-<h6>Cantidad de registros encontrados:
-  <span class="badge" id="count_reg">
-    {{ buscar_cotizacion.count }}
-  </span>
-</h6>
+<table class="table table-hover" id="adm">
 
-  <table class="table table-hover" id="adm">
-
-   <tr class="active">
+  <tr class="active">
     <th  colspan="2">Datos administrativos</th>
 
   </tr>
@@ -35,49 +29,225 @@
     <td>{{ i.cotizador }}</td>
   </tr>
 
-    <tr>
-      <td>Creado por</td>
-      <td>{{ i.creadopor }}</td>
-    </tr>
-    <tr>
-      <td>Fecha de creación</td>
-      <td>{{ i.fecha_creacion }}</td>
-    </tr>
-    <tr>
-      <td>Fecha de culminación</td>
-      <td>{{ i.fecha_culminacion }}</td>
-    </tr>
-    <tr>
-      <td>Fecha estimada de la mudanza</td>
-      <td>{{ i.fecha_estimadamudanza }}</td>
-    </tr>
-    <tr>
-      <td>Monto por muebles</td>
-      <td>{{ i.monto_muebles }}</td>
-    </tr>
-    <tr>
-      <td>Monto por material</td>
-      <td>{{ i.monto_material }}</td>
-    </tr>
-    <tr>
-      <td>Monto de descuento</td>
-      <td>{{ i.monto_descuento }}</td>
-    </tr>
-    <tr>
-      <td>Total sin impuesto</td>
-      <td>{{ i.total_sin_impuesto }}</td>
-    </tr>
-    <tr>
-      <td>Monto del impuesto</td>
-      <td>{{ i.monto_impuesto }}</td>
-    </tr>
-    <tr>
-      <td>Total con impuesto</td>
-      <td>{{ i.total_con_impuesto }}</td>
-    </tr>
-
-    <input type="hidden" value="{{i.id}}" id="idtele">
+  <tr>
+    <td>Creado por</td>
+    <td>{{ i.creadopor }}</td>
   </tr>
+  <tr>
+    <td>Fecha de creación</td>
+    <td>{{ i.fecha_creacion }}</td>
+  </tr>
+  <tr>
+    <td>Fecha de culminación</td>
+    <td>{{ i.fecha_culminacion }}</td>
+  </tr>
+  <tr>
+    <td>Fecha estimada de la mudanza</td>
+    <td>{{ i.fecha_estimadamudanza }}</td>
+  </tr>
+
+
+  {% endfor %}
+
+</table>
+
+<table class="table table-hover" id="logistica">
+
+  <tr class="active">
+    <th  colspan="2">Datos logisticos</th>
+  </tr>
+
+  {% for i in buscar_cotizacion %}
+
+  <tr>
+    <td>Inmueble</td>
+    <td>{{ i.inmueble }}</td>
+  </tr>
+  <tr>
+    <td>Tipo de inmueble</td>
+    <td>{{ i.inmueble.tipo_inmueble }}</td>
+  </tr>
+  <tr>
+    <td>Pisos</td>
+    <td>{{ i.inmueble.pisos }}</td>
+  </tr>
+  <tr>
+    <td>Pisos por escalera</td>
+    <td>{{ i.inmueble.pisos_escalera }}</td>
+  </tr>
+  <tr>
+    <td>Rampa</td>
+    <td>
+      {% if i.inmueble.rampa %}
+
+      Si
+
+      {% else %}
+
+      No
+      {% endif %}
+
+    </td>
+  </tr>
+  <tr>
+    <td>Ascensor</td>
+    <td>
+      {% if i.inmueble.ascensor %}
+
+      Si
+
+      {% else %}
+
+      No
+      {% endif %}
+    </td>
+  </tr>
+  <tr>
+    <td>Pisos por ascensor</td>
+    <td>{{ i.inmueble.pisos_ascensor }}</td>
+  </tr>
+  <tr>
+    <td>Ascensor de servicio</td>
+    <td>
+      {% if i.inmueble.ascensor_servicio %}
+
+      Si
+
+      {% else %}
+
+      No
+      {% endif %}
+    </td>
+  </tr>
+  <tr>
+    <td>Pisos por ascensor de servicio</td>
+    <td>{{ i.inmueble.pisos_ascensor_servicio }}</td>
+  </tr>
+  <tr>
+    <td>Complejidad</td>
+    <td>{{ i.inmueble.complejidad }}</td>
+  </tr>
+  <tr>
+    {% if det_direccion %}
+
+    {% for det_dir in det_direccion %}
+
+    {% if det_dir.tipo_direccion == 'Origen' %}
+
+    <td>direccion origen</td>
+    <td>{{ det_dir.direccion }}</td>
+
+    {% endif %}
+
+    {% endfor %}
+
+    {% else %}
+
+    <td>direccion</td>
+    <td></td>
+
+    {% endif %}
+
+  </tr>
+  <tr>
+    {% if det_direccion %}
+
+    {% for det_dir in det_direccion %}
+
+    {% if det_dir.tipo_direccion == 'Destino' %}
+
+    <td>direccion destino</td>
+    <td>{{ det_dir.direccion }}</td>
+
+    {% endif %}
+
+    {% endfor %}
+
+    {% else %}
+
+    <td>direccion</td>
+    <td></td>
+
+    {% endif %}
+
+  </tr>
+  <tr>
+    <td>Distancia de vehiculo al inmueble</td>
+    <td>{{ i.inmueble.distancia_vehiculo }}</td>
+  </tr>
+  <tr>
+    <td>Tiempo de carga</td>
+    <td>{{ i.tiempo_carga }}</td>
+  </tr>
+  <tr>
+    <td>Total m3</td>
+    <td>{{total_m}}
+
+    </td>
+  </tr>
+  <tr>
+    {% if det_trabajador %}
+
+    {% for det_trab in det_trabajador %}
+
+    {% if det_trab.cargo.cargo == 'Ayudante' %}
+
+    <td>Cantidad de ayudante</td>
+    <td>{{ det_trab.cantidad }}</td>
+
+    {% endif %}
+
+    {% endfor %}
+
+    {% else %}
+
+    <td>Cantidad de ayudante</td>
+    <td></td>
+
+    {% endif %}
+  </tr>
+  <tr>
+    {% if det_trabajador %}
+
+    {% for det_trab in det_trabajador %}
+
+    {% if det_trab.cargo.cargo == 'Chofer' %}
+
+    <td>Cantidad de chofer</td>
+    <td>{{ det_trab.cantidad }}</td>
+
+    {% endif %}
+
+    {% endfor %}
+
+    {% else %}
+
+    <td>Cantidad de chofer</td>
+    <td></td>
+
+    {% endif %}
+  </tr>
+
+  {% if det_vehiculo %}
+
+  {% for det_veh in det_vehiculo %}
+  <tr>
+    <td>Vehiculo</td>
+    <td>{{ det_veh.vehiculo.modelo }}</td>
+  </tr>
+  <tr>
+    <td>Cantidad de vehiculo</td>
+    <td>{{ det_veh.cantidad }}</td>
+  </tr>
+
+  {% endfor %}
+
+  {% else %}
+
+  <td>Cantidad de vehiculo</td>
+  <td></td>
+
+  {% endif %}
 
   {% endfor %}
 
@@ -85,49 +255,170 @@
 
 <table class="table table-hover" id="mudanza">
 
-   <tr class="active">
-    <th>nro cotización</th>
-    <th>cliente</th>
-    <th>inmueble</th>
-    <th>tipo inmueble</th>
-    <th>direccion origen</th>
-    <th>direccion destino</th>
+  <tr class="active">
+    <th  colspan="2">Datos de la mudanza</th>
 
   </tr>
 
   {% for i in buscar_cotizacion %}
 
-  <tr id="tr{{i.id}}">
-    <td>{{ i.numero_cotizacion }}</td>
-    <td>{{ i.cliente.nombre_principal }}</td>
-    <td>{{ i.inmueble.inmueble }}</td>
-    <td>{{ i.inmueble.tipo_inmueble }}</td>
-
-    {% for det_dir in det_direccion %}
-
-    {% if det_dir.tipo_direccion == 'Origen' %}
-        <td>{{ det_dir.direccion }}</td>
-    {% endif %}
-
-    {% if det_dir.tipo_direccion == 'Destino' %}
-        <td>{{ det_dir.direccion }}</td>
-    {% endif %}
-
-    {% endfor %}
-
-    {{ det_direccion.count }}
-    {{ det_vehiculo.count }}
-    {{ det_trabajador.count }}
-    {{ det_ambiente.count }}
-
-
-    <input type="hidden" value="{{i.id}}" id="idtele">
+  <tr>
+    <td>Estado</td>
+    <td>{{ i.estado }}</td>
+  </tr>
+  <tr>
+    <td>Cantidad de ambientes</td>
+    <td>{{ i.cantidad_ambientes }}</td>
+  </tr>
+  <tr>
+    <td>cantidad de contenedores</td>
+    <td>{{ i.cantidad_contenedores }}</td>
+  </tr>
+  <tr>
+    <td>Cantidad de muebles</td>
+    <td>{{ i.cantidad_muebles }}</td>
   </tr>
 
   {% endfor %}
 
 </table>
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
+
+<table class="table table-hover" id="economia">
+  <tr class="active">
+    <th  colspan="2">Datos de la economia</th>
+  </tr>
+
+  {% for i in buscar_cotizacion %}
+
+  <tr>
+    <td>Monto por muebles</td>
+    <td>{{ i.monto_muebles }}</td>
+  </tr>
+  <tr>
+    <td>Monto por material</td>
+    <td>{{ i.monto_material }}</td>
+  </tr>
+  <tr>
+    <td>Monto de descuento</td>
+    <td>{{ i.monto_descuento }}</td>
+  </tr>
+  <tr>
+    <td>Total sin impuesto</td>
+    <td>{{ i.total_sin_impuesto }}</td>
+  </tr>
+  <tr>
+    <td>Monto del impuesto</td>
+    <td>{{ i.monto_impuesto }}</td>
+  </tr>
+  <tr>
+    <td>Total con impuesto</td>
+    <td>{{ i.total_con_impuesto }}</td>
+  </tr>
+
+  {% endfor %}
+
+</table>
+
+<table class="table table-hover" id="detalle">
+
+  <tr class="active">
+    <th  colspan="12">Detalles de la cotización</th>
+
+  </tr>
+
+  {% for i in det_ambiente %}
+
+  <tr>
+    <td colspan="12"><h4>Ambiente: {{ i.ambiente.ambiente }}</h4></td>
+  </tr>
+   <tr>
+    <td>Piso</td>
+    <td>Factor del piso</td>
+    <td>Cantidad de muebles</td>
+    <td>Volumen de los muebles</td>
+    <td>Peso de los muebles</td>
+    <td>Cantidad de contenedores</td>
+    <td>Volumen de los contenedores</td>
+    <td>Peso de los contenedores</td>
+    <td>Volumen de los contenidos</td>
+    <td>Peso de los contenidos</td>
+    <td>Peso de los materiales</td>
+    <td>Observaciones</td>
+  </tr>
+  <tr>
+    <td>{{ i.piso }}</td>
+    <td>{{ i.piso.factor }}</td>
+    <td>{{ i.cantidad_muebles }}</td>
+    <td>{{ i.volumen_muebles }}</td>
+    <td>{{ i.peso_muebles }}</td>
+    <td>{{ i.cantidad_contenedores }}</td>
+    <td>{{ i.volumen_contenedores }}</td>
+    <td>{{ i.peso_contenedores }}</td>
+    <td>{{ i.volumen_contenidos }}</td>
+    <td>{{ i.peso_contenidos }}</td>
+    <td>{{ i.peso_materiales }}</td>
+    <td>{{ i.observaciones }}</td>
+  </tr>
+  <tr>
+    <td colspan="12">
+       {% if det_mueble %}
+       <table class="table table-hover">
+
+        {% for det_mue in det_mueble %}
+
+        {% if det_mue.cotizacion_ambiente == i %}
+
+        <tr>
+          <td colspan="14"><h4>Mueble: {{ det_mue.mueble }}</h4></td>
+        </tr>
+        <tr>
+          <td>Tipo de mueble </td>
+          <td>Tamaño </td>
+          <td>Ancho </td>
+          <td>Alto </td>
+          <td>Largo </td>
+          <td>Volumen </td>
+          <td>Capacidad </td>
+          <td>Ocupación </td>
+          <td>Forma </td>
+          <td>Trasladable </td>
+          <td>Apilable </td>
+          <td>Capacidad de carga </td>
+          <td>Capacidad de interna </td>
+          <td>observaciones </td>
+        </tr>
+        <tr>
+          <td>{{ det_mue.mueble.tipo_mueble }} </td>
+          <td>{{ det_mue.tamano }} </td>
+          <td>{{ det_mue.ancho }} </td>
+          <td>{{ det_mue.alto }} </td>
+          <td>{{ det_mue.largo }} </td>
+          <td>{{ det_mue.volumen }} </td>
+          <td>{{ det_mue.capacidad }} </td>
+          <td>{{ det_mue.ocupacion }} </td>
+          <td>{{ det_mue.forma }} </td>
+          <td>{{ det_mue.trasladable }} </td>
+          <td>{{ det_mue.apilable }} </td>
+          <td>{{ det_mue.capacidad_carga }} </td>
+          <td>{{ det_mue.capacidad_interna }} </td>
+          <td>{{ det_mue.observaciones }} </td>
+        </tr>
+
+        {% endif %}
+
+        {% endfor %}
+
+       </table>
+
+       {% endif %}
+
+    </td>
+  </tr>
+
+  {% endfor %}
+
+</table>
+
 </div>
 
 {% else %}
