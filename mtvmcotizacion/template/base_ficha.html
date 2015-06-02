@@ -1,43 +1,52 @@
 {% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link href="/static/css/estilosForm.css" rel="stylesheet">
     <link href="/static/bootstrap/css/bootstrap3.css" rel="stylesheet">
-    {% block titulo %}{% endblock titulo %}
-</head>
 
+    {% block titulo %}{% endblock titulo %}
+
+</head>
 <body>
 
     {% block header %}{% endblock header %}
-
     {% block nav %}
     {% include "nav.html" %}
     {% endblock nav %}
 
     <div class="row">
         <div class="col-md-1">
+        </div>
 
-        </div>
-        <div class="col-md-6">
-            {% block content %}{% endblock content%}
-        </div>
-        <div class="col-md-4">
-            {% block ayuda %}{% endblock ayuda %}
+{% block col %}
+
+<div class="col-md-5">
+
+{% endblock col %}
+{% block content %}{% endblock content %}
+
+</div>
+
+{% block col2 %}
+
+<div class="col-md-5">
+
+{% endblock col2 %}
+{% block content2 %}{% endblock content2%}
+
         </div>
         <div class="col-md-1">
-
         </div>
     </div>
 
-    {% block footer %}{% endblock footer %}
-
+    {% block footer %}{% endblock%}
     {% block script %}
     {% include "script.html" %}
-    {% endblock script %}
+    {% endblock%}
 
 </body>
 </html>

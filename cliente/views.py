@@ -174,7 +174,7 @@ def add_email(request):
         email_form = EmailForm()
         mensaje = ''
 
-    return render_to_response('cliente/cliente_add.html',
+    return render_to_response('cliente/Emailcliente_add.html',
                               {'email_form': email_form, 'create': True, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
@@ -221,7 +221,7 @@ def edit_email(request, id_cli, pk):
             form_edit_email.save()
 
             #return HttpResponseRedirect(reverse('uclientes:lista_email'))
-            return HttpResponseRedirect('../../../')
+            return HttpResponseRedirect('../../')
     else:
         # formulario inicial
         form_edit_email = EmailForm(instance=id_email)
@@ -229,3 +229,19 @@ def edit_email(request, id_cli, pk):
     return render_to_response('cliente/emailcliente_edit.html',
                               {'form_edit_email': form_edit_email, 'create': False},
                               context_instance=RequestContext(request))
+
+
+def ficha_cliente(request, pk):
+
+    lista_cliente = Cliente.objects.filter(pk=pk)
+    lista_email = Email.objects.filter(cliente_id=pk)
+    lista_telefono_cliente = Telefono.objects.filter(cliente=pk)
+    direccioncliente_lista = Direccion.objects.filter(cliente=pk)
+
+    context = {
+        'lista_cliente': lista_cliente,
+        'lista_email': lista_email,
+        'lista_telefono_cliente': lista_telefono_cliente,
+        'direccioncliente_lista': direccioncliente_lista
+        }
+    return render(request, 'cliente/cliente_ficha.html', context)

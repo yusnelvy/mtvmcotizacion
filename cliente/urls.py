@@ -14,5 +14,7 @@ urlpatterns = patterns('',
                            name='lista_telefono_cliente'),
                        url(r'^direccion/(?P<id_cli>\d+)/$', views.lista_direccioncliente,
                            name='lista_direccioncliente'),
+                       url(r'^cliente_ficha/(?P<pk>\d+)/$', views.ficha_cliente, \
+                           name = 'ficha_cliente'),
 
                        )
