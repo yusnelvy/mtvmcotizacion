@@ -180,6 +180,38 @@
     <td>{{ i.tiempo_carga }}</td>
   </tr>
   <tr>
+    <td>Peso de muebles</td>
+    <td>{{ i.peso_muebles}}</td>
+  </tr>
+  <tr>
+    <td>Volumen de muebles sugeridos</td>
+    <td>{{ i.volumen_muebles_sugerido }}</td>
+  </tr>
+  <tr>
+    <td>Volumen de muebles cotizados</td>
+    <td>{{ i.volumen_muebles_cotizado }}</td>
+  </tr>
+  <tr>
+    <td>Peso de contenedores</td>
+    <td>{{ i.peso_contenedores}}</td>
+  </tr>
+  <tr>
+    <td>Volumen de contenedores</td>
+    <td>{{ i.volumen_contenedores }}</td>
+  </tr>
+  <tr>
+    <td>Peso de contenidos</td>
+    <td>{{ i.peso_contenidos }}</td>
+  </tr>
+  <tr>
+    <td>Volumen de contenidos</td>
+    <td>{{ i.volumen_contenidos }}</td>
+  </tr>
+  <tr>
+    <td>Peso de materiales</td>
+    <td>{{ i.peso_materiales }}</td>
+  </tr>
+  <tr>
     <td>Total m3</td>
     <td>{{total_m}}
 
@@ -236,6 +268,14 @@
     <td>{{ det_veh.vehiculo.modelo }}</td>
   </tr>
   <tr>
+    <td>Capacidad de volumen</td>
+    <td>{{ det_veh.vehiculo.capacidad_volumen }}</td>
+  </tr>
+  <tr>
+    <td>Capacidad de peso</td>
+    <td>{{ det_veh.vehiculo.capacidad_peso }}</td>
+  </tr>
+  <tr>
     <td>Cantidad de vehiculo</td>
     <td>{{ det_veh.cantidad }}</td>
   </tr>
@@ -248,6 +288,15 @@
   <td></td>
 
   {% endif %}
+
+  <tr>
+    <td>Total recorrido por tiempo </td>
+    <td>{{ i.total_recorrido_tiempo }}</td>
+  </tr>
+  <tr>
+    <td>Total recorrido por km </td>
+    <td>{{ i.total_recorrido_km }}</td>
+  </tr>
 
   {% endfor %}
 
@@ -329,7 +378,7 @@
   {% for i in det_ambiente %}
 
   <tr>
-    <td colspan="12"><h4>Ambiente: {{ i.ambiente.ambiente }}</h4></td>
+    <td colspan="12"><h4>Ambiente {{forloop.counter}}: {{ i.ambiente.ambiente }}</h4></td>
   </tr>
    <tr>
     <td>Piso</td>
@@ -397,11 +446,139 @@
           <td>{{ det_mue.capacidad }} </td>
           <td>{{ det_mue.ocupacion }} </td>
           <td>{{ det_mue.forma }} </td>
-          <td>{{ det_mue.trasladable }} </td>
-          <td>{{ det_mue.apilable }} </td>
-          <td>{{ det_mue.capacidad_carga }} </td>
-          <td>{{ det_mue.capacidad_interna }} </td>
+          <td>
+
+            {% if det_mue.trasladable %}
+
+            Si
+
+            {% else %}
+
+            No
+
+            {% endif %}
+
+          </td>
+          <td>
+
+            {% if det_mue.apilable %}
+
+            Si
+
+            {% else %}
+
+            No
+
+            {% endif %}
+
+          </td>
+          <td>
+
+            {% if det_mue.capacidad_carga %}
+
+            Si
+
+            {% else %}
+
+            No
+
+            {% endif %}
+
+          </td>
+          <td>
+
+            {% if det_mue.capacidad_interna %}
+
+            Si
+
+            {% else %}
+
+            No
+
+            {% endif %}
+
+          </td>
           <td>{{ det_mue.observaciones }} </td>
+        </tr>
+
+        {% if det_servicio %}
+
+        <tr>
+          <td colspan="14">
+          <h4>Servicio</h4>
+          </td>
+        </tr>
+        <tr>
+          <td td colspan="14">
+
+          {% for det_ser in det_servicio %}
+
+          {% if det_ser.cotizacion_mueble == det_mue %}
+
+            {{ det_ser.servicio }} -
+
+          {% endif %}
+
+        {% endfor %}
+
+          </td>
+        </tr>
+
+        {% endif %}
+
+        <tr>
+          <td colspan="14">
+
+            {% if det_material %}
+
+            <table class="table table-hover">
+
+              {% for det_mat in det_material %}
+
+              {% if det_mat.cotizacion_mueble == det_mue %}
+
+              <tr>
+                <td colspan="6"><h4>material: {{ det_mat.material }}</h4></td>
+              </tr>
+              <tr>
+                <td>Cantidad </td>
+                <td>Precio unitario</td>
+                <td>Precio total</td>
+                <td>Peso unitario</td>
+                <td>Peso total</td>
+                <td>Recuperable</td>
+              </tr>
+              <tr>
+                <td>{{ det_mat.cantidad }} </td>
+                <td>{{ det_mat.precio_unitario }}</td>
+                <td>{{ det_mat.precio_total }}</td>
+                <td>{{ det_mat.peso_unitario }}</td>
+                <td>{{ det_mat.peso_total }}</td>
+                <td>
+                  {% if det_mat.recuperable %}
+
+                  Si
+
+                  {% else %}
+
+                  No
+
+                  {% endif %}
+
+                </td>
+              </tr>
+          </td>
+        <tr>
+
+              {% endif %}
+
+              {% endfor %}
+
+            </table>
+
+            {% endif %}
+
+          </td>
         </tr>
 
         {% endif %}

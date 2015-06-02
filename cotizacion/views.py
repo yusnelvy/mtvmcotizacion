@@ -447,6 +447,8 @@ def buscar_cotizacion(request, pk):
     det_trabajador = Cotizacion_trabajador.objects.filter(cotizacion_id=pk)
     det_ambiente = Cotizacion_Ambiente.objects.filter(cotizacion_id=pk)
     det_mueble = Cotizacion_Mueble.objects.filter(cotizacion_ambiente__cotizacion_id=pk)
+    det_servicio = Cotizacion_Servicio.objects.filter(cotizacion_mueble__cotizacion_ambiente__cotizacion_id=pk)
+    det_material = Cotizacion_Material.objects.filter(cotizacion_mueble__cotizacion_ambiente__cotizacion_id=pk)
 
     for modelObject in buscar_cotizacion:
         suma = modelObject.volumen_contenedores + modelObject.volumen_muebles_cotizado
@@ -458,7 +460,9 @@ def buscar_cotizacion(request, pk):
         'det_trabajador': det_trabajador,
         'det_ambiente': det_ambiente,
         'total_m': suma,
-        'det_mueble': det_mueble
+        'det_mueble': det_mueble,
+        'det_servicio': det_servicio,
+        'det_material': det_material
 
     }
     return render(request, 'cotizacion/cotizacion_buscar.html', context)
