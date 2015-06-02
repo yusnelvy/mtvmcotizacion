@@ -2,14 +2,14 @@
 
 {% block titulo %}
 
-<title>Contenedores</title>
+<title>Tipos de contenedores</title>
 
 {% endblock titulo %}
 
 {% block titulo_modal %}
 
 <div class="modal-header">
-  <h3 id="myModalLabel">Eliminar contenedor</h3>
+  <h3 id="myModalLabel">Eliminar tipo de contenedor</h3>
 </div>
 
 {% endblock titulo_modal %}
@@ -22,7 +22,7 @@
 
 {% block titulo_tabla %}
 
-<h2>Contenedores</h2>
+<h2>Tipos de contenedores</h2>
 
 {% endblock titulo_tabla %}
 
@@ -30,7 +30,7 @@
 
 {% block cantidad_tabla %}
 
-<h6>Contenedores registrados:
+<h6>Tipos de contenedores registrados:
   <span class="badge" id="count_reg">
 
     {{ lista_contenedor.count }}
@@ -43,9 +43,10 @@
 {% block cuerpo_tabla %}
 
    <tr class="active">
-    <th>Contenedor</th>
+    <th>Tipo de contenedor</th>
     <th>Volúmen (m3)</th>
     <th>Peso (Kgs)</th>
+    <th>Retornable</th>
     <th>Editar</th>
     <th>Eliminar</th>
   </tr>
@@ -56,6 +57,13 @@
     <td>{{ i.contenedor }}</td>
     <td>{{ i.capacidad_volumen }}</td>
     <td>{{ i.capacidad_peso }}</td>
+    <td>
+
+      {% if i.retornable %} Sí
+      {% else %} No
+      {% endif %}
+
+    </td>
     <td>
       <a href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
     </td>
@@ -74,10 +82,10 @@
 {% block ayuda %}
 
 <div class="well well-lg">
-  <p>El <strong>Contenedor</strong> permite trasladar los <strong>Contenidos</strong> encontrados en los <strong>Muebles</strong> durante una mudanza.</p>
-  <p>Se cuenta con <strong>Contenedores</strong> retornables como los <i>Canastos</i> y descartables como las <i>Cajas de cartón</i>.</p>
-  <p>Un <strong>Contenedor</strong> retornable no incide sobre el precio de la cotización, a diferencia del contenedor no retornable que será un costo para el cliente.</p>
-  <p>De los <strong>Contenedores</strong> se considera importante para la logística el volúmen y peso que pueden llevar, así como el volúmen y peso que ellos mismos representan para la carga de los camiones.</p>
+  <p>El <strong>Tipo de contenedor</strong> permite trasladar los <strong>Contenidos</strong> encontrados en los <strong>Muebles</strong> durante una mudanza.</p>
+  <p>Se cuenta con <strong>Tipos de contenedores</strong> retornables como los <i>Canastos</i> y descartables como las <i>Cajas de cartón</i>.</p>
+  <p>Un <strong>Tipo de contenedor</strong> retornable no incide sobre el precio de la cotización, a diferencia del <strong>Tipo de contenedor</strong> no retornable que será un costo para el cliente.</p>
+  <p>De los <strong>Tipos de contenedores</strong> se considera importante para la logística el volúmen y peso que pueden llevar, así como el volúmen y peso que ellos mismos representan para la carga de los camiones.</p>
 </div>
 
 {% endblock ayuda %}

@@ -1,65 +1,85 @@
- {% extends 'base3.html' %}
- {% block content %}
+{% extends 'base_lista.html' %}
 
-<!--IniciaModal-->
- <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-    <h3 id="myModalLabel">Eliminar modelo</h3>
-    </div>
-    <div class="modal-body">
-    <p>¿Realmente desea eliminar el modelo <span id="modal_name"></span>?</p>
-    </div>
-    <div class="modal-footer">
-        <form method="post" id="frmEliminar">
-            {% csrf_token %}
-            <input type="hidden" id="modal_id" name="item_id">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-            <button type="submit" class="btn btn-danger">Eliminar</button>
-        </form>
-    </div>
+{% block titulo %}
+
+<title>Modelos de vehículos</title>
+
+{% endblock titulo %}
+
+{% block titulo_modal %}
+
+<div class="modal-header">
+  <h3 id="myModalLabel">Eliminar modelo de vehículos</h3>
 </div>
-<!--EndModal-->
+
+{% endblock titulo_modal %}
+
+{% block validacion_modal %}
+
+<p>¿Realmente desea eliminar el registro: <strong id="modal_name"></strong>?</p>
+
+{% endblock validacion_modal %}
+
+{% block titulo_tabla %}
+
+<h2>Modelos de vehículo</h2>
+
+{% endblock titulo_tabla %}
+
 {% if lista_vehiculo %}
+
+{% block cantidad_tabla %}
 
 <h6>Cantidad de registros encontrados:
   <span class="badge" id="count_reg">
+
     {{ lista_vehiculo.count }}
+
   </span>
 </h6>
 
-  <table class="table table-hover" id="tabla">
+{% endblock cantidad_tabla %}
 
-   <tr class="active">
-    <th>modelo</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
-  </tr>
+{% block cuerpo_tabla %}
 
-  {% for i in lista_vehiculo %}
+<tr class="active">
+  <th>Modelo</th>
+  <th>Tarifa $/h</th>
+  <th>Tarifa $/Km</th>
+  <th>Capacidad m3</th>
+  <th>Capacidad Kgs</th>
+  <th>Editar</th>
+  <th>Eliminar</th>
+</tr>
 
-  <tr id="tr{{i.id}}">
-    <td>{{ i.modelo }}</td>
-    <td>
-      <a href="editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
-      {# <button id ="editar" data-telid="{{i.id}}" class="btn btn-mini btn-primary" type="button">editar</button> #}
-    </td>
-    <td>
-      <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.modelo}}"><i class="icon-trash icon-white"></i>Eliminar</a>
-    </td>
-    <input type="hidden" value="{{i.id}}" id="idtele">
-  </tr>
+{% for i in lista_vehiculo %}
 
-  {% endfor %}
+<tr id="tr{{i.id}}">
+  <td>{{ i.modelo }}</td>
+  <td>{{ i.tarifa_hora }}</td>
+  <td>{{ i.tarifa_recorrido }}</td>
+  <td>{{ i.capacidad_volumen }}</td>
+  <td>{{ i.capacidad_peso }}</td>
+  <td>
+    <a href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
+  </td>
+  <td>
+    <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.modelo}}"></a>
+  </td>
+  <input type="hidden" value="{{i.id}}" id="idtele">
+</tr>
 
-</table>
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
-</div>
+{% endfor %}
 
-{% else %}
-
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
-<p> No se encontro registro.</p>
+{% endblock cuerpo_tabla %}
 
 {% endif %}
 
-{% endblock %}
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>Los <strong>Modelos de vehículo</strong> representan a los tipos de vehículos con los que cuenta la empresa, y que permite utilizar sus características físicas para estimar las necesidades de una mudanza.</p>
+  <p>Las características declaradas en esta sección se comparan con el volúmen y peso total de <strong>Muebles</strong> y <strong>Contenidos</strong> a trasladar, para proponer cuáles y cuántos <strong>Modelos de vehículos</strong> se deberán aplicar para el traslado.</p>
+</div>
+
+{% endblock ayuda %}

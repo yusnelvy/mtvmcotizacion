@@ -1,14 +1,34 @@
-<div class="col-md-1"></div>
-<div class="col-md-4">
-    <h2>Agregar cargo</h2>
-    <form action="" method="post">
-        {% csrf_token %}
+{% extends "base_edit.html" %}
 
-        <div class="form-group">
-            {{ form_cargotrabajador.as_p }}
+{% block titulo %}
 
-        </div>
-        <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
-    </form>
+<title>Agregar rol de trabajador</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+  <h2>Agregar rol de trabajador</h2>
+
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ form_cargotrabajador.as_p }}
+
+
 </div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>Los <strong>Roles de trabajador</strong> son figuras que representan roles aplicados durante las mudanzas, cuya aplicación en la misma genera un costo, que podrá modificarse para asignar más cantidad o calidad de recursos para lograr mejor tiempo de carga y descarga.</p>
+  <p>Los <strong>Roles de trabajador</strong> se diferencian de los <i>cargos laborales</i> porque en este caso se asocian a un nivel de productividad y una tarifa basada en el rol, que no se distingue en los últimos.</p>
+</div>
+
+{% endblock ayuda %}

@@ -12,18 +12,34 @@ class EstadoCotizacionForm(ModelForm):
     class Meta:
         model = Estado_Cotizacion
         fields = '__all__'
+        labels = {
+            'estado': ('Estado de cotización'),
+        }
 
 
 class PisoForm(ModelForm):
     class Meta:
         model = Piso
         fields = '__all__'
+        labels = {
+            'piso': ('Piso del ambiente'),
+            'factor': ('N° de pisos adicionales a recorrer')
+        }
 
 
 class TiempoCargaForm(ModelForm):
     class Meta:
         model = Tiempo_Carga
         fields = '__all__'
+        labels = {
+            'tiempo_carga': ('Tiempo de carga'),
+            'volumen_min': ('Volúmen menor en m3'),
+            'volumen_max': ('Volúmen mayor en m3'),
+            'nro_objeto_min': ('Cantidad menor'),
+            'nro_objeto_max': ('Cantidad mayor'),
+            'peso_min': ('Peso menor en Kgs'),
+            'peso_max': ('Peso mayor en Kgs')
+        }
 
 
 class CotizacionForm(ModelForm):
@@ -36,6 +52,13 @@ class VehiculoForm(ModelForm):
     class Meta:
         model = Vehiculo
         fields = '__all__'
+        labels = {
+            'modelo': ('Modelo de vehículo'),
+            'tarifa_hora': ('Tarifa por tiempo en $/h'),
+            'tarifa_recorrido': ('Tarifa por recorrido en $/Km'),
+            'capacidad_volumen': ('Capacidad en m3'),
+            'capacidad_peso': ('Capacidad en Kgs')
+        }
 
 
 class VehiculoCotizacionForm(ModelForm):
