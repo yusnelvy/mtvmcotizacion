@@ -164,8 +164,9 @@ def add_email(request):
         try:
             email_form = EmailForm(request.POST)
             if email_form.is_valid():
-                email_form.save()
-                return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
+                id_reg = email_form.save()
+                id_cli = Email.objects.get(id=id_reg.id)
+                return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
         except Exception as ex:
             mensaje = "se ha producido un error"+str(ex)
             email_form = EmailForm()
@@ -195,11 +196,9 @@ def edit_cliente(request, pk):
 
         if editar_clie.is_valid():
             # formulario validado correctamente
-            id_reg = editar_clie.save()
-            id_cli = Direccion.objects.get(id=id_reg.id)
-
+            editar_clie.save()
             #return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
-            return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
+            return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_clie.id,)))
 
     else:
         # formulario inicial

@@ -1,4 +1,4 @@
-{% extends 'base_ficha.html' %}
+{% extends 'inicio/base_ficha.html' %}
 
 {% block titulo %}
 
@@ -97,6 +97,18 @@
 
               {% endfor %}
 
+              {% else %}
+
+              <tr>
+                <td><strong>Telefono: </strong></td>
+                <td></td>
+                <td>
+                  <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../../telefono/nuevo" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+
               {% endif %}
 
               {% if lista_email %}
@@ -117,22 +129,31 @@
 
               {% endfor %}
 
+              {% else %}
+
+              <tr>
+                <td><strong>Email: </strong></td>
+                <td></td>
+                <td><a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../email/nuevo" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a></td>
+                <td></td>
+                <td></td>
+              </tr>
+
               {% endif %}
 
               {% if direccioncliente_lista %}
 
           {% for i in direccioncliente_lista %}
 
-
           <tr>
             <td><strong>{{ i.tipo_direccion }}</strong></td>
             <td>
               <p>
-                <strong>{{ i.zona.ciudad }}</strong> Zona del <strong>{{ i.zona }}</strong>
-                calle <strong>{{ i.calle }}</strong> numero <strong>{{ i.numero }}</strong>
+                {{ i.zona.ciudad }} Zona {{ i.zona }}
+                calle {{ i.calle }} numero {{ i.numero }}
               </p>
                <p>
-                Punto de referencia <strong>{{ i.punto_referencia }}</strong>
+                Punto de referencia {{ i.punto_referencia }}
               </p>
             </td>
             <td>
@@ -147,6 +168,18 @@
           </tr>
 
           {% endfor %}
+
+          {% else %}
+
+          <tr>
+            <td><strong>Direccion</strong></td>
+            <td></td>
+            <td>
+              <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="../../../direccion/nuevo" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus">
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
 
           {% endif %}
 
