@@ -17,6 +17,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterModelOptions(
             name='vehiculo',
-            options={'verbose_name': 'Vehiculo', 'ordering': ['-tarifa_hora'], 'verbose_name_plural': 'Vehiculos'},
+            options={'verbose_name': 'Vehiculo', 'verbose_name_plural': 'Vehiculos', 'ordering': ['-tarifa_hora']},
         ),
     ]

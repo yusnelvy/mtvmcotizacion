@@ -25,6 +25,9 @@ class ComplejidadForm(ModelForm):
     class Meta:
         model = Complejidad
         fields = '__all__'
+        labels = {
+            'descripcion': ('Nivel de complejidad')
+        }
 
 
 class ComplejidadServicioForm(ModelForm):

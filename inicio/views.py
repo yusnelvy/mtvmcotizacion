@@ -13,4 +13,4 @@ def pantalla_inicial(request):
     # Funcion para levantar la pantalla inicial del sistema
     #
 
-    return render(request, 'base_menu.html')
+    return render(request, 'inicio/base_menu.html')

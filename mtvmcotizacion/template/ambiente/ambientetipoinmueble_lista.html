@@ -1,101 +1,92 @@
-{% extends 'base3.html' %}
+{% extends 'inicio/base_lista.html' %}
 
 {% block titulo %}
 
 <title>Ambiente tipo inmueble</title>
 
-{% endblock %}
+{% endblock titulo %}
 
-{% block header %}{% endblock %}
+{% block titulo_modal %}
 
-{% block content %}
+<h3 id="myModalLabel">Eliminar servicio</h3>
 
-<!--IniciaModal-->
-<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="myModalLabel"></h3>
-      </div>
-      <div class="modal-body">
-        <p>¿Eliminar la relacion ambiente - tipo inmueble <span id="modal_name"></span>?</p>
-      </div>
-      <div class="modal-footer">
-        <form method="post" id="frmEliminar">
+{% endblock titulo_modal %}
 
-          {% csrf_token %}
+{% block validacion_modal %}
 
-          <input type="hidden" id="modal_id" name="item_id">
-          <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-          <button type="submit" class="btn btn-default">Si</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-<!--EndModal-->
+<p>¿Realmente desea eliminar el servicio <span id="modal_name"></span>?</p>
+
+{% endblock validacion_modal %}
 
 {% if lista_ambtipoinmueble %}
 
-<h2>Ambientes por tipo de inmueble</h2>
-<h6>Cantidad de tipo inmueble encontrado:
-  <span class="badge">
+{% block titulo_tabla %}
+
+<h2>Servicios</h2>
+
+{% endblock titulo_tabla %}
+
+{% block cantidad_tabla %}
+
+<h6>Cantidad de servicios registrados:
+  <span class="badge" id="count_reg">
 
     {{ lista_inmueble.count }}
 
   </span>
 </h6>
 
+{% endblock cantidad_tabla %}
+
+{% block cuerpo_tabla %}
+
 {% for i in lista_inmueble %}
 
 <h3 id="{{i.id}}">{{ i.tipo_inmueble }}<a href="nuevo/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a></h3>
 <table class="table table-hover" id="tabla">
-  <tr class="active">
-    <th>Ambiente</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
-  </tr>
 
-  {% for iambiente in lista_ambtipoinmueble %}
+  <thead>
+    <tr class="active">
+      <th>Ambiente</th>
+      <th>Editar</th>
+      <th>Eliminar</th>
+    </tr>
+  </thead>
+  <tbody>
 
-  {% if iambiente.tipo_inmueble == i %}
+    {% for iambiente in lista_ambtipoinmueble %}
 
-  <tr id="tr{{iambiente.id}}">
-    <td>{{ iambiente.ambiente }}</td>
-    <td>
-      <a href="editar/{{iambiente.id}}" class="glyphicon glyphicon-edit" ></a>
-    </td>
-    <td>
-      <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{iambiente.id}}" data-name="{{iambiente.ambiente}}"></a>
-    </td>
-  </tr>
+    {% if iambiente.tipo_inmueble == i %}
+
+    <tr id="tr{{iambiente.id}}">
+      <td>{{ iambiente.ambiente }}</td>
+      <td>
+        <a href="editar/{{iambiente.id}}" class="glyphicon glyphicon-edit" ></a>
+      </td>
+      <td>
+        <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{iambiente.id}}" data-name="{{iambiente.ambiente}}"></a>
+      </td>
+    </tr>
+
+    {% endif %}
+
+    {% endfor %}
+    {% endfor %}
+  </tbody>
+
+  {% endblock cuerpo_tabla %}
 
   {% endif %}
 
-  {% endfor %}
+  {% block ayuda %}
 
-</table>
-
-{% endfor %}
-
-{% else %}
-
-<p>No hay lista de ambiente por tipo inmueble</p>
-<h2><a href="nuevo/" class="glyphicon-asterisk glyphicon glyphicon-plus"></a></h2>
-
-{% endif %}
-
-{% endblock %}
-
-{% block ayuda %}
-
-<br>
-<div class="">
-  <div class="well well-lg">
-    <p>Los <strong>Ambientes</strong> son los diversos espacios que se encuentran en un <strong>Inmueble</strong>.</p>
-    <p>Para ello existen las relaciones entre <strong>Tipos de inmuebles</strong> y <strong>Ambientes</strong>, los cuales clasifican a los ambientes según su tipo de inmueble.</p>
-    <p>Clasifique los ambientes según su tipo de inmueble presionando el botón ( <span class="glyphicon-asterisk glyphicon glyphicon-plus"></span> ).</p>
+  <br>
+  <div class="">
+    <div class="well well-lg">
+      <p>Los <strong>Ambientes</strong> son los diversos espacios que se encuentran en un <strong>Inmueble</strong>.</p>
+      <p>Para ello existen las relaciones entre <strong>Tipos de inmuebles</strong> y <strong>Ambientes</strong>, los cuales clasifican a los ambientes según su tipo de inmueble.</p>
+      <p>Clasifique los ambientes según su tipo de inmueble presionando el botón ( <span class="glyphicon-asterisk glyphicon glyphicon-plus"></span> ).</p>
+    </div>
   </div>
-</div>
 
-{% endblock%}
+  {% endblock ayuda %}

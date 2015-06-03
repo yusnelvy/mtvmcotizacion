@@ -66,9 +66,9 @@ class Complejidad(models.Model):
         return self.descripcion
 
     class Meta:
-        verbose_name = "Complejidad"
-        verbose_name_plural = "Complejidades"
-        ordering = ['descripcion']
+        verbose_name = "Nivel de complejidad"
+        verbose_name_plural = "Niveles de complejidad"
+        ordering = ['id']
 
 
 class Complejidad_Servicio(models.Model):
