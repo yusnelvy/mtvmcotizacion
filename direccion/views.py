@@ -551,9 +551,11 @@ def edit_direccion(request, pk):
 
         if form_edit_direccion.is_valid():
             # formulario validado correctamente
-            form_edit_direccion.save()
+            id_reg = form_edit_direccion.save()
+            id_cli = Direccion.objects.get(id=id_reg.id)
 
-            return HttpResponseRedirect(reverse('udireciones:lista_direccion'))
+            #return HttpResponseRedirect(reverse('udireciones:lista_direccion'))
+            return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
 
     else:
         # formulario inicial

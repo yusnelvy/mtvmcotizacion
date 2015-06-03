@@ -1,24 +1,7 @@
-{% load staticfiles %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link href="/static/css/estilosForm.css" rel="stylesheet">
-    <link href="/static/bootstrap/css/bootstrap3.css" rel="stylesheet">
+{% extends 'base3.html' %}
 
-    {% block titulo %}{% endblock titulo %}
+{% block content %}
 
-</head>
-<body>
-
-    {% block header %}{% endblock header %}
-
-    {% block nav %}
-
-    {% include "inicio/nav.html" %}
-
-    {% endblock nav %}
 <!--IniciaModal-->
 <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
@@ -49,12 +32,14 @@
 
         {% block titulo_ficha %}{% endblock titulo_ficha %}
 
+    </div>
     <div class="row">
-
+        <div class="col-md-1">
+        </div>
 
         {% block col1 %}
 
-        <div class="col-md-7">
+        <div class="col-md-5">
 
             {% endblock col1 %}
 
@@ -71,15 +56,17 @@
             {% block content2 %}{% endblock content2%}
 
         </div>
-
+        <div class="col-md-1">
+        </div>
     </div>
 
     <div class="row">
-
+        <div class="col-md-1">
+        </div>
 
         {% block col3 %}
 
-        <div class="col-md-6">
+        <div class="col-md-5">
 
             {% endblock col3 %}
 
@@ -89,20 +76,21 @@
 
         {% block col4 %}
 
-        <div class="col-md-6">
+        <div class="col-md-5">
 
             {% endblock col4 %}
 
             {% block content4 %}{% endblock content4 %}
 
         </div>
-
+        <div class="col-md-1">
+        </div>
     </div>
-</div>
-    {% block footer %}{% endblock%}
-    {% block script %}
-    {% include "inicio/script.html" %}
-    {% endblock%}
 
-</body>
-</html>
+{% endblock content %}
+
+<div class="">
+
+    {% block ayuda %}{% endblock ayuda %}
+
+</div>
