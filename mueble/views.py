@@ -13,10 +13,36 @@ import django.db
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.views.generic import ListView
+import re
+from django.http import HttpResponsePermanentRedirect
+from django.conf import settings
 
 
 # Create your views here.
 # lista
+#
+class UrlRedirectMiddleware:
+    """
+    This middleware lets you match a specific url and redirect the request to a
+    new url.
+
+    You keep a tuple of url regex pattern/url redirect tuples on your site
+    settings, example:
+
+    URL_REDIRECTS = (
+        (r'www\.example\.com/hello/$', 'http://hello.example.com/'),
+        (r'www\.example2\.com/$', 'http://www.example.com/example2/'),
+    )
+
+    """
+    def process_request(self, request):
+        host = request.META['HTTP_HOST'] + request.META['PATH_INFO']
+        for url_pattern, redirect_url in settings.URL_REDIRECTS:
+            regex = re.compile(url_pattern)
+            if regex.match(host):
+                return HttpResponsePermanentRedirect(redirect_url)
+
+
 class Muebleclass():
     def lista_mueble(request):
         """docstring"""
@@ -58,8 +84,10 @@ class AddMuebleClass(Muebleclass):
         else:
             form_mueble = MuebleForm()
 
+        listaM = MuebleListView()
+        listaM.lista_mueble()
         return render_to_response('mueble/mueble_add.html',
-                                  {'form_mueble': form_mueble, 'lista_mueble': lista_mueble, 'create': True},
+                                  {'form_mueble': form_mueble, 'listaM': listaM, 'create': True},
                                   context_instance=RequestContext(request))
 
 
@@ -123,7 +151,7 @@ def add_mueble(request):
         form_mueble = MuebleForm(request.POST)
         if form_mueble.is_valid():
             form_mueble.save()
-            #return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
+            return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
     else:
         form_mueble = MuebleForm()
     return render_to_response('mueble/mueble_add.html',
@@ -143,7 +171,7 @@ def edit_mueble(request, pk):
             # formulario validado correctamente
             form_edit_mueble.save()
 
-            #return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
+            return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
 
     else:
         # formulario inicial
@@ -448,7 +476,7 @@ def add_muebleambiente(request):
 # editar registro
 def edit_tipo_mueble(request, pk):
     """docstring"""
-    tipomueble = Tipo_Mueble.objects.get(pk=pk)
+    tipomueble = Tipo_Mueble.objects.all().get(pk=pk)
 
     if request.method == 'POST':
         # formulario enviado
@@ -465,7 +493,7 @@ def edit_tipo_mueble(request, pk):
         form_edit_tipomueble = TipoMuebleForm(instance=tipomueble)
 
     return render_to_response('mueble/tipomueble_edit.html',
-                              {'form_edit_tipomueble': form_edit_tipomueble, 'create': False},
+                              {'form_edit_tipomueble': form_edit_tipomueble, 'tipomueble': tipomueble, 'create': False},
                               context_instance=RequestContext(request))
 
 

@@ -26,6 +26,24 @@
 
 <h4>Muebles clasificados en este tipo de mueble</h4>
 
+<table class="table table-hover">
+<tr class="active">
+    <th>Mueble</th>
+    <th></th>
+</tr>
+
+{% for det in tipomueble.mueble_set.all %}
+<tr id="tr{{det.id}}">
+    <td>{{ det.mueble }}</td>
+    <td>
+      <a href="{% url 'umuebles:edit_mueble' det.id %}" class="glyphicon glyphicon-edit"></a>
+    </td>
+</tr>
+
+
+{% endfor %}
+
+</table>
 {% endblock contenido_adicional %}
 
 {% block ayuda %}
