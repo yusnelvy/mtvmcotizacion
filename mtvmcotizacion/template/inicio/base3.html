@@ -17,13 +17,14 @@
     {% block nav %}
     {% include "inicio/nav.html" %}
     {% endblock nav %}
+    {% block cliente_ficha %}{% endblock cliente_ficha %}
 
     <div class="row">
         <div class="col-md-1">
 
         </div>
         <div class="col-md-6">
-            {% block content %}{% endblock content%}
+            {% block content %}{% endblock content %}
         </div>
         <div class="col-md-4">
             {% block ayuda %}{% endblock ayuda %}

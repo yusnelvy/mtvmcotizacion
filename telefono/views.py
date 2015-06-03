@@ -92,8 +92,10 @@ def add_telefono(request):
     if request.method == 'POST':
         form_telefono = TelefonoForm(request.POST)
         if form_telefono.is_valid():
-            form_telefono.save()
-            return HttpResponseRedirect(reverse('utelefonos:lista_telefono'))
+            id_reg = form_telefono.save()
+            id_cli = Telefono.objects.get(id=id_reg.id)
+            #return HttpResponseRedirect(reverse('utelefonos:lista_telefono'))return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
+            return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
     else:
         form_telefono = TelefonoForm()
     return render_to_response('telefono/telefono_add.html',
