@@ -13,35 +13,10 @@ import django.db
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.views.generic import ListView
-import re
-from django.http import HttpResponsePermanentRedirect
-from django.conf import settings
 
 
 # Create your views here.
 # lista
-#
-class UrlRedirectMiddleware:
-    """
-    This middleware lets you match a specific url and redirect the request to a
-    new url.
-
-    You keep a tuple of url regex pattern/url redirect tuples on your site
-    settings, example:
-
-    URL_REDIRECTS = (
-        (r'www\.example\.com/hello/$', 'http://hello.example.com/'),
-        (r'www\.example2\.com/$', 'http://www.example.com/example2/'),
-    )
-
-    """
-    def process_request(self, request):
-        host = request.META['HTTP_HOST'] + request.META['PATH_INFO']
-        for url_pattern, redirect_url in settings.URL_REDIRECTS:
-            regex = re.compile(url_pattern)
-            if regex.match(host):
-                return HttpResponsePermanentRedirect(redirect_url)
-
 
 class Muebleclass():
     def lista_mueble(request):
@@ -163,6 +138,8 @@ def edit_mueble(request, pk):
     """docstring"""
     mueble = Mueble.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_mueble = MuebleForm(request.POST, instance=mueble)
@@ -171,7 +148,7 @@ def edit_mueble(request, pk):
             # formulario validado correctamente
             form_edit_mueble.save()
 
-            return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
+            return HttpResponseRedirect(redirect_to)
 
     else:
         # formulario inicial
