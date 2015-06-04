@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'contenido',
     'trabajador',
     'cotizacion',
+    'inicio',
 )
 
 MIDDLEWARE_CLASSES = (

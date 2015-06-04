@@ -110,7 +110,7 @@ def buscar_contenidotipico(request, idmueble=0):
         buscar_contenidotipico = Contenido_Tipico.objects.all()
         mensaje = ""
     context = {'buscar_contenidotipico': buscar_contenidotipico}
-    return render(request, 'mueble/contenidotipico_lista.html', context)
+    return render(request, 'contenido/contenidotipico_lista.html', context)
 
 
 # agregar nuevo

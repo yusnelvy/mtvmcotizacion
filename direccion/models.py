@@ -47,7 +47,7 @@ class Ciudad(models.Model):
     def __init__(self, *args, **kwargs):
         super(Ciudad, self).__init__(*args, **kwargs)
 
-    ciudad = models.CharField(max_length=100, unique=True)
+    ciudad = models.CharField(max_length=100)
     provincia = models.ForeignKey(Provincia, on_delete=models.PROTECT)
 
     def __str__(self):

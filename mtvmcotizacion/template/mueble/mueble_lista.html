@@ -1,4 +1,4 @@
-{% extends 'base_lista.html' %}
+{% extends 'inicio/base_lista.html' %}
 
 {% block titulo %}
 
@@ -75,6 +75,10 @@
     <input type="hidden" value="{{i.id}}" id="idtele">
   </tr>
 
+{% for detail in i.tamano_mueble_set.all %}
+{{detail.tamano}}
+{{detail.mueble}}
+<br/> {% endfor %}
   {% endfor %}
 
 {% endblock cuerpo_tabla %}

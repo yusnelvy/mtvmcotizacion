@@ -9,16 +9,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Mudarte <span class="glyphicon glyphicon-road"></span></a>
+          <a class="navbar-brand" href="/">Mudarte <span class="glyphicon glyphicon-road"></span></a>
         </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
             <li><a href="#" class="btn"><span class="glyphicon glyphicon-home"></span> Inicio <span class="sr-only">(current)</span></a></li>
-            <li><a id="" onclick="" href="#" type="button" class="btn menu2"><span class="glyphicon glyphicon-align-justify"></span> Menu</a></li>
-            <li><a href="#" type="button" class="btn" data-toggle="modal" data-target="#myModal3"><span class="glyphicon glyphicon-book"></span> Blog</a></li>
-            <li><a href="#" type="button" class="btn" data-toggle="modal" data-target="#myModal1"><span class="glyphicon glyphicon-phone"></span> Contacto</a></li>
+            <li><a class="btn" href="/index" role="button" aria-expanded="false"><span class="glyphicon glyphicon-align-justify"></span> Menú </a>
+            </li>
+            <li><a href="#" type="button" class="btn" data-toggle="modal" data-target="#myModal3"><span class="glyphicon glyphicon-book"></span> Blog </a></li>
+            <li><a href="#" type="button" class="btn" data-toggle="modal" data-target="#myModal1"><span class="glyphicon glyphicon-phone"></span> Contacto </a></li>
 
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -157,5 +156,27 @@
       </div>
     </div>
   </div>
+
+<script>
+function main () {
+    $('.menuClick').click(function(){
+        var comercial = $('.comercialLink');
+        var operaciones = $('.operacionesLink');
+        var administracion = $('.administracionLink');
+        var sistemas = $('.sistemasLink');
+        var divider = $('.divider');
+        divider.css('display','block');
+        comercial.addClass('block');
+        operaciones.removeClass('block');
+        administracion.removeClass('block');
+        sistemas.removeClass('block');
+        $('.comercialClick').css('background','rgba(0,0,0,.1)');
+        $('.operacionesClick').css('background','rgba(0,0,0,.0)');
+        $('.administracionClick').css('background','rgba(0,0,0,.0)');
+        $('.sistemasClick').css('background','rgba(0,0,0,.0)');
+    })
+}
+
+</script>
 
 {% endblock%}

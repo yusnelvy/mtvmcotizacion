@@ -1,54 +1,96 @@
-{% extends 'base3.html' %}
+{% extends 'inicio/base3.html' %}
+
+{% block titulo %}
+
+<title>Direccion: cliente</title>
+
+{% endblock %}
+
 {% block content %}
- <!--IniciaModal-->
- <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-    <h3 id="myModalLabel">Eliminar direccion</h3>
-    </div>
-    <div class="modal-body">
-    <p>¿Realmente desea eliminar la direccion <span id="modal_name"></span>?</p>
-    </div>
-    <div class="modal-footer">
+
+<!--IniciaModal-->
+<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="myModalLabel"></h3>
+      </div>
+      <div class="modal-body">
+        <p>¿Eliminar <span id="modal_name"></span>?</p>
+      </div>
+      <div class="modal-footer">
         <form method="post" id="frmEliminar">
-            {% csrf_token %}
-            <input type="hidden" id="modal_id" name="item_id">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-            <button type="submit" class="btn btn-danger">Eliminar</button>
+
+          {% csrf_token %}
+
+          <input type="hidden" id="modal_id" name="item_id">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+          <button type="submit" class="btn btn-default">Si</button>
         </form>
+      </div>
     </div>
+  </div>
 </div>
 <!--EndModal-->
+<h2>Direccion del cliente</h2>
 
 {% if direccioncliente_lista %}
 
-<h4>Listado de direccion </h4>
+<div class="panel panel-default">
 
-    <h6>Cantidad de direccion encontrados: <span class="badge" id="count_reg">{{ direccioncliente_lista.count }}</span> </h6>
-
-  <table class="table table-hover" id="tabla">
-   <tr class="active">
-    <th>Tipo dirección</th>
-    <th>Dirección</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
-  </tr>
   {% for i in direccioncliente_lista %}
-  <tr id="tr{{i.id}}">
-   <td>{{ i.tipo_direccion }}</td>
-   <td>calle: {{ i.calle }} numero: {{ i.numero }} piso: {{ i.piso }}</td>
-   <td><a href="../../../direccion/{{i.id}}/" class="glyphicon glyphicon-edit">ed</a></td>
-   <td>
-    <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="calle: {{ i.calle }} numero: {{ i.numero }} piso: {{ i.piso }}"><i class="icon-trash icon-white"></i>Eliminar</a>
-   </td>
- </tr>
- {% endfor %}
-</table>
+
+  <div class="panel-heading">
+    <h4>
+      {{ i.cliente }}
+      <a href="../../../direccion/nuevo" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+      <span style="float:right;padding:20px;"></span>
+      <a href="../../../direccion/{{i.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+    </h4>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <tr>
+        <td><strong>Calle: </strong>{{ i.calle }} </td>
+        <td><strong>Tipo de direccion: </strong>{{ i.zona }}</td>
+      </tr>
+      <tr>
+        <td><strong>Numero:  </strong> {{ i.numero }}</td>
+        <td><strong>Zip1: </strong>{{ i.tipo_direccion }}</td>
+      </tr>
+      <tr>
+        <td><strong>Piso:  </strong>{{ i.piso }}</td>
+        <td><strong>Punto de referencia: </strong>{{ i.zip }}</td>
+      </tr>
+      <tr>
+        <td><strong>Adicional: </strong>{{ i.adicional }}</td>
+        <td><strong>Cliente: </strong>{{ i.punto_referencia }}</td>
+      </tr>
+    </table>
+
+    {% endfor %}
+
+  </div>
+</div>
 
 {% else %}
 
-<a href="direccion/nuevo/" class="ui-btn ui-icon-plus ui-btn-icon-left">Nuevo</a>
-<p>Direccion no encontrado  </p>
+<h4>
+  <a href="../../../direccion/nuevo" style="" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+</h4>
 
 {% endif %}
 
 {% endblock %}
+
+{% block ayuda %}
+
+<br>
+<div class="well well-lg">
+ <p>La <strong>Direccion</strong> del cliente es importante ya que es requisito para la mudanza.  </p>
+ <p>Se recomienda agregar al menos una direccion por cada cliente.</p>
+ <p>Para agregar una direccion presione el boton (<span class="glyphicon-asterisk glyphicon glyphicon-plus"></span>)</p>
+
+</div>
+
+{% endblock ayuda %}

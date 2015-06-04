@@ -12,32 +12,20 @@
 
 <body>
 
-    {% block header %}{% endblock%}
+    {% block header %}{% endblock header %}
 
     {% block nav %}
-    {% include "nav.html" %}
-    {% endblock%}
+    {% include "inicio/nav.html" %}
+    {% endblock nav %}
+    {% block cliente_ficha %}{% endblock cliente_ficha %}
 
-    <div class="row">
-        <div class="col-md-1">
+    {% block content %}{% endblock content %}
 
-        </div>
-        <div class="col-md-6">
-            {% block content %}{% endblock%}
-        </div>
-        <div class="col-md-4">
-            {% block ayuda %}{% endblock%}
-        </div>
-        <div class="col-md-1">
-
-        </div>
-    </div>
-
-    {% block footer %}{% endblock%}
+    {% block footer %}{% endblock footer %}
 
     {% block script %}
-    {% include "script.html" %}
-    {% endblock%}
+    {% include "inicio/script.html" %}
+    {% endblock script %}
 
 </body>
 </html>

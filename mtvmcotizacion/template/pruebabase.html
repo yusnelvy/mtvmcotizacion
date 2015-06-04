@@ -27,22 +27,65 @@
 </div>
 <!--EndModal-->
 
-<div class="">
 
-    {% block titulo_tabla %}{% endblock titulo_tabla %}
+    <div class="container">
 
-    <a href="nuevo/" class="btn btn-default">Nuevo</a>
-    <br>
+        {% block titulo_ficha %}{% endblock titulo_ficha %}
 
-    {% block cantidad_tabla %}{% endblock cantidad_tabla %}
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+        </div>
 
-    <table class="table table-hover" id="tabla">
+        {% block col1 %}
 
-        {% block cuerpo_tabla %}{% endblock cuerpo_tabla %}
+        <div class="col-md-5">
 
-    </table>
-    <a href="nuevo/" class="btn btn-default">Nuevo</a>
-</div>
+            {% endblock col1 %}
+
+            {% block content1 %}{% endblock content1 %}
+
+        </div>
+
+        {% block col2 %}
+
+        <div class="col-md-5">
+
+            {% endblock col2 %}
+
+            {% block content2 %}{% endblock content2%}
+
+        </div>
+        <div class="col-md-1">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+
+        {% block col3 %}
+
+        <div class="col-md-5">
+
+            {% endblock col3 %}
+
+            {% block content3 %}{% endblock content3 %}
+
+        </div>
+
+        {% block col4 %}
+
+        <div class="col-md-5">
+
+            {% endblock col4 %}
+
+            {% block content4 %}{% endblock content4 %}
+
+        </div>
+        <div class="col-md-1">
+        </div>
+    </div>
 
 {% endblock content %}
 

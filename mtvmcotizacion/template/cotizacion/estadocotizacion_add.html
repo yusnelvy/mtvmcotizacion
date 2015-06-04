@@ -1,15 +1,31 @@
-<div class="col-md-1"></div>
-<div class="col-md-4">
-  <h2>Agregar estado</h2>
-  <form action="" method="post">
-    {% csrf_token %}
-    <br><br>
-    <div class="form-group"> {{ form_estadocotizacion.as_p }}
-    </div>
+{% extends "inicio/base_edit.html" %}
 
-      <button type="submit" class="btn btn-default">Registrar</button>
-      <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
-      <br><br>
-    </form>
-  </div>
+{% block titulo %}
 
+<title>Agregar estado de cotización</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+<h2>Agregar estado de cotización</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+{{ form_estadocotizacion.as_p }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>El <strong>Estado de cotización</strong> establece momentos claves del proceso de cotización que tiene implicaciones sobre el nivel de compromiso con el cliente, la posibilidad de modificar y el nivel de avance que tiene con respecto al ciclo de vida total de una cotización.</p>
+</div>
+
+{% endblock ayuda %}

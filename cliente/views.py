@@ -164,17 +164,18 @@ def add_email(request):
         try:
             email_form = EmailForm(request.POST)
             if email_form.is_valid():
-                email_form.save()
-                return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
+                id_reg = email_form.save()
+                id_cli = Email.objects.get(id=id_reg.id)
+                return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
         except Exception as ex:
-            email_form = EmailForm()
             mensaje = "se ha producido un error"+str(ex)
+            email_form = EmailForm()
 
     else:
         email_form = EmailForm()
         mensaje = ''
 
-    return render_to_response('cliente/cliente_add.html',
+    return render_to_response('cliente/Emailcliente_add.html',
                               {'email_form': email_form, 'create': True, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
@@ -196,8 +197,8 @@ def edit_cliente(request, pk):
         if editar_clie.is_valid():
             # formulario validado correctamente
             editar_clie.save()
-
-            return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
+            #return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
+            return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_clie.id,)))
 
     else:
         # formulario inicial
@@ -229,3 +230,19 @@ def edit_email(request, id_cli, pk):
     return render_to_response('cliente/emailcliente_edit.html',
                               {'form_edit_email': form_edit_email, 'create': False},
                               context_instance=RequestContext(request))
+
+
+def ficha_cliente(request, pk):
+
+    lista_cliente = Cliente.objects.filter(pk=pk)
+    lista_email = Email.objects.filter(cliente_id=pk)
+    lista_telefono_cliente = Telefono.objects.filter(cliente=pk)
+    direccioncliente_lista = Direccion.objects.filter(cliente=pk)
+
+    context = {
+        'lista_cliente': lista_cliente,
+        'lista_email': lista_email,
+        'lista_telefono_cliente': lista_telefono_cliente,
+        'direccioncliente_lista': direccioncliente_lista
+        }
+    return render(request, 'cliente/cliente_ficha.html', context)

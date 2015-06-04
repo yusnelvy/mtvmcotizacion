@@ -1,54 +1,71 @@
-{% extends 'base3.html' %}
- {% block content %}
+{% extends 'inicio/base_lista.html' %}
 
-<!--IniciaModal-->
- <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-    <h3 id="myModalLabel">Eliminar Pais</h3>
-    </div>
-    <div class="modal-body">
-    <p>¿Realmente desea eliminar el pais <span id="modal_name"></span>?</p>
-    </div>
-    <div class="modal-footer">
-        <form method="post" id="frmEliminar">
-            {% csrf_token %}
-            <input type="hidden" id="modal_id" name="item_id">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-            <button type="submit" class="btn btn-danger">Eliminar</button>
-        </form>
-    </div>
+{% block titulo %}
+
+<title>Cliente: Email</title>
+
+{% endblock titulo %}
+
+{% block titulo_modal %}
+
+<div class="modal-header">
+  <h3 id="myModalLabel">Eliminar Email</h3>
 </div>
-<!--EndModal-->
+
+{% endblock titulo_modal %}
+
+{% block validacion_modal %}
+
+<p>¿Realmente desea eliminar el registro: <strong id="modal_name"></strong>?</p>
+
+{% endblock validacion_modal %}
+
+{% block titulo_tabla %}
+
+<h2>Listado de Email </h2>
+
+{% endblock titulo_tabla %}
 
 {% if lista_email %}
 
-    <h4>Listado de correo</h4>
+{% block cantidad_tabla %}
 
-    <h6>Cantidad de correos encontrados: <span class="badge" id="count_reg">{{ lista_email.count }}</span> </h6>
-    <table class="table table-hover">
-        <tr class="active">
-            <th>Email</th>
-            <th>Cliente</th>
-            <th>Editar</th>
-            <th>Eliminar</th>
-        </tr>
-        {% for i in lista_email %}
-        <tr id="tr{{i.id}}">
-            <td>{{ i.email }}</td>
-            <td>{{ i.cliente.nombre_principal }}</td>
-            <td><a href="email/editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a></td>
-            <td>
-              <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.email}}"><i class="icon-trash icon-white"></i>Eliminar</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    <a href="email/nuevo/" class="btn btn-default">Agregar</a>
-{% else %}
-<h4>Listado de correo</h4>
-<br>
-<br>
-<p> Correo no encontrado </p>
-<a href="email/nuevo/" class="btn btn-default">Agregar</a>
+<a href="../nuevo" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+<h6>Cantidad de Email encontrados:
+  <span class="badge" id="count_reg">
+
+    {{ lista_email.count }}
+
+  </span>
+</h6>
+
+{% endblock cantidad_tabla %}
+
+{% block cuerpo_tabla %}
+
+<tr class="active">
+    <th>Email</th>
+    <th>Cliente</th>
+    <th>Editar</th>
+    <th>Eliminar</th>
+</tr>
+
+{% for i in lista_email %}
+
+<tr id="tr{{i.id}}">
+    <td>{{ i.email }}</td>
+    <td>{{ i.cliente.nombre_principal }}</td>
+    <td><a href="../../cliente_ficha/{{ i.cliente.id }}/email/editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a></td>
+    <td>
+        <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.email}}"></a>
+  </td>
+</tr>
+
+{% endfor %}
+
+{% endblock cuerpo_tabla %}
+
 {% endif %}
-{% endblock %}
+
+
+

@@ -8,3 +8,11 @@ def logout_page(request):
     """
     logout(request)
     return HttpResponseRedirect('/')
+
+
+def show_dashboard(request):
+    """
+    Mostrar el dashboard inicial
+    """
+    context = {'show_dashboard': ""}
+    return render(request, 'base_menu.html', context)

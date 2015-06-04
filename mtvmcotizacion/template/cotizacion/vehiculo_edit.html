@@ -1,15 +1,32 @@
-<div class="col-md-1"></div>
-<div class="col-md-4">
-  <h2>vehiculo</h2>
-  <form action="" method="post">
-    {% csrf_token %}
-    <br><br>
-    <div class="form-group"> {{ editar_vehiculo.as_p }}
-    </div>
+{% extends "inicio/base_edit.html" %}
 
-      <button type="submit" class="btn btn-default">Registrar</button>
-      <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
-      <br><br>
-    </form>
-  </div>
+{% block titulo %}
 
+<title>Editar modelo de vehículo</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+<h2>Editar modelo de vehículo</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ editar_vehiculo.as_p }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>Los <strong>Modelos de vehículo</strong> representan a los tipos de vehículos con los que cuenta la empresa, y que permite utilizar sus características físicas para estimar las necesidades de una mudanza.</p>
+  <p>Las características declaradas en esta sección se comparan con el volúmen y peso total de <strong>Muebles</strong> y <strong>Contenidos</strong> a trasladar, para proponer cuáles y cuántos <strong>Modelos de vehículos</strong> se deberán aplicar para el traslado.</p>
+</div>
+
+{% endblock ayuda %}
