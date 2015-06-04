@@ -12,9 +12,176 @@ import simplejson as json
 import django.db
 from django.core.exceptions import ObjectDoesNotExist
 
+from django.views.generic import ListView
+import re
+from django.http import HttpResponsePermanentRedirect
+from django.conf import settings
+
 
 # Create your views here.
 # lista
+#
+class UrlRedirectMiddleware:
+    """
+    This middleware lets you match a specific url and redirect the request to a
+    new url.
+
+    You keep a tuple of url regex pattern/url redirect tuples on your site
+    settings, example:
+
+    URL_REDIRECTS = (
+        (r'www\.example\.com/hello/$', 'http://hello.example.com/'),
+        (r'www\.example2\.com/$', 'http://www.example.com/example2/'),
+    )
+
+    """
+    def process_request(self, request):
+        host = request.META['HTTP_HOST'] + request.META['PATH_INFO']
+        for url_pattern, redirect_url in settings.URL_REDIRECTS:
+            regex = re.compile(url_pattern)
+            if regex.match(host):
+                return HttpResponsePermanentRedirect(redirect_url)
+
+
+class Muebleclass():
+    def lista_mueble(request):
+        """docstring"""
+
+        if request.method == "POST":
+            if "item_id" in request.POST:
+                try:
+                    id_mueble = request.POST['item_id']
+                    p = Mueble.objects.get(pk=id_mueble)
+                    mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                    p.delete()
+
+                     # Elinamos objeto de la base de datos
+                    return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+                except django.db.IntegrityError:
+
+                    mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                    tiene algun registro asociado"}
+                    return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+                except:
+                    mensaje = {"status": "False", "form": "del", "msj": " "}
+                    return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+        lista_mueble = Mueble.objects.all()
+        context = {'lista_mueble': lista_mueble}
+        return render(request, 'mueble/mueble_lista.html', context)
+
+
+class AddMuebleClass(Muebleclass):
+    def add_mueble(request):
+        """docstring"""
+        if request.method == 'POST':
+            form_mueble = MuebleForm(request.POST)
+            if form_mueble.is_valid():
+                form_mueble.save()
+                #return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
+        else:
+            form_mueble = MuebleForm()
+
+        listaM = MuebleListView()
+        listaM.lista_mueble()
+        return render_to_response('mueble/mueble_add.html',
+                                  {'form_mueble': form_mueble, 'listaM': listaM, 'create': True},
+                                  context_instance=RequestContext(request))
+
+
+class MuebleListView(ListView):
+
+    context_object_name = 'lista_mueble'
+    queryset = Mueble.objects.all()
+    template_name = 'mueble/mueble_lista.html'
+
+
+class TamanoMuebleListView(MuebleListView, ListView):
+
+    lista_m = MuebleListView()
+    context_object_name = 'buscar_tamanomueble'
+    queryset = Tamano_Mueble.objects.all()
+    template_name = 'mueble/tamanomueble_lista.html'
+
+
+def lista_mueble(request):
+    """docstring"""
+
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_mueble = request.POST['item_id']
+                p = Mueble.objects.get(pk=id_mueble)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+    lista_mueble = Mueble.objects.all()
+    context = {'lista_mueble': lista_mueble}
+    return render(request, 'mueble/mueble_lista.html', context)
+
+
+def buscar_mueble(request, idtipomueble):
+    """docstring"""
+
+    tipomueble = Tipo_Mueble.objects.get(id=idtipomueble)
+
+    buscar_muebleambiente = Mueble.objects.filter(tipo_mueble_id=tipomueble)
+    context = {'buscar_muebleambiente': buscar_muebleambiente}
+    return render(request, 'mueble/mueble_buscar.html', context)
+
+
+def add_mueble(request):
+    """docstring"""
+    if request.method == 'POST':
+        form_mueble = MuebleForm(request.POST)
+        if form_mueble.is_valid():
+            form_mueble.save()
+            return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
+    else:
+        form_mueble = MuebleForm()
+    return render_to_response('mueble/mueble_add.html',
+                              {'form_mueble': form_mueble, 'create': True},
+                              context_instance=RequestContext(request))
+
+
+def edit_mueble(request, pk):
+    """docstring"""
+    mueble = Mueble.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        # formulario enviado
+        form_edit_mueble = MuebleForm(request.POST, instance=mueble)
+
+        if form_edit_mueble.is_valid():
+            # formulario validado correctamente
+            form_edit_mueble.save()
+
+            return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
+
+    else:
+        # formulario inicial
+        form_edit_mueble = MuebleForm(instance=mueble)
+
+    return render_to_response('mueble/mueble_edit.html',
+                              {'form_edit_mueble': form_edit_mueble, 'create': False},
+                              context_instance=RequestContext(request))
+
+
 def lista_tipo_mueble(request):
     """docstring"""
 
@@ -102,35 +269,6 @@ def lista_forma_mueble(request):
     return render(request, 'mueble/formamueble_lista.html', context)
 
 
-def lista_mueble(request):
-    """docstring"""
-
-    if request.method == "POST":
-        if "item_id" in request.POST:
-            try:
-                id_mueble = request.POST['item_id']
-                p = Mueble.objects.get(pk=id_mueble)
-                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
-                p.delete()
-
-                 # Elinamos objeto de la base de datos
-                return HttpResponse(json.dumps(mensaje), content_type='application/json')
-
-            except django.db.IntegrityError:
-
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
-                return HttpResponse(json.dumps(mensaje), content_type='application/json')
-
-            except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
-                return HttpResponse(json.dumps(mensaje), content_type='application/json')
-
-    lista_mueble = Mueble.objects.all()
-    context = {'lista_mueble': lista_mueble}
-    return render(request, 'mueble/mueble_lista.html', context)
-
-
 def lista_tamano(request):
     """docstring"""
 
@@ -186,7 +324,7 @@ def buscar_tamano_mueble(request, idmueble=0):
 
     if idmueble != '0':
         try:
-            buscar_tamanomueble = Tamano_Mueble.objects.get(mueble=idmueble)
+            buscar_tamanomueble = Tamano_Mueble.objects.filter(mueble=idmueble)
             mensaje = ""
         except ObjectDoesNotExist as ex:
             buscar_tamanomueble = ""
@@ -230,7 +368,7 @@ def buscar_mueble_ambiente(request, idambiente=0):
 
     if idambiente != '0':
         try:
-            buscar_muebleambiente = Mueble_Ambiente.objects.get(ambiente=idambiente)
+            buscar_muebleambiente = Mueble_Ambiente.objects.filter(ambiente=idambiente)
             mensaje = ""
         except ObjectDoesNotExist as ex:
             buscar_muebleambiente = ""
@@ -245,16 +383,6 @@ def buscar_mueble_ambiente(request, idambiente=0):
         mensaje = ""
     context = {'buscar_muebleambiente': buscar_muebleambiente, 'mensaje': mensaje}
     return render(request, 'mueble/muebleambiente_lista.html', context)
-
-
-def buscar_mueble(request, idtipomueble):
-    """docstring"""
-
-    tipomueble = Tipo_Mueble.objects.get(id=idtipomueble)
-
-    buscar_muebleambiente = Mueble.objects.filter(tipo_mueble_id=tipomueble)
-    context = {'buscar_muebleambiente': buscar_muebleambiente}
-    return render(request, 'mueble/mueble_buscar.html', context)
 
 
 # agregar nuevo
@@ -300,20 +428,6 @@ def add_formamueble(request):
                               context_instance=RequestContext(request))
 
 
-def add_mueble(request):
-    """docstring"""
-    if request.method == 'POST':
-        form_mueble = MuebleForm(request.POST)
-        if form_mueble.is_valid():
-            form_mueble.save()
-            return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
-    else:
-        form_mueble = MuebleForm()
-    return render_to_response('mueble/mueble_add.html',
-                              {'form_mueble': form_mueble, 'create': True},
-                              context_instance=RequestContext(request))
-
-
 def add_tamano(request):
     """docstring"""
     if request.method == 'POST':
@@ -333,8 +447,10 @@ def add_tamanomueble(request):
     if request.method == 'POST':
         form_tamanomueble = TamanoMuebleForm(request.POST)
         if form_tamanomueble.is_valid():
-            form_tamanomueble.save()
-            return HttpResponseRedirect(reverse('umuebles:buscar_tamano_mueble'))
+            id_reg = form_tamanomueble.save()
+            id_tm = Tamano_Mueble.objects.get(id=id_reg.id)
+            return HttpResponseRedirect(reverse('umuebles:buscar_tamano_mueble', args=(id_tm.mueble.id,)))
+
     else:
         form_tamanomueble = TamanoMuebleForm()
     return render_to_response('mueble/tamanomueble_add.html',
@@ -347,8 +463,9 @@ def add_muebleambiente(request):
     if request.method == 'POST':
         form_muebleambiente = MuebleAmbienteForm(request.POST)
         if form_muebleambiente.is_valid():
-            form_muebleambiente.save()
-            return HttpResponseRedirect(reverse('umuebles:lista_muebleambiente'))
+            id_reg = form_muebleambiente.save()
+            id_am = Mueble_Ambiente.objects.get(id=id_reg.id)
+            return HttpResponseRedirect(reverse('umuebles:buscar_muebleambiente', args=(id_am.ambiente.id,)))
     else:
         form_muebleambiente = MuebleAmbienteForm()
     return render_to_response('mueble/muebleambiente_add.html',
@@ -359,7 +476,7 @@ def add_muebleambiente(request):
 # editar registro
 def edit_tipo_mueble(request, pk):
     """docstring"""
-    tipomueble = Tipo_Mueble.objects.get(pk=pk)
+    tipomueble = Tipo_Mueble.objects.all().get(pk=pk)
 
     if request.method == 'POST':
         # formulario enviado
@@ -376,7 +493,7 @@ def edit_tipo_mueble(request, pk):
         form_edit_tipomueble = TipoMuebleForm(instance=tipomueble)
 
     return render_to_response('mueble/tipomueble_edit.html',
-                              {'form_edit_tipomueble': form_edit_tipomueble, 'create': False},
+                              {'form_edit_tipomueble': form_edit_tipomueble, 'tipomueble': tipomueble, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -426,29 +543,6 @@ def edit_forma_mueble(request, pk):
                               context_instance=RequestContext(request))
 
 
-def edit_mueble(request, pk):
-    """docstring"""
-    mueble = Mueble.objects.get(pk=pk)
-
-    if request.method == 'POST':
-        # formulario enviado
-        form_edit_mueble = MuebleForm(request.POST, instance=mueble)
-
-        if form_edit_mueble.is_valid():
-            # formulario validado correctamente
-            form_edit_mueble.save()
-
-            return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
-
-    else:
-        # formulario inicial
-        form_edit_mueble = MuebleForm(instance=mueble)
-
-    return render_to_response('mueble/mueble_edit.html',
-                              {'form_edit_mueble': form_edit_mueble, 'create': False},
-                              context_instance=RequestContext(request))
-
-
 def edit_tamano(request, pk):
     """docstring"""
     tamano = Tamano.objects.get(pk=pk)
@@ -474,7 +568,7 @@ def edit_tamano(request, pk):
 
 def edit_tamanomueble(request, pk):
     """docstring"""
-    tamanomueble = Tamano_Mueble(request, pk).objects.get(pk=pk)
+    tamanomueble = Tamano_Mueble.objects.get(pk=pk)
 
     if request.method == 'POST':
         # formulario enviado
@@ -497,7 +591,7 @@ def edit_tamanomueble(request, pk):
 
 def edit_muebleambiente(request, pk):
     """docstring"""
-    muebleambiente = Mueble_Ambiente(request, pk).objects.get(pk=pk)
+    muebleambiente = Mueble_Ambiente.objects.get(pk=pk)
 
     if request.method == 'POST':
         # formulario enviado

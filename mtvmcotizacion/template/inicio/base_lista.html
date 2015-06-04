@@ -7,11 +7,11 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
 
-                {% block titulo_modal %}{% endblock titulo_modal %}
+            {% block titulo_modal %}{% endblock titulo_modal %}
 
             <div class="modal-body">
 
-                    {% block validacion_modal %}{% endblock validacion_modal %}
+                {% block validacion_modal %}{% endblock validacion_modal %}
 
             </div>
             <div class="modal-footer">
@@ -27,27 +27,32 @@
 </div>
 <!--EndModal-->
 
-<div class="">
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="">
 
-    {% block titulo_tabla %}{% endblock titulo_tabla %}
+                {% block titulo_tabla %}{% endblock titulo_tabla %}
 
-    <a href="nuevo/" class="btn btn-default">Nuevo</a>
-    <br>
+                <a href="nuevo/" class="btn btn-default">Nuevo</a>
+                <br>
 
-    {% block cantidad_tabla %}{% endblock cantidad_tabla %}
+                {% block cantidad_tabla %}{% endblock cantidad_tabla %}
 
-    <table class="table table-hover" id="tabla" style="text-align: center;">
+                <table class="table table-hover" id="tabla" style="text-align: center;">
 
-        {% block cuerpo_tabla %}{% endblock cuerpo_tabla %}
+                    {% block cuerpo_tabla %}{% endblock cuerpo_tabla %}
 
-    </table>
-    <a href="nuevo/" class="btn btn-default">Nuevo</a>
+                </table>
+                <a href="nuevo/" class="btn btn-default">Nuevo</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+
+            {% block ayuda %}{% endblock ayuda %}
+
+        </div>
+    </div>
 </div>
 
 {% endblock content %}
-
-<div class="">
-
-    {% block ayuda %}{% endblock ayuda %}
-
-</div>

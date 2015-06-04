@@ -8,6 +8,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 
+
 urlpatterns = patterns('',  # C0103: El error es la forma del nombre urlpatterns pero no se puede corregir
                        # Examples:
                        # url(r'^$', 'mtvmcotizacion.views.home', name='home'),

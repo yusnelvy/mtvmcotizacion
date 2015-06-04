@@ -1,8 +1,11 @@
 from django.conf.urls import patterns, url
 from mueble import views
+from mueble.views import MuebleListView, TamanoMuebleListView
 
 
 urlpatterns = patterns('',
+                       url(r'^mueble1/$', MuebleListView.as_view()),
+                       url(r'^mueble2/$', TamanoMuebleListView.as_view()),
                        url(r'^$', views.lista_mueble, name='lista_mueble'),
                        url(r'^nuevo', views.add_mueble, name='add_mueble'),
                        url(r'^editar/(?P<pk>\d+)/$', views.edit_mueble,

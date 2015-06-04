@@ -1,36 +1,29 @@
-{% extends "base3.html" %}
+{% extends "inicio/base_edit.html" %}
 
 {% block titulo %}
 
 <title>Agregar ambiente</title>
 
-{% endblock %}
+{% endblock titulo %}
 
-{% block content %}
+{% block titulo_form %}
 
-<div class="">
-    <h2>Agregar ambiente</h2>
-    <form action="" method="post">
+<h2>Agregar ambiente</h2>
 
-        {% csrf_token %}
+{% endblock titulo_form %}
 
-        <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
-        <div class="form-group">
+{% block cuerpo_form %}
 
-          {{ form_ambiente.as_p }}
+    <div class="form-group">
 
-        </div>
-        <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
-    </form>
-</div>
+        {{ form_ambiente.as_p }}
 
-{% endblock %}
+    </div>
+
+{% endblock cuerpo_form %}
 
 {% block ayuda %}
 
-<br>
 <div class="">
     <div class="well well-lg">
       <p>Los <strong>Ambientes</strong> son los diversos espacios que se encuentran en un <strong>Inmueble</strong>.</p>
