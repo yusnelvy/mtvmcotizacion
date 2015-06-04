@@ -81,7 +81,7 @@ class Tipo_direccion(models.Model):
     def __init__(self, *args, **kwargs):
         super(Tipo_direccion, self).__init__(*args, **kwargs)
 
-    tipo_direccion = models.CharField(max_length=10, unique=True)
+    tipo_direccion = models.CharField(max_length=50, unique=True)
     activo = models.BooleanField(default=True)
 
     def __str__(self):
