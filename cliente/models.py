@@ -38,10 +38,10 @@ class Cliente(models.Model):
         super(Cliente, self).__init__(*args, **kwargs)
 
     nombre_principal = models.CharField(max_length=250)
-    dni = models.CharField(max_length=15)
+    dni = models.CharField(max_length=15, blank=True)
     sexo = models.ForeignKey(Sexo)
     estado_civil = models.ForeignKey(Estado_civil)
-    fecha_nacimiento = models.DateTimeField(blank=True)
+    fecha_nacimiento = models.DateField(blank=True)
     comentarios = models.TextField(blank=True)
     adicional1 = models.CharField(max_length=50, blank=True)
     adicional2 = models.CharField(max_length=50, blank=True)

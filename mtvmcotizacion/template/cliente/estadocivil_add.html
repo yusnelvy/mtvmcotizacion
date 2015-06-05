@@ -1,0 +1,35 @@
+{% extends "inicio/base_edit.html" %}
+
+{% block titulo %}
+
+<title>Estado civil</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+  <h2>Agregar estado civil</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ estadocivil_form.as_p }}
+            {{ mensaje }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>Los <strong>Estados civil</strong> son las personas que se le ofrece el servicio de <strong>mudanza</strong>. </p>
+  <p>El <strong>estado civil</strong> puede estar activo o inactivo. Puede ver más detalles viendo la ficha del estado civil.</p>
+  <p>Puede agregar más estado civil presionando el botón nuevo.</p>
+
+</div>
+
+{% endblock ayuda %}

@@ -1,0 +1,35 @@
+{% extends "inicio/base_edit.html" %}
+
+{% block titulo %}
+
+<title>Sexo</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+  <h2>Agregar sexo</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ sexo_form.as_p }}
+            {{ mensaje }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>Los <strong>Sexos</strong> son las personas que se le ofrece el servicio de <strong>mudanza</strong>. </p>
+  <p>El <strong>sexo</strong> puede estar activo o inactivo. Puede ver más detalles viendo la ficha del sexo.</p>
+  <p>Puede agregar más sexo presionando el botón nuevo.</p>
+
+</div>
+
+{% endblock ayuda %}
