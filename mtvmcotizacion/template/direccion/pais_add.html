@@ -1,38 +1,26 @@
-{% extends 'base3.html' %}
+{% extends "inicio/base_edit.html" %}
 
 {% block titulo %}
 
-<title>Agregar País</title>
+<title>Pais</title>
 
-{% endblock %}
+{% endblock titulo %}
 
-{% block header %}{% endblock %}
+{% block titulo_form %}
 
-{% block content %}
+  <h2>Agregar Pais</h2>
 
-<div class="">
-  <h2>Agregar País</h2>
-  <form action="" method="post">
+{% endblock titulo_form %}
 
-    {% csrf_token %}
+{% block cuerpo_form %}
 
-    <button type="submit" class="btn btn-default">Registrar</button>
-    <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
-    <br>
-    <br>
-    <div class="form-group">
+<div class="form-group">
 
-    {{form_pais.as_p}}
+  {{ form_pais.as_p }}
 
-    </div>
-    <button type="submit" class="btn btn-default">Registrar</button>
-    <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
-    <br>
-    <br>
-  </form>
 </div>
 
-{% endblock %}
+{% endblock cuerpo_form %}
 
 {% block ayuda %}
 
