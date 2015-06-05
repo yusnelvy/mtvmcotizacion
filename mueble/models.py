@@ -101,10 +101,10 @@ class Tamano_Mueble(models.Model):
     tamano = models.ForeignKey(Tamano)
     mueble = models.ForeignKey(Mueble)
     unique_together = ("Tamano", "Mueble")
-    ancho = models.DecimalField(max_digits=2, decimal_places=2)
-    largo = models.DecimalField(max_digits=2, decimal_places=2)
-    alto = models.DecimalField(max_digits=2, decimal_places=2)
-    peso = models.DecimalField(max_digits=2, decimal_places=2)
+    ancho = models.DecimalField(max_digits=5, decimal_places=2)
+    largo = models.DecimalField(max_digits=5, decimal_places=2)
+    alto = models.DecimalField(max_digits=5, decimal_places=2)
+    peso = models.DecimalField(max_digits=5, decimal_places=2)
     predefinido = models.BooleanField(default=None)
 
     def __str__(self):
