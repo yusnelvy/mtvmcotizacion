@@ -23,6 +23,7 @@ class Estado_Cotizacion(models.Model):
     class Meta:
         verbose_name = "estado"
         verbose_name_plural = "estados"
+        ordering = ['id']
 
 
 class Tiempo_Carga(models.Model):
