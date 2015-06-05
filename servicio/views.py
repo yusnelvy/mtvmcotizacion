@@ -211,15 +211,15 @@ def add_complejidad(request):
                               context_instance=RequestContext(request))
 
 
-def add_serviciomaterial(request):
+def add_serviciomaterial(request, id_ser):
     """docstring"""
     if request.method == 'POST':
         form_serviciomaterial = ServicioMaterialForm(request.POST)
         if form_serviciomaterial.is_valid():
             form_serviciomaterial.save()
-            return HttpResponseRedirect(reverse('uservicios:buscar_servicio_material',args=('0','0')))
+            return HttpResponseRedirect(reverse('uservicios:buscar_servicio_material', args=('0', '0')))
     else:
-        form_serviciomaterial = ServicioMaterialForm()
+        form_serviciomaterial = ServicioMaterialForm({'servicio': id_ser})
     return render_to_response('servicio/serviciomaterial_add.html',
                               {'form_serviciomaterial': form_serviciomaterial, 'create': True},
                               context_instance=RequestContext(request))
