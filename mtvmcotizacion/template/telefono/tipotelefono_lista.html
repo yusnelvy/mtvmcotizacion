@@ -2,7 +2,7 @@
 
 {% block titulo %}
 
-<title>Tipo de telefono</title>
+<title>Tipo de telefonos</title>
 
 {% endblock titulo %}
 
@@ -56,7 +56,7 @@
       <a href="editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a>
     </td>
     <td>
-        <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.numero}}"></a>
+        <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.tipo_telefono}}"></a>
   </td>
 </tr>
 
@@ -70,7 +70,18 @@
 
 <br>
 <div class="well well-lg">
-<p>El <strong>Tipo telefono</strong> se usa para agrupar los numeros telefonicos de los clientes.</p>
+<p>
+  Si contamos con muchos Telefonos, será mucho más fácil su manejo si estos están agrupados de manera lógica
+</p>
+<p>
+  Para ello exisen los Tipos de telefonos, los cuales clasifican a los <strong>Telefono</strong>.
+</p>
+<p>
+  El <strong>Tipo telefono</strong> se usa para agrupar los numeros telefonicos de los clientes.
+</p>
+<p>
+  Para agregar un nuevo teléfono presione el botón (nuevo).
+</p>
 </div>
 
 {% endblock ayuda %}
