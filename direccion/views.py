@@ -1,11 +1,12 @@
 from django.shortcuts import render, render_to_response
 from direccion.models import Pais, Provincia, Ciudad, \
     Zona, Tipo_direccion, Direccion, Tipo_Inmueble, \
-    Complejidad_Inmueble, Inmueble
+    Complejidad_Inmueble, Tarifa_valor, Inmueble
 from direccion.forms import PaisForm, ProvinciaForm, \
     CiudadForm, ZonaForm, TipoDireccionForm, \
     DireccionForm, TipoInmuebleForm, \
-    ComplejidadInmuebleForm, InmuebleForm
+    ComplejidadInmuebleForm, TarifaValorForm, \
+    InmuebleForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
@@ -259,6 +260,36 @@ def lista_complejidad_inmueble(request):
     return render(request, 'direccion/complejidad_inmueble_lista.html', context)
 
 
+def lista_tarifa_valor(request):
+    """docstring"""
+
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                tarifa = request.POST['item_id']
+                p = Tarifa_valor.objects.get(pk=tarifa)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+    lista_tarifa_valor = Tarifa_valor.objects.all()
+    context = {'lista_tarifa_valor': lista_tarifa_valor}
+    return render(request, 'direccion/tarifa_inmueble_lista.html', context)
+
+
 def lista_inmueble(request, iddireccion):
     """docstring"""
 
@@ -404,6 +435,21 @@ def add_complejidad_inmueble(request):
 
     return render_to_response('direccion/complejidad_inmueble_add.html',
                               {'form_complejidad': form_complejidad, 'create': True},
+                              context_instance=RequestContext(request))
+
+
+def add_tarifa_valor(request):
+    """docstring"""
+    if request.method == 'POST':
+        form_tarifa = TarifaValorForm(request.POST)
+        if form_tarifa.is_valid():
+            form_tarifa.save()
+            return HttpResponseRedirect(reverse('udireciones:lista_tarifa_valor'))
+    else:
+        form_tarifa = TarifaValorForm()
+
+    return render_to_response('direccion/tarifa_inmueble_add.html',
+                              {'form_tarifa': form_tarifa, 'create': True},
                               context_instance=RequestContext(request))
 
 
@@ -579,7 +625,7 @@ def edit_tipo_inmueble(request, pk):
         form_edit_tipo_inmueble = TipoInmuebleForm(instance=tipo_inmueble)
 
     return render_to_response('direccion/tipo_inmueble_edit.html',
-                              {'form_edit_tipo_inmueble': form_edit_tipo_inmueble,
+                              {'form_edit_tipo_inmueble': form_edit_tipo_inmueble, 'tipo_inmueble': tipo_inmueble,
                                'create': True}, context_instance=RequestContext(request))
 
 
@@ -598,6 +644,24 @@ def edit_complejidad_inmueble(request, pk):
 
     return render_to_response('direccion/complejidad_inmueble_edit.html',
                               {'form_edit_complejidad_inmueble': form_edit_complejidad_inmueble,
+                               'complejidad_inmueble': complejidad_inmueble, 'create': True}, context_instance=RequestContext(request))
+
+
+def edit_tarifa_valor(request, pk):
+    """docstring"""
+
+    tarifa_valor = Tarifa_valor.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        form_edit_tarifa = TarifaValorForm(request.POST, instance=tarifa_valor)
+        if form_edit_tarifa.is_valid():
+            form_edit_tarifa.save()
+            return HttpResponseRedirect(reverse('udireciones:lista_tarifa_valor'))
+    else:
+        form_edit_tarifa = TarifaValorForm(instance=tarifa_valor)
+
+    return render_to_response('direccion/tarifa_inmueble_edit.html',
+                              {'form_edit_tarifa': form_edit_tarifa, 'tarifa_valor': tarifa_valor,
                                'create': True}, context_instance=RequestContext(request))
 
 
@@ -605,11 +669,17 @@ def edit_inmueble(request, pk):
     """docstring"""
     inmueble = Inmueble.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         form_edit_inmueble = InmuebleForm(request.POST, instance=inmueble)
         if form_edit_inmueble.is_valid():
             form_edit_inmueble.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_inmueble', args=(inmueble.direccion.id,)))
+
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('udireciones:lista_inmueble', args=(inmueble.direccion.id,)))
     else:
         form_edit_inmueble = InmuebleForm(instance=inmueble)
 

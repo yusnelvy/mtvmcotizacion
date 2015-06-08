@@ -25,7 +25,7 @@ class Ocupacion(models.Model):
         super(Ocupacion, self).__init__(*args, **kwargs)
 
     descripcion = models.CharField(max_length=100, unique=True)
-    valor = models.DecimalField(max_digits=2, decimal_places=2)
+    valor = models.DecimalField(max_digits=3, decimal_places=2)
 
     def __str__(self):
         return self.descripcion
@@ -82,7 +82,7 @@ class Tamano(models.Model):
     def __init__(self, *args, **kwargs):
         super(Tamano, self).__init__(*args, **kwargs)
 
-    descripcion = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.descripcion
@@ -93,14 +93,31 @@ class Tamano(models.Model):
         #ordering = ['descripcion']
 
 
+class Densidad(models.Model):
+    """docstring for Densidad"""
+    def __init__(self, *args, **kwargs):
+        super(Densidad, self).__init__(*args, **kwargs)
+
+    descripcion = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.descripcion
+
+    class Meta:
+        verbose_name = "Densidad"
+        verbose_name_plural = "Densidades"
+        #ordering = ['descripcion']
+
+
 class Tamano_Mueble(models.Model):
     """docstring for Tamano_Mueble"""
     def __init__(self, *args, **kwargs):
         super(Tamano_Mueble, self).__init__(*args, **kwargs)
 
-    tamano = models.ForeignKey(Tamano)
-    mueble = models.ForeignKey(Mueble)
-    unique_together = ("Tamano", "Mueble")
+    tamano = models.ForeignKey(Tamano, on_delete=models.PROTECT)
+    mueble = models.ForeignKey(Mueble, on_delete=models.PROTECT)
+    densidad = models.ForeignKey(Densidad, on_delete=models.PROTECT)
+    unique_together = ("Tamano", "Mueble", "Densidad")
     ancho = models.DecimalField(max_digits=5, decimal_places=2)
     largo = models.DecimalField(max_digits=5, decimal_places=2)
     alto = models.DecimalField(max_digits=5, decimal_places=2)
@@ -108,12 +125,12 @@ class Tamano_Mueble(models.Model):
     predefinido = models.BooleanField(default=None)
 
     def __str__(self):
-        return u' %s - %s' % (self.mueble, self.tamano)
+        return u' %s - %s - %s' % (self.mueble, self.tamano, self.densidad)
 
     class Meta:
         verbose_name = "Tamano del mueble"
         verbose_name_plural = "Tamanos del mueble"
-        ordering = ['mueble', 'tamano']
+        ordering = ['mueble', 'tamano', 'densidad']
 
 
 class Mueble_Ambiente(models.Model):
