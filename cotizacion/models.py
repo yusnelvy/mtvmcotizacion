@@ -120,6 +120,7 @@ class Vehiculo(models.Model):
     tarifa_recorrido = models.DecimalField(max_digits=7, decimal_places=2)
     capacidad_volumen = models.DecimalField(max_digits=7, decimal_places=2)
     capacidad_peso = models.DecimalField(max_digits=7, decimal_places=2)
+    cargo = models.ForeignKey(Cargo_trabajador)
 
     def __str__(self):
         return self.modelo
