@@ -45,8 +45,8 @@
 <tr class="active">
     <th>Ciudad</th>
     <th>Provincia</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
+    <th width="3">Editar</th>
+    <th width="3">Eliminar</th>
 </tr>
 
 {% for i in lista_ciudad %}
@@ -54,8 +54,8 @@
 <tr id="tr{{i.id}}">
     <td>{{ i.ciudad }}</td>
     <td>{{ i.provincia }}</td>
-    <td><a href="{{i.id}}/" class="glyphicon glyphicon-edit"></a></td>
-    <td>
+    <td width="3"><a href="{{i.id}}/" class="glyphicon glyphicon-edit"></a></td>
+    <td width="3">
         <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.ciudad}}"></a>
   </td>
 </tr>

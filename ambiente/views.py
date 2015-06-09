@@ -92,7 +92,7 @@ def add_ambiente(request):
                               context_instance=RequestContext(request))
 
 
-def add_ambiente_tipoinmueble(request):
+def add_ambiente_tipoinmueble(request, id_ti):
     """docstring"""
     if request.method == 'POST':
         form_ambtipoinmueble = AmbienteTipoInmuebleForm(request.POST)
@@ -100,7 +100,7 @@ def add_ambiente_tipoinmueble(request):
             form_ambtipoinmueble.save()
             return HttpResponseRedirect(reverse('uambientes:lista_ambiente_tipo_inmueble'))
     else:
-        form_ambtipoinmueble = AmbienteTipoInmuebleForm()
+        form_ambtipoinmueble = AmbienteTipoInmuebleForm({'tipo_inmueble': id_ti})
     return render_to_response('ambiente/ambientetipoinmueble_add.html',
                               {'form_ambtipoinmueble': form_ambtipoinmueble, 'create': True},
                               context_instance=RequestContext(request))
