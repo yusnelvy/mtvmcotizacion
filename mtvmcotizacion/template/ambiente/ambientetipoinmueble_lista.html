@@ -28,8 +28,8 @@ Eliminar la relación del ambiente con el tipo de inmueble
 
 {% if lista_inmueble %}
 
-<a href="nuevo/" class="btn btn-default">Nuevo</a>
-<h6>Cantidad de inmueble registrados:
+<a href="/ambiente/" class="btn btn-default">Lista de ambientes</a>
+<h6>Cantidad de tipos de inmueble registrados:
   <span class="badge" id="count_reg">
 
     {{ lista_inmueble.count }}
@@ -51,12 +51,13 @@ Eliminar la relación del ambiente con el tipo de inmueble
       </h4>
     </div>
     <div id="collapse{{im.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{im.id}}">
-      <div class="panel-body">
+
         <table class="table table-hover" id="tabla" style="text-align: center;">
-          <tr class="active">
-            <th>Ambiente</th>
-            <th>Editar</th>
-            <th>Eliminar</th>
+          <tr class="">
+            <th>Ambientes</th>
+            <th width="3"></th>
+            <th width="3"></th>
+            <th width="3"></th>
           </tr>
 
           {% for i in lista_ambtipoinmueble %}
@@ -65,11 +66,14 @@ Eliminar la relación del ambiente con el tipo de inmueble
 
           <tr id="tr{{i.id}}">
             <td>{{ i.ambiente }}</td>
-            <td>
-              <a href="editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
+            <td width="3">
+            <a title="Agregar" data-toggle="tooltip" data-placement="right" href="nuevo/{{im.id}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
             </td>
-            <td>
-              <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.ambiente}}"></a>
+            <td width="3">
+              <a title="Editar" data-toggle="tooltip" data-placement="right" href="editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
+            </td>
+            <td width="3">
+              <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.ambiente}}"></a>
             </td>
           </tr>
 
@@ -78,7 +82,7 @@ Eliminar la relación del ambiente con el tipo de inmueble
           {% endfor %}
 
         </table>
-      </div>
+
     </div>
   </div>
 
@@ -97,7 +101,7 @@ Eliminar la relación del ambiente con el tipo de inmueble
   <div class="well well-lg">
     <p>Los <strong>Ambientes</strong> son los diversos espacios que se encuentran en un <strong>Inmueble</strong>.</p>
     <p>Para ello existen las relaciones entre <strong>Tipos de inmuebles</strong> y <strong>Ambientes</strong>, los cuales clasifican a los ambientes según su tipo de inmueble.</p>
-    <p>Clasifique los ambientes según su tipo de inmueble presionando el botón ( Nuevo ).</p>
+    <p>Clasifique los ambientes según su tipo de inmueble presionando el botón ( <span class="glyphicon-asterisk glyphicon glyphicon-plus"></span> ).</p>
   </div>
 </div>
 

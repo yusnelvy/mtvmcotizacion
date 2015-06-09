@@ -70,9 +70,9 @@ def lista_ambiente_tipo_inmueble(request):
 
 def buscar_ambiente(request, id_tipoinmueble):
     """docstring"""
-    tipo_inmueble = Tipo_Inmueble.objects.get(id=id_tipoinmueble)
+    tipo_inmueble = Ambiente_Tipo_inmueble.objects.get(id=id_tipoinmueble)
 
-    lista_ambiente = Ambiente.objects.filter(tipo_inmueble_id=tipo_inmueble)
+    lista_ambiente = Ambiente.objects.filter(pk=tipo_inmueble.ambiente_id)
     context = {'lista_ambiente': lista_ambiente}
     return render(request, 'ambiente/ambiente_lista.html', context)
 
@@ -92,7 +92,7 @@ def add_ambiente(request):
                               context_instance=RequestContext(request))
 
 
-def add_ambiente_tipoinmueble(request):
+def add_ambiente_tipoinmueble(request, id_ti):
     """docstring"""
     if request.method == 'POST':
         form_ambtipoinmueble = AmbienteTipoInmuebleForm(request.POST)
@@ -100,7 +100,7 @@ def add_ambiente_tipoinmueble(request):
             form_ambtipoinmueble.save()
             return HttpResponseRedirect(reverse('uambientes:lista_ambiente_tipo_inmueble'))
     else:
-        form_ambtipoinmueble = AmbienteTipoInmuebleForm()
+        form_ambtipoinmueble = AmbienteTipoInmuebleForm({'tipo_inmueble': id_ti})
     return render_to_response('ambiente/ambientetipoinmueble_add.html',
                               {'form_ambtipoinmueble': form_ambtipoinmueble, 'create': True},
                               context_instance=RequestContext(request))

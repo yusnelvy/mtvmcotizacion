@@ -127,10 +127,12 @@ def buscar_servicio_material(request, idserv=0, idmat=0):
     if int(idmat) != 0 | int(idserv) != 0:
 
         buscar_serviciomaterial = Servicio_Material.objects.filter(Q(material=idmat) | Q(servicio=idserv))
+        lista_servicio = Servicio.objects.all()
     else:
         buscar_serviciomaterial = Servicio_Material.objects.all()
+        lista_servicio = Servicio.objects.all()
 
-    context = {'buscar_serviciomaterial': buscar_serviciomaterial}
+    context = {'buscar_serviciomaterial': buscar_serviciomaterial, 'lista_servicio': lista_servicio}
     return render(request, 'servicio/serviciomaterial_lista.html', context)
 
 
