@@ -44,18 +44,14 @@
 {% block cuerpo_tabla %}
 
 <tr class="active">
-      <th>Sexo</th>
-      <th>Editar</th>
-      <th>Eliminar</th>
-    </tr>
+  <th>Sexo</th>
+  <th>Eliminar</th>
+</tr>
 
 {% for i in lista_sexo %}
 
 <tr id="tr{{i.id}}">
       <td>{{ i.sexo }}</td>
-      <td>
-        <a href="editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a>
-      </td>
       <td>
         <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.sexo}}"></a>
       </td>
@@ -70,10 +66,9 @@
 {% block ayuda %}
 
 <div class="well well-lg">
-  <p>Los <strong>Sexos</strong> son las personas que se le ofrece el servicio de <strong>mudanza</strong>. </p>
-  <p>El <strong>cliente</strong> puede estar activo o inactivo. Puede ver más detalles viendo la ficha del cliente.</p>
-  <p>Puede agregar más cliente presionando el botón nuevo.</p>
-
+  <p>El <strong>Sexo</strong> define a la persona como varón y mujer. </p>
+  <p>El <strong>cliente</strong> tiene un sexo que lo caracteriza si es varón o mujer.</p>
+  <p>Puede agregar más sexo presionando el botón ( nuevo ).</p>
 </div>
 
 {% endblock ayuda %}
