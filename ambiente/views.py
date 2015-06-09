@@ -70,9 +70,9 @@ def lista_ambiente_tipo_inmueble(request):
 
 def buscar_ambiente(request, id_tipoinmueble):
     """docstring"""
-    tipo_inmueble = Tipo_Inmueble.objects.get(id=id_tipoinmueble)
+    tipo_inmueble = Ambiente_Tipo_inmueble.objects.get(id=id_tipoinmueble)
 
-    lista_ambiente = Ambiente.objects.filter(tipo_inmueble_id=tipo_inmueble)
+    lista_ambiente = Ambiente.objects.filter(pk=tipo_inmueble.ambiente_id)
     context = {'lista_ambiente': lista_ambiente}
     return render(request, 'ambiente/ambiente_lista.html', context)
 
