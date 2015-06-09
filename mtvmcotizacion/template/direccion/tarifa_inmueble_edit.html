@@ -2,13 +2,13 @@
 
 {% block titulo %}
 
-<title>Complejidad de inmueble</title>
+<title>Tarifa de inmueble</title>
 
 {% endblock titulo %}
 
 {% block titulo_form %}
 
-  <h2>Editar complejidad de inmueble</h2>
+  <h2>Editar tarifa de inmueble</h2>
 
 {% endblock titulo_form %}
 
@@ -16,7 +16,7 @@
 
 <div class="form-group">
 
-  {{ form_edit_complejidad_inmueble.as_p }}
+  {{ form_edit_tarifa.as_p }}
 
 </div>
 
@@ -32,12 +32,12 @@
     <th></th>
 </tr>
 
-{% for det in complejidad_inmueble.inmueble_set.all %}
+{% for det in tarifa_valor.inmueble_set.all %}
 <tr id="tr{{det.id}}">
     <td>{{ det.inmueble }}</td>
     <td>{{ det.tipo_inmueble }}</td>
     <td>
-      <a href="{% url 'udireciones:edit_inmueble' det.id %}?next={% url 'udireciones:edit_complejidad_inmueble' complejidad_inmueble.id %}" class="glyphicon glyphicon-edit"></a>
+      <a href="{% url 'udireciones:edit_inmueble' det.id %}?next={% url 'udireciones:edit_tarifa_valor' tarifa_valor.id %}" class="glyphicon glyphicon-edit"></a>
 
     </td>
 </tr>
@@ -53,8 +53,8 @@
 <br>
 <div class="">
     <div class="well well-lg">
-        <p><strong>Complejidad inmueble</strong> se refiere al esfuerzo necesario para el traslado de la mudanza.</p>
-        <p>Al momento de evaluar o realizar una mudanza, los Niveles de complejidad serán determinados por las características físicas del Mueble o del Contenido según la sensibilidad del cotizador basada en los indicadores a evaluar.</p>
+        <p><strong>Tarifa inmueble</strong> se refiere al esfuerzo necesario para el traslado de la mudanza.</p>
+        <p>Al momento de evaluar o realizar una mudanza, los Niveles de tarifa serán determinados por las características físicas del Mueble o del Contenido según la sensibilidad del cotizador basada en los indicadores a evaluar.</p>
     </div>
 </div>
 

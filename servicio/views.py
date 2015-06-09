@@ -259,7 +259,7 @@ def edit_servicio(request, pk):
         form_edit_servicio = ServicioForm(instance=servicio)
 
     return render_to_response('servicio/servicio_edit.html',
-                              {'form_edit_servicio': form_edit_servicio, 'create': False},
+                              {'form_edit_servicio': form_edit_servicio, 'servicio': servicio, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -282,7 +282,7 @@ def edit_material(request, pk):
         form_edit_material = MaterialForm(instance=material)
 
     return render_to_response('servicio/material_edit.html',
-                              {'form_edit_material': form_edit_material, 'create': False},
+                              {'form_edit_material': form_edit_material, 'material': material, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -305,13 +305,15 @@ def edit_complejidad(request, pk):
         form_edit_complejidad = ComplejidadForm(instance=complejidad)
 
     return render_to_response('servicio/complejidad_edit.html',
-                              {'form_edit_complejidad': form_edit_complejidad, 'create': False},
+                              {'form_edit_complejidad': form_edit_complejidad, 'complejidad': complejidad, 'create': False},
                               context_instance=RequestContext(request))
 
 
 def edit_complejidadservicio(request, pk):
     """docstring"""
     complejidadservicio = Complejidad_Servicio.objects.get(pk=pk)
+
+    redirect_to = request.REQUEST.get('next', '')
 
     if request.method == 'POST':
         # formulario enviado
@@ -321,7 +323,11 @@ def edit_complejidadservicio(request, pk):
             # formulario validado correctamente
             form_edit_complejidadservicio.save()
 
-            return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio'))
+            #return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio', args=(complejidadservicio.servicio.id, 0,)))
 
     else:
         # formulario inicial
@@ -336,6 +342,8 @@ def edit_serviciomaterial(request, pk):
     """docstring"""
     serviciomaterial = Servicio_Material.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_serviciomaterial = ServicioMaterialForm(request.POST, instance=serviciomaterial)
@@ -344,7 +352,10 @@ def edit_serviciomaterial(request, pk):
             # formulario validado correctamente
             form_edit_serviciomaterial.save()
 
-            return HttpResponseRedirect(reverse('uservicios:buscar_servicio_material'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('uservicios:buscar_servicio_material', args=(serviciomaterial.servicio.id, 0,)))
 
     else:
         # formulario inicial

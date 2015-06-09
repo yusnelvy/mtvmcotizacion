@@ -45,6 +45,8 @@ class Servicio_Material(models.Model):
     servicio = models.ForeignKey(Servicio)
     material = models.ForeignKey(Material)
     unique_together = ("Servicio", "Material")
+    cantidad = models.DecimalField(max_digits=5, decimal_places=2)
+    Calculo = models.TextField(max_length=200)
 
     def __str__(self):
         return u' %s - %s' % (self.servicio, self.material)
@@ -72,9 +74,9 @@ class Complejidad(models.Model):
 
 
 class Complejidad_Servicio(models.Model):
-    """docstring for Complejidad"""
+    """docstring for Complejidad_Servicio"""
     def __init__(self, *args, **kwargs):
-        super(Complejidad, self).__init__(*args, **kwargs)
+        super(Complejidad_Servicio, self).__init__(*args, **kwargs)
 
     complejidad = models.ForeignKey(Complejidad)
     tarifa = models.DecimalField(max_digits=13, decimal_places=2)

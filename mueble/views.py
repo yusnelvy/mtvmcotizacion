@@ -1,10 +1,10 @@
 from django.shortcuts import render, render_to_response
 from mueble.models import Tipo_Mueble, Ocupacion,\
     Forma_Mueble, Mueble, Tamano, Tamano_Mueble, \
-    Mueble_Ambiente
+    Mueble_Ambiente, Densidad
 from mueble.forms import TipoMuebleForm, OcupacionForm,\
     FormaMuebleForm, MuebleForm, TamanoForm, \
-    TamanoMuebleForm, MuebleAmbienteForm
+    TamanoMuebleForm, MuebleAmbienteForm, DensidadForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
@@ -275,6 +275,35 @@ def lista_tamano(request):
     return render(request, 'mueble/tamano_lista.html', context)
 
 
+def lista_densidad(request):
+    """docstring"""
+
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_densidad = request.POST['item_id']
+                p = Densidad.objects.get(pk=id_densidad)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+    lista_densidad = Densidad.objects.all()
+    context = {'lista_densidad': lista_densidad}
+    return render(request, 'mueble/densidad_lista.html', context)
+
+
 def buscar_tamano_mueble(request, idmueble=0):
     """docstring"""
 
@@ -419,6 +448,20 @@ def add_tamano(request):
                               context_instance=RequestContext(request))
 
 
+def add_densidad(request):
+    """docstring"""
+    if request.method == 'POST':
+        form_densidad = DensidadForm(request.POST)
+        if form_densidad.is_valid():
+            form_densidad.save()
+            return HttpResponseRedirect(reverse('umuebles:lista_densidad'))
+    else:
+        form_densidad = DensidadForm()
+    return render_to_response('mueble/densidad_add.html',
+                              {'form_densidad': form_densidad, 'create': True},
+                              context_instance=RequestContext(request))
+
+
 def add_tamanomueble(request):
     """docstring"""
     if request.method == 'POST':
@@ -493,7 +536,7 @@ def edit_ocupacion(request, pk):
         form_edit_ocupacion = OcupacionForm(instance=ocupacion)
 
     return render_to_response('mueble/ocupacion_edit.html',
-                              {'form_edit_ocupacion': form_edit_ocupacion, 'create': False},
+                              {'form_edit_ocupacion': form_edit_ocupacion, 'ocupacion': ocupacion, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -516,7 +559,7 @@ def edit_forma_mueble(request, pk):
         form_edit_formamueble = FormaMuebleForm(instance=formamueble)
 
     return render_to_response('mueble/formamueble_edit.html',
-                              {'form_edit_formamueble': form_edit_formamueble, 'create': False},
+                              {'form_edit_formamueble': form_edit_formamueble, 'formamueble': formamueble, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -539,13 +582,38 @@ def edit_tamano(request, pk):
         form_edit_tamano = TamanoForm(instance=tamano)
 
     return render_to_response('mueble/tamano_edit.html',
-                              {'form_edit_tamano': form_edit_tamano, 'create': False},
+                              {'form_edit_tamano': form_edit_tamano, 'tamano': tamano, 'create': False},
+                              context_instance=RequestContext(request))
+
+
+def edit_densidad(request, pk):
+    """docstring"""
+    densidad = Densidad.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        # formulario enviado
+        form_edit_densidad = DensidadForm(request.POST, instance=densidad)
+
+        if form_edit_densidad.is_valid():
+            # formulario validado correctamente
+            form_edit_densidad.save()
+
+            return HttpResponseRedirect(reverse('umuebles:lista_densidad'))
+
+    else:
+        # formulario inicial
+        form_edit_densidad = DensidadForm(instance=densidad)
+
+    return render_to_response('mueble/densidad_edit.html',
+                              {'form_edit_densidad': form_edit_densidad, 'densidad': densidad, 'create': False},
                               context_instance=RequestContext(request))
 
 
 def edit_tamanomueble(request, pk):
     """docstring"""
     tamanomueble = Tamano_Mueble.objects.get(pk=pk)
+
+    redirect_to = request.REQUEST.get('next', '')
 
     if request.method == 'POST':
         # formulario enviado
@@ -555,7 +623,10 @@ def edit_tamanomueble(request, pk):
             # formulario validado correctamente
             form_edit_tamanomueble.save()
 
-            return HttpResponseRedirect(reverse('umuebles:lista_tamanomueble'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('umuebles:buscar_tamano_mueble', args=(tamanomueble.mueble.id,)))
 
     else:
         # formulario inicial
@@ -578,7 +649,7 @@ def edit_muebleambiente(request, pk):
             # formulario validado correctamente
             form_edit_muebleambiente.save()
 
-            return HttpResponseRedirect(reverse('umuebles:lista_muebleambiente'))
+            return HttpResponseRedirect(reverse('umuebles:buscar_mueble_ambiente', args=(muebleambiente.ambiente.id,)))
 
     else:
         # formulario inicial
