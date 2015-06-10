@@ -24,7 +24,32 @@
 
 {% block contenido_adicional %}
 
+{% if complejidad.complejidad_servicio_set.all %}
+
 <h4>Servicios asignados a este nivel de complejidad</h4>
+<div class="panel panel-default">
+<table class="table" style="text-align: center;">
+<tr class="">
+    <th>Tipo de tarifa</th>
+    <th width="400">Monto</th>
+    <th width="3">Editar</th>
+</tr>
+
+{% for det in complejidad.complejidad_servicio_set.all %}
+<tr id="tr{{det.id}}">
+    <td>{{ det.complejidad }}</td>
+    <td width="400">{{ det.tarifa }}</td>
+    <td width="3">
+      <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_complejidadservicio' det.id %}?next={% url 'uservicios:edit_complejidad' complejidad.id %}" class="glyphicon glyphicon-edit"></a>
+
+    </td>
+</tr>
+
+{% endfor %}
+
+</table>
+</div>
+{% endif %}
 
 {% endblock contenido_adicional %}
 

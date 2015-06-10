@@ -8,7 +8,7 @@ Ayuda del mueble/forms.py
 from django.forms import ModelForm
 from mueble.models import Tipo_Mueble, Ocupacion,\
     Forma_Mueble, Mueble, Tamano, Tamano_Mueble, \
-    Mueble_Ambiente
+    Mueble_Ambiente, Densidad
 
 
 class TipoMuebleForm(ModelForm):
@@ -21,6 +21,7 @@ class TipoMuebleForm(ModelForm):
         labels = {
             'tipo_mueble': ('Tipo de mueble')
         }
+
 
 class OcupacionForm(ModelForm):
 
@@ -55,6 +56,15 @@ class TamanoForm(ModelForm):
 
     class Meta:
         model = Tamano
+        fields = '__all__'
+
+
+class DensidadForm(ModelForm):
+
+    """Docstring"""
+
+    class Meta:
+        model = Densidad
         fields = '__all__'
 
 

@@ -13,26 +13,26 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='contenedor',
-            options={'verbose_name_plural': 'contenedores', 'verbose_name': 'contenedor', 'ordering': ['contenedor']},
+            options={'verbose_name': 'contenedor', 'verbose_name_plural': 'contenedores', 'ordering': ['contenedor']},
         ),
         migrations.AlterModelOptions(
             name='contenido',
-            options={'verbose_name_plural': 'contenidos', 'verbose_name': 'contenido', 'ordering': ['contenido']},
+            options={'verbose_name': 'contenido', 'verbose_name_plural': 'contenidos', 'ordering': ['contenido']},
         ),
         migrations.AlterModelOptions(
             name='contenido_tipico',
-            options={'verbose_name_plural': 'Contenidos Tipicos', 'verbose_name': 'Contenido Tipico', 'ordering': ['mueble', 'contenido']},
+            options={'verbose_name': 'Contenido Tipico', 'verbose_name_plural': 'Contenidos Tipicos', 'ordering': ['mueble', 'contenido']},
         ),
         migrations.AlterField(
             model_name='contenedor',
             name='contenedor',
-            field=models.CharField(max_length=100, unique=True),
+            field=models.CharField(unique=True, max_length=100),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='contenido',
             name='contenido',
-            field=models.CharField(max_length=100, unique=True),
+            field=models.CharField(unique=True, max_length=100),
             preserve_default=True,
         ),
         migrations.AlterField(

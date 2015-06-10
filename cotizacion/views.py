@@ -19,6 +19,7 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 import simplejson as json
 import django.db
+from django.db.models import F
 
 
 # Create your views here.
@@ -805,7 +806,11 @@ def edit_cotizacion(request, pk):
 
         if editar_cotizacion.is_valid():
             # formulario validado correctamente
-            editar_cotizacion.save()
+            id_reg = editar_cotizacion.save()
+
+            #prueba para actualizar un campo calculable
+            reporter = Cotizacion.objects.filter(pk=id_reg.id)
+            reporter.update(cantidad_ambientes=F('cantidad_ambientes')+1)
 
             return HttpResponseRedirect(reverse('ucotizaciones:lista_cotizacion'))
 

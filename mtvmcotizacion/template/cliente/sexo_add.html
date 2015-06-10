@@ -1,0 +1,34 @@
+{% extends "inicio/base_edit.html" %}
+
+{% block titulo %}
+
+<title>Sexo</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+  <h2>Agregar sexo</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ sexo_form.as_p }}
+            {{ mensaje }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>El <strong>Sexo</strong> define a la persona como varón y mujer. </p>
+  <p>El <strong>cliente</strong> tiene un sexo que lo caracteriza si es varón o mujer.</p>
+  <p>Agregue el sexo y presione el botón ( registrar ).</p>
+</div>
+
+{% endblock ayuda %}

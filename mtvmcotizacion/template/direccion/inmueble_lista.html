@@ -1,74 +1,53 @@
-{% extends 'inicio/base3.html' %}
+{% extends 'inicio/base_ficha.html' %}
 
 {% block titulo %}
 
 <title>Inmueble</title>
 
-{% endblock %}
+{% endblock titulo %}
 
-{% block content %}
+{% block titulo_ficha %}
 
-<!--IniciaModal-->
-<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="myModalLabel"></h3>
-      </div>
-      <div class="modal-body">
-        <p>¿Eliminar <span id="modal_name"></span>?</p>
-      </div>
-      <div class="modal-footer">
-        <form method="post" id="frmEliminar">
+<h2></h2>
 
-          {% csrf_token %}
+{% endblock titulo_ficha %}
 
-          <input type="hidden" id="modal_id" name="item_id">
-          <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-          <button type="submit" class="btn btn-default">Si</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-<!--EndModal-->
-<h2>Inmueble </h2>
+{% block col1 %}
+
+        <div class="col-md-12">
+
+{% endblock col1 %}
+
+{% block content1 %}
 
 {% if lista_inmueble %}
 
 <div class="panel panel-default">
   {% for i in lista_inmueble %}
   <div class="panel-heading">
-    <h4>
-      <a href="../editar/{{i.id}}" style="float:center;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-      Ficha inmueble
-      <a href="../nuevo/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-    </h4>
+    <h4>Ficha inmueble</h4>
   </div>
   <div class="panel-body">
     <table class="table">
       <tr>
-        <td><strong>Inmueble: </strong>{{ i.inmueble }}</td>
-        <td><strong>Cliente:</strong> {{ i.direccion.cliente }}</td>
+        <td class="text-right"><strong>Inmueble: </strong></td>
+        <td class="text-left">{{ i.inmueble }}</td>
+        <td class="text-right"><strong>Cliente:</strong> </td>
+        <td class="text-left">{{ i.direccion.cliente }}</td>
       </tr>
       <tr>
-        <td><strong>Tipo de inmueble: </strong>{{ i.tipo_inmueble }}</td>
-        <td><strong>Tipo de direccion: </strong>{{ i.direccion.tipo_direccion }}</td>
+        <td class="text-right"><strong>N° de ambientes: </strong></td>
+        <td class="text-left">{{ i.numero_ambientes }}</td>
+        <td class="text-right"><strong>Tipo de inmueble: </strong></td>
+        <td class="text-left">{{ i.tipo_inmueble }}</td>
       </tr>
       <tr>
-        <td><strong>Numero de ambientes: </strong>{{ i.numero_ambientes }}</td>
-        <td><strong>Direccion: </strong>{{ i.direccion }}</td>
-      </tr>
-      <tr>
-        <td><strong>Piso: </strong>{{ i.pisos }}</td>
-        <td><strong>Zona: </strong>{{ i.direccion.zona }}</td>
-      </tr>
-      <tr>
-        <td><strong>Pisos escaleras: </strong>{{ i.pisos_escalera }}</td>
-        <td><strong>Ciudad: </strong>{{ i.direccion.zona.ciudad }}</td>
-      </tr>
-      <tr>
-        <td><strong>Rampa: </strong>
+        <td class="text-right"><strong>Piso: </strong></td>
+        <td class="text-left">{{ i.pisos }}</td>
+        <td class="text-right">
+          <strong>Rampa: </strong>
+        </td>
+        <td class="text-left">
 
           {% if i.rampa %}
 
@@ -81,10 +60,14 @@
           {% endif %}
 
         </td>
-        <td><strong>Provincia: </strong>{{ i.direccion.zona.ciudad.provincia }}</td>
       </tr>
       <tr>
-        <td><strong>Ascensor: </strong>
+        <td class="text-right"><strong>Pisos escaleras: </strong></td>
+        <td class="text-left">{{ i.pisos_escalera }}</td>
+        <td class="text-right">
+          <strong>Ascensor: </strong>
+        </td>
+        <td class="text-left">
 
           {% if i.ascensor %}
 
@@ -97,10 +80,16 @@
           {% endif %}
 
         </td>
-        <td><strong>Pais: </strong>{{ i.direccion.zona.ciudad.provincia.pais }}</td>
       </tr>
       <tr>
-        <td><strong>Servicio ascensor: </strong>
+         <td class="text-right">
+          <strong>Pisos ascensor servicio: </strong>
+        </td>
+        <td class="text-left">{{ i.pisos_ascensor_servicio }}</td>
+        <td class="text-right">
+          <strong>Servicio ascensor: </strong>
+        </td>
+        <td class="text-left">
 
           {% if i.ascensor_servicio %}
 
@@ -113,11 +102,45 @@
           {% endif %}
 
         </td>
-        <td><strong>Complejidad: </strong>{{ i.complejidad }}</td>
       </tr>
       <tr>
-        <td><strong>Pisos ascensor servicio: </strong>{{ i.pisos_ascensor_servicio }}</td>
-        <td><strong>Pisos ascensor: </strong>{{ i.pisos_ascensor }}</td>
+        <td class="text-right">
+          <strong>Pisos ascensor: </strong>
+        </td>
+        <td class="text-left">{{ i.pisos_ascensor }}</td>
+        <td class="text-right"><strong>Complejidad: </strong></td>
+        <td class="text-left">{{ i.complejidad }}</td>
+      </tr>
+      <tr>
+        <td class="text-right"><strong>Tarifa: </strong></td>
+        <td class="text-left">{{ i.tarifa_valor }}</td>
+        <td class="text-right"><strong>Distancia del vehiculo: </strong></td>
+        <td class="text-left">{{ i.distancia_vehiculo }}</td>
+      </tr>
+      <tr>
+        <td class="text-right"><strong>Direccion {{ i.direccion.tipo_direccion }}:</strong></td>
+        <td class="text-left">
+          <p>
+        Pais {{ i.direccion.zona.ciudad.provincia.pais }} provincia {{ i.direccion.zona.ciudad.provincia }} ciudad {{ i.direccion.zona.ciudad }} Zona {{ i.direccion.zona }}
+        calle {{ i.direccion.calle }} numero {{ i.direccion.numero }} piso {{ i.direccion.piso }}
+      </p>
+      <p>
+        Punto de referencia {{ i.direccion.punto_referencia }}
+      </p>
+      <p>
+       Zip1: {{ i.direccion.zip1 }}
+      </p>
+    </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+         <a href="../editar/{{i.id}}" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+       </td>
       </tr>
     </table>
 

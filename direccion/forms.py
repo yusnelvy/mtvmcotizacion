@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from direccion.models import Pais, Provincia, Ciudad, \
     Zona, Tipo_direccion, Direccion, Tipo_Inmueble, \
-    Complejidad_Inmueble, Inmueble
+    Complejidad_Inmueble, Tarifa_valor, Inmueble
 
 
 class PaisForm(ModelForm):
@@ -50,6 +50,12 @@ class TipoInmuebleForm(ModelForm):
 class ComplejidadInmuebleForm(ModelForm):
     class Meta:
         model = Complejidad_Inmueble
+        fields = '__all__'
+
+
+class TarifaValorForm(ModelForm):
+    class Meta:
+        model = Tarifa_valor
         fields = '__all__'
 
 

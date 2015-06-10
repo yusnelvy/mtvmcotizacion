@@ -1,15 +1,40 @@
-{% extends 'inicio/base3.html' %}
-{% block header %}<h2>Tipo telefono</h2>{% endblock %}
-{% block content %}
+{% extends "inicio/base_edit.html" %}
 
- <h2>Agregar tipo telefono</h2>
-  <form action="" method="post" data-ajax="false">
-    {% csrf_token %}
-    {{ form_tipotelefono.as_p }}
-    <button type="submit" class="ui-btn ui-btn ui-icon-check ui-btn-icon-left">Registrar</button>
-    <a class="ui-btn ui-icon-carat-l ui-btn-icon-left" href="javascript:history.back();">Regresar</a>
-    <br><br>
-  </form>
+{% block titulo %}
 
-{% endblock %}
-{% block footer %}{% endblock %}
+<title>Tipo de telefono</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+  <h2>Agregar Tipo de telefono</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ form_tipotelefono.as_p }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<br>
+<div class="well well-lg">
+  <p>
+  Si contamos con muchos Telefonos, será mucho más fácil su manejo si estos están agrupados de manera lógica
+</p>
+<p>
+  Para ello exisen los Tipos de telefonos, los cuales clasifican a los <strong>Telefono</strong>.
+</p>
+<p>
+  El <strong>Tipo telefono</strong> se usa para agrupar los numeros telefonicos de los clientes.
+</p>
+</div>
+
+{% endblock ayuda %}
