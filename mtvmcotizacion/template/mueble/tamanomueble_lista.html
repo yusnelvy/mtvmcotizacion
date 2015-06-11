@@ -1,70 +1,114 @@
- {% extends 'inicio/base3.html' %}
- {% block content %}
+{% extends 'inicio/base_ficha.html' %}
 
-<!--IniciaModal-->
- <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-    <h3 id="myModalLabel">Eliminar tamano del mueble</h3>
+{% block titulo %}
+
+<title>Muebles por ambiente</title>
+
+{% endblock titulo %}
+
+{% block titulo_modal %}
+
+Eliminar tamaño del mueble
+
+{% endblock titulo_modal %}
+
+{% block validacion_modal %}
+
+<p>¿Desea eliminar <span id="modal_name"></span>?</p>
+
+{% endblock validacion_modal %}
+
+{% block titulo_ficha %}
+
+<h2>Tamaños de muebles</h2>
+<a href="/mueble/" class="btn btn-default">Lista de muebles</a>
+<a href="/mueble/tamano_mueble/0/" class="btn btn-default">Ver todos</a>
+<a href="/mueble/tamano_mueble/nuevo" class="btn btn-default">Nuevo</a>
+
+{% endblock titulo_ficha %}
+
+{% block col1 %}
+
+<div class="col-md-8">
+
+  {% endblock col1 %}
+
+  {% block content1 %}
+
+  {% if buscar_tamanomueble %}
+
+  <h6>Cantidad de registros encontrados:
+    <span class="badge" id="count_reg">
+
+      {{ buscar_tamanomueble.count }}
+
+    </span>
+  </h6>
+  <div class="panel panel-default">
+    <table class="table table-hover" style="text-align: center;">
+      <tr class="active">
+        <th>Mueble</th>
+        <th>Tamaño</th>
+        <th>Desindad</th>
+        <th>Ancho</th>
+        <th>Alto</th>
+        <th>Peso</th>
+        <th>Predefinido</th>
+        <th width="3">Editar</th>
+        <th width="3">Eliminar</th>
+      </tr>
+
+      {% for i in buscar_tamanomueble %}
+
+      <tr id="tr{{i.id}}">
+        <td>{{ i.mueble }}</td>
+        <td>{{ i.tamano }}</td>
+        <td>{{ i.densidad }}</td>
+        <td>{{ i.ancho }}</td>
+        <td>{{ i.alto }}</td>
+        <td>{{ i.peso }}</td>
+        <td>
+
+          {% if i.predefinido %}
+
+          Si
+
+          {% else %}
+
+          No
+
+          {% endif %}
+
+        </td>
+        <td width="3">
+          <a title="Editar" data-toggle="tooltip" data-placement="right" href="../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
+        </td>
+        <td width="3">
+          <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="Mueble: {{i.mueble}} Tamaño: {{ i.tamano }}"></a>
+        </td>
+      </tr>
+
+      {% endfor %}
+
+    </table>
+  </div>
+
+  {% endif %}
+
+  {% endblock content1 %}
+
+  {% block col2 %}
+
+  <div class="col-md-4">
+
+    {% endblock col2 %}
+
+    {% block content2 %}
+
+    <div class="well well-lg">
+      <p>Los <strong>Mueble</strong> serán los objetos que se verán afectados durante una mudanza, algunos de ellos recibiendo servicios, otros almacenando contenidos.</p>
+      <p>Los <strong>Muebles</strong>, durante una mudanza, estarán asociados a un <strong>Ambiente</strong> de origen, y podrán ser trasladables o no. En caso de no ser trasladables, el único sentido de registrarlos consiste en la identificación de los <strong>Contenidos</strong> que mantienen, como puede ser el caso de los <i>muebles de cocina empotrada</i> o los <i>armarios empotrados</i> que generarán <strong>Contenedores</strong> pero ellos mismos no formarán parte de la mudanza.</p>
+      <p>Los muebles deben contar con un equilibrio entre lo general y lo específico, de manera que pueda estandarizarse la inmensa diversidad de posibilidades que se encuentra en el mercado, en solo unos pocos <i>muebles representativos</i> del resto.</p>
     </div>
-    <div class="modal-body">
-    <p>¿Realmente desea eliminar el tamano del mueble <span id="modal_name"></span>?</p>
-    </div>
-    <div class="modal-footer">
-        <form method="post" id="frmEliminar">
-            {% csrf_token %}
-            <input type="hidden" id="modal_id" name="item_id">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-            <button type="submit" class="btn btn-danger">Eliminar</button>
-        </form>
-    </div>
-</div>
-<!--EndModal-->
-{% if buscar_tamanomueble %}
 
-<h6>Cantidad de registros encontrados:
-  <span class="badge" id="count_reg">
-    {{ buscar_tamanomueble.count }}
-  </span>
-</h6>
-
-  <table class="table table-hover">
-
-   <tr class="active">
-    <th>tamano</th>
-    <th>mueble</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
-  </tr>
-
-  {% for i in buscar_tamanomueble %}
-
-  <tr id="tr{{i.id}}">
-
-    <td>{{ i.tamano }}</td>
-    <td>{{ i.mueble }}</td>
-
-    <td>
-      <a href="../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
-      {# <button id ="editar" data-telid="{{i.id}}" class="btn btn-mini btn-primary" type="button">editar</button> #}
-    </td>
-    <td>
-      <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.mueble}}"><i class="icon-trash icon-white"></i>Eliminar</a>
-    </td>
-    <input type="hidden" value="{{i.id}}" id="idtele">
-  </tr>
-
-  {% endfor %}
-
-
-</table>
-<p><a href="../nuevo/" class="btn btn-default">Nuevo</a></p>
-</div>
-
-{% else %}
-
-<p><a href="../nuevo/" class="btn btn-default">Nuevo</a></p>
-<p> No se encontro registro.</p>
-
-{% endif %}
-
-{% endblock %}
+    {% endblock content2 %}

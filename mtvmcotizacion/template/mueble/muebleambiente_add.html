@@ -1,17 +1,38 @@
-<div class="col-md-1"></div>
-<div class="col-md-4">
-  <h2>Agregar mueble de ambiente</h2>
-  <form action="" method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-default">Registrar</button>
-    <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
-    <br><br>
-    <div class="form-group"> {{ form_muebleambiente.as_p }}
-    </div>
+{% extends "inicio/base_edit.html" %}
 
-      <button type="submit" class="btn btn-default">Registrar</button>
-      <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
-      <br><br>
-    </form>
-  </div>
+{% block titulo %}
 
+<title>Muebles por ambiente</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+<h2>Agregar muebles por ambiente</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+    {{ form_muebleambiente.as_p }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="well well-lg">
+    <p>Los <strong>Mueble</strong> serán los objetos que se verán afectados durante una mudanza, algunos de ellos recibiendo servicios, otros almacenando contenidos.</p>
+    <p>Los <strong>Muebles</strong>, durante una mudanza, estarán asociados a un <strong>Ambiente</strong> de origen, y podrán ser trasladables o no. En caso de no ser trasladables, el único sentido de registrarlos consiste en la identificación de los <strong>Contenidos</strong> que mantienen, como puede ser el caso de los <i>muebles de cocina empotrada</i> o los <i>armarios empotrados</i> que generarán <strong>Contenedores</strong> pero ellos mismos no formarán parte de la mudanza.</p>
+    <p>Los muebles deben contar con un equilibrio entre lo general y lo específico, de manera que pueda estandarizarse la inmensa diversidad de posibilidades que se encuentra en el mercado, en solo unos pocos <i>muebles representativos</i> del resto.</p>
+</div>
+
+{% endblock ayuda %}

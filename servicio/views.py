@@ -219,7 +219,7 @@ def add_serviciomaterial(request):
         form_serviciomaterial = ServicioMaterialForm(request.POST)
         if form_serviciomaterial.is_valid():
             form_serviciomaterial.save()
-            return HttpResponseRedirect(reverse('uservicios:buscar_servicio_material',args=('0','0')))
+            return HttpResponseRedirect(reverse('uservicios:buscar_servicio_material', args=('0', '0')))
     else:
         form_serviciomaterial = ServicioMaterialForm()
     return render_to_response('servicio/serviciomaterial_add.html',
@@ -233,7 +233,7 @@ def add_complejidadservicio(request):
         form_complejidadservicio = ComplejidadServicioForm(request.POST)
         if form_complejidadservicio.is_valid():
             form_complejidadservicio.save()
-            return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio'))
+            return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio', args=('0', '0')))
     else:
         form_complejidadservicio = ComplejidadServicioForm()
     return render_to_response('servicio/complejidadservicio_add.html',
