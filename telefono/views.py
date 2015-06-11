@@ -4,7 +4,6 @@ from telefono.forms import TipoTelefonoForm, TelefonoForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
-from direccion.models import Direccion
 import django.db
 import simplejson as json
 
