@@ -396,13 +396,16 @@ def add_tipo_direccion(request):
 
 def add_direccion(request):
     """docstring"""
+
     if request.method == 'POST':
         form_direccion = DireccionForm(request.POST)
         if form_direccion.is_valid():
-            form_direccion.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_direccion'))
+            id_reg = form_direccion.save()
+            id_cli = Direccion.objects.get(id=id_reg.id)
+            return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
     else:
         form_direccion = DireccionForm()
+
     return render_to_response('direccion/direccion_add.html',
                               {'form_direccion': form_direccion, 'create': True},
                               context_instance=RequestContext(request))

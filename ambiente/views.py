@@ -127,13 +127,15 @@ def edit_ambiente(request, pk):
         form_edit_ambiente = AmbienteForm(instance=id_ambiente)
 
     return render_to_response('ambiente/ambiente_edit.html',
-                              {'form_edit_ambiente': form_edit_ambiente, 'create': False},
+                              {'form_edit_ambiente': form_edit_ambiente, 'ambiente': id_ambiente, 'create': False},
                               context_instance=RequestContext(request))
 
 
 def edit_ambiente_tipoinmueble(request, pk):
     """docstring"""
     ambtipoinmueble = Ambiente_Tipo_inmueble.objects.get(pk=pk)
+
+    redirect_to = request.REQUEST.get('next', '')
 
     if request.method == 'POST':
         # formulario enviado
@@ -143,7 +145,10 @@ def edit_ambiente_tipoinmueble(request, pk):
             # formulario validado correctamente
             form_edit_ambtipoinmueble.save()
 
-            return HttpResponseRedirect(reverse('uambientes:lista_ambiente_tipo_inmueble'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('uambientes:lista_ambiente_tipo_inmueble'))
 
     else:
         # formulario inicial

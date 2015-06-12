@@ -161,6 +161,8 @@ def edit_contenido(request, pk):
     """docstring"""
     contenido = Contenido.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_contenido = ContenidoForm(request.POST, instance=contenido)
@@ -168,7 +170,9 @@ def edit_contenido(request, pk):
         if form_edit_contenido.is_valid():
             # formulario validado correctamente
             form_edit_contenido.save()
-
+        if redirect_to:
+            return HttpResponseRedirect(redirect_to)
+        else:
             return HttpResponseRedirect(reverse('ucontenidos:lista_contenido'))
 
     else:
@@ -199,7 +203,7 @@ def edit_contenedor(request, pk):
         form_edit_contenedor = ContenedorForm(instance=contenedor)
 
     return render_to_response('contenido/contenedor_edit.html',
-                              {'form_edit_contenedor': form_edit_contenedor, 'create': False},
+                              {'form_edit_contenedor': form_edit_contenedor, 'contenedor': contenedor, 'create': False},
                               context_instance=RequestContext(request))
 
 

@@ -2,13 +2,13 @@
 
 {% block titulo %}
 
-<title>Editar tipo de contenedor</title>
+<title>Contenedor</title>
 
 {% endblock titulo %}
 
 {% block titulo_form %}
 
-  <h2>Editar tipo de contenedor</h2>
+  <h2>Editar contenedor</h2>
 
 {% endblock titulo_form %}
 
@@ -24,7 +24,33 @@
 
 {% block contenido_adicional %}
 
-<h4>Información adicional</h4>
+{% if contenedor.contenido_set.all %}
+
+<h4>Contenidos asociados al contenedor</h4>
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <!-- Table -->
+    <table class="table" style="text-align: center;">
+        <tr class="">
+            <th width="200">Contenidos</th>
+            <th width=""></th>
+        </tr>
+
+{% for i in contenedor.contenido_set.all %}
+
+   <tr id="tr{{i.id}}">
+            <td width="200">{{i.contenido}}</td>
+            <td width="">
+                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'ucontenidos:edit_contenido' i.id %}?next={% url 'ucontenidos:edit_contenedor' contenedor.id %}" class="glyphicon glyphicon-edit"></a>
+            </td>
+        </tr>
+
+{% endfor %}
+
+    </table>
+</div>
+
+{% endif %}
 
 {% endblock contenido_adicional %}
 
