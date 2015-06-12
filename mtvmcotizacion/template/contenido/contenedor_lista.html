@@ -2,15 +2,13 @@
 
 {% block titulo %}
 
-<title>Tipos de contenedores</title>
+<title>Contenedores</title>
 
 {% endblock titulo %}
 
 {% block titulo_modal %}
 
-<div class="modal-header">
-  <h3 id="myModalLabel">Eliminar tipo de contenedor</h3>
-</div>
+Eliminar tipo de contenedor
 
 {% endblock titulo_modal %}
 
@@ -22,7 +20,8 @@
 
 {% block titulo_tabla %}
 
-<h2>Tipos de contenedores</h2>
+<h2>Lista de contenedores</h2>
+<a href="/contenido/" class="btn btn-default">Lista contenidos</a>
 
 {% endblock titulo_tabla %}
 
@@ -30,7 +29,7 @@
 
 {% block cantidad_tabla %}
 
-<h6>Tipos de contenedores registrados:
+<h6>Cantidad de contenedores registrados:
   <span class="badge" id="count_reg">
 
     {{ lista_contenedor.count }}
@@ -43,7 +42,7 @@
 {% block cuerpo_tabla %}
 
    <tr class="active">
-    <th>Tipo de contenedor</th>
+    <th>Contenedor</th>
     <th>Volúmen (m3)</th>
     <th>Peso (Kgs)</th>
     <th>Retornable</th>
@@ -65,10 +64,10 @@
 
     </td>
     <td>
-      <a href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
+      <a title="Editar" data-toggle="tooltip" data-placement="right" href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
     </td>
     <td>
-      <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.contenedor}}"></a>
+      <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.contenedor}}"></a>
     </td>
     <input type="hidden" value="{{i.id}}" id="idtele">
   </tr>

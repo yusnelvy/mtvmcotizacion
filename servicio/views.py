@@ -233,7 +233,7 @@ def add_complejidadservicio(request):
         form_complejidadservicio = ComplejidadServicioForm(request.POST)
         if form_complejidadservicio.is_valid():
             form_complejidadservicio.save()
-            return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio'))
+            return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio', args=('0', '0')))
     else:
         form_complejidadservicio = ComplejidadServicioForm()
     return render_to_response('servicio/complejidadservicio_add.html',

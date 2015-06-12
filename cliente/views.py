@@ -287,6 +287,8 @@ def add_email(request):
 # editar un registro
 def edit_cliente(request, pk):
 
+    redirect_to = request.REQUEST.get('next', '')
+
     try:
         id_clie = Cliente.objects.get(pk=pk)
     except ObjectDoesNotExist as ex:
@@ -302,6 +304,9 @@ def edit_cliente(request, pk):
             # formulario validado correctamente
             editar_clie.save()
             #return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
+        if redirect_to:
+            return HttpResponseRedirect(redirect_to)
+        else:
             return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_clie.id,)))
 
     else:

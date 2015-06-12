@@ -14,9 +14,7 @@
 
 {% block titulo_modal %}
 
-<div class="modal-header">
-  <h3 id="myModalLabel">Eliminar</h3>
-</div>
+Eliminar
 
 {% endblock titulo_modal %}
 
@@ -127,7 +125,7 @@
                 <td class="text-right"><strong>{{ i.tipo_telefono }}: </strong></td>
                 <td>{{ i.numero }}</td>
                 <td>
-                  <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../../telefono/nuevo/{{i.id}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+                  <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../../telefono/nuevo/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
                 </td>
                 <td>
                   <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../../telefono/editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a>

@@ -43,11 +43,11 @@
             <td width="">{{ det.material }}</td>
             <td width="300">{{ det.cantidad }}</td>
             <td width="3">
-                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_complejidadservicio' det.id %}?next={% url 'uservicios:edit_servicio' servicio.id %}" class="glyphicon glyphicon-edit"></a>
+                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_serviciomaterial' det.id %}?next={% url 'uservicios:edit_servicio' servicio.id %}" class="glyphicon glyphicon-edit"></a>
             </td>
         </tr>
 
-    {% endfor %}
+        {% endfor %}
 
     </table>
 </div>
@@ -56,14 +56,14 @@
 
 {% if servicio.complejidad_servicio_set.all %}
 
-<h4>Tarifas asociadas al servicio</h4>
+<h4>Complijidad y tarifas asociadas al servicio</h4>
 <div class="panel panel-default">
     <!-- Default panel contents -->
     <!-- Table -->
     <table class="table" style="text-align: center;">
         <tr class="">
-            <th width="">Tipo de tarifa</th>
-            <th width="300">Monto</th>
+            <th width="">Complejidad</th>
+            <th width="300">Tarifa</th>
             <th width="3">Editar</th>
         </tr>
 
@@ -76,10 +76,11 @@
                 <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_complejidadservicio' det.id %}?next={% url 'uservicios:edit_servicio' servicio.id %}" class="glyphicon glyphicon-edit"></a>
             </td>
         </tr>
+
+
+        {% endfor %}
+
     </table>
-
-    {% endfor %}
-
 </div>
 
 {% endif %}

@@ -138,7 +138,7 @@ def edit_mueble(request, pk):
     """docstring"""
     mueble = Mueble.objects.get(pk=pk)
 
-    redirect_to = request.REQUEST.get('next', '')
+    redirect_to = request.REQUEST.get('next', '../../')
 
     if request.method == 'POST':
         # formulario enviado
@@ -155,7 +155,7 @@ def edit_mueble(request, pk):
         form_edit_mueble = MuebleForm(instance=mueble)
 
     return render_to_response('mueble/mueble_edit.html',
-                              {'form_edit_mueble': form_edit_mueble, 'create': False},
+                              {'form_edit_mueble': form_edit_mueble, 'mueble': mueble, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -641,6 +641,8 @@ def edit_muebleambiente(request, pk):
     """docstring"""
     muebleambiente = Mueble_Ambiente.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_muebleambiente = MuebleAmbienteForm(request.POST, instance=muebleambiente)
@@ -648,6 +650,9 @@ def edit_muebleambiente(request, pk):
         if form_edit_muebleambiente.is_valid():
             # formulario validado correctamente
             form_edit_muebleambiente.save()
+
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
 
             return HttpResponseRedirect(reverse('umuebles:buscar_mueble_ambiente', args=(muebleambiente.ambiente.id,)))
 

@@ -7,11 +7,13 @@ from direccion.forms import PaisForm, ProvinciaForm, \
     DireccionForm, TipoInmuebleForm, \
     ComplejidadInmuebleForm, TarifaValorForm, \
     InmuebleForm
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, \
+    HttpResponseBadRequest, HttpResponseNotFound
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 import simplejson as json
 import django.db
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 # Create your views here.
@@ -46,7 +48,19 @@ def lista_pais(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_pais = Pais.objects.all()
-    context = {'lista_pais': lista_pais}
+    paginator = Paginator(lista_pais, 10)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        paises = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        paises = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        paises = paginator.page(paginator.num_pages)
+
+    context = {'lista_pais': lista_pais, 'paises': paises}
     return render(request, 'direccion/pais_lista.html', context)
 
 
@@ -396,13 +410,16 @@ def add_tipo_direccion(request):
 
 def add_direccion(request):
     """docstring"""
+
     if request.method == 'POST':
         form_direccion = DireccionForm(request.POST)
         if form_direccion.is_valid():
-            form_direccion.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_direccion'))
+            id_reg = form_direccion.save()
+            id_cli = Direccion.objects.get(id=id_reg.id)
+            return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
     else:
         form_direccion = DireccionForm()
+
     return render_to_response('direccion/direccion_add.html',
                               {'form_direccion': form_direccion, 'create': True},
                               context_instance=RequestContext(request))
@@ -574,8 +591,6 @@ def edit_tipo_direccion(request, pk):
             # formulario validado correctamente
             form_edit_tipodireccion.save()
 
-            #return HttpResponseRedirect('udireciones:lista_tipo_direccion')
-
             return HttpResponseRedirect(reverse('udireciones:lista_tipo_direccion'))
 
     else:
@@ -686,3 +701,82 @@ def edit_inmueble(request, pk):
     return render_to_response('direccion/inmueble_edit.html',
                               {'form_edit_inmueble': form_edit_inmueble, 'create': True},
                               context_instance=RequestContext(request))
+
+
+#prueba para mostrar los select anidados dependiendo de otro select
+def select_ejemplo(request):
+
+    # Funcion para levantar la pantalla inicial del sistema
+    #
+    """docstring"""
+    if request.method == 'POST':
+
+        form_direccion = DireccionForm(request.POST)
+        if form_direccion.is_valid():
+            form_direccion.save()
+            return HttpResponseRedirect(reverse('udireciones:lista_direccion'))
+    else:
+
+        form_direccion = DireccionForm()
+
+    return render_to_response('direccion/prueba-select.html',
+                              {'form_direccion': form_direccion, 'create': True},
+                              context_instance=RequestContext(request))
+
+
+def geo(request, type=None, parent_id=None):
+
+    if not request.is_ajax():
+        return HttpResponseBadRequest('<h1>%s</h1>' % 'bad request')
+
+    # para testear el efecto loading
+    #time.sleep(1);
+
+    locations = {
+        'pais': [Pais],
+        'provincia': [Provincia, Pais, 'pais_id', 'pais'],
+        'ciudad': [Ciudad, Provincia, 'provincia_id', 'provincia'],
+        'zona': [Zona, Ciudad, 'ciudad_id', 'ciudad']
+    }
+
+    location_exists = False
+
+    if parent_id is not None:
+        location_exists = (locations[type][2].objects.filter(id=parent_id).count() > 0)
+    else:
+        location_exists = (locations[type][0].objects.count() > 0)
+
+    if not location_exists:
+        return HttpResponseBadRequest('Identificador inválido')
+
+    data_fields = {
+        'pais': ('id', 'pais'),
+        'provincia': ('id', 'provincia'),
+        'ciudad': ('id', 'ciudad'),
+        'zona': ('id', 'zona')
+    }
+
+    extra_where = None
+
+    if parent_id is not None:
+        extra_where = ['%s = %d' % (locations[type][2], int(parent_id))]
+
+    location_result = locations[type][0].objects.extra(where=extra_where).values(*data_fields[type]).order_by('id')
+
+    if not location_result.count() > 0:
+        return HttpResponseNotFound(json.dumps({'error': 'empty'}))
+
+    data = {
+        'parent': None,
+        'data': list(location_result)
+    }
+
+    if parent_id is not None:
+        data['parent'] = {
+            'id': parent_id,
+            'type': locations[type][3]
+        }
+
+    output = json.dumps(data)
+
+    return HttpResponse(output, content_type='application/json')
