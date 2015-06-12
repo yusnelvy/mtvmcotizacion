@@ -8,9 +8,7 @@
 
 {% block titulo_modal %}
 
-<div class="modal-header">
-  <h4 id="myModalLabel">Eliminar nivel de ocupación</h4>
-</div>
+Eliminar nivel de ocupación
 
 {% endblock titulo_modal %}
 
@@ -23,6 +21,7 @@
 {% block titulo_tabla %}
 
 <h2>Niveles de ocupación</h2>
+<a href="/mueble/" class="btn btn-default">Lista de muebles</a>
 
 {% endblock titulo_tabla %}
 
@@ -58,7 +57,6 @@
     <td>
       <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.descripcion}}"></a>
     </td>
-    <input type="hidden" value="{{i.id}}" id="idtele">
   </tr>
 
   {% endfor %}

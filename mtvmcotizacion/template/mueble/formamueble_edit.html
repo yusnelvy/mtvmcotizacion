@@ -25,13 +25,15 @@
 {% block contenido_adicional %}
 
 <h4>Muebles clasificados en esta forma de mueble</h4>
-<table class="table table-hover">
-<tr class="active">
+<div class="panel panel-default">
+<table class="table" style="text-align: center;">
+<tr class="">
     <th>Mueble</th>
     <th></th>
 </tr>
 
 {% for det in formamueble.mueble_set.all %}
+
 <tr id="tr{{det.id}}">
     <td>{{ det.mueble }}</td>
     <td>
@@ -43,6 +45,8 @@
 {% endfor %}
 
 </table>
+</div>
+
 {% endblock contenido_adicional %}
 
 {% block ayuda %}

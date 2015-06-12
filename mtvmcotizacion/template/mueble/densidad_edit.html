@@ -25,14 +25,16 @@
 {% block contenido_adicional %}
 
 <h4>Muebles clasificados en esta densidad de muebles</h4>
-<table class="table table-hover">
-<tr class="active">
+<div class="panel panel-default">
+<table class="table" style="text-align: center;">
+<tr class="">
     <th>Mueble</th>
-    <th>tamano</th>
+    <th>Tamaño</th>
     <th></th>
 </tr>
 
 {% for det in densidad.tamano_mueble_set.all %}
+
 <tr id="tr{{det.id}}">
     <td>{{ det.mueble }}</td>
     <td>{{ det.tamano }}</td>
@@ -45,6 +47,8 @@
 {% endfor %}
 
 </table>
+</div>
+
 {% endblock contenido_adicional %}
 
 {% block ayuda %}

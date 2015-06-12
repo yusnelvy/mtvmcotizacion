@@ -1,8 +1,14 @@
  {% extends 'inicio/base_ficha.html' %}
 
+  {% block titulo %}
+
+<title>Servicio material</title>
+
+{% endblock titulo %}
+
  {% block titulo_modal %}
 
-<h2>Eliminar Servicio material</h2>
+Eliminar Servicio material
 
  {% endblock titulo_modal %}
 
@@ -14,28 +20,27 @@
 
  {% block titulo_ficha %}
 
-<h2>Servico material</h2>
+<h2>Relacion servicio - material</h2>
+<a href="/servicio/" class="btn btn-default">Lista de servicios</a>
+<a href="/servicio/servicio_material/0/0/" class="btn btn-default">Ver todos</a>
+<a href="/servicio/servicio_material/nuevo" class="btn btn-default">Nuevo</a>
 
  {% endblock titulo_ficha %}
 
  {% block content1 %}
 
- {% if lista_servicio %}
-
-
-
- {% endif %}
-
  {% if buscar_serviciomaterial %}
 
 <h6>Cantidad de registros encontrados:
   <span class="badge" id="count_reg">
+
     {{ buscar_serviciomaterial.count }}
+
+
   </span>
 </h6>
-
+ <div class="panel panel-default">
   <table class="table table-hover" style="text-align: center;">
-
    <tr class="active">
     <th>Servicio</th>
     <th width="">Material</th>
@@ -63,6 +68,7 @@
   {% endfor %}
 
 </table>
+</div>
 
 {% endif %}
 

@@ -26,11 +26,12 @@
 <div class="panel panel-default">
 <table class="table" style="text-align: center;">
 <tr class="">
-    <th>Servicio</th>
+    <th>Servicios</th>
     <th width="400">Editar</th>
 </tr>
 
 {% for det in material.servicio_material_set.all %}
+
 <tr id="tr{{det.id}}">
     <td>{{ det.servicio }}</td>
     <td width="400">
@@ -42,6 +43,7 @@
 
 </table>
 </div>
+
 {% endif %}
 
 {% endblock contenido_adicional %}

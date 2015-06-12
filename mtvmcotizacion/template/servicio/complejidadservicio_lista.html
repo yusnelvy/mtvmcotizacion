@@ -1,68 +1,88 @@
- {% extends 'inicio/base3.html' %}
- {% block content %}
+ {% extends 'inicio/base_ficha.html' %}
 
-<!--IniciaModal-->
- <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-    <h3 id="myModalLabel">Eliminar la relacion complejidad - servicio</h3>
-    </div>
-    <div class="modal-body">
-    <p>¿Realmente desea eliminar el registros <span id="modal_name"></span>?</p>
-    </div>
-    <div class="modal-footer">
-        <form method="post" id="frmEliminar">
-            {% csrf_token %}
-            <input type="hidden" id="modal_id" name="item_id">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-            <button type="submit" class="btn btn-danger">Eliminar</button>
-        </form>
-    </div>
-</div>
-<!--EndModal-->
-{% if buscar_complejidadservicio %}
+ {% block titulo %}
+
+<title>Complejidad - servicio</title>
+
+{% endblock titulo %}
+
+ {% block titulo_modal %}
+
+Eliminar complejidad servicio
+
+ {% endblock titulo_modal %}
+
+ {% block validacion_modal %}
+
+<p>¿Desea eliminar <span id="modal_name"></span>?</p>
+
+ {% endblock validacion_modal %}
+
+ {% block titulo_ficha %}
+
+<h2>Relacion complejidad - servicio</h2>
+<a href="/servicio/" class="btn btn-default">Lista de servicios</a>
+<a href="/servicio/complejidad_servicio/0/0/" class="btn btn-default">Ver todos</a>
+<a href="/servicio/complejidad_servicio/nuevo" class="btn btn-default">Nuevo</a>
+
+ {% endblock titulo_ficha %}
+
+ {% block content1 %}
+
+ {% if buscar_complejidadservicio %}
 
 <h6>Cantidad de registros encontrados:
   <span class="badge" id="count_reg">
+
     {{ buscar_complejidadservicio.count }}
+
+
   </span>
 </h6>
-
-  <table class="table table-hover">
-
+ <div class="panel panel-default">
+  <table class="table table-hover" style="text-align: center;">
    <tr class="active">
-    <th>complejidad</th>
-    <th>servicio</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
+    <th>Servicio</th>
+    <th width="">Complejidad</th>
+    <th>Tarifa</th>
+    <th width="3">Editar</th>
+    <th width="3">Eliminar</th>
   </tr>
 
   {% for i in buscar_complejidadservicio %}
 
   <tr id="tr{{i.id}}">
-    <td>{{ i.complejidad }}</td>
     <td>{{ i.servicio }}</td>
-
-    <td>
-      <a href="../../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
-      {# <button id ="editar" data-telid="{{i.id}}" class="btn btn-mini btn-primary" type="button">editar</button> #}
+    <td width="">{{ i.complejidad }}</td>
+    <td>{{ i.tarifa }}</td>
+    <td width="3">
+      <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
     </td>
-    <td>
-      <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="complejidad: {{i.complejidad}} servicio: {{ i.servicio }}"><i class="icon-trash icon-white"></i>Eliminar</a>
+    <td width="3">
+      <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="servicio: {{i.servicio}}"></a>
     </td>
-    <input type="hidden" value="{{i.id}}" id="idtele">
   </tr>
 
   {% endfor %}
 
 </table>
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
 </div>
-
 {% else %}
 
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
-<p> No se encontro registro.</p>
+<p>Agregue complejidad de servicios</p>
 
 {% endif %}
 
-{% endblock %}
+ {% endblock content1 %}
+
+{% block content2 %}
+
+<div class="well well-lg">
+  <p>Los <strong>Niveles de complejidad</strong> se refieren al nivel de esfuerzo y consumo de tiempo en los cuales se incurrirá para la aplicación de los <strong>Servicios</strong> a los <strong>Muebles</strong> y <strong>Contenidos</strong> que serán mudados.</p>
+  <p>Los <strong>Niveles de complejidad</strong> de este modo se asocian a factores de consumo de material y de consumo de tiempo, que lo llevan a tener una tarifa específica que compensa el esfuerzo para la aplicación de un <strong>Servicio</strong> específico con el <strong>Nivel de complejidad</strong> seleccionado.</p>
+  <p>Al momento de evaluar o realizar una mudanza, los <strong>Niveles de complejidad</strong> serán determinados por las características físicas del <strong>Mueble</strong> o del <strong>Contenido</strong> según la sensibilidad del cotizador basada en los indicadores a evaluar.</p>
+  <p>Los indicadores para definir <strong>Niveles de complejidad</strong> incluyen fragilidad de los objeto, necesidad de mantener un orden específico, formas irregulares difíciles de embalar, gran número de piezas para armar o desarmar, dificultad para sujetar el objeto, necesidad de que participe más de una persona, etc.</p>
+</div>
+
+{% endblock content2 %}
+
