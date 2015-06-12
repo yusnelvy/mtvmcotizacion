@@ -6,6 +6,7 @@ Documentacion del proyecto
 """
 from django.db import models
 from cliente.models import Cliente
+from smart_selects.db_fields import ChainedForeignKey
 
 
 # Create your models here.
@@ -103,7 +104,10 @@ class Direccion(models.Model):
     piso = models.CharField(max_length=100)
     adicional = models.CharField(max_length=250, blank=True)
     tipo_direccion = models.ForeignKey(Tipo_direccion, on_delete=models.PROTECT)
-    zona = models.ForeignKey(Zona, on_delete=models.PROTECT)
+    pais = models.ForeignKey(Pais)
+    provincia = ChainedForeignKey(Provincia, chained_field='pais', chained_model_field='pais')
+    ciudad = ChainedForeignKey(Ciudad, chained_field='provincia', chained_model_field='provincia')
+    zona = ChainedForeignKey(Zona, chained_field='ciudad', chained_model_field='ciudad')
     zip1 = models.CharField(max_length=100)
     punto_referencia = models.CharField(max_length=250)
     cliente = models.ForeignKey(Cliente)
@@ -195,3 +199,14 @@ class Inmueble(models.Model):
         verbose_name = "Inmueble"
         verbose_name_plural = "Inmuebles"
         ordering = ['inmueble']
+
+
+class locaciones(models.Model):
+    pais = models.ForeignKey(Pais)
+    provincia = ChainedForeignKey(Provincia, chained_field='pais', chained_model_field='pais')
+    ciudad = ChainedForeignKey(Ciudad, chained_field='provincia', chained_model_field='provincia')
+    zona = ChainedForeignKey(Zona, chained_field='ciudad', chained_model_field='ciudad')
+    direccion = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.direccion)

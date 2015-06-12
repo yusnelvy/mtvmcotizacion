@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test geo</title>
+    <script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
+
+</head>
+<body>
+    <div id="container">
+        <div class="multiselect">
+            <select name="pais" data-query="pais" title="Pais"></select>
+            <select name="provincia" data-query="provincia" data-parent="pais" title="Provinicia"></select>
+            <select name="ciudad" data-query="ciudad" data-parent="provincia" title="Ciudad"></select>
+            <select name="parroquia" data-query="parroquias" data-parent="municipio" title="Parroquia"></select>
+        </div>
+    </div>
+    <div style="position:absolute; z-index:-9999; top: -9999px; left: -9999px">
+        <img src="http://hitwebcounter.com/counter/counter.php?page=5969561&style=0038&nbdigits=3&type=page&initCount=0" title="hitwebcounter web counter" Alt="hitwebcounter web counter"   border="0" >
+    </div>
+
+<form action="" method="post">
+    {% csrf_token %}
+    <br><br>
+    <div class="form-group"> {{ form_direccion.as_p }}
+        {{ form_direccion2.as_p }}
+    </div>
+
+      <button type="submit" class="btn btn-default">Registrar</button>
+      <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
+      <br><br>
+    </form>
+  </div>
+
+</body>
+</html>

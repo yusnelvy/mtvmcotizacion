@@ -48,7 +48,7 @@
     <th width="3">Eliminar</th>
 </tr>
 
-{% for i in lista_pais %}
+{% for i in paises %}
 
 <tr id="tr{{i.id}}">
     <td>{{ i.pais }}</td>
@@ -60,9 +60,34 @@
 
 {% endfor %}
 
+  <div class="pagination">
+    <span class="step-links">
+        {% if paises.has_previous %}
+            <a href="?page={{ paises.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Página {{ paises.number }} de {{ paises.paginator.num_pages }}
+        </span>
+
+        <span class="current">
+            Desde el objeto {{ paises.start_index }} hasta el objeto {{ paises.end_index }}
+        </span>
+
+        {% if paises.has_next %}
+            <a href="?page={{ paises.next_page_number }}">Siguiente</a>
+        {% endif %}
+
+
+    </span>
+</div>
+
+
+
 {% endblock cuerpo_tabla %}
 
 {% endif %}
+
 
 {% block ayuda %}
 

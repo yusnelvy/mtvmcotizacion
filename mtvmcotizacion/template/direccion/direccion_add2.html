@@ -12,21 +12,14 @@
 </head>
 
 <body>
+<form action="" method="post">
+    {% csrf_token %}
+<div class="form-group">
 
-    {% block header %}{% endblock header %}
+  {{ form_direccion.as_p }}
 
-    {% block nav %}
-    {% include "inicio/nav.html" %}
-    {% endblock nav %}
-    {% block cliente_ficha %}{% endblock cliente_ficha %}
-
-    {% block content %}{% endblock content %}
-
-    {% block footer %}{% endblock footer %}
-
-    {% block script %}
-    {% include "inicio/script.html" %}
-    {% endblock script %}
+</div>
+</form>
 
 </body>
 </html>

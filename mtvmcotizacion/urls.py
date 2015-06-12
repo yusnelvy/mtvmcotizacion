@@ -24,7 +24,9 @@ urlpatterns = patterns('',  # C0103: El error es la forma del nombre urlpatterns
                        url(r'^mueble/', include('mueble.urls', namespace="umuebles")),
                        url(r'^contenido/', include('contenido.urls', namespace="ucontenidos")),
                        url(r'^trabajador/', include('trabajador.urls', namespace="utrabajadores")),
-                       url(r'^cotizacion/', include('cotizacion.urls', namespace="ucotizaciones")),)
+                       url(r'^cotizacion/', include('cotizacion.urls', namespace="ucotizaciones")),
+                       url(r'^chaining/', include('smart_selects.urls')),
+                       )
 
 # se agrego para probar los estilo
 if settings.DEBUG:
