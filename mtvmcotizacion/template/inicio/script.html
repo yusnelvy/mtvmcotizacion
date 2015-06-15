@@ -7,3 +7,21 @@
 <script>
     $('#id_tipo_ambiente').focus();
 </script>
+<script>
+    $(window).scroll(function()
+        {
+            if ($(this).scrollTop() > 10) $('.btn-procesos').addClass("fixed").fadeIn();
+            else $('.btn-procesos').removeClass("fixed").fadeIn();
+        });
+</script>
+<script>
+    $(function(){
+
+  $('.lii').click(function(){
+    $('.li.active').removeClass('active');
+    $(this).addClass('active');
+
+  });
+
+});
+</script>

@@ -20,10 +20,11 @@ Eliminar mueble por ambiente
 
 {% block titulo_ficha %}
 
-<h2>Muebles por ambiente</h2>
+<div class="btn-procesos">
 <a href="/mueble/" class="btn btn-default">Lista de muebles</a>
 <a href="/mueble/mueble_ambiente/0/" class="btn btn-default">Ver todos</a>
-<a href="/mueble/mueble_ambiente/nuevo" class="btn btn-default">Nuevo</a>
+</div>
+<h2>Muebles por ambiente</h2>
 
 {% endblock titulo_ficha %}
 
@@ -34,6 +35,9 @@ Eliminar mueble por ambiente
   {% endblock col1 %}
 
   {% block content1 %}
+
+
+<a href="/mueble/mueble_ambiente/nuevo" class="btn btn-default">Nuevo</a>
 
   {% if buscar_muebleambiente %}
 
@@ -71,6 +75,7 @@ Eliminar mueble por ambiente
 
     </table>
   </div>
+  <a href="/mueble/mueble_ambiente/nuevo" class="btn btn-default">Nuevo</a>
 
   {% endif %}
 
@@ -82,7 +87,7 @@ Eliminar mueble por ambiente
 
     {% endblock col2 %}
 
-    {% block content2 %}
+    {% block content2%}
 
     <div class="well well-lg">
       <p>Los <strong>Mueble</strong> serán los objetos que se verán afectados durante una mudanza, algunos de ellos recibiendo servicios, otros almacenando contenidos.</p>

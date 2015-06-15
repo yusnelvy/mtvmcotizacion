@@ -1,4 +1,5 @@
 {% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -8,16 +9,30 @@
     <link href="/static/css/estilosForm.css" rel="stylesheet">
     <link href="/static/bootstrap/css/bootstrap3.css" rel="stylesheet">
     <script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
+
     {% block titulo %}{% endblock titulo %}
+
 </head>
-
 <body>
-
+    <br>
+    <br>
+    <br>
     {% block header %}{% endblock header %}
 
-    {% block nav %}
+    {% block nav1 %}
+
     {% include "inicio/nav.html" %}
-    {% endblock nav %}
+
+    {% endblock nav1 %}
+
+    {% block link %}{% endblock link %}
+
+    {% block nav2 %}
+
+    {% include "inicio/nav2.html" %}
+
+    {% endblock nav2 %}
+
     {% block cliente_ficha %}{% endblock cliente_ficha %}
 
     {% block content %}{% endblock content %}
@@ -25,7 +40,9 @@
     {% block footer %}{% endblock footer %}
 
     {% block script %}
+
     {% include "inicio/script.html" %}
+
     {% endblock script %}
 
 </body>
