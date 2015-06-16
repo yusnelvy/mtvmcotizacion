@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, get_object_or_404
 from cliente.models import Cliente, Email, Sexo, Estado_civil
 from telefono.models import Telefono
 from direccion.models import Direccion
@@ -401,3 +401,28 @@ def ficha_cliente(request, pk):
         'direccioncliente_lista': direccioncliente_lista
         }
     return render(request, 'cliente/cliente_ficha.html', context)
+
+
+# eliminar un registro
+def delete_email(request, id_cli, pk, template_name='inicio/server_confirm_delete.html'):
+    email = get_object_or_404(Email, pk=pk)
+    if request.method == 'POST':
+        email.delete()
+        return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli,)))
+    return render(request, template_name, {'object': email})
+
+
+def delete_direccion(request, id_cli, pk, template_name='inicio/server_confirm_delete.html'):
+    direccion = get_object_or_404(Direccion, pk=pk)
+    if request.method == 'POST':
+        direccion.delete()
+        return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli,)))
+    return render(request, template_name, {'object': direccion})
+
+
+def delete_telefono(request, id_cli, pk, template_name='inicio/server_confirm_delete.html'):
+    telefono = get_object_or_404(Telefono, pk=pk)
+    if request.method == 'POST':
+        telefono.delete()
+        return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli,)))
+    return render(request, template_name, {'object': telefono})
