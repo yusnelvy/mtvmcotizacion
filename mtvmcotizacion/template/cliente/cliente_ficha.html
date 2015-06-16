@@ -2,7 +2,7 @@
 
 {% block titulo %}
 
-<title>Ficha Cliente</title>
+<title>Ficha &middot; Cliente</title>
 
 {% endblock titulo %}
 
@@ -111,7 +111,9 @@ Eliminar
                   </span>
                 </td>
                 <td></td>
-                <td></td>
+                <td>
+                  <a title="Editar_cliente" data-toggle="tooltip" data-placement="right" href="../../editar/{{i.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+                </td>
                 <td></td>
               </tr>
 

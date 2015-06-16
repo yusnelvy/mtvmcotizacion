@@ -20,9 +20,11 @@ Eliminar tamaño del mueble
 
 {% block titulo_ficha %}
 
-<h2>Tamaños de muebles</h2>
+<div class="btn-procesos">
 <a href="/mueble/" class="btn btn-default">Lista de muebles</a>
 <a href="/mueble/tamano_mueble/0/" class="btn btn-default">Ver todos</a>
+</div>
+<h2>Tamaños de muebles</h2>
 <a href="/mueble/tamano_mueble/nuevo" class="btn btn-default">Nuevo</a>
 
 {% endblock titulo_ficha %}
@@ -92,6 +94,7 @@ Eliminar tamaño del mueble
 
     </table>
   </div>
+<a href="/mueble/tamano_mueble/nuevo" class="btn btn-default">Nuevo</a>
 
   {% endif %}
 

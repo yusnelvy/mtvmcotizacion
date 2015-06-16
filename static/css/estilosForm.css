@@ -45,3 +45,17 @@
                          box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
     }
 th{text-align: center!important;}
+.fixed{
+    position:fixed;
+    z-index: 1;
+    top: 50px;
+}
+.btn-procesos{
+    background: #fff;
+       -webkit-transition: all 3s ease;
+-moz-transition: all 3s ease;
+-ms-transition: all 3s ease;
+-o-transition: all 3s ease;
+transition: all 3s ease;
+}
+.divider-vertical{ height: 50px; margin: 0 9px; border-left: 1px solid #F2F2F2; border-right: 2px solid #FFF; }

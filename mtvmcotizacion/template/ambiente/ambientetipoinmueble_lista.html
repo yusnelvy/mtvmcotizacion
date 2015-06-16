@@ -18,6 +18,19 @@ Eliminar la relación del ambiente con el tipo de inmueble
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="../"><span class="glyphicon glyphicon-chevron-left"></span></a>
+  </li>
+  <li>
+    <a href="../" type="button" class="btn"> Lista de ambientes</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% block titulo_ficha %}
 
 <h2>Ambientes comunes por tipo de inmueble</h2>
@@ -28,7 +41,6 @@ Eliminar la relación del ambiente con el tipo de inmueble
 
 {% if lista_inmueble %}
 
-<a href="/ambiente/" class="btn btn-default">Lista de ambientes</a>
 <h6>Cantidad de tipos de inmueble registrados:
   <span class="badge" id="count_reg">
 

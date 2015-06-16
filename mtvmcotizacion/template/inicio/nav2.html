@@ -1,0 +1,146 @@
+ <ul class="nav navbar-nav navbar-right">
+ <li class="divider-vertical"></li>
+            <li><a href="#" class="dropdown-toggle btn" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-thumbs-up"></span>    <span class="badge">2</span> <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li class=""><a href="#">notificaciones  <span class="badge">1</span></a></li>
+                <br>
+                <li class=""><a href="#">notificaciones <span class="badge">1</span></a></li>
+                <br>
+                <li class=""><a href="#">notificaciones</a></li>
+                <br>
+                <li role="presentation" class="divider"></li>
+                <br>
+                <li class=""><a href="#">notificaciones</a></li>
+                <br>
+              </ul></li>
+              <li><a href="#" class="dropdown-toggle btn" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-flag"></span>  <span class="badge">9</span>  <span class="caret"></span> </a> <ul class="dropdown-menu" role="menu">
+                <li class=""><a href="#">notificaciones  <span class="badge">2</span></a></li>
+                <br>
+                <li class=""><a href="#">notificaciones <span class="badge">1</span></a></li>
+                <br>
+                <li class=""><a href="#">notificaciones</a></li>
+                <br>
+                <li role="presentation" class="divider"></li>
+                <br>
+                <li class=""><a href="#">notificaciones</a></li>
+                <br>
+              </ul></li>
+              <li class="btn-group">
+                <a type="button" class="btn" data-toggle="modal" data-target="#myModal2"><span class="glyphicon glyphicon-user"></span>
+
+                  {% if user.username %}
+
+                 {{ user.username }}
+
+               {% else %}
+
+                 Login
+
+               {% endif %}
+
+             </a>
+              <a href="#" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Datos personales</a></li>
+                <li><a href="#">Configuraciones</a></li>
+                <li><a href="{% url 'uinicio:signup' %}">Sign Up</a></li>
+                <li><a href="{% url 'uinicio:login' %}">Login</a></li>
+                <li class="divider"></li>
+                <li><a href="{% url 'uinicio:logout' %}">Salir</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+  <!-- Modal contactenos -->
+  <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Contacto <span class=" glyphicon glyphicon-phone"></span> <span class="glyphicon glyphicon-envelope"></span></h4>
+        </div>
+        <div class="modal-body">
+          <div class="jumbotron"><h2 style="text-align:center;">
+            Dirección: 3 de Febrero 3455 | Nuñez <br>
+            Ciudad Autónoma de Buenos Aires, Argentina. <br>
+
+            Email: info@mudarte.com.arbr <br>
+
+            Tel: 4701 1177</h2></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+
+          </div>
+        </div>
+      </div>
+    </div><!--fin modal contacto-->
+  <!-- Modal blog sitio n construccion -->
+  <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Blog</h4>
+        </div>
+        <div class="modal-body">
+          <div class="jumbotron"><h2 style="text-align:center;">Disculpe Sitio en construccion</h2></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- FIN Modal blog sitio en construccion -->
+
+  <div class="modal fade bs-example-modal-lg" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Sign In To Your Account</h4>
+        </div>
+        <div class="well">
+
+
+
+          <form class="form-horizontal">
+            <div class="form-group">
+              <!--<label for="inputEmail3" class="col-sm-4 control-label">Correo</label>-->
+              <div class="col-sm-12">
+                <input type="email" class="form-control" id="inputEmail3" placeholder="Username or Email">
+              </div>
+            </div>
+            <div class="form-group">
+              <!-- <label for="inputPassword3" class="col-sm-4 control-label">Contraseña</label>-->
+              <div class="col-sm-12">
+                <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+              </div>
+            </div>
+            <div class="row">
+
+              <div class="col-md-7">
+                <div class="form-group" style="margin-left:4px;">
+
+                  <a href="#">Password olvidado?</a>
+                  <a href="/cliente/nuevo/">Crear una cuenta</a>
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+              <div class="col-md-4">
+                <div class="form-group">
+
+                  <button type="submit" style="margin-left:-15px;" class="btn btn-primary btn-lg btn-block"></span>Sign In</button>
+                  <!--<button type="button" class="btn btn-success" data-dismiss="modal">Cancelar</button>-->
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

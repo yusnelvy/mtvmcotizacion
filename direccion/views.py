@@ -606,6 +606,8 @@ def edit_direccion(request, pk):
     """docstring"""
     direccion = Direccion.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formform_direccionulario enviado
         form_edit_direccion = DireccionForm(request.POST, instance=direccion)
@@ -614,6 +616,9 @@ def edit_direccion(request, pk):
             # formulario validado correctamente
             id_reg = form_edit_direccion.save()
             id_cli = Direccion.objects.get(id=id_reg.id)
+        if redirect_to:
+            return HttpResponseRedirect(redirect_to)
+        else:
 
             #return HttpResponseRedirect(reverse('udireciones:lista_direccion'))
             return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
