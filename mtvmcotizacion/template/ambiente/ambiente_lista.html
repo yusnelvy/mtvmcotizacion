@@ -14,17 +14,17 @@ Eliminar ambiente
 
 {% block validacion_modal %}
 
-<p>¿Realmente desea eliminar el ambiente <span id="modal_name"></span>?</p>
+<p>¿Realmente desea eliminar el ambiente <strong><span id="modal_name"></span></strong>?</p>
 
 {% endblock validacion_modal %}
 
 {% block link %}
 
 <ul class="nav navbar-nav">
-            <li>
-              <a href="ambiente_tipo_inmueble/" type="button" class="btn"><span class="glyphicon glyphicon-home"></span> Ambientes por tipo de inmuebles</a>
-            </li>
-          </ul>
+  <li>
+    <a href="ambiente_tipo_inmueble/" type="button" class="btn"><span class="glyphicon glyphicon-home"></span> Ambientes por tipo de inmuebles</a>
+  </li>
+</ul>
 
 {% endblock link %}
 
@@ -60,7 +60,11 @@ Eliminar ambiente
   {% for i in lista_ambiente %}
 
   <tr id="tr{{i.id}}">
-    <td>{{ i.ambiente }}</td>
+    <td>
+
+      {{ i.ambiente }}
+
+    </td>
     <td width="3">
       <a title="Editar" data-toggle="tooltip" data-placement="right" href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
     </td>

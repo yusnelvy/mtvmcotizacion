@@ -49,7 +49,11 @@ Eliminar país
 {% for i in paises %}
 
 <tr id="tr{{i.id}}">
-  <td>{{ i.pais }}</td>
+  <td>
+
+    {{ i.pais }}
+
+  </td>
   <td width="3"><a title="Editar" data-toggle="tooltip" data-placement="right" href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a></td>
   <td width="3">
     <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.pais}}"></a>
@@ -70,13 +74,27 @@ Eliminar país
     {% endif %}
 
     <li class="current">
-      <a style="color:#000;"> Página {{ paises.number }} de {{ paises.paginator.num_pages }}
+      <a style="color:#000;"> Página
 
-        Desde el objeto {{ paises.start_index }} hasta el objeto {{ paises.end_index }}
+        {{ paises.number }}
+
+        de
+
+        {{ paises.paginator.num_pages }}
+
+        Desde el pais
+
+        {{ paises.start_index }}
+
+        hasta el pais
+
+        {{ paises.end_index }}
+
       </a>
     </li>
 
     {% if paises.has_next %}
+
     <li>
       <a href="?page={{ paises.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
     </li>
