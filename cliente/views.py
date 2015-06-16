@@ -341,6 +341,52 @@ def edit_email(request, id_cli, pk):
                               context_instance=RequestContext(request))
 
 
+def edit_sexo(request, pk):
+    """docstring"""
+    sexo = Sexo.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        # formulario enviado
+        form_edit_sexo = SexoForm(request.POST, instance=sexo)
+
+        if form_edit_sexo.is_valid():
+            # formulario validado correctamente
+            form_edit_sexo.save()
+
+            return HttpResponseRedirect(reverse('uclientes:lista_sexo'))
+
+    else:
+        # formulario inicial
+        form_edit_sexo = SexoForm(instance=sexo)
+
+    return render_to_response('cliente/sexo_edit.html',
+                              {'form_edit_sexo': form_edit_sexo, 'create': False},
+                              context_instance=RequestContext(request))
+
+
+def edit_estado_civil(request, pk):
+    """docstring"""
+    estado_civil = Estado_civil.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        # formulario enviado
+        form_edit_estadocivil = EstadoCivilForm(request.POST, instance=estado_civil)
+
+        if form_edit_estadocivil.is_valid():
+            # formulario validado correctamente
+            form_edit_estadocivil.save()
+
+            return HttpResponseRedirect(reverse('uclientes:lista_estadocivil'))
+
+    else:
+        # formulario inicial
+        form_edit_estadocivil = EstadoCivilForm(instance=estado_civil)
+
+    return render_to_response('cliente/estadocivil_edit.html',
+                              {'form_edit_estadocivil': form_edit_estadocivil, 'create': False},
+                              context_instance=RequestContext(request))
+
+
 def ficha_cliente(request, pk):
 
     lista_cliente = Cliente.objects.filter(pk=pk)

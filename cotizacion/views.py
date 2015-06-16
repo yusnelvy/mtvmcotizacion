@@ -21,9 +21,13 @@ import simplejson as json
 import django.db
 from django.db.models import F
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
+
 
 # Create your views here.
 # lista
+@login_required
 def lista_estado_cotizacion(request):
     """docstring"""
 
@@ -111,6 +115,7 @@ def lista_tiempocarga(request):
     return render(request, 'cotizacion/tiempocarga_lista.html', context)
 
 
+@login_required
 def lista_cotizacion(request):
     """docstring"""
 
@@ -791,6 +796,7 @@ def edit_tiempocarga(request, pk):
                               context_instance=RequestContext(request))
 
 
+@permission_required('cotizacion.change_cotizacion')
 def edit_cotizacion(request, pk):
 
     try:

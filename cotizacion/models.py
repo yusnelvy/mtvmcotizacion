@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django.db import models
 from direccion.models import Inmueble
 from cliente.models import Cliente
@@ -7,6 +8,7 @@ from mueble.models import Mueble
 from servicio.models import Servicio, Material
 from contenido.models import Contenedor, Contenido
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # Create your models here.
@@ -32,13 +34,16 @@ class Tiempo_Carga(models.Model):
         super(Tiempo_Carga, self).__init__(*args, **kwargs)
 
     tiempo_carga = models.TimeField()
-    volumen_min = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00)
-    volumen_max = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00)
-    nro_objeto_min = models.PositiveIntegerField()
-    nro_objeto_max = models.PositiveIntegerField()
+    volumen_min = models.DecimalField(max_digits=13, decimal_places=2, blank=True,
+                                      default=0.00, validators=[MinValueValidator(0.01)])
+    volumen_max = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00,
+                                      validators=[MaxValueValidator(100), MinValueValidator(1)])
+    nro_objeto_min = models.PositiveIntegerField(validators=[MaxValueValidator(100),
+                                                             MinValueValidator(1)])
+    nro_objeto_max = models.PositiveIntegerField(validators=[MaxValueValidator(100), MinValueValidator(1)])
     peso_min = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00)
     peso_max = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00)
-    cantidad_trabajador = models.PositiveIntegerField()
+    cantidad_trabajador = models.PositiveIntegerField(validators=[MaxValueValidator(20), MinValueValidator(1)])
 
     def __str__(self):
         return str(self.tiempo_carga)
