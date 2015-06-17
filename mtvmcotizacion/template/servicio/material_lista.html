@@ -57,11 +57,8 @@ Eliminar material
     <td>{{ i.precio }}</td>
     <td>{{ i.peso }}</td>
     <td>
-      {% if i.recuperable = False %}
-        No
-      {% else %}
-        Sí
-      {% endif %}
+      {{i.recuperable|yesno:"Si,No"}}
+
     </td>
     <td width="3">
       <a title="Editar" data-toggle="tooltip" data-placement="right" href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>

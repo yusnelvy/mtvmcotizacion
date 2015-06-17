@@ -66,15 +66,7 @@ Eliminar mueble
     <td>{{ i.tipo_mueble }}</td>
     <td>{{ i.ambiente }}</td>
     <td>{{ i.forma }}</td>
-    <td>
-
-      {% if i.trasladable %}
-      Sí
-      {% else %}
-      No
-      {% endif %}
-
-    </td>
+    <td>{{i.trasladable|yesno:"Si,No"}}</td>
     <td>
       <a title="Editar" data-toggle="tooltip" data-placement="right" href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
     </td>
