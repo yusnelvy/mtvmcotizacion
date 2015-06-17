@@ -1,41 +1,81 @@
 {% extends 'inicio/base3.html' %}
 
+{% block titulo %}
+
+<title>Crear usuario</title>
+
+{% endblock titulo %}
+
 {% block content %}
 
-    <table>
-        <tr>
-            <td>{{ user.username.label_tag }}</td>
-            <td>{{ user.username }}</td>
-        </tr>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 animated fadeIn">
 
-        <tr>
-            <td>{{ user.email.label_tag }}</td>
-            <td>{{ user.email }}</td>
-        </tr>
+            <div class="panel panel-default">
+                <div class="panel-heading">  <h2>Datos del usuario</h2></div>
+                <table class="table">
+                    <tr>
+                        <td class="text-right"><strong>Usuario</strong>:</td>
+                        <td>
 
-        <tr>
-            <td>{{ user.first_name.label_tag }}</td>
-            <td>{{ user.first_name }}</td>
-        </tr>
+                            {{ user.username }}
 
-        <tr>
-            <td>{{ user.last_name.label_tag }}</td>
-            <td>{{ user.last_name }}</td>
-        </tr>
+                        </td>
+                    </tr>
 
-        <tr>
-            <td>{{ user.date_joined.label_tag }}</td>
-            <td>{{ user.date_joined }}</td>
-        </tr>
+                    <tr>
+                        <td class="text-right"><strong>Email</strong>:</td>
+                        <td>
 
-        <tr>
-            <td>{{ user.last_login.label_tag }}</td>
-            <td>{{ user.last_login }}</td>
-        </tr>
+                            {{ user.email }}
 
-    </table>
+                        </td>
+                    </tr>
 
-    <a href="{% url 'uinicio:logout' %}">Logout</a>
+                    <tr>
+                        <td class="text-right"><strong>Primer nombre</strong>:</td>
+                        <td>
 
+                            {{ user.first_name }}
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="text-right"><strong>Segundo nombre</strong>:</td>
+                        <td>
+
+                            {{ user.last_name }}
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="text-right"><strong>Fecha de registro</strong>:</td>
+                        <td>
+
+                            {{ user.date_joined }}
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="text-right"><strong>Fecha ultimo login</strong>:</td>
+                        <td>
+
+                            {{ user.last_login }}
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <a href="/index/" class="btn btn-default">Confirmar</a>
+            <a href="javascript:history.back();" class="btn btn-default">Cancelar</a>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
 
 {% endblock %}
