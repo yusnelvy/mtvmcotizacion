@@ -1,5 +1,4 @@
 from django.conf.urls import patterns, url
-
 from direccion import views
 
 urlpatterns = patterns('',
@@ -46,6 +45,12 @@ urlpatterns = patterns('',
                            name='add_complejidad_inmueble'),
                        url(r'^complejidad_inmueble/(?P<pk>\d+)/$', views.edit_complejidad_inmueble,
                            name='edit_complejidad_inmueble'),
+                       url(r'^tarifa/$', views.lista_tarifa_valor,
+                           name='lista_tarifa_valor'),
+                       url(r'^tarifa/nuevo', views.add_tarifa_valor,
+                           name='add_tarifa_valor'),
+                       url(r'^tarifa/(?P<pk>\d+)/$', views.edit_tarifa_valor,
+                           name='edit_tarifa_valor'),
                        url(r'^inmueble/(?P<iddireccion>\d+)/$',
                            views.lista_inmueble,
                            name='lista_inmueble'),
@@ -53,5 +58,8 @@ urlpatterns = patterns('',
                            name='add_inmueble'),
                        url(r'^inmueble/editar/(?P<pk>\d+)/$', views.edit_inmueble,
                            name='edit_inmueble'),
+                       url(r'^geo/(?P<type>pais)/$', views.geo, name='geo'),
+                       url(r'^geo/(?P<type>provincia|ciudad|zona)/(?P<parent_id>[0-9]+)$', views.geo, name='geo'),
+                       url(r'^geo/$', views.select_ejemplo, name='select_ejemplo'),
 
                        )

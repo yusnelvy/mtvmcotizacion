@@ -6,6 +6,7 @@ Documentacion del proyecto
 """
 from django.db import models
 from cliente.models import Cliente
+from smart_selects.db_fields import ChainedForeignKey
 
 
 # Create your models here.
@@ -81,7 +82,7 @@ class Tipo_direccion(models.Model):
     def __init__(self, *args, **kwargs):
         super(Tipo_direccion, self).__init__(*args, **kwargs)
 
-    tipo_direccion = models.CharField(max_length=10, unique=True)
+    tipo_direccion = models.CharField(max_length=50, unique=True)
     activo = models.BooleanField(default=True)
 
     def __str__(self):
@@ -103,7 +104,10 @@ class Direccion(models.Model):
     piso = models.CharField(max_length=100)
     adicional = models.CharField(max_length=250, blank=True)
     tipo_direccion = models.ForeignKey(Tipo_direccion, on_delete=models.PROTECT)
-    zona = models.ForeignKey(Zona, on_delete=models.PROTECT)
+    pais = models.ForeignKey(Pais)
+    provincia = ChainedForeignKey(Provincia, chained_field='pais', chained_model_field='pais')
+    ciudad = ChainedForeignKey(Ciudad, chained_field='provincia', chained_model_field='provincia')
+    zona = ChainedForeignKey(Zona, chained_field='ciudad', chained_model_field='ciudad')
     zip1 = models.CharField(max_length=100)
     punto_referencia = models.CharField(max_length=250)
     cliente = models.ForeignKey(Cliente)
@@ -151,6 +155,23 @@ class Complejidad_Inmueble(models.Model):
         #ordering = ['complejidad']
 
 
+class Tarifa_valor(models.Model):
+    """docstring for Tarifa_valor"""
+    def __init__(self, *args, **kwargs):
+        super(Tarifa_valor, self).__init__(*args, **kwargs)
+
+    descripcion = models.CharField(max_length=100, unique=True)
+    valor = models.DecimalField(max_digits=13, decimal_places=2)
+
+    def __str__(self):
+        return self.descripcion
+
+    class Meta:
+        verbose_name = "Tarifa del inmueble"
+        verbose_name_plural = "Tarifas del inmueble"
+        ordering = ['descripcion']
+
+
 class Inmueble(models.Model):
     """docstring for Inmueble"""
     def __init__(self, *args, **kwargs):
@@ -169,6 +190,7 @@ class Inmueble(models.Model):
     pisos_ascensor = models.IntegerField()
     complejidad = models.ForeignKey(Complejidad_Inmueble, on_delete=models.PROTECT)
     distancia_vehiculo = models.IntegerField()
+    tarifa_valor = models.ForeignKey(Tarifa_valor, on_delete=models.PROTECT)
 
     def __str__(self):
         return str(self.inmueble)
@@ -177,3 +199,14 @@ class Inmueble(models.Model):
         verbose_name = "Inmueble"
         verbose_name_plural = "Inmuebles"
         ordering = ['inmueble']
+
+
+class locaciones(models.Model):
+    pais = models.ForeignKey(Pais)
+    provincia = ChainedForeignKey(Provincia, chained_field='pais', chained_model_field='pais')
+    ciudad = ChainedForeignKey(Ciudad, chained_field='provincia', chained_model_field='provincia')
+    zona = ChainedForeignKey(Zona, chained_field='ciudad', chained_model_field='ciudad')
+    direccion = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.direccion)

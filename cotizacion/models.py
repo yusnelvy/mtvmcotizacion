@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django.db import models
 from direccion.models import Inmueble
 from cliente.models import Cliente
@@ -7,6 +8,7 @@ from mueble.models import Mueble
 from servicio.models import Servicio, Material
 from contenido.models import Contenedor, Contenido
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # Create your models here.
@@ -23,6 +25,7 @@ class Estado_Cotizacion(models.Model):
     class Meta:
         verbose_name = "estado"
         verbose_name_plural = "estados"
+        ordering = ['id']
 
 
 class Tiempo_Carga(models.Model):
@@ -31,12 +34,16 @@ class Tiempo_Carga(models.Model):
         super(Tiempo_Carga, self).__init__(*args, **kwargs)
 
     tiempo_carga = models.TimeField()
-    volumen_min = models.DecimalField(max_digits=13, decimal_places=2)
-    volumen_max = models.DecimalField(max_digits=13, decimal_places=2)
-    nro_objeto_min = models.IntegerField()
-    nro_objeto_max = models.IntegerField()
-    peso_min = models.DecimalField(max_digits=13, decimal_places=2)
-    peso_max = models.DecimalField(max_digits=13, decimal_places=2)
+    volumen_min = models.DecimalField(max_digits=13, decimal_places=2, blank=True,
+                                      default=0.00, validators=[MinValueValidator(0.01)])
+    volumen_max = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00,
+                                      validators=[MaxValueValidator(100), MinValueValidator(1)])
+    nro_objeto_min = models.PositiveIntegerField(validators=[MaxValueValidator(100),
+                                                             MinValueValidator(1)])
+    nro_objeto_max = models.PositiveIntegerField(validators=[MaxValueValidator(100), MinValueValidator(1)])
+    peso_min = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00)
+    peso_max = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00)
+    cantidad_trabajador = models.PositiveIntegerField(validators=[MaxValueValidator(20), MinValueValidator(1)])
 
     def __str__(self):
         return str(self.tiempo_carga)
@@ -76,29 +83,33 @@ class Cotizacion(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
     creadopor = models.ForeignKey(User, related_name="creadopor")
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_culminacion = models.DateTimeField()
+    fecha_culminacion = models.DateTimeField(blank=True)
     cotizador = models.ForeignKey(User, related_name="cotizador")
     fecha_estimadamudanza = models.DateTimeField()
-    cantidad_ambientes = models.IntegerField()
-    cantidad_muebles = models.IntegerField()
-    volumen_muebles_sugerido = models.DecimalField(max_digits=5, decimal_places=2)
-    volumen_muebles_cotizado = models.DecimalField(max_digits=5, decimal_places=2)
-    peso_muebles = models.DecimalField(max_digits=5, decimal_places=2)
-    cantidad_contenedores = models.IntegerField()
-    peso_contenedores = models.DecimalField(max_digits=7, decimal_places=2)
-    volumen_contenedores = models.DecimalField(max_digits=7, decimal_places=2)
-    peso_contenidos = models.DecimalField(max_digits=5, decimal_places=2)
-    volumen_contenidos = models.DecimalField(max_digits=5, decimal_places=2)
-    peso_materiales = models.DecimalField(max_digits=5, decimal_places=2)
-    monto_muebles = models.DecimalField(max_digits=7, decimal_places=2)
-    monto_material = models.DecimalField(max_digits=7, decimal_places=2)
-    monto_descuento = models.DecimalField(max_digits=7, decimal_places=2)
-    total_sin_impuesto = models.DecimalField(max_digits=7, decimal_places=2)
-    monto_impuesto = models.DecimalField(max_digits=7, decimal_places=2)
-    total_con_impuesto = models.DecimalField(max_digits=7, decimal_places=2)
+    cantidad_ambientes = models.PositiveIntegerField(blank=True, default=0)
+    cantidad_muebles = models.PositiveIntegerField(blank=True, default=0)
+    volumen_muebles_sugerido = models.DecimalField(max_digits=5, decimal_places=2,
+                                                   blank=True, default=0.00)
+    volumen_muebles_cotizado = models.DecimalField(max_digits=5, decimal_places=2,
+                                                   blank=True, default=0.00)
+    peso_muebles = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default=0.00)
+    cantidad_contenedores = models.PositiveIntegerField(blank=True, default=0)
+    peso_contenedores = models.DecimalField(max_digits=7, decimal_places=2,
+                                            blank=True, default=0.00)
+    volumen_contenedores = models.DecimalField(max_digits=7, decimal_places=2,
+                                               blank=True, default=0.00)
+    peso_contenidos = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default=0.00)
+    volumen_contenidos = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default=0.00)
+    peso_materiales = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default=0.00)
+    monto_muebles = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
+    monto_material = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
+    monto_descuento = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
+    total_sin_impuesto = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
+    monto_impuesto = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
+    total_con_impuesto = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
     tiempo_carga = models.TimeField()
     total_recorrido_tiempo = models.TimeField()
-    total_recorrido_km = models.DecimalField(max_digits=7, decimal_places=2)
+    total_recorrido_km = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
 
     def __str__(self):
         return self.numero_contrato
@@ -119,6 +130,7 @@ class Vehiculo(models.Model):
     tarifa_recorrido = models.DecimalField(max_digits=7, decimal_places=2)
     capacidad_volumen = models.DecimalField(max_digits=7, decimal_places=2)
     capacidad_peso = models.DecimalField(max_digits=7, decimal_places=2)
+    cargo = models.ForeignKey(Cargo_trabajador)
 
     def __str__(self):
         return self.modelo
@@ -136,7 +148,7 @@ class Vehiculo_Cotizacion(models.Model):
 
     vehiculo = models.ForeignKey(Vehiculo)
     cotizacion = models.ForeignKey(Cotizacion)
-    cantidad = models.IntegerField()
+    cantidad = models.PositiveIntegerField()
     cantidad_hora = models.TimeField()
     tarifa_hora = models.DecimalField(max_digits=7, decimal_places=2)
     costo_hora = models.DecimalField(max_digits=7, decimal_places=2)
@@ -179,7 +191,7 @@ class Cotizacion_trabajador(models.Model):
     cargo = models.ForeignKey(Cargo_trabajador)
     cotizacion = models.ForeignKey(Cotizacion)
     tarifa = models.DecimalField(max_digits=7, decimal_places=2)
-    cantidad = models.IntegerField()
+    cantidad = models.PositiveIntegerField()
     total_sin_recargo = models.DecimalField(max_digits=7, decimal_places=2)
     nocturno = models.BooleanField(default=None)
     fin_semana = models.BooleanField(default=None)

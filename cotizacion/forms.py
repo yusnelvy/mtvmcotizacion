@@ -8,6 +8,7 @@ from cotizacion.models import Estado_Cotizacion, \
     Cotizacion_Contenido
 
 
+
 class EstadoCotizacionForm(ModelForm):
     class Meta:
         model = Estado_Cotizacion

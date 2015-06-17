@@ -25,6 +25,29 @@
 {% block contenido_adicional %}
 
 <h4>Muebles clasificados en este tamaño de muebles</h4>
+<div class="panel panel-default">
+<table class="table" style="text-align: center;">
+<tr class="">
+    <th>Mueble</th>
+    <th>Densidad</th>
+    <th></th>
+</tr>
+
+{% for det in tamano.tamano_mueble_set.all %}
+
+<tr id="tr{{det.id}}">
+    <td>{{ det.mueble }}</td>
+    <td>{{ det.densidad }}</td>
+    <td>
+      <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'umuebles:edit_tamanomueble' det.id %}?next={% url 'umuebles:edit_tamano' tamano.id %}" class="glyphicon glyphicon-edit"></a>
+
+    </td>
+</tr>
+
+{% endfor %}
+
+</table>
+</div>
 
 {% endblock contenido_adicional %}
 

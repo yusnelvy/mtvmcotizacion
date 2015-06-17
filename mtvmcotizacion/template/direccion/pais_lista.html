@@ -1,43 +1,34 @@
-{% extends 'base3.html' %}
+{% extends 'inicio/base_lista.html' %}
 
 {% block titulo %}
 
-<h2>Países</h2>
+<title>País</title>
 
-{% endblock %}
+{% endblock titulo %}
 
-{% block content %}
+{% block titulo_modal %}
 
-<!--IniciaModal-->
-<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="myModalLabel"></h3>
-      </div>
-      <div class="modal-body">
-        <p>¿Eliminar <span id="modal_name"></span>?</p>
-      </div>
-      <div class="modal-footer">
-        <form method="post" id="frmEliminar">
+Eliminar país
 
-          {% csrf_token %}
+{% endblock titulo_modal %}
 
-          <input type="hidden" id="modal_id" name="item_id">
-          <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-          <button type="submit" class="btn btn-default">Si</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+{% block validacion_modal %}
 
-<!--EndModal-->
+<p>¿Realmente desea eliminar el registro: <strong id="modal_name"></strong>?</p>
 
-<h2>Listado de países </h2>
-<a href="nuevo/" class="btn btn-default">Nuevo</a>
-<br>
-<h6>Cantidad de países registrados:
+{% endblock validacion_modal %}
+
+{% block titulo_tabla %}
+
+<h2>Listado de Países</h2>
+
+{% endblock titulo_tabla %}
+
+{% if lista_pais %}
+
+{% block cantidad_tabla %}
+
+<h6>Cantidad de Países encontrados:
   <span class="badge" id="count_reg">
 
     {{ lista_pais.count }}
@@ -45,41 +36,79 @@
   </span>
 </h6>
 
-{% if lista_pais %}
+{% endblock cantidad_tabla %}
 
-<div class="">
-  <table class="table table-hover" id="tabla">
-    <tr class="active">
-      <th>País</th>
-      <th>Editar</th>
-      <th>Eliminar</th>
-    </tr>
+{% block cuerpo_tabla %}
 
-    {% for i in lista_pais %}
+<tr class="active">
+  <th>Pais</th>
+  <th width="3">Editar</th>
+  <th width="3">Eliminar</th>
+</tr>
 
-    <tr id="tr{{i.id}}">
-      <td>{{ i.pais }}</td>
-      <td>
-        <a href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
-      </td>
-      <td>
-        <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.pais}}"></a>
-      </td>
-    </tr>
+{% for i in paises %}
 
-    {% endfor %}
+<tr id="tr{{i.id}}">
+  <td>
 
-  </table>
-  <a href="nuevo/" class="btn btn-default">Nuevo</a>
-</div>
+    {{ i.pais }}
 
-{% else %}
+  </td>
+  <td width="3"><a title="Editar" data-toggle="tooltip" data-placement="right" href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a></td>
+  <td width="3">
+    <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.pais}}"></a>
+  </td>
+</tr>
 
-<p>No se encontraron registros.</p>
+{% endfor %}
+
+<nav>
+  <ul class="pagination">
+
+    {% if paises.has_previous %}
+
+    <li>
+      <a href="?page={{ paises.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+
+    {% endif %}
+
+    <li class="current">
+      <a style="color:#000;"> Página
+
+        {{ paises.number }}
+
+        de
+
+        {{ paises.paginator.num_pages }}
+
+        Desde el pais
+
+        {{ paises.start_index }}
+
+        hasta el pais
+
+        {{ paises.end_index }}
+
+      </a>
+    </li>
+
+    {% if paises.has_next %}
+
+    <li>
+      <a href="?page={{ paises.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+
+    {% endif %}
+
+  </ul>
+</nav>
+
+
+{% endblock cuerpo_tabla %}
 
 {% endif %}
 
-{% endblock %}
 
 {% block ayuda %}
 

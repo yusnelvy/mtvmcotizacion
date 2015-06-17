@@ -4,7 +4,6 @@ from telefono.forms import TipoTelefonoForm, TelefonoForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
-from direccion.models import Direccion
 import django.db
 import simplejson as json
 
@@ -88,12 +87,16 @@ def add_tipotelefono(request):
 
 def add_telefono(request):
     """docstring"""
+    redirect_to = request.REQUEST.get('next', '')
 
     if request.method == 'POST':
         form_telefono = TelefonoForm(request.POST)
         if form_telefono.is_valid():
             id_reg = form_telefono.save()
             id_cli = Telefono.objects.get(id=id_reg.id)
+        if redirect_to:
+            return HttpResponseRedirect(redirect_to)
+        else:
             #return HttpResponseRedirect(reverse('utelefonos:lista_telefono'))return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
             return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
     else:
@@ -132,6 +135,8 @@ def edit_telefono(request, pk):
 
     id_telefono = Telefono.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_telefono = TelefonoForm(request.POST, instance=id_telefono)
@@ -140,6 +145,9 @@ def edit_telefono(request, pk):
             # formulario validado correctamente
             id_reg = form_edit_telefono.save()
             id_cli = Telefono.objects.get(id=id_reg.id)
+        if redirect_to:
+            return HttpResponseRedirect(redirect_to)
+        else:
 
             #return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
             #return HttpResponseRedirect('../../cliente/ficha_cliente/')
@@ -149,5 +157,5 @@ def edit_telefono(request, pk):
         form_edit_telefono = TelefonoForm(instance=id_telefono)
 
     return render_to_response('telefono/telefono_edit.html',
-                              {'form_edit_telefono': form_edit_telefono, 'create': False},
+                              {'form_edit_telefono': form_edit_telefono, 'telefono': id_telefono, 'create': False},
                               context_instance=RequestContext(request))

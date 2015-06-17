@@ -25,7 +25,33 @@
 
 {% block contenido_adicional %}
 
-<h4>Información adicional</h4>
+{% if contenido.contenido_tipico_set.all %}
+
+<h4>Muebles asociados al contnido</h4>
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <!-- Table -->
+    <table class="table" style="text-align: center;">
+        <tr class="">
+            <th width="">Muebles</th>
+            <th width="3">Editar</th>
+        </tr>
+
+        {% for det in contenido.contenido_tipico_set.all %}
+
+        <tr id="tr{{det.id}}">
+            <td width="">{{ det.mueble }}</td>
+            <td width="3">
+                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_serviciomaterial' det.id %}?next={% url 'uservicios:edit_servicio' servicio.id %}" class="glyphicon glyphicon-edit"></a>
+            </td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+</div>
+
+{% endif %}
 
 {% endblock contenido_adicional %}
 

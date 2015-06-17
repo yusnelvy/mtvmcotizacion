@@ -1,0 +1,33 @@
+#
+#view.py
+
+from inicio.utils import generic_search
+
+
+QUERY = "search-query"
+MODEL_MAP = {Pais: ["pais"],
+             Provincia: ["provincia", "pais"],
+             }
+
+
+def search(request):
+
+    objects = []
+
+    for model, fields in MODEL_MAP.iteritems():
+
+        objects += generic_search(request, model, fields, QUERY)
+
+    return render_to_response("search/search_results.html",
+                              {"objects": objects,
+                               "search_string": request.GET.get(QUERY, ""),
+                               }
+                              )
+
+
+#url.py
+
+ url(r'^search/$', views.search, name='search'),
+
+#nota en la app inicio se agrego un archivo utils.py y un test.py que tienen el codigo para hacer el buscar
+

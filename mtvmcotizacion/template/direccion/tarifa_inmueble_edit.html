@@ -1,0 +1,63 @@
+{% extends "inicio/base_edit.html" %}
+
+{% block titulo %}
+
+<title>Tarifa de inmueble</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+  <h2>Editar tarifa de inmueble</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ form_edit_tarifa.as_p }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block contenido_adicional %}
+
+<h4>Inmuebles asignados a este nivel de complejidad</h4>
+<div class="panel panel-default">
+<table class="table" style="text-align: center;">
+<tr class="">
+    <th>Inmueble</th>
+    <th>Tipo de inmueble</th>
+    <th></th>
+</tr>
+
+{% for det in tarifa_valor.inmueble_set.all %}
+
+<tr id="tr{{det.id}}">
+    <td>{{ det.inmueble }}</td>
+    <td>{{ det.tipo_inmueble }}</td>
+    <td width="3">
+      <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'udireciones:edit_inmueble' det.id %}?next={% url 'udireciones:edit_tarifa_valor' tarifa_valor.id %}" class="glyphicon glyphicon-edit"></a>
+    </td>
+</tr>
+
+{% endfor %}
+
+</table>
+</div>
+
+{% endblock contenido_adicional %}
+
+{% block ayuda %}
+
+<br>
+<div class="">
+    <div class="well well-lg">
+        <p><strong>Tarifa inmueble</strong> se refiere al esfuerzo necesario para el traslado de la mudanza.</p>
+        <p>Al momento de evaluar o realizar una mudanza, los Niveles de tarifa serán determinados por las características físicas del Mueble o del Contenido según la sensibilidad del cotizador basada en los indicadores a evaluar.</p>
+    </div>
+</div>
+
+{% endblock%}

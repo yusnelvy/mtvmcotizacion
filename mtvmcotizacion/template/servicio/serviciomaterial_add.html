@@ -1,17 +1,30 @@
-<div class="col-md-1"></div>
-<div class="col-md-4">
-  <h2>Agregar relacion servicio - material</h2>
-  <form action="" method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-default">Registrar</button>
-    <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
-    <br><br>
-    <div class="form-group"> {{ form_serviciomaterial.as_p }}
-    </div>
+{% extends 'inicio/base_edit.html' %}
 
-      <button type="submit" class="btn btn-default">Registrar</button>
-      <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
-      <br><br>
-    </form>
-  </div>
+{% block titulo %}<title>Servicio material</title>{% endblock titulo %}
 
+{% block titulo_form %}
+
+<h2>Agregar relacion servicio - material </h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+    {{form_serviciomaterial.as_p}}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+    <p>Los <strong>Materiales</strong> son utilizados en la aplicación de un <strong>Servicio</strong> para lograr que el traslado de los <strong>Muebles</strong> se efectúe en las mejores condiciones posibles.</p>
+    <p>Los <strong>Materiales</strong> se consumen en una proporción relativa a las características del <strong>Servicio</strong> en el que se aplican y las características de los <strong>Mueble</strong> que los reciben.</p>
+    <p>Al momento de evaluar o realizar una mudanza, los <strong>Materiales</strong> inciden sobre el precio final de la misma.</p>
+    <p>La apropiada identificación de <strong>Materiales</strong> y su relación con los <strong>Servicios</strong> que los involucran, serán claves para orientar la ejecución del trabajo de campo una vez contratada la mudanza.</p>
+</div>
+
+{% endblock ayuda %}

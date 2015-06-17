@@ -22,7 +22,37 @@
 
 {% endblock cuerpo_form %}
 
-{% block contenido_adicional %}{% endblock contenido_adicional %}
+{% block contenido_adicional %}
+
+{% if ambiente.ambiente_tipo_inmueble_set.all %}
+
+<h4>Tipos de inmuebles relacionados</h4>
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <!-- Table -->
+    <table class="table" style="text-align: center;">
+        <tr class="">
+            <th width="100">Tipo de inmuebles</th>
+            <th width="3"></th>
+        </tr>
+
+{% for i in ambiente.ambiente_tipo_inmueble_set.all %}
+
+  <tr id="tr{{i.id}}">
+            <td width="100">{{ i.tipo_inmueble }}</td>
+            <td width="3">
+                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uambientes:edit_ambiente_tipoinmueble' i.id %}?next={% url 'uambientes:edit_ambiente' ambiente.id %}" class="glyphicon glyphicon-edit"></a>
+            </td>
+        </tr>
+
+{% endfor %}
+
+    </table>
+</div>
+
+{% endif %}
+
+{% endblock contenido_adicional %}
 
 {% block ayuda %}
 

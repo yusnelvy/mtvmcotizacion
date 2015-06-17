@@ -1,12 +1,5 @@
 from django.forms import ModelForm
-from ambiente.models import Tipo_ambiente, \
-    Ambiente, Ambiente_Tipo_inmueble
-
-
-class TipoAmbienteForm(ModelForm):
-    class Meta:
-        model = Tipo_ambiente
-        fields = '__all__'
+from ambiente.models import Ambiente, Ambiente_Tipo_inmueble
 
 
 class AmbienteForm(ModelForm):

@@ -1,8 +1,6 @@
 from django.shortcuts import render, render_to_response
-from ambiente.models import Tipo_ambiente, Ambiente,\
-    Ambiente_Tipo_inmueble
-from ambiente.forms import TipoAmbienteForm, AmbienteForm,\
-    AmbienteTipoInmuebleForm
+from ambiente.models import Ambiente, Ambiente_Tipo_inmueble
+from ambiente.forms import AmbienteForm, AmbienteTipoInmuebleForm
 from direccion.models import Tipo_Inmueble
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
@@ -13,34 +11,6 @@ import django.db
 
 # Create your views here.
 # lista
-def lista_tipo_ambiente(request):
-    """docstring"""
-
-    if request.method == "POST":
-        if "item_id" in request.POST:
-            try:
-                id_tipoambiente = request.POST['item_id']
-                p = Tipo_ambiente.objects.get(pk=id_tipoambiente)
-                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
-                p.delete()
-
-                 # Elinamos objeto de la base de datos
-                return HttpResponse(json.dumps(mensaje), content_type='application/json')
-
-            except django.db.IntegrityError:
-
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
-                return HttpResponse(json.dumps(mensaje), content_type='application/json')
-
-            except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
-                return HttpResponse(json.dumps(mensaje), content_type='application/json')
-
-    lista_tipoambiente = Tipo_ambiente.objects.all()
-    context = {'lista_tipoambiente': lista_tipoambiente}
-    return render(request, 'ambiente/tipoambiente_lista.html', context)
-
 
 def lista_ambiente(request):
     """docstring"""
@@ -100,28 +70,14 @@ def lista_ambiente_tipo_inmueble(request):
 
 def buscar_ambiente(request, id_tipoinmueble):
     """docstring"""
-    tipo_inmueble = Tipo_Inmueble.objects.get(id=id_tipoinmueble)
+    tipo_inmueble = Ambiente_Tipo_inmueble.objects.get(id=id_tipoinmueble)
 
-    lista_ambiente = Ambiente.objects.filter(tipo_inmueble_id=tipo_inmueble)
+    lista_ambiente = Ambiente.objects.filter(pk=tipo_inmueble.ambiente_id)
     context = {'lista_ambiente': lista_ambiente}
     return render(request, 'ambiente/ambiente_lista.html', context)
 
 
 # agregar nuevo
-def add_tipo_ambiente(request):
-    """docstring"""
-    if request.method == 'POST':
-        form_tipoambiente = TipoAmbienteForm(request.POST)
-        if form_tipoambiente.is_valid():
-            form_tipoambiente.save()
-            return HttpResponseRedirect(reverse('uambientes:lista_tipo_ambiente'))
-    else:
-        form_tipoambiente = TipoAmbienteForm()
-    return render_to_response('ambiente/tipoambiente_add.html',
-                              {'form_tipoambiente': form_tipoambiente, 'create': True},
-                              context_instance=RequestContext(request))
-
-
 def add_ambiente(request):
     """docstring"""
     if request.method == 'POST':
@@ -136,7 +92,7 @@ def add_ambiente(request):
                               context_instance=RequestContext(request))
 
 
-def add_ambiente_tipoinmueble(request):
+def add_ambiente_tipoinmueble(request, id_ti):
     """docstring"""
     if request.method == 'POST':
         form_ambtipoinmueble = AmbienteTipoInmuebleForm(request.POST)
@@ -144,37 +100,13 @@ def add_ambiente_tipoinmueble(request):
             form_ambtipoinmueble.save()
             return HttpResponseRedirect(reverse('uambientes:lista_ambiente_tipo_inmueble'))
     else:
-        form_ambtipoinmueble = AmbienteTipoInmuebleForm()
+        form_ambtipoinmueble = AmbienteTipoInmuebleForm({'tipo_inmueble': id_ti})
     return render_to_response('ambiente/ambientetipoinmueble_add.html',
                               {'form_ambtipoinmueble': form_ambtipoinmueble, 'create': True},
                               context_instance=RequestContext(request))
 
 
 # editar un registro
-def edit_tipo_ambiente(request, pk):
-    """docstring"""
-    tipoambiente = Tipo_ambiente.objects.get(pk=pk)
-
-    if request.method == 'POST':
-        # formulario enviado
-        form_edit_tipoambiente = TipoAmbienteForm(request.POST, instance=tipoambiente)
-
-        if form_edit_tipoambiente.is_valid():
-            # formulario validado correctamente
-            form_edit_tipoambiente.save()
-
-            return HttpResponseRedirect(reverse('uambientes:lista_tipo_ambiente'))
-
-    else:
-        # formulario inicial
-        form_edit_tipoambiente = TipoAmbienteForm(instance=tipoambiente)
-
-    lista_ambiente = Ambiente.objects.filter(tipo_ambiente_id=tipoambiente)
-    context = {'lista_ambiente': lista_ambiente, 'form_edit_tipoambiente': form_edit_tipoambiente, 'create': False}
-    return render_to_response('ambiente/tipoambiente_edit.html', context,
-                              context_instance=RequestContext(request))
-
-
 def edit_ambiente(request, pk):
     """docstring"""
 
@@ -195,13 +127,15 @@ def edit_ambiente(request, pk):
         form_edit_ambiente = AmbienteForm(instance=id_ambiente)
 
     return render_to_response('ambiente/ambiente_edit.html',
-                              {'form_edit_ambiente': form_edit_ambiente, 'create': False},
+                              {'form_edit_ambiente': form_edit_ambiente, 'ambiente': id_ambiente, 'create': False},
                               context_instance=RequestContext(request))
 
 
 def edit_ambiente_tipoinmueble(request, pk):
     """docstring"""
     ambtipoinmueble = Ambiente_Tipo_inmueble.objects.get(pk=pk)
+
+    redirect_to = request.REQUEST.get('next', '')
 
     if request.method == 'POST':
         # formulario enviado
@@ -211,7 +145,10 @@ def edit_ambiente_tipoinmueble(request, pk):
             # formulario validado correctamente
             form_edit_ambtipoinmueble.save()
 
-            return HttpResponseRedirect(reverse('uambientes:lista_ambiente_tipo_inmueble'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('uambientes:lista_ambiente_tipo_inmueble'))
 
     else:
         # formulario inicial

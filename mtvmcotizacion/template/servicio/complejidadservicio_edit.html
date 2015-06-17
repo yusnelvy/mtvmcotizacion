@@ -1,14 +1,30 @@
-<div class="col-md-1"></div>
-<div class="col-md-4">
-    <h2>Editar complejidad servicio </h2>
-    <form action="" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="../" class="btn btn-default">Regresar</a><br><br>
-        <div class="form-group">{{form_edit_complejidadservicio.as_p}}
-        </div>
-        <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="../" class="btn btn-default">Regresar</a><br><br><br>
-  </form>
+{% extends 'inicio/base_edit.html' %}
+
+{% block titulo %}<title>Servicio material</title>{% endblock titulo %}
+
+{% block titulo_form %}
+
+<h2>Editar relacion complejidad - servicio </h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+    {{form_edit_complejidadservicio.as_p}}
+
 </div>
 
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>Los <strong>Niveles de complejidad</strong> se refieren al nivel de esfuerzo y consumo de tiempo en los cuales se incurrirá para la aplicación de los <strong>Servicios</strong> a los <strong>Muebles</strong> y <strong>Contenidos</strong> que serán mudados.</p>
+  <p>Los <strong>Niveles de complejidad</strong> de este modo se asocian a factores de consumo de material y de consumo de tiempo, que lo llevan a tener una tarifa específica que compensa el esfuerzo para la aplicación de un <strong>Servicio</strong> específico con el <strong>Nivel de complejidad</strong> seleccionado.</p>
+  <p>Al momento de evaluar o realizar una mudanza, los <strong>Niveles de complejidad</strong> serán determinados por las características físicas del <strong>Mueble</strong> o del <strong>Contenido</strong> según la sensibilidad del cotizador basada en los indicadores a evaluar.</p>
+  <p>Los indicadores para definir <strong>Niveles de complejidad</strong> incluyen fragilidad de los objeto, necesidad de mantener un orden específico, formas irregulares difíciles de embalar, gran número de piezas para armar o desarmar, dificultad para sujetar el objeto, necesidad de que participe más de una persona, etc.</p>
+</div>
+
+{% endblock ayuda %}

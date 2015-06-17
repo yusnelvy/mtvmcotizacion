@@ -6,7 +6,7 @@
                 font-family: inherit;
                 font: inherit;
     }
-    .form-group>input[type=number],.form-group>input[type=text],.form-group>p>textarea,.form-group>p>input[type=text],.form-group>p>input[type=email],.form-group>p>input[type=url],.form-group>p>select,.form-group>p>input[type=number]{
+    .form-group>p>input[type=password],.form-group>input[type=number],.form-group>input[type=text],.form-group>p>textarea,.form-group>p>input[type=text],.form-group>p>input[type=email],.form-group>p>input[type=url],.form-group>p>select,.form-group>p>input[type=number]{
                     box-sizing: border-box;
                 border-radius: 6px;
                 box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
@@ -45,3 +45,31 @@
                          box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
     }
 th{text-align: center!important;}
+.fixed{
+    position:fixed;
+    z-index: 20;
+    top: 50px;
+}
+.btn-procesos{
+    background: #fff;
+       -webkit-transition: all 3s ease;
+-moz-transition: all 3s ease;
+-ms-transition: all 3s ease;
+-o-transition: all 3s ease;
+transition: all 3s ease;
+}
+.divider-vertical{ height: 50px; margin: 0 9px; border-left: 1px solid #F2F2F2; border-right: 1px solid #777; }
+
+.alert-danger {
+  padding: 8px 35px 8px 14px;
+  margin-bottom: 20px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  border: 1px solid;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+
+  color: #b94a48;
+  background-color: #f2dede;
+  border-color: #eed3d7;
+}

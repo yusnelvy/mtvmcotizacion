@@ -1,0 +1,32 @@
+{% extends "inicio/base_edit.html" %}
+
+{% block titulo %}
+
+<title>Estado civil</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+  <h2>Editar estado civil</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ form_edit_estadocivil.as_p }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>El <strong>Estado civil</strong> es la situación de las personas físicas determinada por sus relaciones de familia, provenientes del matrimonio o del parentesco, que establece ciertos derechos y deberes.</p>
+  <p>Edite el estado civil y presione el botón ( Registrar ).</p>
+</div>
+
+{% endblock ayuda %}

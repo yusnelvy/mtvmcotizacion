@@ -1,27 +1,32 @@
 {% extends "inicio/base3.html" %}
-{% block cliente_ficha %}
+{% block ficha %}
 <!--IniciaModal-->
 <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
+           <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">
 
                 {% block titulo_modal %}{% endblock titulo_modal %}
 
-            <div class="modal-body">
+            </h4>
+        </div>
+        <div class="modal-body">
 
-                    {% block validacion_modal %}{% endblock validacion_modal %}
+            {% block validacion_modal %}{% endblock validacion_modal %}
 
-            </div>
-            <div class="modal-footer">
-                <form method="post" id="frmEliminar">
-                    {% csrf_token %}
-                    <input type="hidden" id="modal_id" name="item_id">
-                    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-                    <button type="submit" class="btn btn-default">Sí</button>
-                </form>
-            </div>
+        </div>
+        <div class="modal-footer">
+            <form method="post" id="frmEliminar">
+                {% csrf_token %}
+                <input type="hidden" id="modal_id" name="item_id">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+                <button type="submit" class="btn btn-default">Sí</button>
+            </form>
         </div>
     </div>
+</div>
 </div>
 <!--EndModal-->
 
@@ -37,9 +42,9 @@
 
         <div class="col-md-7">
 
-            {% endblock col1 %}
+        {% endblock col1 %}
 
-            {% block content1 %}{% endblock content1 %}
+        {% block content1 %}{% endblock content1 %}
 
         </div>
 
@@ -47,9 +52,9 @@
 
         <div class="col-md-5">
 
-            {% endblock col2 %}
+        {% endblock col2 %}
 
-            {% block content2 %}{% endblock content2%}
+        {% block content2 %}{% endblock content2%}
 
         </div>
 
@@ -60,7 +65,7 @@
 
         {% block col3 %}
 
-        <div class="col-md-6">
+        <div class="col-md-7">
 
             {% endblock col3 %}
 
@@ -70,7 +75,7 @@
 
         {% block col4 %}
 
-        <div class="col-md-6">
+        <div class="col-md-5">
 
             {% endblock col4 %}
 
@@ -80,4 +85,4 @@
 
     </div>
 </div>
-{% endblock cliente_ficha %}
+{% endblock ficha %}

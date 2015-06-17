@@ -1,29 +1,35 @@
-{% extends "base3.html" %}
+{% extends "inicio/base_edit.html" %}
 
 {% block titulo %}
 
-<title>Provincia</title>
+<title>Inmueble</title>
 
-{% endblock %}
+{% endblock titulo %}
 
-{% block content %}
+{% block titulo_form %}
 
-<div class="">
-    <h2>Agregar inmuebles</h2>
-    <form action="" method="post">
+  <h2>Agregar inmueble</h2>
 
-        {% csrf_token %}
+{% endblock titulo_form %}
 
-        <button type="submit" class="btn btn-default">Registrar</button>
-        <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
-        <div class="form-group">
+{% block cuerpo_form %}
 
-          {{form_inmueble.as_p}}
+<div class="form-group">
 
-      </div>
-      <button type="submit" class="btn btn-default">Registrar</button>
-      <a href="javascript:history.back();" class="btn btn-default">Regresar</a><br><br>
-  </form>
+  {{ form_inmueble.as_p }}
+
 </div>
 
-{% endblock %}
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<br>
+<div class="well well-lg">
+ <p>El <strong>Inmueble</strong> es una propiedad que no puede ser trasladado o separado del lugar en que se halla, como casas o edificios. </p>
+ <p>Agregue cada campo del formulario para crear nuevo <strong>Inmueble</strong> y luego presione registrar.</p>
+ <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
+
+</div>
+
+{% endblock ayuda %}

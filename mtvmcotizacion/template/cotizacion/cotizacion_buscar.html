@@ -78,28 +78,13 @@
   <tr>
     <td>Rampa</td>
     <td>
-      {% if i.inmueble.rampa %}
-
-      Si
-
-      {% else %}
-
-      No
-      {% endif %}
-
+      {{ i.inmueble.rampa|yesno:"Si,No" }}
     </td>
   </tr>
   <tr>
     <td>Ascensor</td>
     <td>
-      {% if i.inmueble.ascensor %}
-
-      Si
-
-      {% else %}
-
-      No
-      {% endif %}
+      {{ i.inmueble.ascensor|yesno:"Si,No" }}
     </td>
   </tr>
   <tr>
@@ -446,58 +431,10 @@
           <td>{{ det_mue.capacidad }} </td>
           <td>{{ det_mue.ocupacion }} </td>
           <td>{{ det_mue.forma }} </td>
-          <td>
-
-            {% if det_mue.trasladable %}
-
-            Si
-
-            {% else %}
-
-            No
-
-            {% endif %}
-
-          </td>
-          <td>
-
-            {% if det_mue.apilable %}
-
-            Si
-
-            {% else %}
-
-            No
-
-            {% endif %}
-
-          </td>
-          <td>
-
-            {% if det_mue.capacidad_carga %}
-
-            Si
-
-            {% else %}
-
-            No
-
-            {% endif %}
-
-          </td>
-          <td>
-
-            {% if det_mue.capacidad_interna %}
-
-            Si
-
-            {% else %}
-
-            No
-
-            {% endif %}
-
-          </td>
+          <td>{{ det_mue.trasladable|yesno:"Si,No" }}</td>
+          <td>{{ det_mue.apilable|yesno:"Si,No" }}</td>
+          <td>{{ det_mue.capacidad_carga|yesno:"Si,No" }}</td>
+          <td>{{ det_mue.capacidad_interna|yesno:"Si,No" }}</td>
           <td>{{ det_mue.observaciones }} </td>
         </tr>
 
@@ -554,18 +491,7 @@
                 <td>{{ det_mat.precio_total }}</td>
                 <td>{{ det_mat.peso_unitario }}</td>
                 <td>{{ det_mat.peso_total }}</td>
-                <td>
-                  {% if det_mat.recuperable %}
-
-                  Si
-
-                  {% else %}
-
-                  No
-
-                  {% endif %}
-
-                </td>
+                <td>{{ det_mat.recuperable |yesno:"Si,No" }}</td>
               </tr>
           </td>
         <tr>

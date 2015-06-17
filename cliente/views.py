@@ -1,8 +1,8 @@
-from django.shortcuts import render, render_to_response
-from cliente.models import Cliente, Email
+from django.shortcuts import render, render_to_response, get_object_or_404
+from cliente.models import Cliente, Email, Sexo, Estado_civil
 from telefono.models import Telefono
 from direccion.models import Direccion
-from cliente.forms import ClienteForm, EmailForm
+from cliente.forms import ClienteForm, EmailForm, SexoForm, EstadoCivilForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
@@ -13,6 +13,62 @@ import django.db
 
 # Create your views here.
 # lista
+def lista_sexo(request):
+    """docstring"""
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_sexo = request.POST['item_id']
+                p = Sexo.objects.get(pk=id_sexo)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+    lista_sexo = Sexo.objects.all()
+    context = {'lista_sexo': lista_sexo}
+    return render(request, 'cliente/sexo_lista.html', context)
+
+
+def lista_estadocivil(request):
+    """docstring"""
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_estadocivil = request.POST['item_id']
+                p = Estado_civil.objects.get(pk=id_estadocivil)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+    lista_estadocivil = Estado_civil.objects.all()
+    context = {'lista_estadocivil': lista_estadocivil}
+    return render(request, 'cliente/estadocivil_lista.html', context)
+
+
 def lista_cliente(request):
     """docstring"""
     if request.method == "POST":
@@ -158,6 +214,54 @@ def add_cliente(request):
                               context_instance=RequestContext(request))
 
 
+def add_sexo(request):
+
+    if request.method == 'POST':
+        try:
+            sexo_form = SexoForm(request.POST)
+
+            if sexo_form.is_valid():
+                sexo_form.save()
+
+                return HttpResponseRedirect(reverse('uclientes:lista_sexo'))
+
+        except Exception as ex:
+            sexo_form = SexoForm()
+            mensaje = "se ha producido un error"+str(ex)
+
+    else:
+        sexo_form = SexoForm()
+        mensaje = ''
+
+    return render_to_response('cliente/sexo_add.html',
+                              {'sexo_form': sexo_form, 'create': True, 'mensaje': mensaje},
+                              context_instance=RequestContext(request))
+
+
+def add_estadocivil(request):
+
+    if request.method == 'POST':
+        try:
+            estadocivil_form = EstadoCivilForm(request.POST)
+
+            if estadocivil_form.is_valid():
+                estadocivil_form.save()
+
+                return HttpResponseRedirect(reverse('uclientes:lista_estadocivil'))
+
+        except Exception as ex:
+            estadocivil_form = EstadoCivilForm()
+            mensaje = "se ha producido un error"+str(ex)
+
+    else:
+        estadocivil_form = EstadoCivilForm()
+        mensaje = ''
+
+    return render_to_response('cliente/estadocivil_add.html',
+                              {'estadocivil_form': estadocivil_form, 'create': True, 'mensaje': mensaje},
+                              context_instance=RequestContext(request))
+
+
 def add_email(request):
 
     if request.method == 'POST':
@@ -183,6 +287,8 @@ def add_email(request):
 # editar un registro
 def edit_cliente(request, pk):
 
+    redirect_to = request.REQUEST.get('next', '')
+
     try:
         id_clie = Cliente.objects.get(pk=pk)
     except ObjectDoesNotExist as ex:
@@ -198,6 +304,9 @@ def edit_cliente(request, pk):
             # formulario validado correctamente
             editar_clie.save()
             #return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
+        if redirect_to:
+            return HttpResponseRedirect(redirect_to)
+        else:
             return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_clie.id,)))
 
     else:
@@ -232,6 +341,52 @@ def edit_email(request, id_cli, pk):
                               context_instance=RequestContext(request))
 
 
+def edit_sexo(request, pk):
+    """docstring"""
+    sexo = Sexo.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        # formulario enviado
+        form_edit_sexo = SexoForm(request.POST, instance=sexo)
+
+        if form_edit_sexo.is_valid():
+            # formulario validado correctamente
+            form_edit_sexo.save()
+
+            return HttpResponseRedirect(reverse('uclientes:lista_sexo'))
+
+    else:
+        # formulario inicial
+        form_edit_sexo = SexoForm(instance=sexo)
+
+    return render_to_response('cliente/sexo_edit.html',
+                              {'form_edit_sexo': form_edit_sexo, 'create': False},
+                              context_instance=RequestContext(request))
+
+
+def edit_estado_civil(request, pk):
+    """docstring"""
+    estado_civil = Estado_civil.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        # formulario enviado
+        form_edit_estadocivil = EstadoCivilForm(request.POST, instance=estado_civil)
+
+        if form_edit_estadocivil.is_valid():
+            # formulario validado correctamente
+            form_edit_estadocivil.save()
+
+            return HttpResponseRedirect(reverse('uclientes:lista_estadocivil'))
+
+    else:
+        # formulario inicial
+        form_edit_estadocivil = EstadoCivilForm(instance=estado_civil)
+
+    return render_to_response('cliente/estadocivil_edit.html',
+                              {'form_edit_estadocivil': form_edit_estadocivil, 'create': False},
+                              context_instance=RequestContext(request))
+
+
 def ficha_cliente(request, pk):
 
     lista_cliente = Cliente.objects.filter(pk=pk)
@@ -243,6 +398,45 @@ def ficha_cliente(request, pk):
         'lista_cliente': lista_cliente,
         'lista_email': lista_email,
         'lista_telefono_cliente': lista_telefono_cliente,
-        'direccioncliente_lista': direccioncliente_lista
+        'direccioncliente_lista': direccioncliente_lista,
+        'id_cli': pk
         }
     return render(request, 'cliente/cliente_ficha.html', context)
+
+
+# eliminar un registro
+def delete_email2(request, id_cli, pk, template_name='inicio/server_confirm_delete.html'):
+    email = get_object_or_404(Email, pk=pk)
+    if request.method == 'POST':
+        email.delete()
+        return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli,)))
+    return render(request, template_name, {'object': email})
+
+
+def delete_telefono(request, id_cli):
+    cod = request.GET.get('codigo', '')
+
+    if cod:
+        p = Telefono.objects.get(id=cod)
+        p.delete()
+        return render_to_response('cliente/cliente_ficha.html', {"cod": cod, "exito": True})
+    return render_to_response('cliente/cliente_ficha.html')
+
+
+def delete_direccion(request, id_cli):
+    cod = request.GET.get('codigo', '')
+
+    if cod:
+        p = Direccion.objects.get(id=cod)
+        p.delete()
+        return render_to_response('cliente/cliente_ficha.html', {"cod": cod, "exito": True})
+    return render_to_response('cliente/cliente_ficha.html')
+
+
+def delete_email(request, id_cli):
+    cod = request.GET.get('codigo', '')
+    if cod:
+        p = Email.objects.get(id=cod)
+        p.delete()
+        return render_to_response('cliente/cliente_ficha.html', {"cod": cod, "exito": True})
+    return render_to_response('cliente/cliente_ficha.html')

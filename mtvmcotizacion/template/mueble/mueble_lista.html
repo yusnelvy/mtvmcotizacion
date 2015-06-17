@@ -2,15 +2,13 @@
 
 {% block titulo %}
 
-<title>Tipos de mueble</title>
+<title>Mueble</title>
 
 {% endblock titulo %}
 
 {% block titulo_modal %}
 
-<div class="modal-header">
-  <h3 id="myModalLabel">Eliminar mueble</h3>
-</div>
+Eliminar mueble
 
 {% endblock titulo_modal %}
 
@@ -22,7 +20,16 @@
 
 {% block titulo_tabla %}
 
-<h2>Mueble</h2>
+<div class="btn-procesos">
+<a href="/mueble/mueble_ambiente/0/" class="btn btn-default">Muebles por ambientes</a>
+<a href="/mueble/tamano_mueble/0/" class="btn btn-default">Tamaños de muebles</a>
+<a href="/mueble/tipo_mueble/" class="btn btn-default">Tipo de muebles</a>
+<a href="/mueble/ocupacion/" class="btn btn-default">Ocupacion</a>
+<a href="/mueble/forma_mueble/" class="btn btn-default">Formas</a>
+<a href="tamano/" class="btn btn-default">Tamaño</a>
+</div>
+
+<h2>Muebles</h2>
 
 {% endblock titulo_tabla %}
 
@@ -43,9 +50,10 @@
 {% block cuerpo_tabla %}
 
 <tr class="active">
-    <th>Tipo</th>
     <th>Mueble</th>
+    <th>Tipo de mueble</th>
     <th>Ambiente</th>
+    <th>Forma</th>
     <th>Trasladable</th>
     <th>Editar</th>
     <th>Eliminar</th>
@@ -54,31 +62,20 @@
   {% for i in lista_mueble %}
 
   <tr id="tr{{i.id}}">
-    <td>{{ i.tipo_mueble }}</td>
     <td>{{ i.mueble }}</td>
+    <td>{{ i.tipo_mueble }}</td>
     <td>{{ i.ambiente }}</td>
+    <td>{{ i.forma }}</td>
+    <td>{{i.trasladable|yesno:"Si,No"}}</td>
     <td>
-
-      {% if i.trasladable %}
-      Sí
-      {% else %}
-      No
-      {% endif %}
-
+      <a title="Editar" data-toggle="tooltip" data-placement="right" href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
     </td>
     <td>
-      <a href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
-    </td>
-    <td>
-      <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.mueble}}"></a>
+      <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.mueble}}"></a>
     </td>
     <input type="hidden" value="{{i.id}}" id="idtele">
   </tr>
 
-{% for detail in i.tamano_mueble_set.all %}
-{{detail.tamano}}
-{{detail.mueble}}
-<br/> {% endfor %}
   {% endfor %}
 
 {% endblock cuerpo_tabla %}
@@ -92,5 +89,54 @@
   <p>Los <strong>Muebles</strong>, durante una mudanza, estarán asociados a un <strong>Ambiente</strong> de origen, y podrán ser trasladables o no. En caso de no ser trasladables, el único sentido de registrarlos consiste en la identificación de los <strong>Contenidos</strong> que mantienen, como puede ser el caso de los <i>muebles de cocina empotrada</i> o los <i>armarios empotrados</i> que generarán <strong>Contenedores</strong> pero ellos mismos no formarán parte de la mudanza.</p>
   <p>Los muebles deben contar con un equilibrio entre lo general y lo específico, de manera que pueda estandarizarse la inmensa diversidad de posibilidades que se encuentra en el mercado, en solo unos pocos <i>muebles representativos</i> del resto.</p>
 </div>
-
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 {% endblock ayuda %}
