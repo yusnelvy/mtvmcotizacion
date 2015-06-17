@@ -398,13 +398,14 @@ def ficha_cliente(request, pk):
         'lista_cliente': lista_cliente,
         'lista_email': lista_email,
         'lista_telefono_cliente': lista_telefono_cliente,
-        'direccioncliente_lista': direccioncliente_lista
+        'direccioncliente_lista': direccioncliente_lista,
+        'id_cli': pk
         }
     return render(request, 'cliente/cliente_ficha.html', context)
 
 
 # eliminar un registro
-def delete_email(request, id_cli, pk, template_name='inicio/server_confirm_delete.html'):
+def delete_email2(request, id_cli, pk, template_name='inicio/server_confirm_delete.html'):
     email = get_object_or_404(Email, pk=pk)
     if request.method == 'POST':
         email.delete()
@@ -412,17 +413,30 @@ def delete_email(request, id_cli, pk, template_name='inicio/server_confirm_delet
     return render(request, template_name, {'object': email})
 
 
-def delete_direccion(request, id_cli, pk, template_name='inicio/server_confirm_delete.html'):
-    direccion = get_object_or_404(Direccion, pk=pk)
-    if request.method == 'POST':
-        direccion.delete()
-        return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli,)))
-    return render(request, template_name, {'object': direccion})
+def delete_telefono(request, id_cli):
+    cod = request.GET.get('codigo', '')
+
+    if cod:
+        p = Telefono.objects.get(id=cod)
+        p.delete()
+        return render_to_response('cliente/cliente_ficha.html', {"cod": cod, "exito": True})
+    return render_to_response('cliente/cliente_ficha.html')
 
 
-def delete_telefono(request, id_cli, pk, template_name='inicio/server_confirm_delete.html'):
-    telefono = get_object_or_404(Telefono, pk=pk)
-    if request.method == 'POST':
-        telefono.delete()
-        return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli,)))
-    return render(request, template_name, {'object': telefono})
+def delete_direccion(request, id_cli):
+    cod = request.GET.get('codigo', '')
+
+    if cod:
+        p = Direccion.objects.get(id=cod)
+        p.delete()
+        return render_to_response('cliente/cliente_ficha.html', {"cod": cod, "exito": True})
+    return render_to_response('cliente/cliente_ficha.html')
+
+
+def delete_email(request, id_cli):
+    cod = request.GET.get('codigo', '')
+    if cod:
+        p = Email.objects.get(id=cod)
+        p.delete()
+        return render_to_response('cliente/cliente_ficha.html', {"cod": cod, "exito": True})
+    return render_to_response('cliente/cliente_ficha.html')

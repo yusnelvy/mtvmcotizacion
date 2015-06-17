@@ -69,19 +69,7 @@ Eliminar tamaño del mueble
         <td>{{ i.ancho }}</td>
         <td>{{ i.alto }}</td>
         <td>{{ i.peso }}</td>
-        <td>
-
-          {% if i.predefinido %}
-
-          Si
-
-          {% else %}
-
-          No
-
-          {% endif %}
-
-        </td>
+        <td>{{i.predefinido|yesno:"Si,No" }}</td>
         <td width="3">
           <a title="Editar" data-toggle="tooltip" data-placement="right" href="../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
         </td>

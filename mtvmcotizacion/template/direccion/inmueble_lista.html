@@ -47,19 +47,7 @@
         <td class="text-right">
           <strong>Rampa: </strong>
         </td>
-        <td class="text-left">
-
-          {% if i.rampa %}
-
-          Si
-
-          {% else %}
-
-          No
-
-          {% endif %}
-
-        </td>
+        <td class="text-left">{{i.rampa|yesno:"Si,No" }}</td>
       </tr>
       <tr>
         <td class="text-right"><strong>Pisos escaleras: </strong></td>
@@ -67,19 +55,7 @@
         <td class="text-right">
           <strong>Ascensor: </strong>
         </td>
-        <td class="text-left">
-
-          {% if i.ascensor %}
-
-          Si
-
-          {% else %}
-
-          No
-
-          {% endif %}
-
-        </td>
+        <td class="text-left">{{i.ascensor|yesno:"Si,No" }}</td>
       </tr>
       <tr>
          <td class="text-right">
@@ -89,19 +65,7 @@
         <td class="text-right">
           <strong>Servicio ascensor: </strong>
         </td>
-        <td class="text-left">
-
-          {% if i.ascensor_servicio %}
-
-          Si
-
-          {% else %}
-
-          No
-
-          {% endif %}
-
-        </td>
+        <td class="text-left">{{i.ascensor_servicio|yesno:"Si,No" }}</td>
       </tr>
       <tr>
         <td class="text-right">
