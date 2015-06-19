@@ -7,51 +7,35 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('direccion', '0003_auto_20150515_1210'),
+        ('direccion', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Ambiente',
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('ambiente', models.CharField(max_length=100)),
             ],
             options={
-                'verbose_name': 'Ambiente',
+                'ordering': ['ambiente'],
                 'verbose_name_plural': 'Ambientes',
+                'verbose_name': 'Ambiente',
             },
             bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Ambiente_Tipo_inmueble',
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('ambiente', models.ForeignKey(to='ambiente.Ambiente')),
                 ('tipo_inmueble', models.ForeignKey(to='direccion.Tipo_Inmueble')),
             ],
             options={
-                'verbose_name': 'Ambiente - Tipo inmueble',
-                'verbose_name_plural': 'Ambientes - Tipos de inmueble',
+                'ordering': ['tipo_inmueble', 'ambiente'],
+                'verbose_name_plural': 'Ambientes por tipos de inmueble',
+                'verbose_name': 'Ambiente por tipo inmueble',
             },
             bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='Tipo_ambiente',
-            fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
-                ('tipo_ambiente', models.CharField(max_length=100)),
-            ],
-            options={
-                'verbose_name': 'Tipo de ambiente',
-                'verbose_name_plural': 'Tipos de ambiente',
-            },
-            bases=(models.Model,),
-        ),
-        migrations.AddField(
-            model_name='ambiente',
-            name='tipo_ambiente',
-            field=models.ForeignKey(to='ambiente.Tipo_ambiente'),
-            preserve_default=True,
         ),
     ]

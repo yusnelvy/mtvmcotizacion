@@ -35,3 +35,4 @@ class Ambiente_Tipo_inmueble(models.Model):
         verbose_name = "Ambiente por tipo inmueble"
         verbose_name_plural = "Ambientes por tipos de inmueble"
         ordering = ["tipo_inmueble", "ambiente"]
+        unique_together = (("ambiente", "tipo_inmueble"),)

@@ -30,7 +30,7 @@
 
 {% block cantidad_tabla %}
 
-<a href="../../../telefono/nuevo" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+<a href="../../../telefono/nuevo/0/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
 <h6>Cantidad de telefono encontrados:
   <span class="badge" id="count_reg">
 
@@ -60,6 +60,7 @@
     <td><a href="../../../telefono/editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a></td>
     <td>
         <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.numero}}"></a>
+        <a href="../../nuevo/{{id_cli}}/" class="glyphicon glyphicon-plus" style="float:right;"></a>
   </td>
 </tr>
 

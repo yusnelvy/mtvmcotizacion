@@ -4,8 +4,7 @@ from cotizacion.models import Estado_Cotizacion, \
     Vehiculo_Cotizacion, Cotizacion_direccion, \
     Cotizacion_trabajador, Cotizacion_Ambiente, \
     Cotizacion_Mueble, Cotizacion_Servicio, \
-    Cotizacion_Material, Cotizacion_Contenedor, \
-    Cotizacion_Contenido
+    Cotizacion_Material, Cotizacion_Contenido
 
 # Register your models here.
 admin.site.register(Estado_Cotizacion)
@@ -20,5 +19,4 @@ admin.site.register(Cotizacion_Ambiente)
 admin.site.register(Cotizacion_Mueble)
 admin.site.register(Cotizacion_Servicio)
 admin.site.register(Cotizacion_Material)
-admin.site.register(Cotizacion_Contenedor)
 admin.site.register(Cotizacion_Contenido)

@@ -2,58 +2,60 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import django.db.models.deletion
 from django.conf import settings
+import django.db.models.deletion
+import django.core.validators
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
         ('ambiente', '0001_initial'),
-        ('servicio', '0002_auto_20150515_1212'),
-        ('direccion', '0003_auto_20150515_1210'),
-        ('contenido', '0003_auto_20150518_1426'),
         ('mueble', '0001_initial'),
-        ('cliente', '0003_auto_20150515_1210'),
-        ('trabajador', '0001_initial'),
+        ('cliente', '0001_initial'),
+        ('servicio', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('direccion', '0001_initial'),
+        ('contenido', '0001_initial'),
+        ('trabajador', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Cotizacion',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
-                ('numero_contrato', models.CharField(max_length=100)),
-                ('numero_cotizacion', models.CharField(max_length=100)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('numero_contrato', models.CharField(max_length=100, unique=True)),
+                ('numero_cotizacion', models.CharField(max_length=100, unique=True)),
                 ('fecha_creacion', models.DateTimeField(auto_now_add=True)),
-                ('fecha_culminacion', models.DateTimeField()),
+                ('fecha_culminacion', models.DateTimeField(blank=True)),
                 ('fecha_estimadamudanza', models.DateTimeField()),
-                ('cantidad_ambientes', models.IntegerField()),
-                ('cantidad_muebles', models.IntegerField()),
-                ('volumen_muebles_sugerido', models.DecimalField(max_digits=5, decimal_places=2)),
-                ('volumen_muebles_cotizado', models.DecimalField(max_digits=5, decimal_places=2)),
-                ('peso_muebles', models.DecimalField(max_digits=5, decimal_places=2)),
-                ('cantidad_contenedores', models.IntegerField()),
-                ('peso_contenedores', models.DecimalField(max_digits=7, decimal_places=2)),
-                ('volumen_contenedores', models.DecimalField(max_digits=7, decimal_places=2)),
-                ('peso_contenidos', models.DecimalField(max_digits=5, decimal_places=2)),
-                ('volumen_contenidos', models.DecimalField(max_digits=5, decimal_places=2)),
-                ('peso_materiales', models.DecimalField(max_digits=5, decimal_places=2)),
-                ('monto_muebles', models.DecimalField(max_digits=7, decimal_places=2)),
-                ('monto_material', models.DecimalField(max_digits=7, decimal_places=2)),
-                ('monto_descuento', models.DecimalField(max_digits=7, decimal_places=2)),
-                ('total_sin_impuesto', models.DecimalField(max_digits=7, decimal_places=2)),
-                ('monto_impuesto', models.DecimalField(max_digits=7, decimal_places=2)),
-                ('total_con_impuesto', models.DecimalField(max_digits=7, decimal_places=2)),
+                ('cantidad_ambientes', models.PositiveIntegerField(default=0, blank=True)),
+                ('cantidad_muebles', models.PositiveIntegerField(default=0, blank=True)),
+                ('volumen_muebles_sugerido', models.DecimalField(default=0.0, max_digits=5, decimal_places=2, blank=True)),
+                ('volumen_muebles_cotizado', models.DecimalField(default=0.0, max_digits=5, decimal_places=2, blank=True)),
+                ('peso_muebles', models.DecimalField(default=0.0, max_digits=5, decimal_places=2, blank=True)),
+                ('cantidad_contenedores', models.PositiveIntegerField(default=0, blank=True)),
+                ('peso_contenedores', models.DecimalField(default=0.0, max_digits=7, decimal_places=2, blank=True)),
+                ('volumen_contenedores', models.DecimalField(default=0.0, max_digits=7, decimal_places=2, blank=True)),
+                ('peso_contenidos', models.DecimalField(default=0.0, max_digits=5, decimal_places=2, blank=True)),
+                ('volumen_contenidos', models.DecimalField(default=0.0, max_digits=5, decimal_places=2, blank=True)),
+                ('peso_materiales', models.DecimalField(default=0.0, max_digits=5, decimal_places=2, blank=True)),
+                ('monto_muebles', models.DecimalField(default=0.0, max_digits=7, decimal_places=2, blank=True)),
+                ('monto_material', models.DecimalField(default=0.0, max_digits=7, decimal_places=2, blank=True)),
+                ('monto_descuento', models.DecimalField(default=0.0, max_digits=7, decimal_places=2, blank=True)),
+                ('total_sin_impuesto', models.DecimalField(default=0.0, max_digits=7, decimal_places=2, blank=True)),
+                ('monto_impuesto', models.DecimalField(default=0.0, max_digits=7, decimal_places=2, blank=True)),
+                ('total_con_impuesto', models.DecimalField(default=0.0, max_digits=7, decimal_places=2, blank=True)),
                 ('tiempo_carga', models.TimeField()),
                 ('total_recorrido_tiempo', models.TimeField()),
-                ('total_recorrido_km', models.DecimalField(max_digits=7, decimal_places=2)),
-                ('cliente', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='cliente.Cliente')),
-                ('cotizador', models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='cotizador')),
-                ('creadopor', models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='creadopor')),
+                ('total_recorrido_km', models.DecimalField(default=0.0, max_digits=7, decimal_places=2, blank=True)),
+                ('cliente', models.ForeignKey(to='cliente.Cliente', on_delete=django.db.models.deletion.PROTECT)),
+                ('cotizador', models.ForeignKey(related_name='cotizador', to=settings.AUTH_USER_MODEL)),
+                ('creadopor', models.ForeignKey(related_name='creadopor', to=settings.AUTH_USER_MODEL)),
             ],
             options={
+                'ordering': ['numero_contrato'],
                 'verbose_name_plural': 'Cotizaciones',
                 'verbose_name': 'Cotizacion',
             },
@@ -62,7 +64,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Cotizacion_Ambiente',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('cantidad_muebles', models.DecimalField(max_digits=5, decimal_places=2)),
                 ('volumen_muebles', models.DecimalField(max_digits=7, decimal_places=2)),
                 ('peso_muebles', models.DecimalField(max_digits=7, decimal_places=2)),
@@ -77,6 +79,7 @@ class Migration(migrations.Migration):
                 ('cotizacion', models.ForeignKey(to='cotizacion.Cotizacion')),
             ],
             options={
+                'ordering': ['cotizacion', 'ambiente'],
                 'verbose_name_plural': 'Ambientes de la cotizacion',
                 'verbose_name': 'Ambiente de la cotizacion',
             },
@@ -85,7 +88,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Cotizacion_Contenedor',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('capacidad_volumen_contenedor', models.DecimalField(max_digits=5, decimal_places=2)),
                 ('capacidad_peso_contenedor', models.DecimalField(max_digits=5, decimal_places=2)),
                 ('volumen_contenedor', models.DecimalField(max_digits=5, decimal_places=2)),
@@ -94,6 +97,7 @@ class Migration(migrations.Migration):
                 ('contenedor', models.ForeignKey(to='contenido.Contenedor')),
             ],
             options={
+                'ordering': ['cotizacion_mueble', 'contenedor'],
                 'verbose_name_plural': 'contenedores de la cotizacion',
                 'verbose_name': 'contenedor de la cotizacion',
             },
@@ -102,7 +106,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Cotizacion_Contenido',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('densidad', models.DecimalField(max_digits=5, decimal_places=2)),
                 ('volumen_contenido', models.DecimalField(max_digits=5, decimal_places=2)),
                 ('peso_contenido', models.DecimalField(max_digits=5, decimal_places=2)),
@@ -111,6 +115,7 @@ class Migration(migrations.Migration):
                 ('cotizacion_contenedor', models.ForeignKey(to='cotizacion.Cotizacion_Contenedor')),
             ],
             options={
+                'ordering': ['cotizacion_contenedor', 'contenido'],
                 'verbose_name_plural': 'contenidos en el contenedor',
                 'verbose_name': 'contenido en el contenedor',
             },
@@ -119,12 +124,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Cotizacion_direccion',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('direccion', models.CharField(max_length=550)),
                 ('tipo_direccion', models.CharField(max_length=100)),
                 ('cotizacion', models.ForeignKey(to='cotizacion.Cotizacion')),
             ],
             options={
+                'ordering': ['cotizacion', 'direccion'],
                 'verbose_name_plural': 'direcciones de la cotizacion',
                 'verbose_name': 'direccion de la cotizacion',
             },
@@ -133,7 +139,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Cotizacion_Material',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('cantidad', models.DecimalField(max_digits=5, decimal_places=2)),
                 ('precio_unitario', models.DecimalField(max_digits=7, decimal_places=2)),
                 ('precio_total', models.DecimalField(max_digits=7, decimal_places=2)),
@@ -142,6 +148,7 @@ class Migration(migrations.Migration):
                 ('recuperable', models.BooleanField(default=None)),
             ],
             options={
+                'ordering': ['cotizacion_mueble', 'material'],
                 'verbose_name_plural': 'Materiales del mueble',
                 'verbose_name': 'Material del mueble',
             },
@@ -150,7 +157,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Cotizacion_Mueble',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('tamano', models.CharField(max_length=100)),
                 ('ancho', models.DecimalField(max_digits=5, decimal_places=2)),
                 ('alto', models.DecimalField(max_digits=5, decimal_places=2)),
@@ -163,11 +170,12 @@ class Migration(migrations.Migration):
                 ('apilable', models.BooleanField(default=None)),
                 ('capacidad_carga', models.BooleanField(default=None)),
                 ('capacidad_interna', models.BooleanField(default=None)),
-                ('observaciones', models.TextField()),
+                ('observaciones', models.TextField(blank=True)),
                 ('cotizacion_ambiente', models.ForeignKey(to='cotizacion.Cotizacion_Ambiente')),
                 ('mueble', models.ForeignKey(to='mueble.Mueble')),
             ],
             options={
+                'ordering': ['cotizacion_ambiente', 'mueble'],
                 'verbose_name_plural': 'Muebles del Ambiente',
                 'verbose_name': 'Mueble del Ambiente',
             },
@@ -176,11 +184,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Cotizacion_Servicio',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('cotizacion_mueble', models.ForeignKey(to='cotizacion.Cotizacion_Mueble')),
                 ('servicio', models.ForeignKey(to='servicio.Servicio')),
             ],
             options={
+                'ordering': ['cotizacion_mueble', 'servicio'],
                 'verbose_name_plural': 'Servicios del mueble',
                 'verbose_name': 'Servicio del mueble',
             },
@@ -189,9 +198,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Cotizacion_trabajador',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('tarifa', models.DecimalField(max_digits=7, decimal_places=2)),
-                ('cantidad', models.IntegerField()),
+                ('cantidad', models.PositiveIntegerField()),
                 ('total_sin_recargo', models.DecimalField(max_digits=7, decimal_places=2)),
                 ('nocturno', models.BooleanField(default=None)),
                 ('fin_semana', models.BooleanField(default=None)),
@@ -202,6 +211,7 @@ class Migration(migrations.Migration):
                 ('cotizacion', models.ForeignKey(to='cotizacion.Cotizacion')),
             ],
             options={
+                'ordering': ['cotizacion', 'cargo'],
                 'verbose_name_plural': 'trabajadores de la cotizacion',
                 'verbose_name': 'trabajador de la cotizacion',
             },
@@ -210,10 +220,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Estado_Cotizacion',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
-                ('estado', models.CharField(max_length=100)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('estado', models.CharField(max_length=100, unique=True)),
             ],
             options={
+                'ordering': ['id'],
                 'verbose_name_plural': 'estados',
                 'verbose_name': 'estado',
             },
@@ -222,11 +233,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Piso',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
-                ('piso', models.CharField(max_length=100)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('piso', models.CharField(max_length=100, unique=True)),
                 ('factor', models.DecimalField(max_digits=3, decimal_places=2)),
             ],
             options={
+                'ordering': ['piso'],
                 'verbose_name_plural': 'pisos',
                 'verbose_name': 'piso',
             },
@@ -235,16 +247,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Tiempo_Carga',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('tiempo_carga', models.TimeField()),
-                ('volumen_min', models.DecimalField(max_digits=13, decimal_places=2)),
-                ('volumen_max', models.DecimalField(max_digits=13, decimal_places=2)),
-                ('nro_objeto_min', models.IntegerField()),
-                ('nro_objeto_max', models.IntegerField()),
-                ('peso_min', models.DecimalField(max_digits=13, decimal_places=2)),
-                ('peso_max', models.DecimalField(max_digits=13, decimal_places=2)),
+                ('volumen_min', models.DecimalField(default=0.0, blank=True, decimal_places=2, validators=[django.core.validators.MinValueValidator(0.01)], max_digits=13)),
+                ('volumen_max', models.DecimalField(default=0.0, blank=True, decimal_places=2, validators=[django.core.validators.MaxValueValidator(100), django.core.validators.MinValueValidator(1)], max_digits=13)),
+                ('nro_objeto_min', models.PositiveIntegerField(validators=[django.core.validators.MaxValueValidator(100), django.core.validators.MinValueValidator(1)])),
+                ('nro_objeto_max', models.PositiveIntegerField(validators=[django.core.validators.MaxValueValidator(100), django.core.validators.MinValueValidator(1)])),
+                ('peso_min', models.DecimalField(default=0.0, max_digits=13, decimal_places=2, blank=True)),
+                ('peso_max', models.DecimalField(default=0.0, max_digits=13, decimal_places=2, blank=True)),
+                ('cantidad_trabajador', models.PositiveIntegerField(validators=[django.core.validators.MaxValueValidator(20), django.core.validators.MinValueValidator(1)])),
             ],
             options={
+                'ordering': ['tiempo_carga'],
                 'verbose_name_plural': 'tiempos de carga',
                 'verbose_name': 'tiempo de carga',
             },
@@ -253,14 +267,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Vehiculo',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
-                ('modelo', models.CharField(max_length=100)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('modelo', models.CharField(max_length=100, unique=True)),
                 ('tarifa_hora', models.DecimalField(max_digits=7, decimal_places=2)),
                 ('tarifa_recorrido', models.DecimalField(max_digits=7, decimal_places=2)),
                 ('capacidad_volumen', models.DecimalField(max_digits=7, decimal_places=2)),
                 ('capacidad_peso', models.DecimalField(max_digits=7, decimal_places=2)),
+                ('cargo', models.ForeignKey(to='trabajador.Cargo_trabajador')),
             ],
             options={
+                'ordering': ['-tarifa_hora'],
                 'verbose_name_plural': 'Vehiculos',
                 'verbose_name': 'Vehiculo',
             },
@@ -269,8 +285,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Vehiculo_Cotizacion',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
-                ('cantidad', models.IntegerField()),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('cantidad', models.PositiveIntegerField()),
                 ('cantidad_hora', models.TimeField()),
                 ('tarifa_hora', models.DecimalField(max_digits=7, decimal_places=2)),
                 ('costo_hora', models.DecimalField(max_digits=7, decimal_places=2)),
@@ -281,6 +297,7 @@ class Migration(migrations.Migration):
                 ('vehiculo', models.ForeignKey(to='cotizacion.Vehiculo')),
             ],
             options={
+                'ordering': ['cotizacion', 'cotizacion'],
                 'verbose_name_plural': 'Vehiculos de la cotizacion',
                 'verbose_name': 'Vehiculo de la cotizacion',
             },
@@ -319,7 +336,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='cotizacion',
             name='inmueble',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='direccion.Inmueble'),
+            field=models.ForeignKey(to='direccion.Inmueble', on_delete=django.db.models.deletion.PROTECT),
             preserve_default=True,
         ),
     ]

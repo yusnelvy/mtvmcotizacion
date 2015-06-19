@@ -61,7 +61,7 @@ class Cliente(models.Model):
 class Email(models.Model):
 
     email = models.EmailField(unique=True)
-    cliente = models.ForeignKey(Cliente, default=1)
+    cliente = models.ForeignKey(Cliente)
 
     def __str__(self):
         return self.email

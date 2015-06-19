@@ -1,8 +1,10 @@
 from django.shortcuts import render, render_to_response
 from servicio.models import Servicio, Material, \
-    Servicio_Material, Complejidad, Complejidad_Servicio
+    Servicio_Material, Complejidad, \
+    Complejidad_Servicio, Unidad
 from servicio.forms import ServicioForm, MaterialForm,\
-    ServicioMaterialForm, ComplejidadForm, ComplejidadServicioForm
+    ServicioMaterialForm, ComplejidadForm, \
+    ComplejidadServicioForm, UnidadForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
@@ -40,6 +42,35 @@ def lista_servicio(request):
     lista_servicio = Servicio.objects.all()
     context = {'lista_servicio': lista_servicio}
     return render(request, 'servicio/servicio_lista.html', context)
+
+
+def lista_unidad(request):
+    """docstring"""
+
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_unidad = request.POST['item_id']
+                p = Unidad.objects.get(pk=id_unidad)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+    lista_unidad = Unidad.objects.all()
+    context = {'lista_unidad': lista_unidad}
+    return render(request, 'servicio/unidad_lista.html', context)
 
 
 def lista_material(request):
@@ -185,6 +216,20 @@ def add_servicio(request):
                               context_instance=RequestContext(request))
 
 
+def add_unidad(request):
+    """docstring"""
+    if request.method == 'POST':
+        form_unidad = UnidadForm(request.POST)
+        if form_unidad.is_valid():
+            form_unidad.save()
+            return HttpResponseRedirect(reverse('uservicios:lista_unidad'))
+    else:
+        form_unidad = UnidadForm()
+    return render_to_response('servicio/unidad_add.html',
+                              {'form_unidad': form_unidad, 'create': True},
+                              context_instance=RequestContext(request))
+
+
 def add_material(request):
     """docstring"""
     if request.method == 'POST':
@@ -221,13 +266,13 @@ def add_serviciomaterial(request, id_ser):
             form_serviciomaterial.save()
             return HttpResponseRedirect(reverse('uservicios:buscar_servicio_material', args=('0', '0')))
     else:
-        form_serviciomaterial = ServicioMaterialForm({'servicio': id_ser})
+        form_serviciomaterial = ServicioMaterialForm(initial={'servicio': id_ser})
     return render_to_response('servicio/serviciomaterial_add.html',
                               {'form_serviciomaterial': form_serviciomaterial, 'create': True},
                               context_instance=RequestContext(request))
 
 
-def add_complejidadservicio(request):
+def add_complejidadservicio(request, id_ser):
     """docstring"""
     if request.method == 'POST':
         form_complejidadservicio = ComplejidadServicioForm(request.POST)
@@ -235,7 +280,7 @@ def add_complejidadservicio(request):
             form_complejidadservicio.save()
             return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio', args=('0', '0')))
     else:
-        form_complejidadservicio = ComplejidadServicioForm()
+        form_complejidadservicio = ComplejidadServicioForm(initial={'servicio': id_ser})
     return render_to_response('servicio/complejidadservicio_add.html',
                               {'form_complejidadservicio': form_complejidadservicio, 'create': True},
                               context_instance=RequestContext(request))
@@ -262,6 +307,29 @@ def edit_servicio(request, pk):
 
     return render_to_response('servicio/servicio_edit.html',
                               {'form_edit_servicio': form_edit_servicio, 'servicio': servicio, 'create': False},
+                              context_instance=RequestContext(request))
+
+
+def edit_unidad(request, pk):
+    """docstring"""
+    unidad = Unidad.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        # formulario enviado
+        form_edit_unidad = UnidadForm(request.POST, instance=unidad)
+
+        if form_edit_unidad.is_valid():
+            # formulario validado correctamente
+            form_edit_unidad.save()
+
+            return HttpResponseRedirect(reverse('uunidads:lista_unidad'))
+
+    else:
+        # formulario inicial
+        form_edit_unidad = UnidadForm(instance=unidad)
+
+    return render_to_response('servicio/unidad_edit.html',
+                              {'form_edit_unidad': form_edit_unidad, 'unidad': unidad, 'create': False},
                               context_instance=RequestContext(request))
 
 
