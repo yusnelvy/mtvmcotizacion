@@ -73,3 +73,7 @@ transition: all 3s ease;
   background-color: #f2dede;
   border-color: #eed3d7;
 }
+.liviano{
+   font-family:'Roboto'!important;
+   font-size: 1.4em;
+}

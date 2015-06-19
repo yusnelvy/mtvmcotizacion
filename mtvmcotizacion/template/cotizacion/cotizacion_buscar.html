@@ -1,7 +1,745 @@
- {% extends 'inicio/base3.html' %}
- {% block content %}
+ {% extends 'inicio/base_ficha.html' %}
 
-{% if buscar_cotizacion %}
+ {% block titulo %}
+
+<title>Ficha &middot; Cotización</title>
+
+{% endblock titulo %}
+
+{% block titulo_ficha %}
+
+<h2>Ficha de la Cotización</h2>
+
+{% endblock titulo_ficha %}
+
+{% block titulo_modal %}
+
+Eliminar Cotización
+
+{% endblock titulo_modal %}
+
+{% block validacion_modal %}
+
+<p>¿Realmente desea eliminar el registro: <strong id="modal_name"></strong>?</p>
+
+{% endblock validacion_modal %}
+
+
+{% block link %}
+
+<ul class="nav navbar-nav">
+<li>
+<a href="../../"><span class="glyphicon glyphicon-chevron-left"></span></a>
+</li>
+</ul>
+
+{% endblock link %}
+
+{% block col1 %}
+
+<div class="col-md-12">
+
+{% endblock col1 %}
+
+ {% block content1 %}
+
+ {% if buscar_cotizacion %}
+
+ <div class="panel panel-default">
+     <div class="panel-body">
+  <div class="row">
+
+      {% for i in buscar_cotizacion %}
+
+ <div class="col-md-4">
+<h2 style="text-align: center;">
+
+  {{ i.cliente.nombre_principal }}
+
+   <br>
+          <small>Telefono/Email</small>
+      </h2></div>
+      <style>.k{text-align: justify;}</style>
+      <div class="col-md-4" style="text-align: justify;">
+        <h3 >
+          <small><strong>Fecha Cotización:</strong> {{ i.fecha_creacion|date:"d/m/Y" }} <br>
+          </small>
+          <small><strong>Fecha Mudanza:</strong> {{ i.fecha_estimadamudanza|date:"d/m/Y" }}</small><br>
+          <small><strong>Cotizador:</strong> {{ i.cotizador }}</small>
+
+        </h3>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-3" style="text-align: justify;">
+        <h3>
+          <small><strong>N° Cotización:</strong> </small>{{ i.numero_cotizacion }}<br>
+          <small><strong>N° Contrato:</strong> </small>{{ i.numero_contrato }}<br>
+          <small><strong>Estado:</strong> </small>{{ i.estado }}
+        </h3>
+      </div>
+
+        {% endfor %}
+
+
+    </div><!-- row -->
+  </div><!-- panel body -->
+ </div><!-- panel default -->
+<div><!-- div sin class que cubre a los tab -->
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">General</a></li>
+    <li role="presentation"><a href="#detalle" aria-controls="detalle" role="tab" data-toggle="tab">Detalles</a></li>
+    <li role="presentation"><a href="#infoadicional" aria-controls="infoadicional" role="tab" data-toggle="tab">Info Adicional</a></li>
+  </ul>
+<br>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="general">
+      <div class="row">
+        <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h4>Dirección Origen
+            <br>
+            <br>
+
+
+
+
+    {% if det_direccion %}
+
+    {% for det_dir in det_direccion %}
+
+    {% if det_dir.tipo_direccion == 'Origen' %}
+
+    <small>{{ det_dir.direccion }}</small>
+
+    {% endif %}
+
+    {% endfor %}
+
+    {% endif %}
+
+</h4>
+
+
+        </div>
+      </div>
+      </div>
+      <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h4>Dirección destino
+            <br>
+            <br>
+
+    {% if det_direccion %}
+
+    {% for det_dir in det_direccion %}
+
+    {% if det_dir.tipo_direccion == 'Destino' %}
+
+
+    <small>{{ det_dir.direccion }}</small>
+
+    {% endif %}
+
+    {% endfor %}
+
+    {% endif %}
+</h4>
+
+
+
+
+        </div>
+      </div>
+      </div>
+      </div><!-- row -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="row">
+
+                  {% for i in buscar_cotizacion %}
+
+                <div class="col-md-4">
+                  <h4>Resumen de la mudanza</h4>
+                  <table class="table table-hover">
+                    <tr>
+                      <td><strong>Cantidad de ambientes: </strong></td>
+                      <td class="text-right">{{ i.cantidad_ambientes }}</td>
+                      <td>Und</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Cantidad de muebles: </strong></td>
+                      <td class="text-right">{{ i.cantidad_muebles }}</td>
+                      <td>Und</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Cantidad de contenedores: </strong></td>
+                      <td class="text-right">{{ i.cantidad_contenedores }}</td>
+                      <td>Und</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Volumen total: </strong></td>
+                      <td class="text-right">9.00</td>
+                      <td>m3</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Peso total: </strong></td>
+                      <td class="text-right">9</td>
+                      <td>Kg</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Tiempo estimado: </strong></td>
+                      <td class="text-right">9</td>
+                      <td>Horas</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Recorrido: </strong></td>
+                      <td class="text-right">{{ i.total_recorrido_km }}</td>
+                      <td>Km</td>
+                    </tr>
+                    <tr>
+                            {% if det_vehiculo %}
+
+                      {% for det_veh in det_vehiculo %}
+
+                      <td><strong>Cantidad vehiculos: </strong></td>
+                      <td class="text-right">{{ det_veh.cantidad }}</td>
+                      <td>Und</td>
+
+                      {% endfor %}
+
+                      {% endif %}
+                    </tr>
+                    <tr>
+                      <td><strong>Cantidad personas: </strong></td>
+                      <td class="text-right">9</td>
+                      <td>Und</td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4" style="text-align:righ;">
+                  <h4>Detalle del precio</h4>
+                  <table style="float:righ;" class="table table-hover">
+                    <tr>
+                      <td><strong>Materiales:</strong> </td>
+                      <td class="text-right">{{ i.monto_material }}</td>
+                      <td>$</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Traslado:</strong></td>
+                      <td class="text-right">10.00</td>
+                      <td>$</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Personal:</strong></td>
+                      <td class="text-right">330.00</td>
+                      <td>$</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Servicio:</strong></td>
+                      <td class="text-right" style="border-bottom: 1px solid #000;">40.00</td>
+                      <td>$</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Total:</strong></td>
+                      <td class="text-right">410.00</td>
+                      <td>$</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Descuento:</strong></td>
+                      <td class="text-right">0.00</td>
+                      <td>$</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Total:</strong></td>
+                      <td class="text-right">410.00</td>
+                      <td>$</td>
+                    </tr>
+                    <tr>
+                      <td><strong>IVA:</strong></td>
+                      <td class="text-right">49.20</td>
+                      <td>$</td>
+                    </tr>
+                    <tr>
+                      <td><strong>TOTAL:</strong></td>
+                      <td class="text-right">459.20</td>
+                      <td>$</td>
+                    </tr>
+                  </table>
+                </div>
+
+                 {% endfor %}
+
+              </div><!-- fin row -->
+            </div>
+          </div><!-- fin panel defaul-->
+        </div><!-- fin col 12-->
+      </div><!-- fin row -->
+      <div class="row">
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-body">
+            <p>
+              Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.
+            </p>
+</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-body">
+            <p>
+              Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.
+            </p>
+</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-body">
+            <p>
+              Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.
+            </p>
+</div>
+          </div>
+        </div>
+      </div><!-- fin row -->
+    </div> <!-- fin Tab panes general -->
+    <div role="tabpanel" class="tab-pane" id="detalle">Detalle en construccion</div>
+    <div role="tabpanel" class="tab-pane" id="infoadicional">informacion adicional en construccion</div>
+  </div>
+
+</div><!-- div sin class que cubre a los tab -->
+
+
+
+
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+ <div><!-- div sin class -->
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#administrativotab" aria-controls="administrativo" role="tab" data-toggle="tab">Administrativo</a></li>
+    <li role="presentation"><a href="#logisticatab" aria-controls="logistica" role="tab" data-toggle="tab">Logistica</a></li>
+    <li role="presentation"><a href="#mudanzatab" aria-controls="mudanzatab" role="tab" data-toggle="tab">Mudanza</a></li>
+    <li role="presentation"><a href="#economiatab" aria-controls="economiatab" role="tab" data-toggle="tab">Economia</a></li>
+    <li role="presentation"><a href="#dcotizaciontab" aria-controls="dcotizacion" role="tab" data-toggle="tab">Detalle de la cotizacion</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <br>
+    <div role="tabpanel" class="tab-pane fade in active" id="administrativotab">
+      <div class="row">
+      <div class="col-md-7">
+      <div class="panel panel-default">
+      <table class="table table-hover" id="adm">
+
+  {% for i in buscar_cotizacion %}
+
+  <tr>
+    <td class="text-right" width="250"><strong>Nro de contrato:</strong></td>
+    <td>
+
+      {{ i.numero_contrato }}
+
+    </td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Nro de cotizacion:</strong></td>
+    <td>
+
+      {{ i.numero_cotizacion }}
+
+    </td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Cliente:</strong></td>
+    <td>
+
+      {{ i.cliente.nombre_principal }}
+
+    </td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Cotizador:</strong></td>
+    <td>
+
+      {{ i.cotizador }}
+
+    </td>
+  </tr>
+
+  <tr>
+    <td class="text-right"><strong>Creado por:</strong></td>
+    <td>
+
+      {{ i.creadopor }}
+
+    </td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Fecha de creación:</strong></td>
+    <td>
+
+      {{ i.fecha_creacion }}
+
+    </td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Fecha de culminación:</strong></td>
+    <td>
+
+      {{ i.fecha_culminacion }}
+
+    </td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Fecha estimada de la mudanza:</strong></td>
+    <td>
+
+      {{ i.fecha_estimadamudanza }}
+
+      <a title="Editar cotizacion" data-toggle="tooltip" data-placement="right" href="{% url 'ucotizaciones:edit_cotizacion' i.id %}?next={% url 'ucotizaciones:buscar_cotizacion' i.id %}" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+    </td>
+  </tr>
+
+
+  {% endfor %}
+
+</table>
+</div><!--fin panel-->
+</div><!--fin col 7-->
+</div><!--fin row-->
+    </div><!--fin tabpanel administrativo-->
+    <div role="tabpanel" class="tab-pane fade" id="logisticatab">
+<div class="panel panel-default">
+<table class="table table-hover" id="logistica">
+
+  {% for i in buscar_cotizacion %}
+
+  <tr>
+    <td class="text-right" width="260"><strong>Inmueble:</strong></td>
+    <td width="145">{{ i.inmueble }}</td>
+    {% if det_direccion %}
+
+    {% for det_dir in det_direccion %}
+
+    {% if det_dir.tipo_direccion == 'Origen' %}
+
+    <td width="210" class="text-right"><strong>direccion origen:</strong></td>
+    <td>{{ det_dir.direccion }}</td>
+
+    {% endif %}
+
+    {% endfor %}
+
+    {% else %}
+
+    <td><strong>direccion</strong></td>
+    <td></td>
+
+    {% endif %}
+
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Tipo de inmueble:</strong></td>
+    <td>{{ i.inmueble.tipo_inmueble }}</td>
+    {% if det_direccion %}
+
+    {% for det_dir in det_direccion %}
+
+    {% if det_dir.tipo_direccion == 'Destino' %}
+
+    <td class="text-right"><strong>direccion destino:</strong></td>
+    <td>{{ det_dir.direccion }}</td>
+
+    {% endif %}
+
+    {% endfor %}
+
+    {% else %}
+
+    <td><strong>direccion</strong></td>
+    <td></td>
+
+    {% endif %}
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Pisos:</strong></td>
+    <td>{{ i.inmueble.pisos }}</td>
+    <td class="text-right"><strong>Peso de contenedores:</strong></td>
+    <td>{{ i.peso_contenedores}}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Pisos por escalera:</strong></td>
+    <td>{{ i.inmueble.pisos_escalera }}</td>
+    <td class="text-right"><strong>Volumen de contenedores:</strong></td>
+    <td>{{ i.volumen_contenedores }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Rampa:</strong></td>
+    <td>
+      {{ i.inmueble.rampa|yesno:"Si,No" }}
+    </td>
+    <td class="text-right"><strong>Peso de contenidos:</strong></td>
+    <td>{{ i.peso_contenidos }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Ascensor:</strong></td>
+    <td>
+      {{ i.inmueble.ascensor|yesno:"Si,No" }}
+    </td>
+    <td class="text-right"><strong>Volumen de contenidos:</strong></td>
+    <td>{{ i.volumen_contenidos }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Pisos por ascensor:</strong></td>
+    <td>{{ i.inmueble.pisos_ascensor }}</td>
+    <td class="text-right"><strong>Peso de materiales:</strong></td>
+    <td>{{ i.peso_materiales }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Ascensor de servicio:</strong></td>
+    <td>
+      {% if i.inmueble.ascensor_servicio %}
+
+      Si
+
+      {% else %}
+
+      No
+      {% endif %}
+    </td>
+    <td class="text-right"><strong>Total m3:</strong></td>
+    <td>{{total_m}}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Pisos por ascensor de servicio</strong></td>
+    <td>{{ i.inmueble.pisos_ascensor_servicio }}</td>
+        {% if det_trabajador %}
+
+    {% for det_trab in det_trabajador %}
+
+    {% if det_trab.cargo.cargo == 'Ayudante' %}
+
+    <td class="text-right"><strong>Cantidad de ayudante:</strong></td>
+    <td>{{ det_trab.cantidad }}</td>
+
+    {% endif %}
+
+    {% endfor %}
+
+    {% else %}
+
+    <td><strong>Cantidad de ayudante</strong></td>
+    <td></td>
+
+    {% endif %}
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Complejidad:</strong></td>
+    <td>{{ i.inmueble.complejidad }}</td>
+    {% if det_trabajador %}
+
+    {% for det_trab in det_trabajador %}
+
+    {% if det_trab.cargo.cargo == 'Ayudante' %}<!--ojo aqui es chofer-->
+
+    <td class="text-right"><strong>Cantidad de chofer:</strong></td>
+    <td>{{ det_trab.cantidad }}</td>
+
+    {% endif %}
+
+    {% endfor %}
+
+    {% else %}
+
+    <td><strong>Cantidad de chofer</strong></td>
+    <td></td>
+
+    {% endif %}
+
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Distancia de vehiculo al inmueble:</strong></td>
+    <td>{{ i.inmueble.distancia_vehiculo }}</td>
+      {% if det_vehiculo %}
+
+  {% for det_veh in det_vehiculo %}
+
+    <td class="text-right"><strong>Vehiculo:</strong></td>
+    <td>{{ det_veh.vehiculo.modelo }}</td>
+ </tr>
+  <tr>
+    <td class="text-right"><strong>Tiempo de carga:</strong></td>
+    <td>{{ i.tiempo_carga }}</td>
+    <td class="text-right"><strong>Capacidad de volumen:</strong></td>
+    <td>{{ det_veh.vehiculo.capacidad_volumen }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Peso de muebles:</strong></td>
+    <td>{{ i.peso_muebles}}</td>
+    <td class="text-right"><strong>Capacidad de peso:</strong></td>
+    <td>{{ det_veh.vehiculo.capacidad_peso }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Volumen de muebles sugeridos:</strong></td>
+    <td>{{ i.volumen_muebles_sugerido }}</td>
+    <td class="text-right"><strong>Cantidad de vehiculo:</strong></td>
+    <td>{{ det_veh.cantidad }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Volumen de muebles cotizados:</strong></td>
+    <td>{{ i.volumen_muebles_cotizado }}</td>
+    <td class="text-right"><strong>Total recorrido por tiempo:</strong> </td>
+    <td>{{ i.total_recorrido_tiempo }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Total recorrido por km:</strong> </td>
+    <td>{{ i.total_recorrido_km }}</td>
+    <td></td>
+    <td><a title="Editar cotizacion" data-toggle="tooltip" data-placement="right" href="{% url 'ucotizaciones:edit_cotizacion' i.id %}?next={% url 'ucotizaciones:buscar_cotizacion' i.id %}" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a></td>
+  </tr>
+
+  {% endfor %}
+
+  {% endif %}
+
+  {% endfor %}
+
+</table>
+</div><!--fin panel default-->
+    </div><!--fin tappanel-->
+    <div role="tabpanel" class="tab-pane fade" id="mudanzatab">
+            <div class="row">
+      <div class="col-md-7">
+      <div class="panel panel-default">
+      <table class="table table-hover" id="mudanza">
+
+  {% for i in buscar_cotizacion %}
+
+  <tr>
+    <td class="text-right" width="220"><strong>Estado:</strong></td>
+    <td>{{ i.estado }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Cantidad de ambientes:</strong></td>
+    <td>{{ i.cantidad_ambientes }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>cantidad de contenedores:</strong></td>
+    <td>{{ i.cantidad_contenedores }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Cantidad de muebles:</strong></td>
+    <td>{{ i.cantidad_muebles }}</td>
+  </tr>
+
+  {% endfor %}
+
+</table>
+</div><!--fin panel default-->
+</div><!--fin col 7-->
+</div><!--fin row-->
+    </div><!--fin tappanel-->
+    <div role="tabpanel" class="tab-pane fade" id="economiatab">
+                  <div class="row">
+      <div class="col-md-7">
+      <div class="panel panel-default">
+      <table class="table table-hover" id="economia">
+
+  {% for i in buscar_cotizacion %}
+
+  <tr>
+    <td class="text-right" width="220"><strong>Monto por muebles:</strong></td>
+    <td>{{ i.monto_muebles }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Monto por material:</strong></td>
+    <td>{{ i.monto_material }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Monto de descuento:</strong></td>
+    <td>{{ i.monto_descuento }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Total sin impuesto:</strong></td>
+    <td>{{ i.total_sin_impuesto }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Monto del impuesto:</strong></td>
+    <td>{{ i.monto_impuesto }}</td>
+  </tr>
+  <tr>
+    <td class="text-right"><strong>Total con impuesto:</strong></td>
+    <td>{{ i.total_con_impuesto }}</td>
+  </tr>
+
+  {% endfor %}
+
+</table>
+</div><!--fin panel default-->
+</div><!--fin col 7-->
+</div><!--fin row-->
+    </div><!--fin tappanel-->
+    <div role="tabpanel" class="tab-pane fade" id="dcotizaciontab">
+
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        {% for i in det_ambiente %}
+  <div class="panel panel-default">
+
+
+
+    <div class="panel-heading" role="tab" id="heading{{i.id}}">
+      <h4 class="panel-title" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{i.id}}" aria-expanded="true" aria-controls="collapse{{i.id}}">
+
+          Collapsible Group Item #1
+
+      </h4>
+    </div>
+    <div id="collapse{{i.id}}" class="panel-collapse collapse " role="tabpanel" aria-labelledby="heading{{i.id}}">
+      <div class="panel-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      </div>
+    </div>
+
+
+
+  </div>
+
+  {% endfor %}
+
+</div>
+
+
+
+    </div>
+  </div>
+
+</div><!--fin del primer div sin class-->
+
+
+
+ {% endif %}
+
+
+ {% if buscar_cotizacion %}
 
 <table class="table table-hover" id="adm">
 
@@ -353,6 +1091,8 @@
 
 </table>
 
+
+
 <table class="table table-hover" id="detalle">
 
   <tr class="active">
@@ -531,4 +1271,8 @@
 
 {% endif %}
 
-{% endblock %}
+
+
+
+
+{% endblock content1 %}
