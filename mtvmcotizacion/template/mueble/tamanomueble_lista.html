@@ -20,9 +20,11 @@ Eliminar tamaño del mueble
 
 {% block titulo_ficha %}
 
-<h2>Tamaños de muebles</h2>
+<div class="btn-procesos">
 <a href="/mueble/" class="btn btn-default">Lista de muebles</a>
 <a href="/mueble/tamano_mueble/0/" class="btn btn-default">Ver todos</a>
+</div>
+<h2>Tamaños de muebles</h2>
 <a href="/mueble/tamano_mueble/nuevo" class="btn btn-default">Nuevo</a>
 
 {% endblock titulo_ficha %}
@@ -67,19 +69,7 @@ Eliminar tamaño del mueble
         <td>{{ i.ancho }}</td>
         <td>{{ i.alto }}</td>
         <td>{{ i.peso }}</td>
-        <td>
-
-          {% if i.predefinido %}
-
-          Si
-
-          {% else %}
-
-          No
-
-          {% endif %}
-
-        </td>
+        <td>{{i.predefinido|yesno:"Si,No" }}</td>
         <td width="3">
           <a title="Editar" data-toggle="tooltip" data-placement="right" href="../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
         </td>
@@ -92,6 +82,7 @@ Eliminar tamaño del mueble
 
     </table>
   </div>
+<a href="/mueble/tamano_mueble/nuevo" class="btn btn-default">Nuevo</a>
 
   {% endif %}
 

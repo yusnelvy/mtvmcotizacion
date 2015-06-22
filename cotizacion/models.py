@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django.db import models
 from direccion.models import Inmueble
 from cliente.models import Cliente
@@ -5,8 +6,9 @@ from trabajador.models import Cargo_trabajador
 from ambiente.models import Ambiente
 from mueble.models import Mueble
 from servicio.models import Servicio, Material
-from contenido.models import Contenedor, Contenido
+from contenido.models import Contenido
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # Create your models here.
@@ -32,13 +34,16 @@ class Tiempo_Carga(models.Model):
         super(Tiempo_Carga, self).__init__(*args, **kwargs)
 
     tiempo_carga = models.TimeField()
-    volumen_min = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00)
-    volumen_max = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00)
-    nro_objeto_min = models.PositiveIntegerField()
-    nro_objeto_max = models.PositiveIntegerField()
+    volumen_min = models.DecimalField(max_digits=13, decimal_places=2, blank=True,
+                                      default=0.00, validators=[MinValueValidator(0.01)])
+    volumen_max = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00,
+                                      validators=[MaxValueValidator(100), MinValueValidator(1)])
+    nro_objeto_min = models.PositiveIntegerField(validators=[MaxValueValidator(100),
+                                                             MinValueValidator(1)])
+    nro_objeto_max = models.PositiveIntegerField(validators=[MaxValueValidator(100), MinValueValidator(1)])
     peso_min = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00)
     peso_max = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00)
-    cantidad_trabajador = models.PositiveIntegerField()
+    cantidad_trabajador = models.PositiveIntegerField(validators=[MaxValueValidator(20), MinValueValidator(1)])
 
     def __str__(self):
         return str(self.tiempo_carga)
@@ -244,13 +249,15 @@ class Cotizacion_Mueble(models.Model):
     largo = models.DecimalField(max_digits=5, decimal_places=2)
     volumen = models.DecimalField(max_digits=7, decimal_places=2)
     capacidad = models.DecimalField(max_digits=5, decimal_places=2)
-    ocupacion = models.DecimalField(max_digits=2, decimal_places=2)
+    ocupacion = models.DecimalField(max_digits=5, decimal_places=2)
     forma = models.CharField(max_length=100)
     trasladable = models.BooleanField(default=None)
     apilable = models.BooleanField(default=None)
     capacidad_carga = models.BooleanField(default=None)
     capacidad_interna = models.BooleanField(default=None)
     observaciones = models.TextField(blank=True)
+    densidad = models.CharField(max_length=100)
+    peso = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
         return u' %s - %s' % (self.mueble, self.cotizacion_ambiente)
@@ -261,6 +268,27 @@ class Cotizacion_Mueble(models.Model):
         ordering = ['cotizacion_ambiente', 'mueble']
 
 
+class Cotizacion_Contenido(models.Model):
+    """docstring for Cotizacion_Contenido"""
+    def __init__(self, *args, **kwargs):
+        super(Cotizacion_Contenido, self).__init__(*args, **kwargs)
+
+    cotizacion_mueble = models.ForeignKey(Cotizacion_Mueble)
+    contenido = models.ForeignKey(Contenido)
+    densidad = models.DecimalField(max_digits=5, decimal_places=2)
+    volumen_contenido = models.DecimalField(max_digits=5, decimal_places=2)
+    peso_contenido = models.DecimalField(max_digits=5, decimal_places=2)
+    porcentaje = models.DecimalField(max_digits=2, decimal_places=2)
+
+    def __str__(self):
+        return u' %s - %s' % (self.cotizacion_contenedor, self.contenido)
+
+    class Meta:
+        verbose_name = "contenido en el contenedor"
+        verbose_name_plural = "contenidos en el contenedor"
+        ordering = ['cotizacion_mueble', 'contenido']
+
+
 class Cotizacion_Servicio(models.Model):
     """docstring for Cotizacion_Servicio"""
     def __init__(self, *args, **kwargs):
@@ -268,6 +296,8 @@ class Cotizacion_Servicio(models.Model):
 
     cotizacion_mueble = models.ForeignKey(Cotizacion_Mueble)
     servicio = models.ForeignKey(Servicio)
+    cotizacion_contenido = models.ForeignKey(Cotizacion, blank=True)
+    tipo = models.CharField(max_length=20, blank=True)
 
     def __str__(self):
         return u' %s - %s' % (self.cotizacion_mueble, self.servicio)
@@ -283,7 +313,7 @@ class Cotizacion_Material(models.Model):
     def __init__(self, *args, **kwargs):
         super(Cotizacion_Material, self).__init__(*args, **kwargs)
 
-    cotizacion_mueble = models.ForeignKey(Cotizacion_Mueble)
+    cotizacion_servicio = models.ForeignKey(Cotizacion_Servicio)
     material = models.ForeignKey(Material)
     cantidad = models.DecimalField(max_digits=5, decimal_places=2)
     precio_unitario = models.DecimalField(max_digits=7, decimal_places=2)
@@ -298,47 +328,5 @@ class Cotizacion_Material(models.Model):
     class Meta:
         verbose_name = "Material del mueble"
         verbose_name_plural = "Materiales del mueble"
-        ordering = ['cotizacion_mueble', 'material']
-
-
-class Cotizacion_Contenedor(models.Model):
-    """docstring for Cotizacion_Contenedor"""
-    def __init__(self, *args, **kwargs):
-        super(Cotizacion_Contenedor, self).__init__(*args, **kwargs)
-
-    cotizacion_mueble = models.ForeignKey(Cotizacion_Mueble)
-    contenedor = models.ForeignKey(Contenedor)
-    capacidad_volumen_contenedor = models.DecimalField(max_digits=5, decimal_places=2)
-    capacidad_peso_contenedor = models.DecimalField(max_digits=5, decimal_places=2)
-    volumen_contenedor = models.DecimalField(max_digits=5, decimal_places=2)
-    peso_contenedor = models.DecimalField(max_digits=5, decimal_places=2)
-    retornable = models.BooleanField(default=None)
-
-    def __str__(self):
-        return u' %s - %s' % (self.cotizacion_mueble, self.contenedor)
-
-    class Meta:
-        verbose_name = "contenedor de la cotizacion"
-        verbose_name_plural = "contenedores de la cotizacion"
-        ordering = ['cotizacion_mueble', 'contenedor']
-
-
-class Cotizacion_Contenido(models.Model):
-    """docstring for Cotizacion_Contenido"""
-    def __init__(self, *args, **kwargs):
-        super(Cotizacion_Contenido, self).__init__(*args, **kwargs)
-
-    cotizacion_contenedor = models.ForeignKey(Cotizacion_Contenedor)
-    contenido = models.ForeignKey(Contenido)
-    densidad = models.DecimalField(max_digits=5, decimal_places=2)
-    volumen_contenido = models.DecimalField(max_digits=5, decimal_places=2)
-    peso_contenido = models.DecimalField(max_digits=5, decimal_places=2)
-    porcentaje = models.DecimalField(max_digits=2, decimal_places=2)
-
-    def __str__(self):
-        return u' %s - %s' % (self.cotizacion_contenedor, self.contenido)
-
-    class Meta:
-        verbose_name = "contenido en el contenedor"
-        verbose_name_plural = "contenidos en el contenedor"
-        ordering = ['cotizacion_contenedor', 'contenido']
+        ordering = ['cotizacion_servicio', 'material']
+        unique_together = (("cotizacion_servicio", "material"),)

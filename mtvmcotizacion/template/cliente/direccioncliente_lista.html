@@ -43,7 +43,7 @@
   <div class="panel-heading">
     <h4>
       {{ i.cliente }}
-      <a href="../../../direccion/nuevo" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+      <a href="../../../direccion/nuevo/{{id_cli}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
       <span style="float:right;padding:20px;"></span>
       <a href="../../../direccion/{{i.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
     </h4>
@@ -76,7 +76,7 @@
 {% else %}
 
 <h4>
-  <a href="../../../direccion/nuevo" style="" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+  <a href="../../../direccion/nuevo/0/" style="" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
 </h4>
 
 {% endif %}

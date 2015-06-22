@@ -1,52 +1,60 @@
+{% extends 'inicio/base3.html' %}
+
+{% block titulo %}
+
+<title>Login</title>
+
+{% endblock titulo %}
+
 {% block content %}
-<div data-role="page" id="login">
-    <div data-role="main" class="ui-content">
-      <!--  nueva lineas para mostrar algun msj de error -->
-      {% if form.errors %}
-        <div class='alert-box alert'>Por favor, vuelva a intentarlo.</div>
-      {% endif %}
 
-        <form method="post" action="demoform.asp">
-          {% csrf_token %}
-        <div>
-          <h3>Login information</h3>
-          <label for="usrnm" class="ui-hidden-accessible">Username:</label>
-          {# <input type="text" name="user" id="usrnm" placeholder="Username"> #}
-          {{ form.username }}
-          <label for="pswd" class="ui-hidden-accessible">Password:</label>
-          {# <input type="password" name="passw" id="pswd" placeholder="Password"> #}
-          {{ form.password }}
-          <label for="log">Keep me logged in</label>
-          <input type="checkbox" name="login" id="log" value="1" data-mini="true">
-          <input type="submit" data-inline="true" value="Log in">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 animated fadeIn">
+            <h2>Login</h2>
+
+            {% if form.errors %}
+
+            <p class="alert-danger">Your username and password didn't match. Please try again.</p>
+
+            {% endif %}
+
+            <form method="post" action="{% url 'uinicio:django.contrib.auth.views.login' %}">
+
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <p>
+
+                        {{ form.username.label_tag }}
+
+                    </p>
+                    <p>
+
+                        {{ form.username }}
+
+                    </p>
+                    <p>
+
+                        {{ form.password.label_tag }}
+
+                    </p>
+                    <p>
+
+                        {{ form.password }}
+
+                    </p>
+                </div>
+                <input type="submit" class="btn btn-default" value="registrar"/>
+                <a href="javascript:history.back();" class="btn btn-default">Cancelar</a>
+            </form>
+            <br>
+            <p><a href="#">Password olvidado?</a></p>
+            <p><a href="/signup">Crear una cuenta</a></p>
         </div>
-      </form>
+        <div class="col-md-4"></div>
     </div>
 </div>
-<div data-role="page" id="dashboard">
-    <div data-role="header">
-        <h2>Dashboard</h2>
-    <div data-role="navbar">
-    <ul>
-      <li><a href="#anylink">Home</a></li>
-      <li><a href="#anylink">Nueva Cotizacion</a></li>
-      <li><a href="#anylink">Buscar</a></li>
-      <li><a href="#anylink">LogOut</a></li>
-    </ul>
-  </div>
-    </div>
 
-    <div data-role="main" class="ui-content">
-        <h2>lista de cotizaciones</h2>
-    <ul data-role="listview" data-inset="true">
-      <li><a href="#">cotizacion 1</a></li>
-      <li><a href="#">cotizacion 2</a></li>
-      <li><a href="#">cotizacion 3</a></li>
-    </ul>
-    </div>
-
-    <div data-role="footer">
-        <h4>Insert Footer Text Here</h4>
-    </div>
-</div>
-{% endblock%}
+{% endblock %}

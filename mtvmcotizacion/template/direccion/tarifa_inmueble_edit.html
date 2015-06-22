@@ -25,11 +25,12 @@
 {% block contenido_adicional %}
 
 <h4>Inmuebles asignados a este nivel de complejidad</h4>
-<table class="table table-hover" style="text-align: center;">
-<tr class="active">
+<div class="panel panel-default">
+<table class="table" style="text-align: center;">
+<tr class="">
     <th>Inmueble</th>
     <th>Tipo de inmueble</th>
-    <th width="3">Editar</th>
+    <th></th>
 </tr>
 
 {% for det in tarifa_valor.inmueble_set.all %}
@@ -45,6 +46,7 @@
 {% endfor %}
 
 </table>
+</div>
 
 {% endblock contenido_adicional %}
 

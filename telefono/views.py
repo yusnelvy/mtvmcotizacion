@@ -85,7 +85,7 @@ def add_tipotelefono(request):
                               context_instance=RequestContext(request))
 
 
-def add_telefono(request):
+def add_telefono(request, id_cli):
     """docstring"""
     redirect_to = request.REQUEST.get('next', '')
 
@@ -100,7 +100,7 @@ def add_telefono(request):
             #return HttpResponseRedirect(reverse('utelefonos:lista_telefono'))return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
             return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
     else:
-        form_telefono = TelefonoForm()
+        form_telefono = TelefonoForm(initial={'cliente': id_cli})
     return render_to_response('telefono/telefono_add.html',
                               {'form_telefono': form_telefono, 'create': True},
                               context_instance=RequestContext(request))

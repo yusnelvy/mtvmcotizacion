@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, get_object_or_404
 from cliente.models import Cliente, Email, Sexo, Estado_civil
 from telefono.models import Telefono
 from direccion.models import Direccion
@@ -123,7 +123,7 @@ def lista_email(request, id_cli):
     cliente = Cliente.objects.get(id=id_cli)
 
     lista_email = Email.objects.filter(cliente_id=cliente)
-    context = {'lista_email': lista_email}
+    context = {'lista_email': lista_email, 'id_cli': id_cli}
     return render(request, 'cliente/emailcliente_lista.html', context)
 
 
@@ -154,7 +154,7 @@ def lista_telefono_cliente(request, id_cli):
 
     lista_telefono_cliente = Telefono.objects.select_related().filter(cliente=cliente)
 
-    context = {'lista_telefono_cliente': lista_telefono_cliente}
+    context = {'lista_telefono_cliente': lista_telefono_cliente, 'id_cli': id_cli}
     return render(request, 'cliente/telefonocliente_lista.html', context)
 
 
@@ -185,7 +185,7 @@ def lista_direccioncliente(request, id_cli):
 
     direccioncliente_lista = Direccion.objects.filter(cliente=cliente)
 
-    context = {'direccioncliente_lista': direccioncliente_lista}
+    context = {'direccioncliente_lista': direccioncliente_lista, 'id_cli': id_cli}
     return render(request, 'cliente/direccioncliente_lista.html', context)
 
 
@@ -262,7 +262,7 @@ def add_estadocivil(request):
                               context_instance=RequestContext(request))
 
 
-def add_email(request):
+def add_email(request, id_cli):
 
     if request.method == 'POST':
         try:
@@ -276,7 +276,7 @@ def add_email(request):
             email_form = EmailForm()
 
     else:
-        email_form = EmailForm()
+        email_form = EmailForm(initial={'cliente': id_cli})
         mensaje = ''
 
     return render_to_response('cliente/Emailcliente_add.html',
@@ -341,6 +341,52 @@ def edit_email(request, id_cli, pk):
                               context_instance=RequestContext(request))
 
 
+def edit_sexo(request, pk):
+    """docstring"""
+    sexo = Sexo.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        # formulario enviado
+        form_edit_sexo = SexoForm(request.POST, instance=sexo)
+
+        if form_edit_sexo.is_valid():
+            # formulario validado correctamente
+            form_edit_sexo.save()
+
+            return HttpResponseRedirect(reverse('uclientes:lista_sexo'))
+
+    else:
+        # formulario inicial
+        form_edit_sexo = SexoForm(instance=sexo)
+
+    return render_to_response('cliente/sexo_edit.html',
+                              {'form_edit_sexo': form_edit_sexo, 'create': False},
+                              context_instance=RequestContext(request))
+
+
+def edit_estado_civil(request, pk):
+    """docstring"""
+    estado_civil = Estado_civil.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        # formulario enviado
+        form_edit_estadocivil = EstadoCivilForm(request.POST, instance=estado_civil)
+
+        if form_edit_estadocivil.is_valid():
+            # formulario validado correctamente
+            form_edit_estadocivil.save()
+
+            return HttpResponseRedirect(reverse('uclientes:lista_estadocivil'))
+
+    else:
+        # formulario inicial
+        form_edit_estadocivil = EstadoCivilForm(instance=estado_civil)
+
+    return render_to_response('cliente/estadocivil_edit.html',
+                              {'form_edit_estadocivil': form_edit_estadocivil, 'create': False},
+                              context_instance=RequestContext(request))
+
+
 def ficha_cliente(request, pk):
 
     lista_cliente = Cliente.objects.filter(pk=pk)
@@ -352,6 +398,45 @@ def ficha_cliente(request, pk):
         'lista_cliente': lista_cliente,
         'lista_email': lista_email,
         'lista_telefono_cliente': lista_telefono_cliente,
-        'direccioncliente_lista': direccioncliente_lista
+        'direccioncliente_lista': direccioncliente_lista,
+        'id_cli': pk
         }
     return render(request, 'cliente/cliente_ficha.html', context)
+
+
+# eliminar un registro
+def delete_email2(request, id_cli, pk, template_name='inicio/server_confirm_delete.html'):
+    email = get_object_or_404(Email, pk=pk)
+    if request.method == 'POST':
+        email.delete()
+        return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli,)))
+    return render(request, template_name, {'object': email})
+
+
+def delete_telefono(request, id_cli):
+    cod = request.GET.get('codigo', '')
+
+    if cod:
+        p = Telefono.objects.get(id=cod)
+        p.delete()
+        return render_to_response('cliente/cliente_ficha.html', {"cod": cod, "exito": True})
+    return render_to_response('cliente/cliente_ficha.html')
+
+
+def delete_direccion(request, id_cli):
+    cod = request.GET.get('codigo', '')
+
+    if cod:
+        p = Direccion.objects.get(id=cod)
+        p.delete()
+        return render_to_response('cliente/cliente_ficha.html', {"cod": cod, "exito": True})
+    return render_to_response('cliente/cliente_ficha.html')
+
+
+def delete_email(request, id_cli):
+    cod = request.GET.get('codigo', '')
+    if cod:
+        p = Email.objects.get(id=cod)
+        p.delete()
+        return render_to_response('cliente/cliente_ficha.html', {"cod": cod, "exito": True})
+    return render_to_response('cliente/cliente_ficha.html')

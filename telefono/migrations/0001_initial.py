@@ -8,37 +8,41 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cliente', '0002_auto_20150513_1527'),
+        ('cliente', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Telefono',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('numero', models.CharField(max_length=50)),
-                ('cliente', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='cliente.Cliente')),
+                ('cliente', models.ForeignKey(to='cliente.Cliente')),
             ],
             options={
+                'ordering': ['numero'],
                 'verbose_name_plural': 'Telefonos',
+                'verbose_name': 'Telefono',
             },
             bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Tipo_telefono',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
-                ('tipo_telefono', models.CharField(max_length=50)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('tipo_telefono', models.CharField(max_length=50, unique=True)),
             ],
             options={
-                'verbose_name_plural': 'Tipos de telefonos',
+                'ordering': ['tipo_telefono'],
+                'verbose_name_plural': 'Tipos de telefono',
+                'verbose_name': 'Tipo de telefono',
             },
             bases=(models.Model,),
         ),
         migrations.AddField(
             model_name='telefono',
             name='tipo_telefono',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='telefono.Tipo_telefono'),
+            field=models.ForeignKey(to='telefono.Tipo_telefono', default=1, on_delete=django.db.models.deletion.PROTECT),
             preserve_default=True,
         ),
     ]

@@ -4,8 +4,7 @@ from cotizacion.models import Estado_Cotizacion, \
     Vehiculo_Cotizacion, Cotizacion_direccion, \
     Cotizacion_trabajador, Cotizacion_Ambiente, \
     Cotizacion_Mueble, Cotizacion_Servicio, \
-    Cotizacion_Material, Cotizacion_Contenedor, \
-    Cotizacion_Contenido
+    Cotizacion_Material, Cotizacion_Contenido
 
 
 class EstadoCotizacionForm(ModelForm):
@@ -100,12 +99,6 @@ class CotizacionServicioForm(ModelForm):
 class CotizacionMaterialForm(ModelForm):
     class Meta:
         model = Cotizacion_Material
-        fields = '__all__'
-
-
-class CotizacionContenedorForm(ModelForm):
-    class Meta:
-        model = Cotizacion_Contenedor
         fields = '__all__'
 
 
