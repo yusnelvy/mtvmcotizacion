@@ -23,7 +23,7 @@ Eliminar Servicio material
 <h2>Relacion servicio - material</h2>
 <a href="/servicio/" class="btn btn-default">Lista de servicios</a>
 <a href="/servicio/servicio_material/0/0/" class="btn btn-default">Ver todos</a>
-<a href="/servicio/servicio_material/nuevo" class="btn btn-default">Nuevo</a>
+<a href="/servicio/servicio_material/nuevo/0/" class="btn btn-default">Nuevo</a>
 
  {% endblock titulo_ficha %}
 
@@ -52,6 +52,7 @@ Eliminar Servicio material
 
   {% for i in buscar_serviciomaterial %}
 
+
   <tr id="tr{{i.id}}">
     <td>{{ i.servicio }}</td>
     <td width="">{{ i.material }}</td>
@@ -62,7 +63,9 @@ Eliminar Servicio material
     </td>
     <td width="3">
       <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="servicio: {{i.servicio}} material: {{ i.material }}"></a>
+      <a href="../../nuevo/{{i.servicio.id}}/" class="glyphicon glyphicon-plus" style="float:right;"></a>
     </td>
+
   </tr>
 
   {% endfor %}

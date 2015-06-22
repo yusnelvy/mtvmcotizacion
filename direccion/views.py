@@ -408,7 +408,7 @@ def add_tipo_direccion(request):
                               context_instance=RequestContext(request))
 
 
-def add_direccion(request):
+def add_direccion(request, id_cli):
     """docstring"""
 
     if request.method == 'POST':
@@ -418,7 +418,7 @@ def add_direccion(request):
             id_cli = Direccion.objects.get(id=id_reg.id)
             return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
     else:
-        form_direccion = DireccionForm()
+        form_direccion = DireccionForm(initial={'cliente': id_cli})
 
     return render_to_response('direccion/direccion_add.html',
                               {'form_direccion': form_direccion, 'create': True},

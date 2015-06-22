@@ -100,7 +100,7 @@ def add_ambiente_tipoinmueble(request, id_ti):
             form_ambtipoinmueble.save()
             return HttpResponseRedirect(reverse('uambientes:lista_ambiente_tipo_inmueble'))
     else:
-        form_ambtipoinmueble = AmbienteTipoInmuebleForm({'tipo_inmueble': id_ti})
+        form_ambtipoinmueble = AmbienteTipoInmuebleForm(initial={'tipo_inmueble': id_ti})
     return render_to_response('ambiente/ambientetipoinmueble_add.html',
                               {'form_ambtipoinmueble': form_ambtipoinmueble, 'create': True},
                               context_instance=RequestContext(request))

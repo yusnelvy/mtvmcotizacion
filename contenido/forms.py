@@ -1,20 +1,6 @@
 from django.forms import ModelForm
-from contenido.models import Contenedor, \
-    Contenido, Contenido_Tipico
-
-
-class ContenedorForm(ModelForm):
-    class Meta:
-        model = Contenedor
-        fields = '__all__'
-        labels = {
-            'contenedor': ('Tipo de contenedor'),
-            'capacidad_volumen': ('Capacidad de volúmen en m3'),
-            'capacidad_peso': ('Capacidad de peso en Kgs'),
-            'volumen_contenedor': ('Volúmen propio en m3'),
-            'peso_contenedor': ('Peso propio en Kgs'),
-            'retornable': ('Retornable')
-        }
+from contenido.models import Contenido, \
+    Contenido_Tipico, Contenido_Servicio
 
 
 class ContenidoForm(ModelForm):
@@ -34,4 +20,10 @@ class ContenidoForm(ModelForm):
 class ContenidoTipicoForm(ModelForm):
     class Meta:
         model = Contenido_Tipico
+        fields = '__all__'
+
+
+class ContenidoServicioForm(ModelForm):
+    class Meta:
+        model = Contenido_Servicio
         fields = '__all__'

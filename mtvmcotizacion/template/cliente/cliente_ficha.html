@@ -113,7 +113,7 @@ Eliminar
                 <td class=""><strong>{{ i.tipo_telefono }}: </strong></td>
                 <td>{{ i.numero }}</td>
                 <td>
-                  <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../../telefono/nuevo/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+                  <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../../telefono/nuevo/{{id_cli}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
                 </td>
                 <td>
                   <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../../telefono/editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a>
@@ -130,7 +130,7 @@ Eliminar
               <tr>
                 <td class=""><strong>Telefono: </strong></td>
                 <td>
-                  <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../../telefono/nuevo" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+                  <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../../telefono/nuevo/{{id_cli}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
                 </td>
                 <td></td>
                 <td></td>
@@ -142,8 +142,9 @@ Eliminar
               {% for i in lista_email %}
 
               <tr id="tr{{i.id}}">
-                <td class=""><strong>E-mail: </strong>{{ i.email }}</td>
-                <td><a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../email/nuevo" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a></td>
+                <td class="text-right"><strong>Email: </strong></td>
+                <td>{{ i.email }}</td>
+                <td><a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../email/nuevo/{{id_cli}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a></td>
                 <td>
                   <a title="Editar" data-toggle="tooltip" data-placement="right" href="email/editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a>
                 </td>
@@ -157,8 +158,9 @@ Eliminar
               {% else %}
 
               <tr>
-                <td class=""><strong>Email: </strong></td>
-                <td><a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../email/nuevo" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a></td>
+                <td class="text-right"><strong>Email: </strong></td>
+                <td></td>
+                <td><a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../email/nuevo/{{id_cli}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a></td>
                 <td></td>
                 <td></td>
               </tr>
@@ -167,7 +169,34 @@ Eliminar
 
               {% if direccioncliente_lista %}
 
-              {% for i in direccioncliente_lista %}
+          {% for i in direccioncliente_lista %}
+
+          <tr id="tr{{i.id}}">
+            <td class="text-right"><strong>{{ i.tipo_direccion }}: </strong></td>
+            <td>
+              <address>
+                <p>{{ i.zona.ciudad.provincia.pais }}.
+                {{ i.zona.ciudad.provincia }}, {{ i.zona.ciudad }}
+              </p>
+                  <p>
+                 Zona {{ i.zona }}
+                calle {{ i.calle }} numero {{ i.numero }}
+                </p>
+                 <p>
+                Punto de referencia {{ i.punto_referencia }}
+              </p>
+              </address>
+            </td>
+            <td width="3">
+              <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="../../../direccion/nuevo/{{id_cli}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+            </td>
+            <td width="3">
+              <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../../direccion/{{i.id}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+            </td>
+            <td width="3">
+             <a href=# onclick="eliminar('direccion/delete/?codigo={{i.id}}','{{i.id}}','{{ i.zona.ciudad.provincia.pais }}. {{ i.zona.ciudad.provincia }}, {{ i.zona.ciudad }} Zona {{ i.zona }} calle {{ i.calle }} numero {{ i.numero }} Punto de referencia {{ i.punto_referencia }}'); return false" class="glyphicon glyphicon-remove"></a>
+            </td>
+          </tr>
 
               <tr id="tr{{i.id}}">
                 <td class=""><strong>{{ i.tipo_direccion }}: </strong>
@@ -191,8 +220,15 @@ Eliminar
 
               {% endfor %}
 
-              {% else %}
-
+          <tr>
+            <td><strong>Direccion</strong></td>
+            <td></td>
+            <td>
+              <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="../../../direccion/nuevo/{{id_cli}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
               <tr>
                 <td><strong>Direccion</strong></td>
                 <td></td>

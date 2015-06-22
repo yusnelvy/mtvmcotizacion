@@ -11,7 +11,7 @@ from django.template import RequestContext
 import simplejson as json
 import django.db
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
 
 
@@ -106,7 +106,18 @@ def lista_mueble(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_mueble = Mueble.objects.all()
-    context = {'lista_mueble': lista_mueble}
+    paginator = Paginator(lista_mueble, 10)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        muebles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        muebles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        muebles = paginator.page(paginator.num_pages)
+    context = {'lista_mueble': lista_mueble, 'muebles': muebles}
     return render(request, 'mueble/mueble_lista.html', context)
 
 
@@ -387,7 +398,7 @@ def buscar_mueble_ambiente(request, idambiente=0):
     else:
         buscar_muebleambiente = Mueble_Ambiente.objects.all()
         mensaje = ""
-    context = {'buscar_muebleambiente': buscar_muebleambiente, 'mensaje': mensaje}
+    context = {'buscar_muebleambiente': buscar_muebleambiente, 'ambiente': idambiente, 'mensaje': mensaje}
     return render(request, 'mueble/muebleambiente_lista.html', context)
 
 
@@ -478,16 +489,16 @@ def add_tamanomueble(request):
                               context_instance=RequestContext(request))
 
 
-def add_muebleambiente(request):
+def add_muebleambiente(request, idambiente):
     """docstring"""
     if request.method == 'POST':
         form_muebleambiente = MuebleAmbienteForm(request.POST)
         if form_muebleambiente.is_valid():
             id_reg = form_muebleambiente.save()
             id_am = Mueble_Ambiente.objects.get(id=id_reg.id)
-            return HttpResponseRedirect(reverse('umuebles:buscar_muebleambiente', args=(id_am.ambiente.id,)))
+            return HttpResponseRedirect(reverse('umuebles:buscar_mueble_ambiente', args=(id_am.ambiente.id,)))
     else:
-        form_muebleambiente = MuebleAmbienteForm()
+        form_muebleambiente = MuebleAmbienteForm(initial={'ambiente': idambiente})
     return render_to_response('mueble/muebleambiente_add.html',
                               {'form_muebleambiente': form_muebleambiente, 'create': True},
                               context_instance=RequestContext(request))

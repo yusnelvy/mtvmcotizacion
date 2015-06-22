@@ -4,15 +4,13 @@ from cotizacion.models import Estado_Cotizacion, \
     Vehiculo_Cotizacion, Cotizacion_direccion, \
     Cotizacion_trabajador, Cotizacion_Ambiente, \
     Cotizacion_Mueble, Cotizacion_Servicio, \
-    Cotizacion_Material, Cotizacion_Contenedor, \
-    Cotizacion_Contenido
+    Cotizacion_Material, Cotizacion_Contenido
 from cotizacion.forms import EstadoCotizacionForm, \
     PisoForm, TiempoCargaForm, CotizacionForm, VehiculoForm, \
     VehiculoCotizacionForm, CotizaciondireccionForm, \
     CotizaciontrabajadorForm, CotizacionAmbienteForm, \
     CotizacionMuebleForm, CotizacionServicioForm, \
-    CotizacionMaterialForm, CotizacionContenedorForm, \
-    CotizacionContenidoForm
+    CotizacionMaterialForm, CotizacionContenidoForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.core.urlresolvers import reverse

@@ -123,7 +123,7 @@ def lista_email(request, id_cli):
     cliente = Cliente.objects.get(id=id_cli)
 
     lista_email = Email.objects.filter(cliente_id=cliente)
-    context = {'lista_email': lista_email}
+    context = {'lista_email': lista_email, 'id_cli': id_cli}
     return render(request, 'cliente/emailcliente_lista.html', context)
 
 
@@ -154,7 +154,7 @@ def lista_telefono_cliente(request, id_cli):
 
     lista_telefono_cliente = Telefono.objects.select_related().filter(cliente=cliente)
 
-    context = {'lista_telefono_cliente': lista_telefono_cliente}
+    context = {'lista_telefono_cliente': lista_telefono_cliente, 'id_cli': id_cli}
     return render(request, 'cliente/telefonocliente_lista.html', context)
 
 
@@ -185,7 +185,7 @@ def lista_direccioncliente(request, id_cli):
 
     direccioncliente_lista = Direccion.objects.filter(cliente=cliente)
 
-    context = {'direccioncliente_lista': direccioncliente_lista}
+    context = {'direccioncliente_lista': direccioncliente_lista, 'id_cli': id_cli}
     return render(request, 'cliente/direccioncliente_lista.html', context)
 
 
@@ -262,7 +262,7 @@ def add_estadocivil(request):
                               context_instance=RequestContext(request))
 
 
-def add_email(request):
+def add_email(request, id_cli):
 
     if request.method == 'POST':
         try:
@@ -276,7 +276,7 @@ def add_email(request):
             email_form = EmailForm()
 
     else:
-        email_form = EmailForm()
+        email_form = EmailForm(initial={'cliente': id_cli})
         mensaje = ''
 
     return render_to_response('cliente/Emailcliente_add.html',
