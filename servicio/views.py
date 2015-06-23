@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse
 import django.db
 import simplejson as json
 from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 # Create your views here.
@@ -40,7 +41,20 @@ def lista_servicio(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_servicio = Servicio.objects.all()
-    context = {'lista_servicio': lista_servicio}
+
+    paginator = Paginator(lista_servicio, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        servicios = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        servicios = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        servicios = paginator.page(paginator.num_pages)
+
+    context = {'lista_servicio': lista_servicio, 'servicios': servicios}
     return render(request, 'servicio/servicio_lista.html', context)
 
 
@@ -69,7 +83,20 @@ def lista_unidad(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_unidad = Unidad.objects.all()
-    context = {'lista_unidad': lista_unidad}
+
+    paginator = Paginator(lista_unidad, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        unidades = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        unidades = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        unidades = paginator.page(paginator.num_pages)
+
+    context = {'lista_unidad': lista_unidad, 'unidades': unidades}
     return render(request, 'servicio/unidad_lista.html', context)
 
 
@@ -98,7 +125,20 @@ def lista_material(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_material = Material.objects.all()
-    context = {'lista_material': lista_material}
+
+    paginator = Paginator(lista_material, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        materiales = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        materiales = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        materiales = paginator.page(paginator.num_pages)
+
+    context = {'lista_material': lista_material, 'materiales': materiales}
     return render(request, 'servicio/material_lista.html', context)
 
 
@@ -127,7 +167,20 @@ def lista_complejidad(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_complejidad = Complejidad.objects.all()
-    context = {'lista_complejidad': lista_complejidad}
+
+    paginator = Paginator(lista_complejidad, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        complejidades = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        complejidades = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        complejidades = paginator.page(paginator.num_pages)
+
+    context = {'lista_complejidad': lista_complejidad, 'complejidades': complejidades}
     return render(request, 'servicio/complejidad_lista.html', context)
 
 
@@ -291,6 +344,8 @@ def edit_servicio(request, pk):
     """docstring"""
     servicio = Servicio.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_servicio = ServicioForm(request.POST, instance=servicio)
@@ -299,7 +354,10 @@ def edit_servicio(request, pk):
             # formulario validado correctamente
             form_edit_servicio.save()
 
-            return HttpResponseRedirect(reverse('uservicios:lista_servicio'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('uservicios:lista_servicio'))
 
     else:
         # formulario inicial
@@ -314,6 +372,8 @@ def edit_unidad(request, pk):
     """docstring"""
     unidad = Unidad.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_unidad = UnidadForm(request.POST, instance=unidad)
@@ -322,7 +382,10 @@ def edit_unidad(request, pk):
             # formulario validado correctamente
             form_edit_unidad.save()
 
-            return HttpResponseRedirect(reverse('uunidads:lista_unidad'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('uservicios:lista_unidad'))
 
     else:
         # formulario inicial
@@ -337,6 +400,8 @@ def edit_material(request, pk):
     """docstring"""
     material = Material.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_material = MaterialForm(request.POST, instance=material)
@@ -345,7 +410,10 @@ def edit_material(request, pk):
             # formulario validado correctamente
             form_edit_material.save()
 
-            return HttpResponseRedirect(reverse('uservicios:lista_material'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('uservicios:lista_material'))
 
     else:
         # formulario inicial
@@ -360,6 +428,8 @@ def edit_complejidad(request, pk):
     """docstring"""
     complejidad = Complejidad.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_complejidad = ComplejidadForm(request.POST, instance=complejidad)
@@ -368,7 +438,10 @@ def edit_complejidad(request, pk):
             # formulario validado correctamente
             form_edit_complejidad.save()
 
-            return HttpResponseRedirect(reverse('uservicios:lista_complejidad'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('uservicios:lista_complejidad'))
 
     else:
         # formulario inicial

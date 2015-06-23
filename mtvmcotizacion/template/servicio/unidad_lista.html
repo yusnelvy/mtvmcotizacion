@@ -2,7 +2,7 @@
 
 {% block titulo %}
 
-<title>Servicios</title>
+<title>unidades</title>
 
 {% endblock titulo %}
 
@@ -22,7 +22,7 @@ Eliminar unidad
 
 {% block titulo_tabla %}
 
-<h2>Servicios</h2>
+<h2>unidades</h2>
 
 {% endblock titulo_tabla %}
 
@@ -41,21 +41,17 @@ Eliminar unidad
 {% block cuerpo_tabla %}
 
   <tr class="active">
-    <th>Servicios</th>
-    <th width="3">Materiales</th>
-    <th>Complejidad</th>
+    <th>Unidad</th>
     <th width="3">Editar</th>
     <th width="3">Eliminar</th>
   </tr>
 
-  {% for i in lista_unidad %}
+  {% for i in unidades %}
 
   <tr id="tr{{i.id}}">
     <td>{{ i.unidad }}</td>
-    <td width="3"><a href="unidad_material/{{i.id}}/0/" class="glyphicon glyphicon-th-large"></a></td>
-    <td width="3"><a href="complejidad_unidad/{{i.id}}/0/" class="glyphicon glyphicon-certificate"></a></td>
     <td width="3">
-      <a title="Editar" data-toggle="tooltip" data-placement="right" href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
+      <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_unidad' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
     </td width="3">
     <td>
       <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.unidad}}"></a>
@@ -63,7 +59,47 @@ Eliminar unidad
   </tr>
 
   {% endfor %}
+<nav>
+  <ul class="pagination">
 
+    {% if unidades.has_previous %}
+
+    <li>
+      <a href="?page={{ unidades.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+
+    {% endif %}
+
+    <li class="current">
+      <a style="color:#000;"> Página
+
+        {{ unidades.number }}
+
+        de
+
+        {{ unidades.paginator.num_pages }}
+
+        Desde la unidad
+
+        {{ unidades.start_index }}
+
+        hasta la unidad
+
+        {{ unidades.end_index }}
+
+      </a>
+    </li>
+
+    {% if unidades.has_next %}
+
+    <li>
+      <a href="?page={{ unidades.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+
+    {% endif %}
+
+  </ul>
+</nav>
 {% endblock cuerpo_tabla %}
 
 {% endif %}
@@ -71,10 +107,10 @@ Eliminar unidad
 {% block ayuda %}
 
 <div class="well well-lg">
-  <p>Los <strong>Servicios</strong> comprenden aquellas actividades que se realizan sobre un <strong>Mueble</strong> para lograr su traslado en las mejores condiciones posibles.</p>
-  <p>Los <strong>Servicios</strong> pueden sevir para proteger, modificar o brindar un tratamiento específico a cada <strong>Mueble</strong>.</p>
-  <p>Al momento de evaluar o realizar una mudanza, los <strong>Servicios</strong> serán una parte importante de la calidad percibida por el cliente, al igual que un componente que incide sobre el precio final de la misma.</p>
-  <p>La apropiada identificación de <strong>Servicios</strong> y su relación con los <strong>Materiales</strong> que involucran, serán claves para orientar la ejecución del trabajo de campo una vez contratada la mudanza.</p>
+  <p>Los <strong>unidades</strong> comprenden aquellas actividades que se realizan sobre un <strong>Mueble</strong> para lograr su traslado en las mejores condiciones posibles.</p>
+  <p>Los <strong>unidades</strong> pueden sevir para proteger, modificar o brindar un tratamiento específico a cada <strong>Mueble</strong>.</p>
+  <p>Al momento de evaluar o realizar una mudanza, los <strong>unidades</strong> serán una parte importante de la calidad percibida por el cliente, al igual que un componente que incide sobre el precio final de la misma.</p>
+  <p>La apropiada identificación de <strong>unidades</strong> y su relación con los <strong>Materiales</strong> que involucran, serán claves para orientar la ejecución del trabajo de campo una vez contratada la mudanza.</p>
 </div>
 
 {% endblock ayuda %}

@@ -281,7 +281,7 @@ class Cotizacion_Contenido(models.Model):
     porcentaje = models.DecimalField(max_digits=2, decimal_places=2)
 
     def __str__(self):
-        return u' %s - %s' % (self.cotizacion_contenedor, self.contenido)
+        return u' %s - %s' % (self.cotizacion_mueble, self.contenido)
 
     class Meta:
         verbose_name = "contenido en el contenedor"
@@ -296,8 +296,7 @@ class Cotizacion_Servicio(models.Model):
 
     cotizacion_mueble = models.ForeignKey(Cotizacion_Mueble)
     servicio = models.ForeignKey(Servicio)
-    cotizacion_contenido = models.ForeignKey(Cotizacion, blank=True)
-    tipo = models.CharField(max_length=20, blank=True)
+    cotizacion_contenido = models.ForeignKey(Cotizacion_Contenido, null=True, blank=True)
 
     def __str__(self):
         return u' %s - %s' % (self.cotizacion_mueble, self.servicio)

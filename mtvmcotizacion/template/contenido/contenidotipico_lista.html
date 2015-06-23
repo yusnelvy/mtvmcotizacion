@@ -49,14 +49,15 @@ Eliminar contenido tipico
     <th width="3" class="hidden-print">Eliminar</th>
   </tr>
 
-  {% for i in buscar_contenidotipico %}
+  {% for i in contenidotipicos %}
 
   <tr id="tr{{i.id}}" class="">
     <td>{{ i.contenido }}</td>
     <td>{{ i.mueble }}</td>
     <td>{{ i.cantidad }}</td>
+
     <td width="3" class="hidden-print">
-      <a title="Editar" data-toggle="tooltip" data-placement="right" href="../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
+      <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'ucontenidos:edit_contenidotipico' i.id %}?next={% url 'ucontenidos:buscar_contenidotipico' 0 %}?page={{contenidotipicos.number}}" class="glyphicon glyphicon-edit" ></a>
     </td>
     <td width="3" class="hidden-print">
       <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="Contenido: {{i.contenido}} Mueble: {{ i.mueble }}"></a>
@@ -69,7 +70,47 @@ Eliminar contenido tipico
 </div>
 
 {% endif %}
+<nav>
+  <ul class="pagination">
 
+    {% if contenidotipicos.has_previous %}
+
+    <li>
+      <a href="?page={{ contenidotipicos.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+
+    {% endif %}
+
+    <li class="current">
+      <a style="color:#000;"> Página
+
+        {{ contenidotipicos.number }}
+
+        de
+
+        {{ contenidotipicos.paginator.num_pages }}
+
+        Desde el contenido
+
+        {{ contenidotipicos.start_index }}
+
+        hasta el contenido
+
+        {{ contenidotipicos.end_index }}
+
+      </a>
+    </li>
+
+    {% if contenidotipicos.has_next %}
+
+    <li>
+      <a href="?page={{ contenidotipicos.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+
+    {% endif %}
+
+  </ul>
+</nav>
  {% endblock content1 %}
 
 {% block content2 %}
