@@ -52,7 +52,18 @@ def lista_estado_cotizacion(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_estadocotizacion = Estado_Cotizacion.objects.all()
-    context = {'lista_estadocotizacion': lista_estadocotizacion}
+    paginator = Paginator(lista_estadocotizacion, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        estadoscotizacion = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        estadoscotizacion = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        estadoscotizacion = paginator.page(paginator.num_pages)
+    context = {'lista_estadocotizacion': lista_estadocotizacion, 'estadoscotizacion': estadoscotizacion}
     return render(request, 'cotizacion/estadocotizacion_lista.html', context)
 
 
@@ -712,6 +723,8 @@ def edit_estadocotizacion(request, pk):
     except Exception as ex:
         mensaje = "se ha producido un error"+str(ex)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         editar_estadocotizacion = EstadoCotizacionForm(request.POST, instance=id_estadocotizacion)
@@ -720,7 +733,10 @@ def edit_estadocotizacion(request, pk):
             # formulario validado correctamente
             editar_estadocotizacion.save()
 
-            return HttpResponseRedirect(reverse('ucotizaciones:lista_estado_cotizacion'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('ucotizaciones:lista_estado_cotizacion'))
 
     else:
         # formulario inicial
