@@ -230,6 +230,10 @@ class Cotizacion_Ambiente(models.Model):
     def __str__(self):
         return u' %s - %s' % (self.cotizacion, self.ambiente)
 
+    def _get_cantidad_ambiente(self):
+        return self.cotizacion.cantidad_ambientes+1
+    cantidad_ambiente = property(_get_cantidad_ambiente)
+
     class Meta:
         verbose_name = "Ambiente de la cotizacion"
         verbose_name_plural = "Ambientes de la cotizacion"

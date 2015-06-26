@@ -623,6 +623,13 @@ def add_cotizacionambiente(request, idcotizacion):
         if form_cotizacionambiente.is_valid():
             id_reg = form_cotizacionambiente.save()
             id_cot = Cotizacion_Ambiente.objects.get(id=id_reg.id)
+
+            cant_cotiz = Cotizacion_Ambiente.objects.filter(cotizacion=id_cot.cotizacion.id).count()
+
+            #prueba para ver si actualiza el campo cant ambiente en la cotizacion
+            reporter = Cotizacion.objects.filter(pk=id_cot.cotizacion.id)
+            reporter.update(cantidad_ambientes=cant_cotiz)
+
             return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionambiente', args=(id_cot.cotizacion.id,)))
 
     else:
@@ -821,11 +828,11 @@ def edit_cotizacion(request, pk):
 
         if editar_cotizacion.is_valid():
             # formulario validado correctamente
-            id_reg = editar_cotizacion.save()
+            editar_cotizacion.save()
 
             #prueba para actualizar un campo calculable
-            reporter = Cotizacion.objects.filter(pk=id_reg.id)
-            reporter.update(cantidad_ambientes=F('cantidad_ambientes')+1)
+            #reporter = Cotizacion.objects.filter(pk=id_reg.id)
+            #reporter.update(cantidad_ambientes=F('cantidad_ambientes')+1)
 
         if redirect_to:
 

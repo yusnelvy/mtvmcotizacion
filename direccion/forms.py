@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from direccion.models import Pais, Provincia, Ciudad, \
     Zona, Tipo_direccion, Direccion, Tipo_Inmueble, \
     Complejidad_Inmueble, Tarifa_valor, Inmueble
+from haystack.forms import SearchForm
 
 
 class PaisForm(ModelForm):
@@ -63,3 +64,9 @@ class InmuebleForm(ModelForm):
     class Meta:
         model = Inmueble
         fields = '__all__'
+
+
+class PaisSearchForm(SearchForm):
+
+    def no_query_found(self):
+        return self.searchqueryset.all()
