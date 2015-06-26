@@ -50,7 +50,7 @@ class Material(models.Model):
     volumen = models.DecimalField(max_digits=5, decimal_places=2)
     capacidad_volumen = models.DecimalField(max_digits=5, decimal_places=2)
     contenedor = models.BooleanField(default=False)
-    #unidad = models.ForeignKey(Unidad)
+    unidad = models.ForeignKey(Unidad)
 
     def __str__(self):
         return self.material

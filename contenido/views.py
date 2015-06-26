@@ -9,6 +9,7 @@ from django.template import RequestContext
 import simplejson as json
 import django.db
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 # Create your views here.
@@ -38,7 +39,19 @@ def lista_contenido(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_contenido = Contenido.objects.all()
-    context = {'lista_contenido': lista_contenido}
+    paginator = Paginator(lista_contenido, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        contenidos = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contenidos = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contenidos = paginator.page(paginator.num_pages)
+
+    context = {'lista_contenido': lista_contenido, 'contenidos': contenidos}
     return render(request, 'contenido/contenido_lista.html', context)
 
 
@@ -80,7 +93,20 @@ def buscar_contenidotipico(request, idmueble=0):
     else:
         buscar_contenidotipico = Contenido_Tipico.objects.all()
         mensaje = ""
-    context = {'buscar_contenidotipico': buscar_contenidotipico}
+
+    paginator = Paginator(buscar_contenidotipico, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        contenidotipicos = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contenidotipicos = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contenidotipicos = paginator.page(paginator.num_pages)
+
+    context = {'buscar_contenidotipico': buscar_contenidotipico, 'contenidotipicos': contenidotipicos}
     return render(request, 'contenido/contenidotipico_lista.html', context)
 
 
@@ -200,6 +226,7 @@ def edit_contenido(request, pk):
 def edit_contenidotipico(request, pk):
     """docstring"""
     contenidotipico = Contenido_Tipico.objects.get(pk=pk)
+    redirect_to = request.REQUEST.get('next', '')
 
     if request.method == 'POST':
         # formulario enviado
@@ -209,7 +236,10 @@ def edit_contenidotipico(request, pk):
             # formulario validado correctamente
             form_edit_contenidotipico.save()
 
-            return HttpResponseRedirect(reverse('ucontenidos:buscar_contenidotipico', args=(contenidotipico.mueble.id,)))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('ucontenidos:buscar_contenidotipico', args=(contenidotipico.mueble.id,)))
 
     else:
         # formulario inicial
