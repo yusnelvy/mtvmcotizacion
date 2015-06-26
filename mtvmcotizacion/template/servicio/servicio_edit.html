@@ -43,7 +43,7 @@
             <td width="">{{ det.material }}</td>
             <td width="300">{{ det.cantidad }}</td>
             <td width="3">
-                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_serviciomaterial' det.id %}?next={% url 'uservicios:edit_servicio' servicio.id %}" class="glyphicon glyphicon-edit"></a>
+                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_serviciomaterial' det.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
             </td>
         </tr>
 
@@ -73,7 +73,7 @@
             <td width="">{{ det.complejidad }}</td>
             <td width="300">{{ det.tarifa }}</td>
             <td width="3">
-                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_complejidadservicio' det.id %}?next={% url 'uservicios:edit_servicio' servicio.id %}" class="glyphicon glyphicon-edit"></a>
+                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_complejidadservicio' det.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
             </td>
         </tr>
 

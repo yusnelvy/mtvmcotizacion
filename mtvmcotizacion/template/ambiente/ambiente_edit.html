@@ -41,7 +41,7 @@
   <tr id="tr{{i.id}}">
             <td width="100">{{ i.tipo_inmueble }}</td>
             <td width="3">
-                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uambientes:edit_ambiente_tipoinmueble' i.id %}?next={% url 'uambientes:edit_ambiente' ambiente.id %}" class="glyphicon glyphicon-edit"></a>
+                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uambientes:edit_ambiente_tipoinmueble' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
             </td>
         </tr>
 

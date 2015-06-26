@@ -46,7 +46,9 @@
       {# <button id ="editar" data-telid="{{i.id}}" class="btn btn-mini btn-primary" type="button">editar</button> #}
     </td>
     <td>
+
       <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.ambiente}}"><i class="icon-trash icon-white"></i>Eliminar</a>
+      <a href="../nuevo/{{i.cotizacion.id}}/" class="btn btn-default">Nuevo</a>
     </td>
     <input type="hidden" value="{{i.id}}" id="idtele">
   </tr>
@@ -54,12 +56,12 @@
   {% endfor %}
 
 </table>
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
+<p><a href="../nuevo/0/" class="btn btn-default">Nuevo</a></p>
 </div>
 
 {% else %}
 
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
+<p><a href="../nuevo/0/" class="btn btn-default">Nuevo</a></p>
 <p> No se encontro registro.</p>
 
 {% endif %}

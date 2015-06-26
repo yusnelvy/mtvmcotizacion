@@ -106,7 +106,7 @@ def lista_mueble(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_mueble = Mueble.objects.all()
-    paginator = Paginator(lista_mueble, 10)
+    paginator = Paginator(lista_mueble, 25)
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -159,7 +159,10 @@ def edit_mueble(request, pk):
             # formulario validado correctamente
             form_edit_mueble.save()
 
-            return HttpResponseRedirect(redirect_to)
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
 
     else:
         # formulario inicial
@@ -195,7 +198,20 @@ def lista_tipo_mueble(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_tipomueble = Tipo_Mueble.objects.all()
-    context = {'lista_tipomueble': lista_tipomueble}
+
+    paginator = Paginator(lista_tipomueble, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        tipomuebles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        tipomuebles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        tipomuebles = paginator.page(paginator.num_pages)
+
+    context = {'lista_tipomueble': lista_tipomueble, 'tipomuebles': tipomuebles}
     return render(request, 'mueble/tipomueble_lista.html', context)
 
 
@@ -224,7 +240,19 @@ def lista_ocupacion(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_ocupacion = Ocupacion.objects.all()
-    context = {'lista_ocupacion': lista_ocupacion}
+
+    paginator = Paginator(lista_ocupacion, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        ocupaciones = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        ocupaciones = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        ocupaciones = paginator.page(paginator.num_pages)
+    context = {'lista_ocupacion': lista_ocupacion, 'ocupaciones': ocupaciones}
     return render(request, 'mueble/ocupacion_lista.html', context)
 
 
@@ -253,7 +281,20 @@ def lista_forma_mueble(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_formamueble = Forma_Mueble.objects.all()
-    context = {'lista_formamueble': lista_formamueble}
+
+    paginator = Paginator(lista_formamueble, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        formamuebles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        formamuebles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        formamuebles = paginator.page(paginator.num_pages)
+
+    context = {'lista_formamueble': lista_formamueble, 'formamuebles': formamuebles}
     return render(request, 'mueble/formamueble_lista.html', context)
 
 
@@ -282,7 +323,20 @@ def lista_tamano(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_tamano = Tamano.objects.all()
-    context = {'lista_tamano': lista_tamano}
+
+    paginator = Paginator(lista_tamano, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        tamanos = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        tamanos = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        tamanos = paginator.page(paginator.num_pages)
+
+    context = {'lista_tamano': lista_tamano, 'tamanos': tamanos}
     return render(request, 'mueble/tamano_lista.html', context)
 
 
@@ -311,7 +365,20 @@ def lista_densidad(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_densidad = Densidad.objects.all()
-    context = {'lista_densidad': lista_densidad}
+
+    paginator = Paginator(lista_densidad, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        densidades = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        densidades = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        densidades = paginator.page(paginator.num_pages)
+
+    context = {'lista_densidad': lista_densidad, 'densidades': densidades}
     return render(request, 'mueble/densidad_lista.html', context)
 
 
@@ -398,7 +465,21 @@ def buscar_mueble_ambiente(request, idambiente=0):
     else:
         buscar_muebleambiente = Mueble_Ambiente.objects.all()
         mensaje = ""
-    context = {'buscar_muebleambiente': buscar_muebleambiente, 'ambiente': idambiente, 'mensaje': mensaje}
+
+    paginator = Paginator(buscar_muebleambiente, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        muebleambientes = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        muebleambientes = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        muebleambientes = paginator.page(paginator.num_pages)
+
+    context = {'buscar_muebleambiente': buscar_muebleambiente,
+               'muebleambientes': muebleambientes, 'ambiente': idambiente, 'mensaje': mensaje}
     return render(request, 'mueble/muebleambiente_lista.html', context)
 
 
@@ -509,6 +590,8 @@ def edit_tipo_mueble(request, pk):
     """docstring"""
     tipomueble = Tipo_Mueble.objects.all().get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_tipomueble = TipoMuebleForm(request.POST, instance=tipomueble)
@@ -517,7 +600,10 @@ def edit_tipo_mueble(request, pk):
             # formulario validado correctamente
             form_edit_tipomueble.save()
 
-            return HttpResponseRedirect(reverse('umuebles:lista_tipo_mueble'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('umuebles:lista_tipo_mueble'))
 
     else:
         # formulario inicial
@@ -532,6 +618,8 @@ def edit_ocupacion(request, pk):
     """docstring"""
     ocupacion = Ocupacion.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_ocupacion = OcupacionForm(request.POST, instance=ocupacion)
@@ -540,7 +628,10 @@ def edit_ocupacion(request, pk):
             # formulario validado correctamente
             form_edit_ocupacion.save()
 
-            return HttpResponseRedirect(reverse('umuebles:lista_ocupacion'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('umuebles:lista_ocupacion'))
 
     else:
         # formulario inicial
@@ -555,6 +646,8 @@ def edit_forma_mueble(request, pk):
     """docstring"""
     formamueble = Forma_Mueble.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_formamueble = FormaMuebleForm(request.POST, instance=formamueble)
@@ -562,8 +655,10 @@ def edit_forma_mueble(request, pk):
         if form_edit_formamueble.is_valid():
             # formulario validado correctamente
             form_edit_formamueble.save()
-
-            return HttpResponseRedirect(reverse('umuebles:lista_forma_mueble'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('umuebles:lista_forma_mueble'))
 
     else:
         # formulario inicial
@@ -578,6 +673,8 @@ def edit_tamano(request, pk):
     """docstring"""
     tamano = Tamano.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_tamano = TamanoForm(request.POST, instance=tamano)
@@ -586,7 +683,10 @@ def edit_tamano(request, pk):
             # formulario validado correctamente
             form_edit_tamano.save()
 
-            return HttpResponseRedirect(reverse('umuebles:lista_tamano'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('umuebles:lista_tamano'))
 
     else:
         # formulario inicial
@@ -601,6 +701,8 @@ def edit_densidad(request, pk):
     """docstring"""
     densidad = Densidad.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_densidad = DensidadForm(request.POST, instance=densidad)
@@ -609,7 +711,10 @@ def edit_densidad(request, pk):
             # formulario validado correctamente
             form_edit_densidad.save()
 
-            return HttpResponseRedirect(reverse('umuebles:lista_densidad'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('umuebles:lista_densidad'))
 
     else:
         # formulario inicial

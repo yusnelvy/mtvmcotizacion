@@ -58,8 +58,5 @@ urlpatterns = patterns('',
                            name='add_inmueble'),
                        url(r'^inmueble/editar/(?P<pk>\d+)/$', views.edit_inmueble,
                            name='edit_inmueble'),
-                       url(r'^geo/(?P<type>pais)/$', views.geo, name='geo'),
-                       url(r'^geo/(?P<type>provincia|ciudad|zona)/(?P<parent_id>[0-9]+)$', views.geo, name='geo'),
-                       url(r'^geo/$', views.select_ejemplo, name='select_ejemplo'),
 
                        )
