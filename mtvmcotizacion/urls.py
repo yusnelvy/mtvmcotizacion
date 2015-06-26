@@ -7,6 +7,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
+from haystack.views import SearchView
 
 
 urlpatterns = patterns('',  # C0103: El error es la forma del nombre urlpatterns pero no se puede corregir
@@ -26,6 +27,8 @@ urlpatterns = patterns('',  # C0103: El error es la forma del nombre urlpatterns
                        url(r'^trabajador/', include('trabajador.urls', namespace="utrabajadores")),
                        url(r'^cotizacion/', include('cotizacion.urls', namespace="ucotizaciones")),
                        url(r'^chaining/', include('smart_selects.urls')),
+                       url(r'^search/', SearchView(load_all=False)),
+                       url(r'^search/', include('haystack.urls')),
                        )
 
 # se agrego para probar los estilo

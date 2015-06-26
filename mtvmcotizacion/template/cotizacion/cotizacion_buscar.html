@@ -170,7 +170,7 @@
   </tr>
   <tr>
     <td>Volumen de muebles sugeridos</td>
-    <td>{{ i.volumen_muebles_sugerido }}</td>
+    <td>{{ i.volumen_muebles_sugerido}}</td>
   </tr>
   <tr>
     <td>Volumen de muebles cotizados</td>
@@ -363,7 +363,7 @@
   {% for i in det_ambiente %}
 
   <tr>
-    <td colspan="12"><h4>Ambiente {{forloop.counter}}: {{ i.ambiente.ambiente }}</h4></td>
+    <td colspan="12"><h4>Ambiente {{forloop.counter}}: {{ i.ambiente.ambiente }} </h4></td>
   </tr>
    <tr>
     <td>Piso</td>
@@ -382,7 +382,7 @@
   <tr>
     <td>{{ i.piso }}</td>
     <td>{{ i.piso.factor }}</td>
-    <td>{{ i.cantidad_muebles }}</td>
+    <td>{{ i.cantidad_muebles|add:"+10"}}</td>
     <td>{{ i.volumen_muebles }}</td>
     <td>{{ i.peso_muebles }}</td>
     <td>{{ i.cantidad_contenedores }}</td>
@@ -528,7 +528,7 @@
                   <table class="table table-hover">
                       {% for det_sercon in det_servicio_contenido %}
 
-                        {% if det_sercon.cotizacion_contenido == det_cont.contenido %}
+                        {% if det_sercon.cotizacion_contenido.id == det_cont.id %}
 
                         <tr>
                           <td><h4>Servicio del contenido: {{det_sercon.servicio }}</h4></td>
@@ -541,7 +541,7 @@
 
                               {% for det_mat in det_material %}
 
-                              {% if det_mat.cotizacion_servicio == det_sercon %}
+                              {% if det_mat.cotizacion_servicio.id == det_sercon.id %}
 
                               <tr>
                                 <td colspan="6"><h4>Material del servicio del contenido: {{ det_mat.material }}</h4></td>

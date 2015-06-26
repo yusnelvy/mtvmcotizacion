@@ -6,7 +6,7 @@ from direccion.forms import PaisForm, ProvinciaForm, \
     CiudadForm, ZonaForm, TipoDireccionForm, \
     DireccionForm, TipoInmuebleForm, \
     ComplejidadInmuebleForm, TarifaValorForm, \
-    InmuebleForm
+    InmuebleForm, PaisSearchForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
@@ -59,7 +59,10 @@ def lista_pais(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         paises = paginator.page(paginator.num_pages)
 
-    context = {'lista_pais': lista_pais, 'paises': paises}
+    form = PaisSearchForm(request.GET)
+    notes = form.search()
+
+    context = {'lista_pais': lista_pais, 'paises': paises, 'notes': notes}
     return render(request, 'direccion/pais_lista.html', context)
 
 
