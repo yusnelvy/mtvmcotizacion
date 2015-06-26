@@ -2,7 +2,7 @@
 
 {% block titulo %}
 
-<title>Ficha &middot; Cliente</title>
+<title>Ficha del Cliente</title>
 
 {% endblock titulo %}
 
@@ -24,7 +24,6 @@ Eliminar
 
 {% endblock validacion_modal %}
 
-
 {% block link %}
 
 <ul class="nav navbar-nav">
@@ -42,245 +41,171 @@ Eliminar
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#datos" aria-controls="home" role="tab" data-toggle="tab">Datos del cliente</a></li>
-    <li role="presentation"><a href="#detalle" aria-controls="profile" role="tab" data-toggle="tab">Informacion Adicional</a></li>
+    <li role="presentation"><a href="#detalle" aria-controls="profile" role="tab" data-toggle="tab">Información adicional</a></li>
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="datos">
-
-      {% if lista_cliente %}<!--cliente individual-->
-
       <br>
       <div class="row">
         <div class="col-md-12">
           <div class="panel panel-default">
             <table class="table table-hover">
-
-              {% for i in lista_cliente %}
-
               <tr>
-                <td class=""><strong>Nombre: </strong>{{ i.nombre_principal }}</td>
-                <td colspan="2"><span style="">
-                  <strong>{{ i.activo|yesno:"Activo,Inactivo" }}</strong>
-                </span></td>
-                <td><a title="Editar cliente" data-toggle="tooltip" data-placement="right" href="../../editar/{{i.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a></td>
-              </tr>
-              <tr>
-                <td class=""><strong>DNI: </strong>{{ i.dni }}
-                  <span style="">
-                    <strong>Estado civil: </strong>
+                <td class="">
+                  <strong>DNI: </strong>
 
-                    {% if i.estado_civil %}
+                  {{ lista_cliente.0.dni }}
 
-                    {{ i.estado_civil }}
+                  <strong> Nombre: </strong>
 
-                    {% else %}
+                  {{ lista_cliente.0.nombre_principal }}
 
-                    <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../editar/{{i.id}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-
-                    {% endif %}
-
-                  </span>
-                <strong>Fe.Nac.: </strong> {{ i.fecha_nacimiento|date:"d/m/Y" }}
-                  <span style="">
-                    <strong>Sexo: </strong>
-
-                    {% if i.sexo %}
-
-                    {{ i.sexo }}
-
-                    {% else %}
-
-                    <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../editar/{{i.id}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-
-                    {% endif %}
-
-                  </span>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-
-              {% endfor %}
-
-              {% if lista_telefono_cliente %}
-
-              {% for i in lista_telefono_cliente %}
-
-              <tr id="tr{{i.id}}">
-                <td class=""><strong>{{ i.tipo_telefono }}: </strong></td>
-                <td>{{ i.numero }}</td>
-                <td>
-                  <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../../telefono/nuevo/{{id_cli}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-                </td>
-                <td>
-                  <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../../telefono/editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a>
-                </td>
-                <td>
-                  <a href=# onclick="eliminar('telefono/delete/?codigo={{i.id}}','{{i.id}}','{{i.numero}}'); return false" class="glyphicon glyphicon-remove"></a>
-                </td>
-              </tr>
-
-              {% endfor %}
-
-              {% else %}
-
-              <tr>
-                <td class=""><strong>Telefono: </strong></td>
-                <td>
-                  <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../../telefono/nuevo/{{id_cli}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-                </td>
-                <td></td>
-                <td></td>
-              </tr>
-              {% endif %}
-
-              {% if lista_email %}
-
-              {% for i in lista_email %}
-
-              <tr id="tr{{i.id}}">
-                <td class="text-right"><strong>Email: </strong></td>
-                <td>{{ i.email }}</td>
-                <td><a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../email/nuevo/{{id_cli}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a></td>
-                <td>
-                  <a title="Editar" data-toggle="tooltip" data-placement="right" href="email/editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a>
-                </td>
-                <td>
-                  <a href=# onclick="eliminar('email/delete/?codigo={{i.id}}','{{i.id}}','{{i.email}}'); return false" class="glyphicon glyphicon-remove"></a>
-                </td>
-              </tr>
-
-              {% endfor %}
-
-              {% else %}
-
-              <tr>
-                <td class="text-right"><strong>Email: </strong></td>
-                <td></td>
-                <td><a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../email/nuevo/{{id_cli}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a></td>
-                <td></td>
-                <td></td>
-              </tr>
-
-              {% endif %}
-
-              {% if direccioncliente_lista %}
-
-          {% for i in direccioncliente_lista %}
-
-          <tr id="tr{{i.id}}">
-            <td class="text-right"><strong>{{ i.tipo_direccion }}: </strong></td>
-            <td>
-              <address>
-                <p>{{ i.zona.ciudad.provincia.pais }}.
-                {{ i.zona.ciudad.provincia }}, {{ i.zona.ciudad }}
-              </p>
                   <p>
-                 Zona {{ i.zona }}
-                calle {{ i.calle }} numero {{ i.numero }}
-                </p>
-                 <p>
-                Punto de referencia {{ i.punto_referencia }}
-              </p>
-              </address>
-            </td>
-            <td width="3">
-              <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="../../../direccion/nuevo/{{id_cli}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-            </td>
-            <td width="3">
-              <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../../direccion/{{i.id}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-            </td>
-            <td width="3">
-             <a href=# onclick="eliminar('direccion/delete/?codigo={{i.id}}','{{i.id}}','{{ i.zona.ciudad.provincia.pais }}. {{ i.zona.ciudad.provincia }}, {{ i.zona.ciudad }} Zona {{ i.zona }} calle {{ i.calle }} numero {{ i.numero }} Punto de referencia {{ i.punto_referencia }}'); return false" class="glyphicon glyphicon-remove"></a>
-            </td>
-          </tr>
+                    <span style="">
+                      <strong>Estado civil: </strong>
 
-              <tr id="tr{{i.id}}">
-                <td class=""><strong>{{ i.tipo_direccion }}: </strong>
+                      {{ lista_cliente.0.estado_civil }}
+
+                    </span>
+                    <strong>Fe.Nac.: </strong>
+
+                    {{ lista_cliente.0.fecha_nacimiento|date:"d/m/Y" }}
+
+                    <span style="">
+                      <strong>Sexo: </strong>
+
+                      {{ lista_cliente.0.sexo }}
+
+                    </span>
+                  </p>
+                </td>
+                <td colspan="2">
+                  <span style="">
+                    <strong>
+
+                      {{ lista_cliente.0.activo|yesno:"Activo,Inactivo" }}
+
+                    </strong>
+                  </span>
+                </td>
+                <td>
+                  <a title="Editar cliente" data-toggle="tooltip" data-placement="right" href="../../editar/{{lista_cliente.0.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+                </td>
+              </tr>
+              <tr>
+                <td class="">
+                  <strong>Teléfonos: </strong>
+
+                  {% for i in lista_telefono_cliente %}
+
+                  <p id="tr{{lista_telefono_cliente.0.id}}" style="margin:0 0 0px!important;">
+                    <strong>
+
+                      {{ lista_telefono_cliente.0.tipo_telefono }}:
+
+                    </strong>
+
+                    {{ lista_telefono_cliente.0.numero }}
+
+                    <small>
+                      <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="../../../telefono/editar/{{lista_telefono_cliente.0.id}}/" class="glyphicon glyphicon-edit"></a>
+                      <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('telefono/delete/?codigo={{lista_telefono_cliente.0.id}}','{{lista_telefono_cliente.0.id}}','{{lista_telefono_cliente.0.numero}}'); return false" class="glyphicon glyphicon-remove"></a>
+                    </small>
+                  </p>
+
+                  {% endfor %}
+
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                  <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../../telefono/nuevo/{{lista_cliente.0.id}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+                </td>
+              </tr>
+              <tr>
+                <td class="">
+                  <strong>Emails: </strong><br>
+
+                  {% for i in lista_email %}
+
+                  <p id="tr{{i.id}}" style="margin:0 0 0px!important;">
+
+                    {{ i.email }}
+
+                    <small>
+                      <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="" href="email/editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a>
+                      <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('email/delete/?codigo={{i.id}}','{{i.id}}','{{i.email}}'); return false" class="glyphicon glyphicon-remove"> </a>
+                    </small>
+                  </p>
+
+                  {% endfor %}
+
+                  <td></td>
+                  <td></td>
+                </td>
+                <td>
+                  <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../email/nuevo/{{lista_cliente.0.id}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+                </td>
+              </tr>
+              <tr>
+                <td class="">
+                  <strong>Direcciones: </strong><br>
+
+                  {% for i in direccioncliente_lista %}
+
+                  <p id="tr{{i.id}}" style="margin:0 0 0px!important;">
+                    <strong>{{ i.tipo_direccion }}: </strong>
                     {{ i.zona.ciudad.provincia.pais }}.
                     {{ i.zona.ciudad.provincia }}, {{ i.zona.ciudad }}
                     Zona {{ i.zona }}, calle {{ i.calle }}, número {{ i.numero }}
-                    <p>
-                      Punto de referencia {{ i.punto_referencia }}
-                    </p>
+                    Punto de referencia {{ i.punto_referencia }}
+                    <small>
+                      <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="../../../direccion/{{i.id}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+                      <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('direccion/delete/?codigo={{i.id}}','{{i.id}}','{{ i.zona.ciudad.provincia.pais }}. {{ i.zona.ciudad.provincia }}, {{ i.zona.ciudad }} Zona {{ i.zona }} calle {{ i.calle }} numero {{ i.numero }} Punto de referencia {{ i.punto_referencia }}'); return false" class="glyphicon glyphicon-remove"></a>
+                    </small>
+                  </p>
+
+                  {% endfor %}
+
                 </td>
+                <td width="3"></td>
+                <td width="3"></td>
                 <td width="3">
-                  <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="../../../direccion/nuevo" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-                </td>
-                <td width="3">
-                  <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../../direccion/{{i.id}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-                </td>
-                <td width="3">
-                  <a href=# onclick="eliminar('direccion/delete/?codigo={{i.id}}','{{i.id}}','{{ i.zona.ciudad.provincia.pais }}. {{ i.zona.ciudad.provincia }}, {{ i.zona.ciudad }} Zona {{ i.zona }} calle {{ i.calle }} numero {{ i.numero }} Punto de referencia {{ i.punto_referencia }}'); return false" class="glyphicon glyphicon-remove"></a>
+                  <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="../../../direccion/nuevo/{{ lista_cliente.0.id }}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
                 </td>
               </tr>
-
-              {% endfor %}
-
-          <tr>
-            <td><strong>Direccion</strong></td>
-            <td></td>
-            <td>
-              <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="../../../direccion/nuevo/{{id_cli}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-            </td>
-            <td></td>
-            <td></td>
-          </tr>
-              <tr>
-                <td><strong>Direccion</strong></td>
-                <td></td>
-                <td>
-                  <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="../../../direccion/nuevo" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-                </td>
-                <td></td>
-                <td></td>
-              </tr>
-
-              {% endif %}
-
             </table>
           </div>
         </div>
       </div>
-
-      {% else %}
-
-      <p>no existe el cliente </p>
-
-      {% endif %}
-
     </div>
     <div role="tabpanel" class="tab-pane fade" id="detalle">
-
-      {% if lista_cliente %}
-
-      {% for i in lista_cliente %}
-
       <br>
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <p><strong>Comentario:  </strong> {{ i.comentarios }}</p>
-          <table class="table">
-            <tr>
-              <td><strong>Adicional 1: </strong>{{ i.adicional1 }}</td>
-              <td><strong>Adicional 3: </strong>{{ i.adicional3 }}</td>
-            </tr>
-            <tr>
-              <td><strong>Adicional 2: </strong>{{ i.adicional2 }}</td>
-              <td><strong>Adicional 4: </strong>{{ i.adicional4 }}</td>
-            </tr>
-          </table>
-          <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../editar/{{i.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+      <div class="row">
+        <div class="panel panel-default">
+            <table class="table table-hover">
+              <tr>
+                <td class="" colspan="2">
+                  <strong>Comentario:  </strong>
+
+                  {{ lista_cliente.0.comentarios }}
+
+                  <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../editar/{{lista_cliente.0.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Adicional 1: </strong>{{ lista_cliente.0.adicional1 }}</td>
+                <td><strong>Adicional 3: </strong>{{ lista_cliente.0.adicional3 }}</td>
+              </tr>
+              <tr>
+                <td><strong>Adicional 2: </strong>{{ lista_cliente.0.adicional2 }}</td>
+                <td><strong>Adicional 4: </strong>{{ lista_cliente.0.adicional4 }}</td>
+              </tr>
+            </table>
         </div>
       </div>
-
-      {% endfor %}
-
-      {% endif %}
-
     </div>
   </div>
 </div>
