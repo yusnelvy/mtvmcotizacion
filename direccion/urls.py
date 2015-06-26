@@ -3,7 +3,7 @@ from direccion import views
 
 urlpatterns = patterns('',
                        url(r'^$', views.lista_direccion, name='lista_direccion'),
-                       url(r'^nuevo', views.add_direccion, name='add_direccion'),
+                       url(r'^nuevo/(?P<id_cli>\d+)/', views.add_direccion, name='add_direccion'),
                        url(r'^(?P<pk>\d+)/$', views.edit_direccion, name='edit_direccion'),
                        url(r'^tipo_direccion/$', views.lista_tipo_direccion,
                            name='lista_tipo_direccion'),
@@ -58,8 +58,5 @@ urlpatterns = patterns('',
                            name='add_inmueble'),
                        url(r'^inmueble/editar/(?P<pk>\d+)/$', views.edit_inmueble,
                            name='edit_inmueble'),
-                       url(r'^geo/(?P<type>pais)/$', views.geo, name='geo'),
-                       url(r'^geo/(?P<type>provincia|ciudad|zona)/(?P<parent_id>[0-9]+)$', views.geo, name='geo'),
-                       url(r'^geo/$', views.select_ejemplo, name='select_ejemplo'),
 
                        )

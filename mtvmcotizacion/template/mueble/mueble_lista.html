@@ -27,6 +27,7 @@ Eliminar mueble
 <a href="/mueble/ocupacion/" class="btn btn-default">Ocupacion</a>
 <a href="/mueble/forma_mueble/" class="btn btn-default">Formas</a>
 <a href="tamano/" class="btn btn-default">Tamaño</a>
+<a href="densidad/" class="btn btn-default">Densidad</a>
 </div>
 
 <h2>Muebles</h2>
@@ -52,23 +53,21 @@ Eliminar mueble
 <tr class="active">
     <th>Mueble</th>
     <th>Tipo de mueble</th>
-    <th>Ambiente</th>
     <th>Forma</th>
     <th>Trasladable</th>
     <th>Editar</th>
     <th>Eliminar</th>
   </tr>
 
-  {% for i in lista_mueble %}
+  {% for i in muebles %}
 
   <tr id="tr{{i.id}}">
     <td>{{ i.mueble }}</td>
     <td>{{ i.tipo_mueble }}</td>
-    <td>{{ i.ambiente }}</td>
     <td>{{ i.forma }}</td>
     <td>{{i.trasladable|yesno:"Si,No"}}</td>
     <td>
-      <a title="Editar" data-toggle="tooltip" data-placement="right" href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
+      <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'umuebles:edit_mueble' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
     </td>
     <td>
       <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.mueble}}"></a>
@@ -77,7 +76,47 @@ Eliminar mueble
   </tr>
 
   {% endfor %}
+<nav>
+  <ul class="pagination">
 
+    {% if muebles.has_previous %}
+
+    <li>
+      <a href="?page={{ muebles.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+
+    {% endif %}
+
+    <li class="current">
+      <a style="color:#000;"> Página
+
+        {{ muebles.number }}
+
+        de
+
+        {{ muebles.paginator.num_pages }}
+
+        Desde el mueble
+
+        {{ muebles.start_index }}
+
+        hasta el mueble
+
+        {{ muebles.end_index }}
+
+      </a>
+    </li>
+
+    {% if muebles.has_next %}
+
+    <li>
+      <a href="?page={{ muebles.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+
+    {% endif %}
+
+  </ul>
+</nav>
 {% endblock cuerpo_tabla %}
 
 {% endif %}

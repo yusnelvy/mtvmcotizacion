@@ -7,14 +7,14 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cotizacion', '0005_vehiculo_cargo'),
+        ('servicio', '0002_auto_20150619_1555'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='tiempo_carga',
-            name='cantidad_trabajador',
-            field=models.IntegerField(default=1),
+            model_name='material',
+            name='unidad',
+            field=models.ForeignKey(default=1, to='servicio.Unidad'),
             preserve_default=False,
         ),
     ]

@@ -23,7 +23,7 @@ Eliminar complejidad servicio
 <h2>Relacion complejidad - servicio</h2>
 <a href="/servicio/" class="btn btn-default">Lista de servicios</a>
 <a href="/servicio/complejidad_servicio/0/0/" class="btn btn-default">Ver todos</a>
-<a href="/servicio/complejidad_servicio/nuevo" class="btn btn-default">Nuevo</a>
+<a href="/servicio/complejidad_servicio/nuevo/0/" class="btn btn-default">Nuevo</a>
 
  {% endblock titulo_ficha %}
 
@@ -60,6 +60,7 @@ Eliminar complejidad servicio
     </td>
     <td width="3">
       <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="servicio: {{i.servicio}}"></a>
+      <a href="../../nuevo/{{i.servicio.id}}/" class="glyphicon glyphicon-plus" style="float:right;"></a>
     </td>
   </tr>
 

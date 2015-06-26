@@ -37,7 +37,7 @@ Eliminar mueble por ambiente
   {% block content1 %}
 
 
-<a href="/mueble/mueble_ambiente/nuevo" class="btn btn-default">Nuevo</a>
+<a href="/mueble/mueble_ambiente/nuevo/0/" class="btn btn-default">Nuevo</a>
 
   {% if buscar_muebleambiente %}
 
@@ -45,7 +45,6 @@ Eliminar mueble por ambiente
     <span class="badge" id="count_reg">
 
       {{ buscar_muebleambiente.count }}
-
 
     </span>
   </h6>
@@ -58,16 +57,17 @@ Eliminar mueble por ambiente
         <th width="3">Eliminar</th>
       </tr>
 
-      {% for i in buscar_muebleambiente %}
+      {% for i in muebleambientes %}
 
       <tr id="tr{{i.id}}">
         <td>{{ i.mueble }}</td>
         <td>{{ i.ambiente }}</td>
         <td width="3">
-          <a title="Editar" data-toggle="tooltip" data-placement="right" href="../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
+          <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'umuebles:edit_muebleambiente' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit" ></a>
         </td>
         <td width="3">
           <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="Ambiente: {{i.ambiente}} Mueble: {{ i.mueble }}"></a>
+          <a href="../nuevo/{{i.ambiente.id}}/" class="glyphicon glyphicon-plus" style="float:right;"></a>
         </td>
       </tr>
 
@@ -78,7 +78,47 @@ Eliminar mueble por ambiente
   <a href="/mueble/mueble_ambiente/nuevo" class="btn btn-default">Nuevo</a>
 
   {% endif %}
+<nav>
+  <ul class="pagination">
 
+    {% if muebleambientes.has_previous %}
+
+    <li>
+      <a href="?page={{ muebleambientes.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+
+    {% endif %}
+
+    <li class="current">
+      <a style="color:#000;"> Página
+
+        {{ muebleambientes.number }}
+
+        de
+
+        {{ muebleambientes.paginator.num_pages }}
+
+        Desde el mueble
+
+        {{ muebleambientes.start_index }}
+
+        hasta el mueble
+
+        {{ muebleambientes.end_index }}
+
+      </a>
+    </li>
+
+    {% if muebleambientes.has_next %}
+
+    <li>
+      <a href="?page={{ muebleambientes.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+
+    {% endif %}
+
+  </ul>
+</nav>
   {% endblock content1 %}
 
   {% block col2 %}

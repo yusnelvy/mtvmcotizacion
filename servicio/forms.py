@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from servicio.models import Servicio, Material, \
-    Servicio_Material, Complejidad, Complejidad_Servicio
+    Servicio_Material, Complejidad, \
+    Complejidad_Servicio, Unidad
 
 
 class ServicioForm(ModelForm):
@@ -33,4 +34,10 @@ class ComplejidadForm(ModelForm):
 class ComplejidadServicioForm(ModelForm):
     class Meta:
         model = Complejidad_Servicio
+        fields = '__all__'
+
+
+class UnidadForm(ModelForm):
+    class Meta:
+        model = Unidad
         fields = '__all__'

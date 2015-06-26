@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from django.template import RequestContext
 import simplejson as json
 import django.db
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 # Create your views here.
@@ -14,6 +15,7 @@ import django.db
 
 def lista_ambiente(request):
     """docstring"""
+
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -36,7 +38,18 @@ def lista_ambiente(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_ambiente = Ambiente.objects.all()
-    context = {'lista_ambiente': lista_ambiente}
+    paginator = Paginator(lista_ambiente, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        ambientes = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        ambientes = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        ambientes = paginator.page(paginator.num_pages)
+    context = {'lista_ambiente': lista_ambiente, 'ambientes': ambientes}
     return render(request, 'ambiente/ambiente_lista.html', context)
 
 
@@ -100,7 +113,7 @@ def add_ambiente_tipoinmueble(request, id_ti):
             form_ambtipoinmueble.save()
             return HttpResponseRedirect(reverse('uambientes:lista_ambiente_tipo_inmueble'))
     else:
-        form_ambtipoinmueble = AmbienteTipoInmuebleForm({'tipo_inmueble': id_ti})
+        form_ambtipoinmueble = AmbienteTipoInmuebleForm(initial={'tipo_inmueble': id_ti})
     return render_to_response('ambiente/ambientetipoinmueble_add.html',
                               {'form_ambtipoinmueble': form_ambtipoinmueble, 'create': True},
                               context_instance=RequestContext(request))
@@ -112,6 +125,8 @@ def edit_ambiente(request, pk):
 
     id_ambiente = Ambiente.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_ambiente = AmbienteForm(request.POST, instance=id_ambiente)
@@ -120,7 +135,10 @@ def edit_ambiente(request, pk):
             # formulario validado correctamente
             form_edit_ambiente.save()
 
-            return HttpResponseRedirect(reverse('uambientes:lista_ambiente'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('uambientes:lista_ambiente'))
 
     else:
         # formulario inicial

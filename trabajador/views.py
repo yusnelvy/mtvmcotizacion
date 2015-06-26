@@ -6,6 +6,7 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse
 import django.db
 import simplejson as json
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 # Create your views here.
@@ -35,7 +36,20 @@ def lista_cargotrabajador(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_cargo = Cargo_trabajador.objects.all()
-    context = {'lista_cargo': lista_cargo}
+
+    paginator = Paginator(lista_cargo, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        cargos = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        cargos = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        cargos = paginator.page(paginator.num_pages)
+
+    context = {'lista_cargo': lista_cargo, 'cargos': cargos}
     return render(request, 'trabajador/cargotrabajador_lista.html', context)
 
 
@@ -62,6 +76,8 @@ def edit_cargotrabajador(request, pk):
 
     id_cargo = Cargo_trabajador.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_cargotrabajador = CargotrabajadorForm(request.POST, instance=id_cargo)
@@ -70,7 +86,10 @@ def edit_cargotrabajador(request, pk):
             # formulario validado correctamente
             form_edit_cargotrabajador.save()
 
-            return HttpResponseRedirect(reverse('utrabajadores:lista_cargotrabajador'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('utrabajadores:lista_cargotrabajador'))
     else:
         # formulario inicial
         form_edit_cargotrabajador = CargotrabajadorForm(instance=id_cargo)

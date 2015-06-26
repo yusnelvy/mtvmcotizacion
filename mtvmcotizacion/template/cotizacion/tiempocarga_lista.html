@@ -50,7 +50,7 @@
   <th>Eliminar</th>
 </tr>
 
-{% for i in lista_tiempocarga %}
+{% for i in tiempocargas %}
 
 <tr id="tr{{i.id}}">
   <td>{{ i.cantidad_trabajador }}</td>
@@ -68,6 +68,47 @@
 </tr>
 
 {% endfor %}
+<nav>
+  <ul class="pagination">
+
+    {% if tiempocargas.has_previous %}
+
+    <li>
+      <a href="?page={{ tiempocargas.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+
+    {% endif %}
+
+    <li class="current">
+      <a style="color:#000;"> Página
+
+        {{ tiempocargas.number }}
+
+        de
+
+        {{ tiempocargas.paginator.num_pages }}
+
+        Desde el tiempo de carga
+
+        {{ tiempocargas.start_index }}
+
+        hasta el tiempo de carga
+
+        {{ tiempocargas.end_index }}
+
+      </a>
+    </li>
+
+    {% if tiempocargas.has_next %}
+
+    <li>
+      <a href="?page={{ tiempocargas.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+
+    {% endif %}
+
+  </ul>
+</nav>
 
 {% endblock cuerpo_tabla %}
 

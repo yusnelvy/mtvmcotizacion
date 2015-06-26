@@ -7,8 +7,7 @@ from direccion.forms import PaisForm, ProvinciaForm, \
     DireccionForm, TipoInmuebleForm, \
     ComplejidadInmuebleForm, TarifaValorForm, \
     InmuebleForm
-from django.http import HttpResponseRedirect, HttpResponse, \
-    HttpResponseBadRequest, HttpResponseNotFound
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 import simplejson as json
@@ -48,7 +47,7 @@ def lista_pais(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_pais = Pais.objects.all()
-    paginator = Paginator(lista_pais, 10)
+    paginator = Paginator(lista_pais, 25)
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -90,7 +89,19 @@ def lista_provincia(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_provincia = Provincia.objects.all()
-    context = {'lista_provincia': lista_provincia}
+
+    paginator = Paginator(lista_provincia, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        provincias = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        provincias = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        provincias = paginator.page(paginator.num_pages)
+    context = {'lista_provincia': lista_provincia, 'provincias': provincias}
     return render(request, 'direccion/provincia_lista.html', context)
 
 
@@ -120,7 +131,19 @@ def lista_ciudad(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_ciudad = Ciudad.objects.all()
-    context = {'lista_ciudad': lista_ciudad}
+
+    paginator = Paginator(lista_ciudad, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        ciudades = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        ciudades = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        ciudades = paginator.page(paginator.num_pages)
+    context = {'lista_ciudad': lista_ciudad, 'ciudades': ciudades}
     return render(request, 'direccion/ciudad_lista.html', context)
 
 
@@ -150,7 +173,19 @@ def lista_zona(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_zona = Zona.objects.all()
-    context = {'lista_zona': lista_zona}
+
+    paginator = Paginator(lista_zona, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        zonas = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        zonas = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        zonas = paginator.page(paginator.num_pages)
+    context = {'lista_zona': lista_zona, 'zonas': zonas}
     return render(request, 'direccion/zona_lista.html', context)
 
 
@@ -180,7 +215,20 @@ def lista_tipo_direccion(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_tipodireccion = Tipo_direccion.objects.all()
-    context = {'lista_tipodireccion': lista_tipodireccion}
+
+    paginator = Paginator(lista_tipodireccion, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        tipodirecciones = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        tipodirecciones = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        tipodirecciones = paginator.page(paginator.num_pages)
+
+    context = {'lista_tipodireccion': lista_tipodireccion, 'tipodirecciones': tipodirecciones}
     return render(request, 'direccion/tipodireccion_lista.html', context)
 
 
@@ -240,7 +288,20 @@ def lista_tipo_inmueble(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_tipo_inmueble = Tipo_Inmueble.objects.all()
-    context = {'lista_tipo_inmueble': lista_tipo_inmueble}
+
+    paginator = Paginator(lista_tipo_inmueble, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        tipoinmuebles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        tipoinmuebles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        tipoinmuebles = paginator.page(paginator.num_pages)
+
+    context = {'lista_tipo_inmueble': lista_tipo_inmueble, 'tipoinmuebles': tipoinmuebles}
     return render(request, 'direccion/tipo_inmueble_lista.html', context)
 
 
@@ -270,7 +331,20 @@ def lista_complejidad_inmueble(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_complejidad_inmueble = Complejidad_Inmueble.objects.all()
-    context = {'lista_complejidad_inmueble': lista_complejidad_inmueble}
+
+    paginator = Paginator(lista_complejidad_inmueble, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        complejidadinmuebles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        complejidadinmuebles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        complejidadinmuebles = paginator.page(paginator.num_pages)
+
+    context = {'lista_complejidad_inmueble': lista_complejidad_inmueble, 'complejidadinmuebles': complejidadinmuebles}
     return render(request, 'direccion/complejidad_inmueble_lista.html', context)
 
 
@@ -408,7 +482,7 @@ def add_tipo_direccion(request):
                               context_instance=RequestContext(request))
 
 
-def add_direccion(request):
+def add_direccion(request, id_cli):
     """docstring"""
 
     if request.method == 'POST':
@@ -418,7 +492,7 @@ def add_direccion(request):
             id_cli = Direccion.objects.get(id=id_reg.id)
             return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
     else:
-        form_direccion = DireccionForm()
+        form_direccion = DireccionForm(initial={'cliente': id_cli})
 
     return render_to_response('direccion/direccion_add.html',
                               {'form_direccion': form_direccion, 'create': True},
@@ -491,6 +565,8 @@ def edit_pais(request, pk):
     """docstring"""
     pais = Pais.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_pais = PaisForm(request.POST, instance=pais)
@@ -499,8 +575,10 @@ def edit_pais(request, pk):
             # formulario validado correctamente
             form_edit_pais.save()
 
-            return HttpResponseRedirect(reverse('udireciones:lista_pais'))
-
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('udireciones:lista_pais'))
     else:
         # formulario inicial
         form_edit_pais = PaisForm(instance=pais)
@@ -514,6 +592,8 @@ def edit_provincia(request, pk):
     """docstring"""
     provincia = Provincia.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_provincia = ProvinciaForm(request.POST, instance=provincia)
@@ -522,7 +602,10 @@ def edit_provincia(request, pk):
             # formulario validado correctamente
             form_edit_provincia.save()
 
-            return HttpResponseRedirect(reverse('udireciones:lista_provincia'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('udireciones:lista_provincia'))
 
     else:
         # formulario inicial
@@ -537,6 +620,8 @@ def edit_ciudad(request, pk):
     """docstring"""
     ciudad = Ciudad.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_ciudad = CiudadForm(request.POST, instance=ciudad)
@@ -545,7 +630,11 @@ def edit_ciudad(request, pk):
             # formulario validado correctamente
             form_edit_ciudad.save()
 
-            return HttpResponseRedirect(reverse('udireciones:lista_ciudad'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+
+                return HttpResponseRedirect(reverse('udireciones:lista_ciudad'))
 
     else:
         # formulario inicial
@@ -560,6 +649,8 @@ def edit_zona(request, pk):
     """docstring"""
     zona = Zona.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_zona = ZonaForm(request.POST, instance=zona)
@@ -568,7 +659,10 @@ def edit_zona(request, pk):
             # formulario validado correctamente
             form_edit_zona.save()
 
-            return HttpResponseRedirect(reverse('udireciones:lista_zona'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('udireciones:lista_zona'))
 
     else:
         # formulario inicial
@@ -583,6 +677,8 @@ def edit_tipo_direccion(request, pk):
     """docstring"""
     tipodireccion = Tipo_direccion.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formform_tipodireccionulario enviado
         form_edit_tipodireccion = TipoDireccionForm(request.POST, instance=tipodireccion)
@@ -591,7 +687,10 @@ def edit_tipo_direccion(request, pk):
             # formulario validado correctamente
             form_edit_tipodireccion.save()
 
-            return HttpResponseRedirect(reverse('udireciones:lista_tipo_direccion'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('udireciones:lista_tipo_direccion'))
 
     else:
         # formulario inicial
@@ -636,11 +735,17 @@ def edit_tipo_inmueble(request, pk):
     """docstring"""
     tipo_inmueble = Tipo_Inmueble.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         form_edit_tipo_inmueble = TipoInmuebleForm(request.POST, instance=tipo_inmueble)
         if form_edit_tipo_inmueble.is_valid():
             form_edit_tipo_inmueble.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_tipo_inmueble'))
+
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('udireciones:lista_tipo_inmueble'))
     else:
         form_edit_tipo_inmueble = TipoInmuebleForm(instance=tipo_inmueble)
 
@@ -672,11 +777,17 @@ def edit_tarifa_valor(request, pk):
 
     tarifa_valor = Tarifa_valor.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         form_edit_tarifa = TarifaValorForm(request.POST, instance=tarifa_valor)
         if form_edit_tarifa.is_valid():
             form_edit_tarifa.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_tarifa_valor'))
+
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('udireciones:lista_tarifa_valor'))
     else:
         form_edit_tarifa = TarifaValorForm(instance=tarifa_valor)
 
@@ -706,82 +817,3 @@ def edit_inmueble(request, pk):
     return render_to_response('direccion/inmueble_edit.html',
                               {'form_edit_inmueble': form_edit_inmueble, 'create': True},
                               context_instance=RequestContext(request))
-
-
-#prueba para mostrar los select anidados dependiendo de otro select
-def select_ejemplo(request):
-
-    # Funcion para levantar la pantalla inicial del sistema
-    #
-    """docstring"""
-    if request.method == 'POST':
-
-        form_direccion = DireccionForm(request.POST)
-        if form_direccion.is_valid():
-            form_direccion.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_direccion'))
-    else:
-
-        form_direccion = DireccionForm()
-
-    return render_to_response('direccion/prueba-select.html',
-                              {'form_direccion': form_direccion, 'create': True},
-                              context_instance=RequestContext(request))
-
-
-def geo(request, type=None, parent_id=None):
-
-    if not request.is_ajax():
-        return HttpResponseBadRequest('<h1>%s</h1>' % 'bad request')
-
-    # para testear el efecto loading
-    #time.sleep(1);
-
-    locations = {
-        'pais': [Pais],
-        'provincia': [Provincia, Pais, 'pais_id', 'pais'],
-        'ciudad': [Ciudad, Provincia, 'provincia_id', 'provincia'],
-        'zona': [Zona, Ciudad, 'ciudad_id', 'ciudad']
-    }
-
-    location_exists = False
-
-    if parent_id is not None:
-        location_exists = (locations[type][2].objects.filter(id=parent_id).count() > 0)
-    else:
-        location_exists = (locations[type][0].objects.count() > 0)
-
-    if not location_exists:
-        return HttpResponseBadRequest('Identificador inválido')
-
-    data_fields = {
-        'pais': ('id', 'pais'),
-        'provincia': ('id', 'provincia'),
-        'ciudad': ('id', 'ciudad'),
-        'zona': ('id', 'zona')
-    }
-
-    extra_where = None
-
-    if parent_id is not None:
-        extra_where = ['%s = %d' % (locations[type][2], int(parent_id))]
-
-    location_result = locations[type][0].objects.extra(where=extra_where).values(*data_fields[type]).order_by('id')
-
-    if not location_result.count() > 0:
-        return HttpResponseNotFound(json.dumps({'error': 'empty'}))
-
-    data = {
-        'parent': None,
-        'data': list(location_result)
-    }
-
-    if parent_id is not None:
-        data['parent'] = {
-            'id': parent_id,
-            'type': locations[type][3]
-        }
-
-    output = json.dumps(data)
-
-    return HttpResponse(output, content_type='application/json')

@@ -1177,65 +1177,151 @@ Eliminar Cotización
           <td>{{ det_mue.capacidad_interna|yesno:"Si,No" }}</td>
           <td>{{ det_mue.observaciones }} </td>
         </tr>
-
-        {% if det_servicio %}
-
         <tr>
           <td colspan="14">
-          <h4>Servicio</h4>
-          </td>
-        </tr>
-        <tr>
-          <td td colspan="14">
+          {% if det_servicio %}
+          <table class="table table-hover">
+              {% for det_ser in det_servicio %}
 
-          {% for det_ser in det_servicio %}
+                {% if det_ser.cotizacion_mueble == det_mue %}
+                <tr>
+                  <td colspan="14"><h4>Servicio: {{det_ser.servicio }}</h4></td>
+                </tr>
+                <tr>
+                  <td>
+                    {% if det_material %}
 
-          {% if det_ser.cotizacion_mueble == det_mue %}
+                    <table class="table table-hover">
 
-            {{ det_ser.servicio }} -
+                      {% for det_mat in det_material %}
 
-          {% endif %}
+                      {% if det_mat.cotizacion_servicio == det_ser %}
 
-        {% endfor %}
+                      <tr>
+                        <td colspan="6"><h4>material: {{ det_mat.material }}</h4></td>
+                      </tr>
+                      <tr>
+                        <td>Cantidad </td>
+                        <td>Precio unitario</td>
+                        <td>Precio total</td>
+                        <td>Peso unitario</td>
+                        <td>Peso total</td>
+                        <td>Recuperable</td>
+                      </tr>
+                      <tr>
+                        <td>{{ det_mat.cantidad }} </td>
+                        <td>{{ det_mat.precio_unitario }}</td>
+                        <td>{{ det_mat.precio_total }}</td>
+                        <td>{{ det_mat.peso_unitario }}</td>
+                        <td>{{ det_mat.peso_total }}</td>
+                        <td>{{ det_mat.recuperable |yesno:"Si,No" }}</td>
+                      </tr>
 
-          </td>
-        </tr>
+
+                      {% endif %}
+
+                      {% endfor %}
+
+                    </table>
+
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endif %}
+
+            {% endfor %}
+
+          </table>
 
         {% endif %}
-
         <tr>
           <td colspan="14">
-
-            {% if det_material %}
+            {% if det_contenido %}
 
             <table class="table table-hover">
 
-              {% for det_mat in det_material %}
+              {% for det_cont in det_contenido %}
 
-              {% if det_mat.cotizacion_mueble == det_mue %}
-
-              <tr>
-                <td colspan="6"><h4>material: {{ det_mat.material }}</h4></td>
+              {% if det_cont.cotizacion_mueble == det_mue %}
+               <tr>
+                <td colspan="5">
+                  <h4>Contenido: {{ det_cont.contenido }}</h4>
+                </td>
               </tr>
               <tr>
-                <td>Cantidad </td>
-                <td>Precio unitario</td>
-                <td>Precio total</td>
-                <td>Peso unitario</td>
-                <td>Peso total</td>
-                <td>Recuperable</td>
+                <td>Densidad </td>
+                <td>Volumen del contenido</td>
+                <td>Peso del contenido</td>
+                <td>Porcentaje</td>
               </tr>
               <tr>
-                <td>{{ det_mat.cantidad }} </td>
-                <td>{{ det_mat.precio_unitario }}</td>
-                <td>{{ det_mat.precio_total }}</td>
-                <td>{{ det_mat.peso_unitario }}</td>
-                <td>{{ det_mat.peso_total }}</td>
-                <td>{{ det_mat.recuperable |yesno:"Si,No" }}</td>
+                <td>{{ det_cont.densidad }} </td>
+                <td>{{ det_cont.volumen_contenido }}</td>
+                <td>{{ det_cont.peso_contenido }}</td>
+                <td>{{ det_cont.porcentaje }}</td>
               </tr>
-          </td>
-        <tr>
+              <tr>
+                <td colspan="5">
 
+                  {% if det_servicio_contenido %}
+
+                  <table class="table table-hover">
+                      {% for det_sercon in det_servicio_contenido %}
+
+                        {% if det_sercon.cotizacion_contenido == det_cont.contenido %}
+
+                        <tr>
+                          <td><h4>Servicio del contenido: {{det_sercon.servicio }}</h4></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            {% if det_material %}
+
+                            <table class="table table-hover">
+
+                              {% for det_mat in det_material %}
+
+                              {% if det_mat.cotizacion_servicio == det_sercon %}
+
+                              <tr>
+                                <td colspan="6"><h4>Material del servicio del contenido: {{ det_mat.material }}</h4></td>
+                              </tr>
+                              <tr>
+                                <td>Cantidad </td>
+                                <td>Precio unitario</td>
+                                <td>Precio total</td>
+                                <td>Peso unitario</td>
+                                <td>Peso total</td>
+                                <td>Recuperable</td>
+                              </tr>
+                              <tr>
+                                <td>{{ det_mat.cantidad }} </td>
+                                <td>{{ det_mat.precio_unitario }}</td>
+                                <td>{{ det_mat.precio_total }}</td>
+                                <td>{{ det_mat.peso_unitario }}</td>
+                                <td>{{ det_mat.peso_total }}</td>
+                                <td>{{ det_mat.recuperable |yesno:"Si,No" }}</td>
+                              </tr>
+
+
+                              {% endif %}
+
+                              {% endfor %}
+
+                            </table>
+
+                            {% endif %}
+                          </td>
+                        </tr>
+                        {% endif %}
+
+                    {% endfor %}
+
+                  </table>
+
+                  {% endif %}
+                </td>
+              </tr>
               {% endif %}
 
               {% endfor %}
@@ -1243,7 +1329,6 @@ Eliminar Cotización
             </table>
 
             {% endif %}
-
           </td>
         </tr>
 

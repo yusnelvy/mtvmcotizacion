@@ -7,14 +7,14 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('servicio', '0001_initial'),
+        ('cotizacion', '0002_auto_20150619_1555'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='material',
-            name='recuperable',
-            field=models.BooleanField(default=False),
+            model_name='cotizacion_servicio',
+            name='cotizacion_contenido',
+            field=models.ForeignKey(to='contenido.Contenido', blank=True),
             preserve_default=True,
         ),
     ]

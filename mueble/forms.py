@@ -30,6 +30,9 @@ class OcupacionForm(ModelForm):
     class Meta:
         model = Ocupacion
         fields = '__all__'
+        labels = {
+            'descripcion': ('Nivel de ocupación')
+        }
 
 
 class FormaMuebleForm(ModelForm):
