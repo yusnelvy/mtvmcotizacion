@@ -2,7 +2,7 @@
 
 {% block titulo %}
 
-<title>Contenido</title>
+<title>Tipos de contenidos</title>
 
 {% endblock titulo %}
 
@@ -20,8 +20,8 @@ Eliminar tipo de contenido
 
 {% block titulo_tabla %}
 
-<h2>Lista de contenidos</h2>
-<a href="contenido_tipico/0/" class="btn btn-default">Contenidos tipico</a>
+<h2>Tipos de contenido</h2>
+<a href="contenido_tipico/0/" class="btn btn-default">Contenidos típico</a>
 <a href="contenido_servicio/0/" class="btn btn-default">Contenido servicio</a>
 
 {% endblock titulo_tabla %}
@@ -43,26 +43,24 @@ Eliminar tipo de contenido
 {% block cuerpo_tabla %}
 
 <tr class="active">
-  <th colspan="2"></th>
+  <th></th>
   <th colspan="4">Densidad en Kg/m3</th>
   <th colspan="2"></th>
 </tr>
 <tr class="active">
   <th>Contenido</th>
-  <th>Contenedor</th>
   <th>Baja</th>
   <th>Media</th>
   <th>Alta</th>
   <th>Super-alta</th>
-  <th>Editar</th>
-  <th>Eliminar</th>
+  <th width="3">Editar</th>
+  <th width="3">Eliminar</th>
 </tr>
 
 {% for i in contenidos %}
 
 <tr id="tr{{i.id}}">
   <td>{{ i.contenido }}</td>
-  <td>{{ i.contenedor }}</td>
   <td>{{ i.densidad_baja }}</td>
   <td>{{ i.densidad_media }}</td>
   <td>{{ i.densidad_alta }}</td>

@@ -105,7 +105,7 @@ class Densidad(models.Model):
     class Meta:
         verbose_name = "Densidad"
         verbose_name_plural = "Densidades"
-        #ordering = ['descripcion']
+        ordering = ['id']
 
 
 class Tamano_Mueble(models.Model):

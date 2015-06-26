@@ -2,25 +2,25 @@
 
   {% block titulo %}
 
-<title>Servicio material</title>
+<title>Servicios con sus materiales aplicados</title>
 
 {% endblock titulo %}
 
  {% block titulo_modal %}
 
-Eliminar Servicio material
+Eliminar material aplicado al servicio
 
  {% endblock titulo_modal %}
 
  {% block validacion_modal %}
 
-<p>¿Desea eliminar <span id="modal_name"></span>?</p>
+<p>¿Desea eliminar el registro: <span id="modal_name"></span>?</p>
 
  {% endblock validacion_modal %}
 
  {% block titulo_ficha %}
 
-<h2>Relacion servicio - material</h2>
+<h2>Servicios con sus materiales aplicados</h2>
 <a href="/servicio/" class="btn btn-default">Lista de servicios</a>
 <a href="/servicio/servicio_material/0/0/" class="btn btn-default">Ver todos</a>
 <a href="/servicio/servicio_material/nuevo/0/" class="btn btn-default">Nuevo</a>
@@ -36,7 +36,6 @@ Eliminar Servicio material
 
     {{ buscar_serviciomaterial.count }}
 
-
   </span>
 </h6>
  <div class="panel panel-default">
@@ -45,13 +44,13 @@ Eliminar Servicio material
     <th>Servicio</th>
     <th width="">Material</th>
     <th>Cantidad</th>
-    <th>Calculo</th>
+    <th>Cálculo</th>
     <th width="3">Editar</th>
     <th width="3">Eliminar</th>
+    <th width="3">Agregar</th>
   </tr>
 
   {% for i in buscar_serviciomaterial %}
-
 
   <tr id="tr{{i.id}}">
     <td>{{ i.servicio }}</td>
@@ -63,9 +62,10 @@ Eliminar Servicio material
     </td>
     <td width="3">
       <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="servicio: {{i.servicio}} material: {{ i.material }}"></a>
+    </td>
+    <td>
       <a href="../../nuevo/{{i.servicio.id}}/" class="glyphicon glyphicon-plus" style="float:right;"></a>
     </td>
-
   </tr>
 
   {% endfor %}

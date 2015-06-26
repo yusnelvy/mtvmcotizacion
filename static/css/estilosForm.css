@@ -77,3 +77,7 @@ th{text-align: center!important;}
 .filtra-cliente>p>label[for=id_cliente],.filtra-cliente>p>select[id=id_cliente] {
   display: none;
 }
+
+.filtra-tipoinmueble>p>label[for=id_tipo_inmueble],.filtra-tipoinmueble>p>select[id=id_tipo_inmueble] {
+  display: none;
+}
