@@ -471,7 +471,7 @@ def buscar_cotizacion(request, pk):
         'det_material': det_material
 
     }
-    return render(request, 'cotizacion/cotizacion_buscar.html', context)
+    return render(request, 'cotizacion/cotizacion_buscar2.html', context)
 
 
 # agregar nuevo
