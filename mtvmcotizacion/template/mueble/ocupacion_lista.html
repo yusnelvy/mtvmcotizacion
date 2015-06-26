@@ -2,7 +2,7 @@
 
 {% block titulo %}
 
-<title>Nivel de ocupación</title>
+<title>Niveles de ocupación</title>
 
 {% endblock titulo %}
 
@@ -31,7 +31,7 @@ Eliminar nivel de ocupación
 
 {% block cantidad_tabla %}
 
-<h6>Cantidad de ocupacion encontradas:
+<h6>Cantidad de niveles de ocupación encontrados:
   <span class="badge" id="count_reg">
     {{ lista_ocupacion.count }}
   </span>
@@ -42,10 +42,10 @@ Eliminar nivel de ocupación
 {% block cuerpo_tabla %}
 
   <tr class="active">
-    <th>Ocupacion</th>
+    <th>Nivel de ocupación</th>
     <th>Valor</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
+    <th width="3">Editar</th>
+    <th width="3">Eliminar</th>
   </tr>
 
   {% for i in lista_ocupacion %}
