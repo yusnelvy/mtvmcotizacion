@@ -35,18 +35,6 @@ Eliminar país
 
   </span>
 </h6>
-{% include "search/search.html" %}
-
-<form type="get" action=".">
-    <input type="text" name="q">
-    <button type="submit">Search</button>
-</form>
-cant:
-{{note.count}}
-{% for note in notes %}
-<h1>{{ note.pais }}</h1>
-
-{% endfor %}
 
 {% endblock cantidad_tabla %}
 
