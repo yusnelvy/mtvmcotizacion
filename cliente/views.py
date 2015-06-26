@@ -191,14 +191,14 @@ def lista_direccioncliente(request, id_cli):
 
 # agregar nuevo
 def add_cliente(request):
-
+    mensaje = ''
     if request.method == 'POST':
         try:
             cliente_form = ClienteForm(request.POST)
 
             if cliente_form.is_valid():
                 cliente_form.save()
-
+                mensaje = 'Se ha guardado la información del cliente'
                 return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
 
         except Exception as ex:
@@ -207,7 +207,6 @@ def add_cliente(request):
 
     else:
         cliente_form = ClienteForm()
-        mensaje = ''
 
     return render_to_response('cliente/cliente_add.html',
                               {'cliente_form': cliente_form, 'create': True, 'mensaje': mensaje},
@@ -399,7 +398,6 @@ def ficha_cliente(request, pk):
         'lista_email': lista_email,
         'lista_telefono_cliente': lista_telefono_cliente,
         'direccioncliente_lista': direccioncliente_lista,
-        'id_cli': pk
         }
     return render(request, 'cliente/cliente_ficha.html', context)
 

@@ -8,15 +8,15 @@
 
 {% block titulo_form %}
 
-  <h2>Agregar telefono</h2>
+<h2>Agregar teléfono</h2>
 
 {% endblock titulo_form %}
 
 {% block cuerpo_form %}
 
-<div class="form-group">
+<div class="form-group filtra-cliente">
 
-  {{ form_telefono.as_p }}
+    {{ form_telefono.as_p }}
 
 </div>
 
@@ -26,8 +26,8 @@
 
 <br>
 <div class="well well-lg">
-  <p>El <strong>Telefono</strong> del cliente es importante porque por medio de ellos se contacta al cliente.  </p>
-  <p>Se recomienda agregar al menos un telefono por cada cliente.</p>
+    <p>El <strong>Telefono</strong> del cliente es importante porque por medio de ellos se contacta al cliente.  </p>
+    <p>Se recomienda agregar al menos un telefono por cada cliente.</p>
 </div>
 
 {% endblock ayuda %}

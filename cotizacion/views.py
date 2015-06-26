@@ -479,7 +479,7 @@ def buscar_cotizacion(request, pk):
         'det_servicio_contenido': det_servicio_contenido
 
     }
-    return render(request, 'cotizacion/cotizacion_buscar.html', context)
+    return render(request, 'cotizacion/cotizacion_buscar2.html', context)
 
 
 # agregar nuevo
@@ -813,6 +813,8 @@ def edit_tiempocarga(request, pk):
 @permission_required('cotizacion.change_cotizacion')
 def edit_cotizacion(request, pk):
 
+    redirect_to = request.REQUEST.get('next', '')
+
     try:
         id_cotizacion = Cotizacion.objects.get(pk=pk)
     except ObjectDoesNotExist as ex:
@@ -832,6 +834,10 @@ def edit_cotizacion(request, pk):
             #reporter = Cotizacion.objects.filter(pk=id_reg.id)
             #reporter.update(cantidad_ambientes=F('cantidad_ambientes')+1)
 
+        if redirect_to:
+
+            return HttpResponseRedirect(redirect_to)
+        else:
             return HttpResponseRedirect(reverse('ucotizaciones:lista_cotizacion'))
 
     else:
