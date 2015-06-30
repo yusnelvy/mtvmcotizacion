@@ -17,8 +17,8 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 import simplejson as json
 import django.db
-from django.db.models import F
-
+#from django.db.models import F
+from servicio.forms import Complejidad_Servicio
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -461,6 +461,7 @@ def buscar_cotizacion(request, pk):
     det_material = Cotizacion_Material.objects.filter(cotizacion_servicio__cotizacion_mueble__cotizacion_ambiente__cotizacion_id=pk)
     det_contenido = Cotizacion_Contenido.objects.filter(cotizacion_mueble__cotizacion_ambiente__cotizacion_id=pk)
     det_servicio_contenido = Cotizacion_Servicio.objects.filter(cotizacion_mueble__cotizacion_ambiente__cotizacion_id=pk).exclude(cotizacion_contenido_id=None)
+    det_complejidad = Complejidad_Servicio.objects.filter(servicio__cotizacion_servicio__cotizacion_mueble__cotizacion_ambiente__cotizacion_id=pk)
 
     for modelObject in buscar_cotizacion:
         suma = modelObject.volumen_contenedores + modelObject.volumen_muebles_cotizado
@@ -476,8 +477,8 @@ def buscar_cotizacion(request, pk):
         'det_servicio': det_servicio,
         'det_material': det_material,
         'det_contenido': det_contenido,
-        'det_servicio_contenido': det_servicio_contenido
-
+        'det_servicio_contenido': det_servicio_contenido,
+        'det_complejidad': det_complejidad
     }
     return render(request, 'cotizacion/cotizacion_buscar2.html', context)
 
