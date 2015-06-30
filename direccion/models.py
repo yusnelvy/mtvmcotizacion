@@ -151,6 +151,8 @@ class Complejidad_Inmueble(models.Model):
 
     complejidad = models.CharField(max_length=100, unique=True)
     factor = models.DecimalField(max_digits=2, decimal_places=2)
+    valor_ambiente = models.DecimalField(max_digits=13, decimal_places=2)
+    valor_metrocubico = models.DecimalField(max_digits=13, decimal_places=2)
 
     def __str__(self):
         return self.complejidad
@@ -159,23 +161,6 @@ class Complejidad_Inmueble(models.Model):
         verbose_name = "complejidad del inmueble"
         verbose_name_plural = "complejidades del inmueble"
         #ordering = ['complejidad']
-
-
-class Tarifa_valor(models.Model):
-    """docstring for Tarifa_valor"""
-    def __init__(self, *args, **kwargs):
-        super(Tarifa_valor, self).__init__(*args, **kwargs)
-
-    descripcion = models.CharField(max_length=100, unique=True)
-    valor = models.DecimalField(max_digits=13, decimal_places=2)
-
-    def __str__(self):
-        return self.descripcion
-
-    class Meta:
-        verbose_name = "Tarifa del inmueble"
-        verbose_name_plural = "Tarifas del inmueble"
-        ordering = ['descripcion']
 
 
 class Inmueble(models.Model):
@@ -196,7 +181,6 @@ class Inmueble(models.Model):
     pisos_ascensor = models.IntegerField()
     complejidad = models.ForeignKey(Complejidad_Inmueble, on_delete=models.PROTECT)
     distancia_vehiculo = models.IntegerField()
-    tarifa_valor = models.ForeignKey(Tarifa_valor, on_delete=models.PROTECT)
 
     def __str__(self):
         return str(self.inmueble)

@@ -91,6 +91,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 #HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 # increase the default number of results (from 20)
+
 #HAYSTACK_SEARCH_RESULTS_PER_PAGE = 40
 
 ROOT_URLCONF = 'mtvmcotizacion.urls'
