@@ -73,7 +73,6 @@ th{text-align: center!important;}
   background-color: #f2dede;
   border-color: #eed3d7;
 }
-
 .filtra-cliente>p>label[for=id_cliente],.filtra-cliente>p>select[id=id_cliente] {
   display: none;
 }

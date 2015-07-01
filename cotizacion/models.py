@@ -230,6 +230,10 @@ class Cotizacion_Ambiente(models.Model):
     def __str__(self):
         return u' %s - %s' % (self.cotizacion, self.ambiente)
 
+    def _get_cantidad_ambiente(self):
+        return self.cotizacion.cantidad_ambientes+1
+    cantidad_ambiente = property(_get_cantidad_ambiente)
+
     class Meta:
         verbose_name = "Ambiente de la cotizacion"
         verbose_name_plural = "Ambientes de la cotizacion"
@@ -278,7 +282,7 @@ class Cotizacion_Contenido(models.Model):
     densidad = models.DecimalField(max_digits=5, decimal_places=2)
     volumen_contenido = models.DecimalField(max_digits=5, decimal_places=2)
     peso_contenido = models.DecimalField(max_digits=5, decimal_places=2)
-    porcentaje = models.DecimalField(max_digits=2, decimal_places=2)
+    porcentaje = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
         return u' %s - %s' % (self.cotizacion_mueble, self.contenido)
@@ -297,6 +301,8 @@ class Cotizacion_Servicio(models.Model):
     cotizacion_mueble = models.ForeignKey(Cotizacion_Mueble)
     servicio = models.ForeignKey(Servicio)
     cotizacion_contenido = models.ForeignKey(Cotizacion_Contenido, null=True, blank=True)
+    complejidad = models.CharField(max_length=100)
+    tarifa = models.DecimalField(max_digits=13, decimal_places=2)
 
     def __str__(self):
         return u' %s - %s' % (self.cotizacion_mueble, self.servicio)
@@ -323,6 +329,17 @@ class Cotizacion_Material(models.Model):
 
     def __str__(self):
         return u' %s - %s' % (self.cotizacion_mueble, self.material)
+
+    def get_lookup(self):
+        return self.precio_unitario.get_lookup(self.material.precio)
+
+    def get_precio_unitario(self):
+        precio = Material.objects.values('precio').filter(material=self.material)
+        return precio
+
+    def get_precio_total(self):
+        precio = Material.objects.values('precio').filter(material=self.material)
+        return precio * self.cantidad
 
     class Meta:
         verbose_name = "Material del mueble"

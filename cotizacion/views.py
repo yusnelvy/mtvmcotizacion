@@ -17,7 +17,8 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 import simplejson as json
 import django.db
-from django.db.models import F
+#from django.db.models import F
+from django.db.models import Sum
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
@@ -623,6 +624,15 @@ def add_cotizacionambiente(request, idcotizacion):
         if form_cotizacionambiente.is_valid():
             id_reg = form_cotizacionambiente.save()
             id_cot = Cotizacion_Ambiente.objects.get(id=id_reg.id)
+
+            cotiza = Cotizacion_Ambiente.objects.filter(cotizacion=id_cot.cotizacion.id)
+            cant_ambiente = cotiza.count()
+            #cant_mueble = cotiza.aggregate(Sum('cantidad_muebles'))
+            #prueba para ver si actualiza el campo cant ambiente en la cotizacion
+            reporter = Cotizacion.objects.filter(pk=id_cot.cotizacion.id)
+            reporter.update(cantidad_ambientes=cant_ambiente)
+            #reporter.update(cantidad_muebles=cant_mueble)
+
             return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionambiente', args=(id_cot.cotizacion.id,)))
 
     else:
@@ -640,6 +650,21 @@ def add_cotizacionmueble(request, idcotizacionambiente):
         if form_cotizacionmueble.is_valid():
             id_reg = form_cotizacionmueble.save()
             id_cot = Cotizacion_Mueble.objects.get(id=id_reg.id)
+
+            cant_mueble_amb = Cotizacion_Mueble.objects.filter(cotizacion_ambiente=id_cot.cotizacion_ambiente.id).count()
+
+            #prueba para ver si actualiza el campo cant ambiente en la cotizacion
+            reporter = Cotizacion_Ambiente.objects.filter(pk=id_cot.cotizacion_ambiente.id)
+            reporter.update(cantidad_muebles=cant_mueble_amb)
+
+            cotiza = Cotizacion_Ambiente.objects.filter(cotizacion=id_cot.cotizacion_ambiente.cotizacion)
+            cant_ambiente = cotiza.count()
+            #cant_mueble = cotiza.annotate(Sum('cantidad_muebles'))
+
+            reporter2 = Cotizacion.objects.filter(cotizacion_ambiente=id_cot.cotizacion_ambiente.id)
+            reporter2.update(cantidad_ambientes=cant_ambiente)
+           # reporter2.update(cantidad_muebles=int(cant_mueble))
+
             return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionmueble', args=(id_cot.cotizacion_ambiente.id,)))
 
     else:
@@ -679,6 +704,18 @@ def add_cotizacionservicio(request, idcotizacionmueble, idcotizacioncontenido=No
 def add_cotizacionmaterial(request, idcotizacionservicio):
     """docstring"""
 
+    if request.method == 'GET':
+        mat = request.GET.get('material')
+        material = Cotizacion_Mueble.objects.filter(id=mat)
+
+        data = {
+            'precio_unitario': mat,
+            'peso_unitario':  material,
+            'recuperable': material
+        }
+
+        form_cotizacionmaterial = (data)
+
     if request.method == 'POST':
         form_cotizacionmaterial = CotizacionMaterialForm(request.POST)
         if form_cotizacionmaterial.is_valid():
@@ -691,8 +728,10 @@ def add_cotizacionmaterial(request, idcotizacionservicio):
 
         form_cotizacionmaterial = CotizacionMaterialForm(initial={'cotizacion_servicio': idcotizacionservicio})
 
+    det_material = Cotizacion_Material.objects.filter(cotizacion_servicio_id=idcotizacionservicio)
+
     return render_to_response('cotizacion/cotizacionmaterial_add.html',
-                              {'form_cotizacionmaterial': form_cotizacionmaterial, 'create': True},
+                              {'form_cotizacionmaterial': form_cotizacionmaterial, 'det_material': det_material, 'create': True},
                               context_instance=RequestContext(request))
 
 
@@ -806,6 +845,8 @@ def edit_tiempocarga(request, pk):
 @permission_required('cotizacion.change_cotizacion')
 def edit_cotizacion(request, pk):
 
+    redirect_to = request.REQUEST.get('next', '')
+
     try:
         id_cotizacion = Cotizacion.objects.get(pk=pk)
     except ObjectDoesNotExist as ex:
@@ -819,12 +860,16 @@ def edit_cotizacion(request, pk):
 
         if editar_cotizacion.is_valid():
             # formulario validado correctamente
-            id_reg = editar_cotizacion.save()
+            editar_cotizacion.save()
 
             #prueba para actualizar un campo calculable
-            reporter = Cotizacion.objects.filter(pk=id_reg.id)
-            reporter.update(cantidad_ambientes=F('cantidad_ambientes')+1)
+            #reporter = Cotizacion.objects.filter(pk=id_reg.id)
+            #reporter.update(cantidad_ambientes=F('cantidad_ambientes')+1)
 
+        if redirect_to:
+
+            return HttpResponseRedirect(redirect_to)
+        else:
             return HttpResponseRedirect(reverse('ucotizaciones:lista_cotizacion'))
 
     else:
