@@ -18,16 +18,37 @@ Eliminar mueble
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/mueble/ocupacion/" class="btn">Ocupación</a>
+  </li>
+  <li>
+    <a href="/mueble/forma_mueble/" class="btn">Formas</a>
+  </li>
+  <li>
+    <a href="/mueble/tamano/" class="btn">Tamaños</a>
+  </li>
+  <li>
+    <a href="densidad/" class="btn">Densidad</a>
+  </li>
+  <li>
+    <a href="/mueble/mueble_ambiente/0/" class="btn">Muebles por ambientes</a>
+  </li>
+  <li>
+    <a href="/mueble/tamano_mueble/0/" class="btn">Tamaños de muebles</a>
+  </li>
+  <li>
+    <a href="/mueble/tipo_mueble/" class="btn">Tipo de muebles</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% block titulo_tabla %}
 
 <div class="btn-procesos">
-<a href="/mueble/mueble_ambiente/0/" class="btn btn-default">Muebles por ambientes</a>
-<a href="/mueble/tamano_mueble/0/" class="btn btn-default">Tamaños de muebles</a>
-<a href="/mueble/tipo_mueble/" class="btn btn-default">Tipo de muebles</a>
-<a href="/mueble/ocupacion/" class="btn btn-default">Ocupacion</a>
-<a href="/mueble/forma_mueble/" class="btn btn-default">Formas</a>
-<a href="tamano/" class="btn btn-default">Tamaño</a>
-<a href="densidad/" class="btn btn-default">Densidad</a>
 </div>
 
 <h2>Muebles</h2>
@@ -51,31 +72,31 @@ Eliminar mueble
 {% block cuerpo_tabla %}
 
 <tr class="active">
-    <th>Mueble</th>
-    <th>Tipo de mueble</th>
-    <th>Forma</th>
-    <th>Trasladable</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
-  </tr>
+  <th>Mueble</th>
+  <th>Tipo de mueble</th>
+  <th>Forma</th>
+  <th>Trasladable</th>
+  <th>Editar</th>
+  <th>Eliminar</th>
+</tr>
 
-  {% for i in muebles %}
+{% for i in muebles %}
 
-  <tr id="tr{{i.id}}">
-    <td>{{ i.mueble }}</td>
-    <td>{{ i.tipo_mueble }}</td>
-    <td>{{ i.forma }}</td>
-    <td>{{i.trasladable|yesno:"Si,No"}}</td>
-    <td>
-      <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'umuebles:edit_mueble' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
-    </td>
-    <td>
-      <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.mueble}}"></a>
-    </td>
-    <input type="hidden" value="{{i.id}}" id="idtele">
-  </tr>
+<tr id="tr{{i.id}}">
+  <td>{{ i.mueble }}</td>
+  <td>{{ i.tipo_mueble }}</td>
+  <td>{{ i.forma }}</td>
+  <td>{{i.trasladable|yesno:"Si,No"}}</td>
+  <td>
+    <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'umuebles:edit_mueble' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
+  </td>
+  <td>
+    <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.mueble}}"></a>
+  </td>
+  <input type="hidden" value="{{i.id}}" id="idtele">
+</tr>
 
-  {% endfor %}
+{% endfor %}
 <nav>
   <ul class="pagination">
 
@@ -128,54 +149,5 @@ Eliminar mueble
   <p>Los <strong>Muebles</strong>, durante una mudanza, estarán asociados a un <strong>Ambiente</strong> de origen, y podrán ser trasladables o no. En caso de no ser trasladables, el único sentido de registrarlos consiste en la identificación de los <strong>Contenidos</strong> que mantienen, como puede ser el caso de los <i>muebles de cocina empotrada</i> o los <i>armarios empotrados</i> que generarán <strong>Contenedores</strong> pero ellos mismos no formarán parte de la mudanza.</p>
   <p>Los muebles deben contar con un equilibrio entre lo general y lo específico, de manera que pueda estandarizarse la inmensa diversidad de posibilidades que se encuentra en el mercado, en solo unos pocos <i>muebles representativos</i> del resto.</p>
 </div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 {% endblock ayuda %}

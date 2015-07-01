@@ -56,7 +56,8 @@ class VehiculoForm(ModelForm):
             'tarifa_hora': ('Tarifa por tiempo en $/h'),
             'tarifa_recorrido': ('Tarifa por recorrido en $/Km'),
             'capacidad_volumen': ('Capacidad en m3'),
-            'capacidad_peso': ('Capacidad en Kgs')
+            'capacidad_peso': ('Capacidad en Kgs'),
+            'cargo': ('Conductor designado')
         }
 
 

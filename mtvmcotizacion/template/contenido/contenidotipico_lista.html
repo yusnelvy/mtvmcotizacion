@@ -18,12 +18,28 @@ Eliminar contenido típico
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/contenido/contenido_tipico/nuevo" class="btn">Nuevo</a>
+  </li>
+  <li>
+    <a href="/contenido/contenido_tipico/0/" class="btn">Ver todos</a>
+  </li>
+  <li>
+    <a href="/contenido/" class="btn">Contenidos</a>
+  </li>
+  <li>
+    <a href="/mueble/" class="btn">Muebles</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% block titulo_ficha %}
 
 <h2>Contenidos típicos por mueble</h2>
-<a href="/contenido/" class="btn btn-default hidden-print">Lista de contenidos</a>
-<a href="/contenido/contenido_tipico/0/" class="btn btn-default hidden-print">Ver todos</a>
-<a href="/contenido/contenido_tipico/nuevo" class="btn btn-default hidden-print">Nuevo</a>
 
 {% endblock titulo_ficha %}
 

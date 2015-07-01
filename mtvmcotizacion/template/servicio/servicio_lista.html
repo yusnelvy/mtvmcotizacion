@@ -18,6 +18,25 @@ Eliminar servicio
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/servicio/servicio_material/0/0/" class="btn">Materiales de servicios</a>
+  </li>
+  <li>
+    <a href="/servicio/complejidad_servicio/0/0/" class="btn">Complejidad de servicios</a>
+  </li>
+  <li>
+    <a href="/servicio/complejidad/" class="btn">Niveles de complejidad</a>
+  </li>
+  <li>
+    <a href="/servicio/material/" class="btn">Materiales</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% if lista_servicio %}
 
 {% block titulo_tabla %}

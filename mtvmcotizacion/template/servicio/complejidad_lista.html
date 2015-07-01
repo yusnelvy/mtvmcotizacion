@@ -18,12 +18,27 @@ Eliminar complejidad
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/servicio/" class="btn">Servicios</a>
+  </li>
+  <li>
+    <a href="/material/" class="btn">Materiales</a>
+  </li>
+  <li>
+    <a href="/servicio/complejidad_servicio/0/0/" class="btn">Niveles de complejidad de servicios</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% if lista_complejidad %}
 
 {% block titulo_tabla %}
 
 <h2>Niveles de complejidad</h2>
-<a href="/servicio/" class="btn btn-default">Lista de servicios</a>
 
 {% endblock titulo_tabla %}
 

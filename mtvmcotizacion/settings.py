@@ -102,16 +102,54 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
+USE_TZ = True
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
+# Configuraciones referidas al formato de fechas, horas y números
+# USE_L10N Indica si el formato local será utilizado o no
+
 USE_L10N = True
 
-USE_TZ = True
+USE_THOUSAND_SEPARATOR = True
 
+NUMBER_GROUPING = 3
+
+DATE_INPUT_FORMATS = (
+    '%d-%m-%Y', '%d/%m/%Y',              # '25-10-2006', '25/10/2006'
+    '%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y',  # '2006-10-25', '10/25/2006', '10/25/06'
+    '%b %d %Y', '%b %d, %Y',             # 'Oct 25 2006', 'Oct 25, 2006'
+    '%d %b %Y', '%d %b, %Y',             # '25 Oct 2006', '25 Oct, 2006'
+    '%B %d %Y', '%B %d, %Y',             # 'October 25 2006', 'October 25, 2006'
+    '%d %B %Y', '%d %B, %Y',             # '25 October 2006', '25 October, 2006'
+)
+
+DATETIME_INPUT_FORMATS = (
+    '%d-%m-%Y %H:%M:%S',     # '25-10-2006 14:30:59'
+    '%d-%m-%Y %H:%M:%S.%f',  # '25-10-2006 14:30:59.000200'
+    '%d-%m-%Y %H:%M',        # '25-10-2006 14:30'
+    '%d-%m-%Y,'              # '25-10-2006'
+    '%Y-%m-%d %H:%M:%S',     # '25/10/2006 14:30:59'
+    '%Y-%m-%d %H:%M:%S.%f',  # '25/10/2006 14:30:59.000200'
+    '%Y-%m-%d %H:%M',        # '25/10/2006 14:30'
+    '%Y-%m-%d',              # '25/10/2006'
+    '%Y-%m-%d %H:%M:%S',     # '2006-10-25 14:30:59'
+    '%Y-%m-%d %H:%M:%S.%f',  # '2006-10-25 14:30:59.000200'
+    '%Y-%m-%d %H:%M',        # '2006-10-25 14:30'
+    '%Y-%m-%d',              # '2006-10-25'
+    '%m/%d/%Y %H:%M:%S',     # '10/25/2006 14:30:59'
+    '%m/%d/%Y %H:%M:%S.%f',  # '10/25/2006 14:30:59.000200'
+    '%m/%d/%Y %H:%M',        # '10/25/2006 14:30'
+    '%m/%d/%Y',              # '10/25/2006'
+    '%m/%d/%y %H:%M:%S',     # '10/25/06 14:30:59'
+    '%m/%d/%y %H:%M:%S.%f',  # '10/25/06 14:30:59.000200'
+    '%m/%d/%y %H:%M',        # '10/25/06 14:30'
+    '%m/%d/%y',              # '10/25/06'
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/

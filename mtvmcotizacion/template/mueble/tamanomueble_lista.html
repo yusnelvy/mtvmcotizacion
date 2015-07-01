@@ -18,14 +18,28 @@ Eliminar tamaño del mueble
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/mueble/tamano_mueble/nuevo" class="btn btn-default">Nuevo</a>
+  </li>
+  <li>
+    <a href="/mueble/tamano_mueble/0/" class="btn">Ver todos</a>
+  </li>
+  <li>
+    <a href="/mueble/" class="btn">Muebles</a>
+  </li>
+  <li>
+    <a href="/mueble/tamano/" class="btn">Tamaños</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% block titulo_ficha %}
 
-<div class="btn-procesos">
-<a href="/mueble/" class="btn btn-default">Lista de muebles</a>
-<a href="/mueble/tamano_mueble/0/" class="btn btn-default">Ver todos</a>
-</div>
 <h2>Tamaños de muebles</h2>
-<a href="/mueble/tamano_mueble/nuevo" class="btn btn-default">Nuevo</a>
 
 {% endblock titulo_ficha %}
 
@@ -84,7 +98,6 @@ Eliminar tamaño del mueble
 
     </table>
   </div>
-<a href="/mueble/tamano_mueble/nuevo" class="btn btn-default">Nuevo</a>
 
   {% endif %}
 

@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, DateInput
 from cliente.models import Cliente, Email, Sexo, Estado_civil
 
 
@@ -7,6 +7,7 @@ class ClienteForm(ModelForm):
         model = Cliente
         fields = '__all__'
         search_fields = ['nombre_principal']
+        widgets = {'fecha_nacimiento': DateInput(attrs={'type': "date"})}
 
 
 class EmailForm(ModelForm):

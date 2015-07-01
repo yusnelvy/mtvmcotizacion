@@ -18,9 +18,28 @@ Eliminar densidad de muebles
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/mueble/" class="btn">Muebles</a>
+  </li>
+  <li>
+    <a href="/mueble/ocupacion/" class="btn">Ocupación</a>
+  </li>
+  <li>
+    <a href="/mueble/forma_mueble/" class="btn">Formas</a>
+  </li>
+  <li>
+    <a href="/mueble/tamano/" class="btn">Tamaños</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% block titulo_tabla %}
 
-<h2>Densidad de mueble</h2>
+<h2>Densidad de muebles</h2>
 
 {% endblock titulo_tabla %}
 
@@ -28,7 +47,7 @@ Eliminar densidad de muebles
 
 {% block cantidad_tabla %}
 
-<h6>Densidades de muebles registrados:
+<h6>Densidades de muebles registradas:
   <span class="badge" id="count_reg">
 
     {{ lista_densidad.count }}

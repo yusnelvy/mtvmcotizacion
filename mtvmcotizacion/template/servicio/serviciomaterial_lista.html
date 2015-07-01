@@ -1,35 +1,51 @@
- {% extends 'inicio/base_ficha.html' %}
+{% extends 'inicio/base_ficha.html' %}
 
-  {% block titulo %}
+{% block titulo %}
 
 <title>Servicios con sus materiales aplicados</title>
 
 {% endblock titulo %}
 
- {% block titulo_modal %}
+{% block titulo_modal %}
 
 Eliminar material aplicado al servicio
 
- {% endblock titulo_modal %}
+{% endblock titulo_modal %}
 
- {% block validacion_modal %}
+{% block validacion_modal %}
 
 <p>¿Desea eliminar el registro: <span id="modal_name"></span>?</p>
 
- {% endblock validacion_modal %}
+{% endblock validacion_modal %}
 
- {% block titulo_ficha %}
+{% block link %}
 
-<h2>Servicios con sus materiales aplicados</h2>
-<a href="/servicio/" class="btn btn-default">Lista de servicios</a>
-<a href="/servicio/servicio_material/0/0/" class="btn btn-default">Ver todos</a>
-<a href="/servicio/servicio_material/nuevo/0/" class="btn btn-default">Nuevo</a>
+<ul class="nav navbar-nav">
+  <li>
+    <a href="javascript:history.back();" class="btn">Regresar</a>
+  </li>
+  <li>
+    <a href="/servicio/servicio_material/nuevo/0/" class="btn">Nuevo</a>
+  </li>
+  <li>
+    <a href="/servicio/servicio_material/0/0/" class="btn">Ver todos</a>
+  </li>
+  <li>
+    <a href="/servicio/" class="btn">Lista de servicios</a>
+  </li>
+</ul>
 
- {% endblock titulo_ficha %}
+{% endblock link %}
 
- {% block content1 %}
+{% block titulo_ficha %}
 
- {% if buscar_serviciomaterial %}
+<h2>Servicios con sus materiales relacionados</h2>
+
+{% endblock titulo_ficha %}
+
+{% block content1 %}
+
+{% if buscar_serviciomaterial %}
 
 <h6>Cantidad de registros encontrados:
   <span class="badge" id="count_reg">
@@ -38,52 +54,52 @@ Eliminar material aplicado al servicio
 
   </span>
 </h6>
- <div class="panel panel-default">
+<div class="panel panel-default">
   <table class="table table-hover" style="text-align: center;">
-   <tr class="active">
-    <th>Servicio</th>
-    <th width="">Material</th>
-    <th>Cantidad</th>
-    <th>Cálculo</th>
-    <th width="3">Editar</th>
-    <th width="3">Eliminar</th>
-    <th width="3">Agregar</th>
-  </tr>
+    <tr class="active">
+      <th>Servicio</th>
+      <th>Material</th>
+      <th>Cantidad</th>
+      <th>Cálculo</th>
+      <th width="3">Editar</th>
+      <th width="3">Eliminar</th>
+      <th width="3">Agregar</th>
+    </tr>
 
-  {% for i in buscar_serviciomaterial %}
+    {% for i in buscar_serviciomaterial %}
 
-  <tr id="tr{{i.id}}">
-    <td>{{ i.servicio }}</td>
-    <td width="">{{ i.material }}</td>
-    <td>{{ i.cantidad }}</td>
-    <td>{{ i.Calculo }}</td>
-    <td width="3">
-      <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
-    </td>
-    <td width="3">
-      <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="servicio: {{i.servicio}} material: {{ i.material }}"></a>
-    </td>
-    <td>
-      <a href="../../nuevo/{{i.servicio.id}}/" class="glyphicon glyphicon-plus" style="float:right;"></a>
-    </td>
-  </tr>
+    <tr id="tr{{i.id}}">
+      <td>{{ i.servicio }}</td>
+      <td width="">{{ i.material }}</td>
+      <td>{{ i.cantidad }}</td>
+      <td style="word-wrap: break-word;">{{ i.Calculo }}</td>
+      <td width="3">
+        <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
+      </td>
+      <td width="3">
+        <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="servicio: {{i.servicio}} material: {{ i.material }}"></a>
+      </td>
+      <td>
+        <a href="../../nuevo/{{i.servicio.id}}/" class="glyphicon glyphicon-plus" style="float:right;"></a>
+      </td>
+    </tr>
 
-  {% endfor %}
+    {% endfor %}
 
-</table>
+  </table>
 </div>
 
 {% endif %}
 
- {% endblock content1 %}
+{% endblock content1 %}
 
 {% block content2 %}
 
 <div class="well well-lg">
-    <p>Los <strong>Materiales</strong> son utilizados en la aplicación de un <strong>Servicio</strong> para lograr que el traslado de los <strong>Muebles</strong> se efectúe en las mejores condiciones posibles.</p>
-    <p>Los <strong>Materiales</strong> se consumen en una proporción relativa a las características del <strong>Servicio</strong> en el que se aplican y las características de los <strong>Mueble</strong> que los reciben.</p>
-    <p>Al momento de evaluar o realizar una mudanza, los <strong>Materiales</strong> inciden sobre el precio final de la misma.</p>
-    <p>La apropiada identificación de <strong>Materiales</strong> y su relación con los <strong>Servicios</strong> que los involucran, serán claves para orientar la ejecución del trabajo de campo una vez contratada la mudanza.</p>
+  <p>Los <strong>Materiales</strong> son utilizados en la aplicación de un <strong>Servicio</strong> para lograr que el traslado de los <strong>Muebles</strong> se efectúe en las mejores condiciones posibles.</p>
+  <p>Los <strong>Materiales</strong> se consumen en una proporción relativa a las características del <strong>Servicio</strong> en el que se aplican y las características de los <strong>Mueble</strong> que los reciben.</p>
+  <p>Al momento de evaluar o realizar una mudanza, los <strong>Materiales</strong> inciden sobre el precio final de la misma.</p>
+  <p>La apropiada identificación de <strong>Materiales</strong> y su relación con los <strong>Servicios</strong> que los involucran, serán claves para orientar la ejecución del trabajo de campo una vez contratada la mudanza.</p>
 </div>
 
 {% endblock content2 %}

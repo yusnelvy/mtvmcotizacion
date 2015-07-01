@@ -18,11 +18,30 @@ Eliminar forma de mueble
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/mueble/" class="btn">Muebles</a>
+  </li>
+  <li>
+    <a href="/mueble/ocupacion/" class="btn">Ocupación</a>
+  </li>
+  <li>
+    <a href="/mueble/tipo_mueble/" class="btn">Tipos de muebles</a>
+  </li>
+  <li>
+    <a href="/mueble/tamano/" class="btn">Tamaños</a>
+  </li>
+  <li>
+    <a href="/mueble/densidad/" class="btn">Densidad</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% block titulo_tabla %}
 
-<div class="btn-procesos">
-<a href="/mueble/" class="btn btn-default">Lista muebles</a>
-</div>
 <h2>Formas de mueble</h2>
 
 {% endblock titulo_tabla %}

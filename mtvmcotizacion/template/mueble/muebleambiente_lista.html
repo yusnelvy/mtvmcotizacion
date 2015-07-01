@@ -18,12 +18,24 @@ Eliminar mueble por ambiente
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/mueble/mueble_ambiente/nuevo/0/" class="btn btn-default">Nuevo</a>
+  </li>
+  <li>
+    <a href="/mueble/mueble_ambiente/0/" class="btn">Ver todos</a>
+  </li>
+  <li>
+    <a href="/mueble/" class="btn">Muebles</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% block titulo_ficha %}
 
-<div class="btn-procesos">
-<a href="/mueble/" class="btn btn-default">Lista de muebles</a>
-<a href="/mueble/mueble_ambiente/0/" class="btn btn-default">Ver todos</a>
-</div>
 <h2>Muebles por ambiente</h2>
 
 {% endblock titulo_ficha %}
@@ -36,8 +48,47 @@ Eliminar mueble por ambiente
 
   {% block content1 %}
 
+  <nav>
+    <ul class="pagination">
 
-<a href="/mueble/mueble_ambiente/nuevo/0/" class="btn btn-default">Nuevo</a>
+      {% if muebleambientes.has_previous %}
+
+      <li>
+        <a href="?page={{ muebleambientes.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+      </li>
+
+      {% endif %}
+
+      <li class="current">
+        <a style="color:#000;"> Página
+
+          {{ muebleambientes.number }}
+
+          de
+
+          {{ muebleambientes.paginator.num_pages }}
+
+          Desde el mueble
+
+          {{ muebleambientes.start_index }}
+
+          hasta el mueble
+
+          {{ muebleambientes.end_index }}
+
+        </a>
+      </li>
+
+      {% if muebleambientes.has_next %}
+
+      <li>
+        <a href="?page={{ muebleambientes.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+      </li>
+
+      {% endif %}
+
+    </ul>
+  </nav>
 
   {% if buscar_muebleambiente %}
 
@@ -67,7 +118,6 @@ Eliminar mueble por ambiente
         </td>
         <td width="3">
           <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="Ambiente: {{i.ambiente}} Mueble: {{ i.mueble }}"></a>
-          <a href="../nuevo/{{i.ambiente.id}}/" class="glyphicon glyphicon-plus" style="float:right;"></a>
         </td>
       </tr>
 
@@ -75,50 +125,9 @@ Eliminar mueble por ambiente
 
     </table>
   </div>
-  <a href="/mueble/mueble_ambiente/nuevo" class="btn btn-default">Nuevo</a>
 
   {% endif %}
-<nav>
-  <ul class="pagination">
 
-    {% if muebleambientes.has_previous %}
-
-    <li>
-      <a href="?page={{ muebleambientes.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-
-    {% endif %}
-
-    <li class="current">
-      <a style="color:#000;"> Página
-
-        {{ muebleambientes.number }}
-
-        de
-
-        {{ muebleambientes.paginator.num_pages }}
-
-        Desde el mueble
-
-        {{ muebleambientes.start_index }}
-
-        hasta el mueble
-
-        {{ muebleambientes.end_index }}
-
-      </a>
-    </li>
-
-    {% if muebleambientes.has_next %}
-
-    <li>
-      <a href="?page={{ muebleambientes.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-
-    {% endif %}
-
-  </ul>
-</nav>
   {% endblock content1 %}
 
   {% block col2 %}

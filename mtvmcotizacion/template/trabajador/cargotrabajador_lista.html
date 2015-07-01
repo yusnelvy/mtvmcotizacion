@@ -18,6 +18,16 @@ Eliminar cargo del trabajador
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/cotizacion/vehiculo/" class="btn">Vehículos</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% block titulo_tabla %}
 
 <h2>Roles de trabajador</h2>
@@ -53,9 +63,15 @@ Eliminar cargo del trabajador
 
   <tr id="tr{{i.id}}">
     <td>{{ i.cargo }}</td>
-    <td>{{ i.tarifa_dia }}</td>
-    <td>{{ i.recargo_fin_semana }}</td>
-    <td>{{ i.recargo_nocturno }}</td>
+    <td>${{ i.tarifa_dia }}</td>
+
+    {% widthratio i.recargo_fin_semana 1 100 as recfin %}
+
+    <td>{{ recfin|floatformat:"2" }}%</td>
+
+    {% widthratio i.recargo_nocturno 1 100 as recnoc %}
+
+    <td>{{ recnoc|floatformat:"2" }}%</td>
     <td>
       <a title="Editar" data-toggle="tooltip" data-placement="right"href="{% url 'utrabajadores:edit_cargotrabajador' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit" ></a>
     </td>

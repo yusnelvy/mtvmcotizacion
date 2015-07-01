@@ -18,12 +18,24 @@ Eliminar material
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/servicio/servicio_material/0/0/" class="btn">Materiales de servicios</a>
+  </li>
+  <li>
+    <a href="/servicio/" class="btn">Lista de servicios</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% if lista_material %}
 
 {% block titulo_tabla %}
 
 <h2>Materiales</h2>
-<a href="/servicio/" class="btn btn-default">Lista de servicios</a>
 
 {% endblock titulo_tabla %}
 

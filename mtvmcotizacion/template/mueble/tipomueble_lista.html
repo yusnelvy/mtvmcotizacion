@@ -18,10 +18,31 @@ Eliminar tipo de mueble
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/mueble/" class="btn">Muebles</a>
+  </li>
+  <li>
+    <a href="/mueble/ocupacion/" class="btn">Ocupación</a>
+  </li>
+  <li>
+    <a href="/mueble/forma_mueble/" class="btn">Formas</a>
+  </li>
+  <li>
+    <a href="/mueble/tamano/" class="btn">Tamaños</a>
+  </li>
+  <li>
+    <a href="/mueble/densidad/" class="btn">Densidad</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% block titulo_tabla %}
 
 <div class="btn-procesos">
-  <a href="/mueble/" class="btn btn-default">Lista de muebles</a>
 </div>
 <h2>Tipos de mueble</h2>
 

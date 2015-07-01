@@ -18,10 +18,33 @@ Eliminar nivel de ocupación
 
 {% endblock validacion_modal %}
 
+<!-- NOTA: El uso del bloque link_base vacío se usa para eliminar el acceso
+  a la opción: Nuevo de los niveles de ocupación que lo construye
+  la base_lista.html -->
+{% block link_base %}{% endblock link_base %}
+
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/mueble/" class="btn">Muebles</a>
+  </li>
+  <li>
+    <a href="/mueble/forma_mueble/" class="btn">Formas</a>
+  </li>
+  <li>
+    <a href="/mueble/tamano/" class="btn">Tamaños</a>
+  </li>
+  <li>
+    <a href="densidad/" class="btn">Densidad</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% block titulo_tabla %}
 
 <div class="btn-procesos">
-<a href="/mueble/" class="btn btn-default">Lista de muebles</a>
 </div>
 <h2>Niveles de ocupación</h2>
 

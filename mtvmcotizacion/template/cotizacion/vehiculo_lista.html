@@ -2,7 +2,7 @@
 
 {% block titulo %}
 
-<title>Listado de modelos de vehículo</title>
+<title>Modelos de vehículo</title>
 
 {% endblock titulo %}
 
@@ -20,9 +20,19 @@
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/trabajador/" class="btn">Roles de trabajador</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% block titulo_tabla %}
 
-<h2>Listado de modelos de vehículo</h2>
+<h2>Modelos de vehículo</h2>
 
 {% endblock titulo_tabla %}
 
@@ -48,6 +58,7 @@
   <th>Tarifa $/Km</th>
   <th>Capacidad m3</th>
   <th>Capacidad Kgs</th>
+  <th>Conductor</th>
   <th>Editar</th>
   <th>Eliminar</th>
 </tr>
@@ -60,6 +71,7 @@
   <td>{{ i.tarifa_recorrido }}</td>
   <td>{{ i.capacidad_volumen }}</td>
   <td>{{ i.capacidad_peso }}</td>
+  <td>{{ i.cargo }}</td>
   <td>
     <a href="{% url 'ucotizaciones:edit_vehiculo' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
   </td>

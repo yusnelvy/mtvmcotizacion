@@ -81,3 +81,7 @@ th{text-align: center!important;}
 .filtra-tipoinmueble>p>label[for=id_tipo_inmueble],.filtra-tipoinmueble>p>select[id=id_tipo_inmueble] {
   display: none;
 }
+
+.filtra-servicio>p>label[for=id_servicio],.filtra-servicio>p>select[id=id_servicio] {
+  display: none;
+}

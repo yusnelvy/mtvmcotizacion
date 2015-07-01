@@ -18,11 +18,28 @@ Eliminar tipo de contenido
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="contenido_tipico/0/" class="btn">Contenidos típicos</a>
+  </li>
+  <li>
+    <a href="/contenido/contenido_servicio/0/" class="btn">Servicios típicos</a>
+  </li>
+  <li>
+    <a href="/mueble/" class="btn">Muebles</a>
+  </li>
+  <li>
+    <a href="/servicio/" class="btn">Servicios</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% block titulo_tabla %}
 
 <h2>Tipos de contenido</h2>
-<a href="contenido_tipico/0/" class="btn btn-default">Contenidos típico</a>
-<a href="contenido_servicio/0/" class="btn btn-default">Contenido servicio</a>
 
 {% endblock titulo_tabla %}
 
