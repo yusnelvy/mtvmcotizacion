@@ -68,10 +68,10 @@ class Zona(models.Model):
     def __init__(self, *args, **kwargs):
         super(Zona, self).__init__(*args, **kwargs)
 
-    zona = models.CharField(max_length=100)
     pais = models.ForeignKey(Pais, on_delete=models.PROTECT)
     provincia = ChainedForeignKey(Provincia, chained_field='pais', chained_model_field='pais')
     ciudad = ChainedForeignKey(Ciudad, chained_field='provincia', chained_model_field='provincia')
+    zona = models.CharField(max_length=100)
 
     def __str__(self):
         return self.zona

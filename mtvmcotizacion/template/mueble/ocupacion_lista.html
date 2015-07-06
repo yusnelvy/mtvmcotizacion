@@ -75,7 +75,10 @@ Eliminar nivel de ocupación
 
   <tr id="tr{{i.id}}">
     <td>{{ i.descripcion }}</td>
-    <td>{{ i.valor }}</td>
+
+    {% widthratio i.valor 1 100 as val %}
+
+    <td>{{ val|floatformat:"2" }}% </td>
     <td>
       <a href="{% url 'umuebles:edit_ocupacion' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
     </td>

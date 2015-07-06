@@ -250,7 +250,7 @@ def buscar_complejidad_servicio(request, idserv=0, idcomp=0):
     else:
         buscar_complejidadservicio = Complejidad_Servicio.objects.all()
 
-    context = {'buscar_complejidadservicio': buscar_complejidadservicio}
+    context = {'buscar_complejidadservicio': buscar_complejidadservicio, 'idserv': idserv}
     return render(request, 'servicio/complejidadservicio_lista.html', context)
 
 
