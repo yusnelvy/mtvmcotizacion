@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from direccion.models import Pais, Provincia, Ciudad, \
     Zona, Tipo_direccion, Direccion, Tipo_Inmueble, \
     Complejidad_Inmueble, Inmueble
+
 #from haystack.forms import SearchForm
 
 
@@ -64,5 +65,8 @@ class InmuebleForm(ModelForm):
 
 #class PaisSearchForm(SearchForm):
 
-    #def no_query_found(self):
-    #    return self.searchqueryset.all()
+
+#class PaisSearchForm(SearchForm):
+
+   #d ef no_query_found(self):
+      # return self.searchqueryset.all()

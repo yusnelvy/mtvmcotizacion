@@ -10,6 +10,10 @@
 
 <h2>Ficha de la Cotización</h2>
 
+{% if det_complejidad %}
+
+{% endif %}
+
 {% endblock titulo_ficha %}
 
 {% block titulo_modal %}
@@ -50,16 +54,45 @@ Eliminar Cotización
 
       {% for i in buscar_cotizacion %}
 
-      <div class="col-md-4">
+      <div class="col-md-6">
         <h2 style="text-align: center;">
 
           {{ i.cliente.nombre_principal }}
 
           <br>
-          <small>Telefono/Email</small>
+          <span class="">
+            <small>
+              <span class="col-md-5 text-right">
+
+                {% if i.cliente.telefono_set.all %}
+
+                {% for t in i.cliente.telefono_set.all %}
+
+                {{ t.numero }}<br>
+
+                {% endfor %}
+
+                {% endif %}
+
+              </span>
+              <span class="col-md-7 text-left">
+
+                {% if i.cliente.email_set.all %}
+
+                {% for em in i.cliente.email_set.all %}
+
+                {{ em.email }}<br>
+
+                {% endfor %}
+
+                {% endif %}
+
+              </span>
+            </small>
+          </span>
         </h2>
       </div>
-      <div class="col-md-4" style="text-align: justify;">
+      <div class="col-md-3" style="text-align: justify;">
         <h3 >
           <small><strong>Fecha Cotización:</strong> {{ i.fecha_creacion|date:"d/m/Y" }} <br>
           </small>
@@ -67,7 +100,7 @@ Eliminar Cotización
           <small><strong>Cotizador:</strong> {{ i.cotizador }}</small>
         </h3>
       </div>
-      <div class="col-md-1"></div>
+
       <div class="col-md-3" style="text-align: justify;">
         <h3>
           <small><strong>N° Cotización:</strong> </small>{{ i.numero_cotizacion }}<br>
@@ -88,7 +121,7 @@ Eliminar Cotización
       <a href="#general" aria-controls="general" role="tab" data-toggle="tab">General</a>
     </li>
     <li role="presentation">
-      <a href="#detalle" aria-controls="detalle" role="tab" data-toggle="tab">Detalles</a>
+      <a href="#detalleambientes" aria-controls="detalleambientes" role="tab" data-toggle="tab">Detalle de Ambientes</a>
     </li>
     <li role="presentation">
       <a href="#infoadicional" aria-controls="infoadicional" role="tab" data-toggle="tab">Info Adicional</a>
@@ -152,13 +185,14 @@ Eliminar Cotización
       </div><!-- row -->
       <div class="row">
         <div class="col-md-12">
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <div class="row">
 
-                {% for i in buscar_cotizacion %}
+          <div class="row">
 
-                <div class="col-md-4">
+            {% for i in buscar_cotizacion %}
+
+            <div class="col-md-4">
+              <div class="panel panel-default">
+                <div class="panel-body">
                   <h4>Resumen de la mudanza</h4>
                   <table class="table table-hover table-condensed">
                     <tr>
@@ -192,6 +226,16 @@ Eliminar Cotización
                       <td>Horas</td>
                     </tr>
                     <tr>
+                      <td><strong>Tiempo de carga:</strong></td>
+                      <td class="text-right">{{ i.tiempo_carga|date:"h" }}</td>
+                      <td>Horas</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Tiempo recorrido: </strong></td>
+                      <td class="text-right">{{ i.total_recorrido_tiempo|date:"h" }}</td>
+                      <td>Horas</td>
+                    </tr>
+                    <tr>
                       <td><strong>Recorrido: </strong></td>
                       <td class="text-right">{{ i.total_recorrido_km }}</td>
                       <td>Km</td>
@@ -202,7 +246,7 @@ Eliminar Cotización
 
                       {% for det_veh in det_vehiculo %}
 
-                      <td><strong>Cantidad vehiculos: </strong></td>
+                      <td><strong>Cantidad de vehiculos: </strong></td>
                       <td class="text-right">{{ det_veh.cantidad }}</td>
                       <td>Und</td>
 
@@ -212,36 +256,73 @@ Eliminar Cotización
 
                     </tr>
                     <tr>
-                      <td><strong>Cantidad personas: </strong></td>
+                      <td><strong>Cantidad de personas: </strong></td>
                       <td class="text-right">9</td>
                       <td>Und</td>
                     </tr>
                   </table>
                 </div>
-                <div class="col-md-4">
-                  <h4>Detalle del inmueble</h4>
-                  <div class="panel panel-default">
-                  <table style="float:righ;" class="table table-condensed table-hover">
+              </div>
+            </div><!-- fin panel defaul-->
+            <div class="col-md-4">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <h4>Detalle de la mudanza</h4>
+                  <table style="float:righ;" class="table table-hover table-condensed">
                     <tr>
-                      <td><strong>Inmueble: </strong></td>
-                      <td class="text-left">Edificio</td>
+                      <td><strong>Creado por: </strong></td>
+                      <td>{{ i.creadopor }}</td>
                     </tr>
                     <tr>
-                      <td><strong>Tipo de inmueble: </strong></td>
-                      <td class="text-left">Apartamento</td>
+                      <td><strong>Fecha culminacion: </strong></td>
+                      <td>{{ i.fecha_culminacion|date:"d/m/Y" }}</td>
                     </tr>
                     <tr>
-                      <td><strong>Complejidad: </strong></td>
-                      <td>Media</td>
+                      <td><strong>Inmueble:</strong></td>
+                      <td>{{ i.inmueble }}</td>
                     </tr>
                     <tr>
-                      <td><strong>Distancia del vehiculo: </strong></td>
-                      <td>0.05 Km</td>
+                      <td><strong>Vol. de muebles sugerido: </strong></td>
+                      <td>{{ i.volumen_muebles_sugerido }} m3</td>
                     </tr>
+                    <tr>
+                      <td><strong>Vol. de muebles cotizado: </strong></td>
+                      <td>{{ i.volumen_muebles_cotizado }} m3</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Peso muebles:</strong></td>
+                      <td>{{ i.peso_muebles }} Kg</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Vol. contenedores: </strong></td>
+                      <td>{{ i.volumen_contenedores }} m3</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Peso contenedores: </strong></td>
+                      <td>{{ i.peso_contenedores }} Kg</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Vol. contenidos: </strong></td>
+                      <td>{{ i.volumen_contenidos }} m3</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Peso contenidos:</strong></td>
+                      <td>{{ i.peso_contenidos }} Kg</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Peso materiales: </strong></td>
+                      <td>{{ i.peso_materiales }} Kg</td>
+                    </tr>
+
                   </table>
-                  </div><!--fin panel panel-default-->
+
+
                 </div>
-                <div class="col-md-4" style="text-align:righ;">
+              </div>
+            </div><!-- fin panel defaul-->
+            <div class="col-md-4" style="text-align:righ;">
+              <div class="panel panel-default">
+                <div class="panel-body">
                   <h4>Detalle del precio</h4>
                   <table style="float:righ;" class="table table-hover table-condensed">
                     <tr>
@@ -266,17 +347,17 @@ Eliminar Cotización
                     </tr>
                     <tr>
                       <td><strong>Total:</strong></td>
-                      <td class="text-right">410.00</td>
+                      <td class="text-right">410</td>
                       <td>$</td>
                     </tr>
                     <tr>
                       <td><strong>Descuento:</strong></td>
-                      <td class="text-right">0.00</td>
+                      <td class="text-right">{{ i.monto_descuento }}</td>
                       <td>$</td>
                     </tr>
                     <tr>
                       <td><strong>Total:</strong></td>
-                      <td class="text-right">410.00</td>
+                      <td class="text-right">{{ i.total_sin_impuesto }}</td>
                       <td>$</td>
                     </tr>
                     <tr>
@@ -286,364 +367,418 @@ Eliminar Cotización
                     </tr>
                     <tr>
                       <td><strong>TOTAL:</strong></td>
-                      <td class="text-right">459.20</td>
+                      <td class="text-right">{{ i.total_con_impuesto }}</td>
                       <td>$</td>
                     </tr>
                   </table>
                 </div>
+              </div>
+            </div><!-- fin panel defaul-->
 
-                {% endfor %}
+            {% endfor %}
 
-              </div><!-- fin row -->
-            </div>
-          </div><!-- fin panel defaul-->
+          </div><!-- fin row -->
+
         </div><!-- fin col 12-->
       </div><!-- fin row -->
     </div> <!-- fin Tab panel general -->
-    <div role="tabpanel" class="tab-pane fade" id="detalle">
+
+    <div role="tabpanel" class="tab-pane fade" id="detalleambientes">
+      <h4>Detalle de los ambientes</h4>
+
+      {% for i in det_ambiente %}
 
       <div class="panel panel-default">
         <div class="panel-body">
-        <div class="row">
-          <h4>
-            <div class="col-md-4">
-              <p class="text-uppercase">Comedor principal</p>
+          <div class="row">
+            <h4>
+              <div class="col-md-3">
+                <p class="text-uppercase">{{ i.ambiente.ambiente }}</p>
+              </div>
+              <div class="col-md-5">
+                <small>Piso: {{ i.piso }} Muebles: {{ i.cantidad_muebles }} Contenedores: {{ i.cantidad_contenedores }} Peso: 200 Kg</small>
+              </div>
+              <div class="col-md-3">
+                <small>Obsrv: {{ i.observaciones }}</small>
+              </div>
+            </h4>
+            <div class="col-md-1">
+              <a style="float:right;color:#000;" data-toggle="collapse" data-target="#collapseExample{{i.id}}" aria-expanded="false" aria-controls="collapseExample{{i.id}}">
+                Ver mas
+              </a>
             </div>
-            <div class="col-md-4">
-              <small>Piso: PB Muebles: 2 Contenedores: 2 Peso: 200 Kg</small>
-            </div>
-            <div class="col-md-3">
-              <small>Observaciones: observacion del ambiente</small>
-            </div>
-          </h4>
-          <div class="col-md-1">
-            <a style="float:right;color:#000;" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-              Ver muebles
-            </a>
           </div>
-        </div>
-        <br>
-        <div class="collapse" id="collapseExample">
-          <div class="">
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-              <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingOne">
-                  <h4 class="panel-title">
-                    <div class="row">
-                      <div class="col-md-4">
-                        <a class="text-uppercase" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:#000;">Silla metálica</a>
-                      </div><!--col 4-->
+          <br>
+          <div class="collapse" id="collapseExample{{i.id}}">
+            <table class="table table-condensed table-bordered" style="text-align: center;">
+              <tr>
+                <th>Piso</th>
+                <th>Factor del piso</th>
+                <th>cant muebles</th>
+                <th>Vol muebles</th>
+                <th>Peso muebles</th>
+                <th colspan="1">Observaciones</th>
+              </tr>
+              <tr>
+                <td>{{ i.piso }}</td>
+                <td>{{ i.piso.factor }}</td>
+                <td>{{ i.cantidad_muebles }} Und</td>
+                <td>{{ i.volumen_muebles }} m3</td>
+                <td>{{ i.peso_muebles }} Kg</td>
+                <td>{{ i.observaciones }}</td>
+              </tr>
+            </table>
+            <table class="table table-condensed table-bordered" style="text-align: center;">
+              <tr>
+                <th>Cant contenedores</th>
+                <th>Vol contenedores</th>
+                <th>Peso contenedores</th>
+                <th>Vol contenido</th>
+                <th>Peso contenido</th>
+                <th>Peso material</th>
+              </tr>
+              <tr>
+                <td>{{ i.cantidad_contenedores }} Und</td>
+                <td>{{ i.volumen_contenedores }} m3</td>
+                <td>{{ i.peso_contenedores }} Kg</td>
+                <td>{{ i.volumen_contenidos }} m3</td>
+                <td>{{ i.peso_contenidos }} Kg</td>
+                <td>{{ i.peso_materiales }} Kg</td>
+              </tr>
+            </table>
+            <div class="">
+              <h4>Muebles</h4>
+              <div class="panel-group" id="accordion{{i.id}}" role="tablist" aria-multiselectable="true">
 
-                      <div class="col-md-5">
+                {% if det_mueble %}
 
-                        <small>Cubo mediano 1.00 Kg 60x60x60</small>
+                {% for det_mue in det_mueble %}
 
-                        <small>Armar, Desarmar</small>
-                      </div>
-                      <div class="col-md-3">
-                        <small>- Total: $ 307</small>
-                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="float:right;color:#000;">Ver mas</a>
-                      </div>
-                    </div><!--fin row-->
-                  </h4>
-                </div>
-                <div id="collapseOne" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingOne">
-                  <div class="panel-body">
+                {% if det_mue.cotizacion_ambiente == i %}
 
-                    <div class="row">
-                      <div class="col-md-8">
-
-                        <table class="table table-condensed table-bordered" style="text-align: center;">
-                          <tr>
-                            <th>Forma</th>
-                            <th>Tamaño</th>
-                            <th>Peso</th>
-                            <th>A</th>
-                            <th>L</th>
-                            <th>A</th>
-                          </tr>
-                          <tr>
-                            <td>Cubo</td>
-                            <td>Mediano</td>
-                            <td>1.00 Kg</td>
-                            <td>60 cm</td>
-                            <td>60 cm</td>
-                            <td>60 cm</td>
-
-                          </tr>
-                        </table>
-                        <table class="table table-condensed table-bordered" style="text-align: center;">
-                          <tr>
-                            <th>Volumen</th>
-                            <th>Densidad</th>
-                            <th>Ocupación</th>
-                            <th>Vol. ocupación</th>
-                            <th>Capacidad</th>
-                            <th>Tipo de mueble</th>
-                          </tr>
-                          <tr>
-                            <td>0.50 m3</td>
-                            <td>3.00 Kg/m3</td>
-                            <td>Media / 50%</td>
-                            <td>1.00 m3</td>
-                            <td>0.90 m3</td>
-                            <td>Equipo de oficina</td>
-                          </tr>
-
-                        </table>
-                      </div>
-                      <div class="col-md-4">
-                        <table class="table table-condensed table-bordered" style="text-align: center;">
-                          <tr>
-                            <td colspan="2"><strong>Observación:</strong>
-                              <p>Observación del mueble</p></td>
-                            </tr>
-                          </table>
-                          <table class="table table-condensed table-bordered" style="text-align: center;">
-                              <tr>
-                              <td>Trasladable</td>
-                              <td>Apilable</td>
-                            </tr>
-                            <tr>
-                              <td>Com capacidad carga</td>
-                              <td>Con capacidad interna</td>
-                            </tr>
-                          </table>
-
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-3">
-                          <h4>Servicios</h4>
-                          <table class="table table-condensed table-bordered" style="text-align: center;">
-                            <tr>
-                              <th>Aplica a</th>
-                              <th>Servicio</th>
-                              <th>Compld</th>
-                              <th>Precio</th>
-                            </tr>
-                            <tr>
-                              <td>Contenido</td>
-                              <td>Ropero</td>
-                              <td>Media</td>
-                              <td>$ 25</td>
-                            </tr>
-                            <tr>
-                              <td>Mueble</td>
-                              <td>Delicado</td>
-                              <td>Medio</td>
-                              <td>$ 40</td>
-                            </tr>
-                            <th colspan="5">Total: <span style="float:right;margin:0px 8px;">$ 65</span></th>
-                          </table>
-                        </div>
-                        <div class="col-md-5">
-                          <h4>Materiales</h4>
-                          <table class="table table-condensed table-bordered" style="text-align: center;">
-                            <tr>
-                              <th>Material</th>
-                              <th>Cantidad</th>
-                              <th>Peso</th>
-                              <th>Retornable</th>
-                              <th>Precio</th>
-                            </tr>
-                            <tr>
-                              <td>Corrugado</td>
-                              <td>2</td>
-                              <td>0.60 Kg</td>
-                              <td>Si</td>
-                              <td>$ 140</td>
-                            </tr>
-                            <th colspan="5">Total: <span style="float:right;margin:0px 10px;">$ 140</span></th>
-                          </table>
-                        </div>
-                        <div class="col-md-4">
-                          <h4>Contenido</h4>
-                          <table class="table table-condensed table-bordered" style="text-align: center;">
-                            <tr>
-                              <th>Contenido</th>
-                              <th>Densidad</th>
-                              <th>Vol</th>
-                              <th>Peso</th>
-                              <th>%</th>
-                            </tr>
-                            <tr>
-                              <td>Ropa</td>
-                              <td>Media</td>
-                              <td>0.5 m3</td>
-                              <td>70 Kg</td>
-                              <td>100%</td>
-                            </tr>
-                            <th colspan="2">Total: </th>
-                            <th>0.5 m3</th>
-                            <th>70 Kg</th>
-                            <th>100%</th>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <div class="panel panel-default">
-                  <div class="panel-heading" role="tab" id="headingOne2">
+                  <div class="panel-heading" role="tab" id="headingOne{{det_mue.id}}">
                     <h4 class="panel-title">
                       <div class="row">
                         <div class="col-md-4">
-                          <a class="text-uppercase" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne2" aria-expanded="true" aria-controls="collapseOne2" style="color:#000;">Armario</a>
+                          <a class="text-uppercase" role="button" data-toggle="collapse" data-parent="#accordion{{i.id}}" href="#collapseOne{{det_mue.id}}" aria-expanded="true" aria-controls="collapseOne{{det_mue.id}}" style="color:#000;">{{ det_mue.mueble }}</a>
                         </div><!--col 4-->
-
                         <div class="col-md-5">
 
-                          <small>Cubo Pequeño 2.00 Kg 60x90x60</small>
+                          <small>{{ det_mue.forma }} {{ det_mue.tamano }} {{ det_mue.peso }} Kg {{ det_mue.ancho }}x{{ det_mue.largo }}x{{ det_mue.alto }}</small>
 
-                          <small>Ropero, Delicado</small>
+                          {% if det_servicio %}
 
+                          <small>
+
+                            {% for det_ser in det_servicio %}
+
+                            {% if det_ser.cotizacion_mueble == det_mue %}
+
+                            {{det_ser.servicio }}
+
+                            {% endif %}
+
+                            {% endfor %}
+
+                          </small>
+
+                          {% endif %}
 
                         </div>
                         <div class="col-md-3">
-                          <small>- Total: $ 205</small>
-                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne2" aria-expanded="true" aria-controls="collapseOne2" style="float:right;color:#000;">Ver mas</a>
+                          <small>- Total: $ 307</small>
+                          <a role="button" data-toggle="collapse" data-parent="#accordion{{i.id}}" href="#collapseOne{{det_mue.id}}" aria-expanded="true" aria-controls="collapseOne{{det_mue.id}}" style="float:right;color:#000;">Ver mas</a>
                         </div>
                       </div><!--fin row-->
                     </h4>
                   </div>
-                  <div id="collapseOne2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne2">
-                  <div class="panel-body">
-
-                    <div class="row">
-                      <div class="col-md-8">
-
-                        <table class="table table-condensed table-bordered" style="text-align: center;">
-                          <tr>
-                            <th>Forma</th>
-                            <th>Tamaño</th>
-                            <th>Peso</th>
-                            <th>A</th>
-                            <th>L</th>
-                            <th>A</th>
-                          </tr>
-                          <tr>
-                            <td>Cubo</td>
-                            <td>Mediano</td>
-                            <td>1.00 Kg</td>
-                            <td>60 cm</td>
-                            <td>60 cm</td>
-                            <td>60 cm</td>
-
-                          </tr>
-                        </table>
-                        <table class="table table-condensed table-bordered" style="text-align: center;">
-                          <tr>
-                            <th>Volumen</th>
-                            <th>Densidad</th>
-                            <th>Ocupación</th>
-                            <th>Vol. ocupación</th>
-                            <th>Capacidad</th>
-                            <th>Tipo de mueble</th>
-                          </tr>
-                          <tr>
-                            <td>0.50 m3</td>
-                            <td>3.00 Kg/m3</td>
-                            <td>Media / 50%</td>
-                            <td>1.00 m3</td>
-                            <td>0.90 m3</td>
-                            <td>Equipo de oficina</td>
-                          </tr>
-
-                        </table>
-                      </div>
-                      <div class="col-md-4">
-                        <table class="table table-condensed table-bordered" style="text-align: center;">
-                          <tr>
-                            <td colspan="2"><strong>Observación:</strong>
-                              <p>Observación del mueble</p></td>
-                            </tr>
-                          </table>
-                          <table class="table table-condensed table-bordered" style="text-align: center;">
-                              <tr>
-                              <td>Trasladable</td>
-                              <td>Apilable</td>
-                            </tr>
-                            <tr>
-                              <td>Com capacidad carga</td>
-                              <td>Con capacidad interna</td>
-                            </tr>
-                          </table>
-
-                        </div>
-                      </div>
+                  <div id="collapseOne{{det_mue.id}}" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingOne{{det_mue.id}}">
+                    <div class="panel-body">
                       <div class="row">
-                        <div class="col-md-3">
-                          <h4>Servicios</h4>
+                        <div class="col-md-8">
                           <table class="table table-condensed table-bordered" style="text-align: center;">
                             <tr>
-                              <th>Aplica a</th>
-                              <th>Servicio</th>
-                              <th>Compld</th>
-                              <th>Precio</th>
-                            </tr>
-                            <tr>
-                              <td>Contenido</td>
-                              <td>Ropero</td>
-                              <td>Media</td>
-                              <td>$ 25</td>
-                            </tr>
-                            <tr>
-                              <td>Mueble</td>
-                              <td>Delicado</td>
-                              <td>Medio</td>
-                              <td>$ 40</td>
-                            </tr>
-                            <th colspan="5">Total: <span style="float:right;margin:0px 8px;">$ 65</span></th>
-                          </table>
-                        </div>
-                        <div class="col-md-5">
-                          <h4>Materiales</h4>
-                          <table class="table table-condensed table-bordered" style="text-align: center;">
-                            <tr>
-                              <th>Material</th>
-                              <th>Cantidad</th>
+                              <th>Forma</th>
+                              <th>Tamaño</th>
                               <th>Peso</th>
-                              <th>Retornable</th>
-                              <th>Precio</th>
+                              <th>A</th>
+                              <th>L</th>
+                              <th>A</th>
                             </tr>
                             <tr>
-                              <td>Corrugado</td>
-                              <td>2</td>
-                              <td>0.60 Kg</td>
-                              <td>Si</td>
-                              <td>$ 140</td>
+                              <td>{{ det_mue.forma }}</td>
+                              <td>{{ det_mue.tamano }}</td>
+                              <td>{{ det_mue.peso }} Kg</td>
+                              <td>{{ det_mue.ancho }} cm</td>
+                              <td>{{ det_mue.largo }} cm</td>
+                              <td>{{ det_mue.alto }} cm</td>
                             </tr>
-                            <th colspan="5">Total: <span style="float:right;margin:0px 10px;">$ 140</span></th>
+                          </table>
+                          <table class="table table-condensed table-bordered" style="text-align: center;">
+                            <tr>
+                              <th>Volumen</th>
+                              <th>Densidad</th>
+                              <th>Ocupación</th>
+                              <th>Vol. ocupación</th>
+                              <th>Capacidad</th>
+                              <th>Tipo de mueble</th>
+                            </tr>
+                            <tr>
+                              <td>{{ det_mue.volumen }} m3</td>
+                              <td>{{ det_mue.densidad }} Kg/m3</td>
+                              <td>{{ det_mue.ocupacion }}%</td>
+                              <td>1.00 m3</td>
+                              <td>{{ det_mue.capacidad }} m3</td>
+                              <td>{{ det_mue.mueble.tipo_mueble }}</td>
+                            </tr>
                           </table>
                         </div>
                         <div class="col-md-4">
-                          <h4>Contenido</h4>
                           <table class="table table-condensed table-bordered" style="text-align: center;">
                             <tr>
-                              <th>Contenido</th>
-                              <th>Densidad</th>
-                              <th>Vol</th>
-                              <th>Peso</th>
-                              <th>%</th>
-                            </tr>
-                            <tr>
-                              <td>Ropa</td>
-                              <td>Media</td>
-                              <td>0.5 m3</td>
-                              <td>70 Kg</td>
-                              <td>100%</td>
-                            </tr>
-                            <th colspan="2">Total: </th>
-                            <th>0.5 m3</th>
-                            <th>70 Kg</th>
-                            <th>100%</th>
-                          </table>
+                              <td colspan="2"><strong>Observación:</strong>
+                                <p>{{ det_mue.observaciones }}</p></td>
+                              </tr>
+                            </table>
+                            <table class="table table-condensed table-bordered" style="text-align: center;">
+                              <tr>
+                                <td>{{ det_mue.trasladable|yesno:"Trasladable,No Trasladable" }}</td>
+                                <td>{{ det_mue.apilable|yesno:"Apilable,No apilable" }}</td>
+                              </tr>
+                              <tr>
+                                <td>{{ det_mue.capacidad_carga|yesno:"Con capacidad de carga,Sin capacidad de carga" }}</td>
+                                <td>{{ det_mue.capacidad_interna|yesno:"Con capacidad interna,Sin capacidad interna" }}</td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+
+                            <h4>Materiales</h4>
+                            <table class="table table-condensed table-bordered" style="text-align: center;">
+                              <tr>
+                                <th>Aplica a</th>
+                                <th>Material</th>
+                                <th>Cantidad</th>
+                                <th>Peso</th>
+                                <th>Capd de peso</th>
+                                <th>Volumen</th>
+                                <th>Capd de volumen</th>
+                                <th>Recuperable</th>
+                                <th>Contenedor</th>
+                                <th>Precio</th>
+                              </tr>
+
+                              {% if det_servicio %}
+
+                              {% for det_ser in det_servicio %}
+
+                              {% if det_ser.cotizacion_mueble == det_mue %}
+
+                              {% if det_material %}
+
+                              {% for det_mat in det_material %}
+
+                              {% if det_mat.cotizacion_servicio == det_ser %}
+
+                              <tr>
+                                <td>{{ det_mue.mueble }}</td>
+                                <td>{{ det_mat.material }}</td>
+                                <td>{{ det_mat.cantidad }} Und</td>
+                                <td>{{ det_mat.peso_total }} Kg</td>
+                                <td>{{ det_mat.material.capacidad_peso }} Kg</td>
+                                <td>{{ det_mat.material.volumen }} m3</td>
+                                <td>{{ det_mat.material.capacidad_volumen }} m3</td>
+                                <td>{{ det_mat.recuperable |yesno:"Si,No" }}</td>
+                                <td>{{ det_mat.material.contenedor |yesno:"Si,No" }}</td>
+                                <td>$ {{ det_mat.precio_total }}</td>
+                              </tr>
+
+                              {% endif %}
+
+                              {% endfor %}
+
+                              {% endif %}<!--if material-->
+
+                              {% endif %}<!--if  det_ser.cotizacion_mueble-->
+
+                              {% endfor %}
+
+                              {% endif %}<!--if servicio-->
+
+                              {% if det_contenido %}
+
+                              {% for det_cont in det_contenido %}
+
+                              {% if det_cont.cotizacion_mueble == det_mue %}
+
+                              {% if det_servicio_contenido %}
+
+                              {% for det_sercon in det_servicio_contenido %}
+
+                              {% if det_sercon.cotizacion_contenido.id == det_cont.id %}
+
+                              {% if det_material %}
+
+                              {% for det_mat in det_material %}
+
+                              {% if det_mat.cotizacion_servicio.id == det_sercon.id %}
+
+                              <tr>
+                                <td>{{ det_cont.contenido }}</td>
+                                <td>{{ det_mat.material }}</td>
+                                <td>{{ det_mat.cantidad }} Und</td>
+                                <td>{{ det_mat.peso_total }} Kg</td>
+                                <td>{{ det_mat.material.capacidad_peso }} Kg</td>
+                                <td>{{ det_mat.material.volumen }} m3</td>
+                                <td>{{ det_mat.material.capacidad_volumen }} m3</td>
+                                <td>{{ det_mat.recuperable |yesno:"Si,No" }}</td>
+                                <td>{{ det_mat.material.contenedor |yesno:"Si,No" }}</td>
+                                <td>$ {{ det_mat.precio_total }}</td>
+                              </tr>
+
+                              {% endif %}
+
+                              {% endfor %}
+
+                              {% endif %}<!--if material del servicio del contenido-->
+
+                              {% endif %}
+
+                              {% endfor %}
+
+                              {% endif %}
+
+                              {% endif %}
+
+                              {% endfor %}
+
+                              <th colspan="9">Total:</th>
+                              <th>$ 65</th>
+
+                              {% endif %}
+
+                            </table>
+
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h4>Contenido</h4>
+                            <table class="table table-condensed table-bordered" style="text-align: center;">
+                              <tr>
+                                <th>Contenido</th>
+                                <th>Densidad</th>
+                                <th>Vol</th>
+                                <th>Peso</th>
+                                <th>%</th>
+                              </tr>
+
+                              {% if det_contenido %}
+
+                              {% for det_cont in det_contenido %}
+
+                              {% if det_cont.cotizacion_mueble == det_mue %}
+
+                              <tr>
+                                <td>{{ det_cont.contenido }}</td>
+                                <td>{{ det_cont.densidad }}</td>
+                                <td>{{ det_cont.volumen_contenido }} m3</td>
+                                <td>{{ det_cont.peso_contenido }} Kg</td>
+                                <td>{{ det_cont.porcentaje }}%</td>
+                              </tr>
+
+                              {% endif %}
+
+                              {% endfor %}
+
+                              <th colspan="2">Total: </th>
+                              <th>0.5 m3</th>
+                              <th>70 Kg</th>
+                              <th>100%</th>
+
+                              {% endif %}
+
+                            </table>
+                          </div>
+                          <div class="col-md-6">
+                            <h4>Servicios</h4>
+                            <table class="table table-condensed table-bordered" style="text-align: center;">
+                              <tr>
+                                <th>Aplica a</th>
+                                <th>Servicio</th>
+                                <th>Compld</th>
+                                <th>Precio</th>
+                              </tr>
+
+                              {% if det_servicio %}
+
+                              {% for det_ser in det_servicio %}
+
+                              {% if det_ser.cotizacion_mueble == det_mue %}
+
+                              <tr>
+                                <td>{{ det_mue.mueble }}</td>
+                                <td>{{ det_ser.servicio }}</td>
+                                <td>{{ det_ser.complejidad }}</td>
+                                <td>$ {{ det_ser.tarifa }}</td>
+                              </tr>
+
+                              {% endif %}<!--if  det_ser.cotizacion_mueble-->
+
+                              {% endfor %}
+
+                              {% endif %}<!--if servicio-->
+
+                              {% if det_contenido %}
+
+                              {% for det_cont in det_contenido %}
+
+                              {% if det_cont.cotizacion_mueble == det_mue %}
+
+                              {% if det_servicio_contenido %}
+
+                              {% for det_sercon in det_servicio_contenido %}
+
+                              {% if det_sercon.cotizacion_contenido.id == det_cont.id %}
+
+                              <tr>
+                                <td>{{ det_cont.contenido }}</td>
+                                <td>{{det_sercon.servicio }}</td>
+                                <td>{{ det_sercon.complejidad }}</td>
+                                <td>$ {{ det_sercon.tarifa }}</td>
+                              </tr>
+
+                              {% endif %}
+
+                              {% endfor %}
+
+                              {% endif %}
+
+                              {% endif %}
+
+                              {% endfor %}
+
+                              <th colspan="3">Total:</th>
+                              <th>$ 65</th>
+
+                              {% endif %}
+
+                            </table>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    </div>
                   </div>
+
+                  {% endif %}
+
+                  {% endfor %}
+
+                  {% endif %}
+
                 </div><!--fin acordion-->
               </div><!--fin well simulado -->
               <div class="row">
@@ -651,413 +786,364 @@ Eliminar Cotización
                 <div class="col-md-5"></div>
                 <div class="col-md-3">
                   <small>TOTAL: $ 512</small>
-                  <a style="float:right;color:#000;" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                  <a style="float:right;color:#000;" data-toggle="collapse" data-target="#collapseExample{{i.id}}" aria-expanded="false" aria-controls="collapseExample{{i.id}}">
                     Cerrar
                   </a>
                 </div>
               </div><!--fin row total ambiente-->
             </div><!--fin colapsable ambiente -->
-            </div>
-          </div><!--fin panel default del ambiente-->
-
-
-
-
-
-<div class="panel panel-default">
-        <div class="panel-body">
-        <div class="row">
-          <h4>
-            <div class="col-md-4">
-              <p class="text-uppercase">Habitacion principal</p>
-            </div>
-            <div class="col-md-4">
-              <small>Piso: PB Muebles: 2 Contenedores: 2 Peso: 350 Kg</small>
-            </div>
-            <div class="col-md-3">
-              <small>Observaciones: observacion del ambiente</small>
-            </div>
-          </h4>
-          <div class="col-md-1">
-            <a style="float:right;color:#000;" data-toggle="collapse" data-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">
-              Ver muebles
-            </a>
           </div>
-        </div>
-        <br>
-        <div class="collapse" id="collapseExample3">
-          <div class="">
-            <div class="panel-group" id="accordion3" role="tablist" aria-multiselectable="true">
+        </div><!--fin panel default del ambiente-->
+
+        {% endfor %}
+  </div><!-- fin Tab panes detalle -->
+
+      <div role="tabpanel" class="tab-pane fade" id="infoadicional">
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Detalle del inmueble</h4>
+
+            {% if buscar_cotizacion %}
+
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="row">
+
+                  {% for i in buscar_cotizacion %}
+
+                  <div class="col-md-3">
+                    <h3 style="text-align: cente;">
+
+                      {{ i.inmueble }}
+
+                      <br>
+                      <small>{{ i.inmueble.tipo_inmueble }}</small>
+                    </h3>
+                  </div>
+                  <div class="col-md-5" style="text-align: justify;">
+                    <h3 >
+                      <small><strong>Ambientes:</strong> {{ i.inmueble.numero_ambientes }} Und
+                      </small>
+                      <small><strong>Pisos:</strong> {{ i.inmueble.pisos }} Und</small>
+                      <small><strong>Complejidad:</strong> {{ i.inmueble.complejidad }}</small>
+                    </h3>
+                  </div>
+                  <div class="col-md-4" style="text-align: justify;">
+                    <h3>
+                      <small>
+                        <p>
+                          <strong>Pais</strong> {{ i.inmueble.direccion.zona.ciudad.provincia.pais }} <strong>provincia</strong> {{ i.inmueble.direccion.zona.ciudad.provincia }} <strong>ciudad</strong> {{ i.inmueble.direccion.zona.ciudad }} <strong>Zona</strong> {{ i.inmueble.direccion.zona }}
+                          <strong>calle</strong> {{ i.inmueble.direccion.calle }} <strong>numero</strong> {{ i.inmueble.direccion.numero }} <strong>piso</strong> {{ i.inmueble.direccion.piso }}
+                        </p>
+                      </small>
+                    </h3>
+                    <a class="" style="float:right;color:#000;" role="button" data-toggle="collapse" href="#collapseExampleinmueble" aria-expanded="true" aria-controls="collapseExampleinmueble">
+                      Ver mas
+                    </a>
+                  </div>
+
+                  {% endfor %}
+
+                </div><!-- row -->
+                <div class="collapse" id="collapseExampleinmueble">
+                  <div class="row">
+                    <div class="col-md-10">
+                    <div class="panel panel-default">
+                      <table style="text-align:center;" class="table table-condensed table-bordered">
+                        <tr>
+                          <th>Cant ambiente</th>
+                          <th>Cant pisos</th>
+                          <th>Pisos por escaleras</th>
+                          <th>Complejidad</th>
+                          <th>Pisos por ascensor</th>
+                          <th>Pisos de serv del ascensor</th>
+                          <th>Distancia del vehiculo</th>
+                        </tr>
+
+                        {% for i in buscar_cotizacion %}
+
+                        <tr>
+                          <td>{{ i.inmueble.numero_ambientes }} Und</td>
+                          <td>{{ i.inmueble.pisos }} Und</td>
+                          <td>{{ i.inmueble.pisos_escalera }}</td>
+                          <td>{{ i.inmueble.complejidad }}</td>
+                          <td>{{ i.inmueble.pisos_ascensor }}</td>
+                          <td>{{ i.inmueble.pisos_ascensor_servicio }}</td>
+                          <td>{{ i.inmueble.distancia_vehiculo }} Km</td>
+                        </tr>
+
+                        {% endfor %}
+
+                      </table>
+                    </div>
+                    </div>
+                    <div class="col-md-2">
+                      <table style="text-align:center;" class="table table-condensed table-bordered">
+                        <tr>
+                          <td>{{ i.inmueble.rampa |yesno:"Rampa,No rampa" }}</td>
+                        </tr>
+                        <tr>
+                          <td>{{ i.inmueble.ascensor |yesno:"Ascensor,No ascensor" }}</td>
+                        </tr>
+                        <tr>
+                          <td>{{ i.inmueble.ascensor_servicio |yesno:"Servicio ascensor,No Servicio ascensor" }}</td>
+                        </tr>
+
+                      </table>
+                    </div>
+                  </div>
+                  <a class="" style="float:right;color:#000;" role="button" data-toggle="collapse" href="#collapseExampleinmueble" aria-expanded="true" aria-controls="collapseExampleinmueble">
+                    Cerrar
+                  </a>
+                </div>
+              </div><!-- panel body -->
+            </div><!-- panel default -->
+
+            {% endif %}
+
+          </div><!-- fin col 12 -->
+        </div><!-- fin row -->
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Detalle de los trabajadores</h4>
+
+            {% if det_trabajador %}
+
+            <div class="panel-group" id="accordiontrabajador" role="tablist" aria-multiselectable="true">
+
+              {% for i in det_trabajador %}
+
               <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingOne3">
+                <div class="panel-heading" role="tab" id="headingOnetrabajador{{ i.id }}">
                   <h4 class="panel-title">
                     <div class="row">
                       <div class="col-md-4">
-                        <a class="text-uppercase" role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapseOne3" aria-expanded="true" aria-controls="collapseOne3" style="color:#000;">Silla metálica</a>
-                      </div><!--col 4-->
 
+                        {{ i.cargo }}
+
+                      </div>
                       <div class="col-md-5">
+                        <small>
 
-                        <small>Cubo mediano 1.00 Kg 60x60x60</small>
+                          {{ i.nocturno|yesno:"Nocturno,No nocturno" }} |
+                          {{ i.fin_semana|yesno:"Fin de semana,No fin de semana" }} | Cantidad: {{ i.cantidad }}
 
-                        <small>Armar, Desarmar</small>
+                        </small>
                       </div>
-                      <div class="col-md-3">
-                        <small>- Total: $ 250</small>
-                        <a role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapseOne3" aria-expanded="true" aria-controls="collapseOne3" style="float:right;color:#000;">Ver mas</a>
+                      <div class="col-md-2">
+                        <small>-Total: $ {{ i.total_con_recargo }}</small>
                       </div>
-                    </div><!--fin row-->
+                      <div class="col-md-1">
+                        <a style="float:right;color:#000;" role="button" data-toggle="collapse" data-parent="#accordiontrabajador" href="#collapseOnetrabajador{{ i.id }}" aria-expanded="false" aria-controls="collapseOnetrabajador{{ i.id }}">
+                          Ver mas
+                        </a>
+                      </div>
+                    </div>
                   </h4>
                 </div>
-                <div id="collapseOne3" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingOne3">
+                <div id="collapseOnetrabajador{{ i.id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOnetrabajador{{ i.id }}">
                   <div class="panel-body">
-
                     <div class="row">
-                      <div class="col-md-8">
-
-                        <table class="table table-condensed table-bordered" style="text-align: center;">
+                      <div class="col-md-2">
+                        <table style="text-align:center;" class="table table-condensed table-bordered">
                           <tr>
-                            <th>Forma</th>
-                            <th>Tamaño</th>
-                            <th>Peso</th>
-                            <th>A</th>
-                            <th>L</th>
-                            <th>A</th>
+                            <td>{{ i.nocturno|yesno:"Nocturno,No nocturno" }}</td>
                           </tr>
                           <tr>
-                            <td>Cubo</td>
-                            <td>Mediano</td>
-                            <td>1.00 Kg</td>
-                            <td>60 cm</td>
-                            <td>60 cm</td>
-                            <td>60 cm</td>
-
-                          </tr>
-                        </table>
-                        <table class="table table-condensed table-bordered" style="text-align: center;">
-                          <tr>
-                            <th>Volumen</th>
-                            <th>Densidad</th>
-                            <th>Ocupación</th>
-                            <th>Vol. ocupación</th>
-                            <th>Capacidad</th>
-                            <th>Tipo de mueble</th>
-                          </tr>
-                          <tr>
-                            <td>0.50 m3</td>
-                            <td>3.00 Kg/m3</td>
-                            <td>Media / 50%</td>
-                            <td>1.00 m3</td>
-                            <td>0.90 m3</td>
-                            <td>Equipo de oficina</td>
+                            <td>{{ i.fin_semana|yesno:"Fin de semana,No fin de semana" }}</td>
                           </tr>
 
                         </table>
                       </div>
+                      <div class="col-md-10">
+                        <table style="text-align:center;" class="table table-condensed table-bordered">
+                          <tr>
+                            <th>Cantidad</th>
+                            <th>Tarifa</th>
+                            <th>Total sin recargo</th>
+                            <th>Reacargo nocturno</th>
+                            <th>Recargo fin de semana</th>
+                            <th>Total con recargo</th>
+                          </tr>
+
+                          {% for det_trab in det_trabajador %}
+
+                          {% if det_trab.cargo.id = i.id %}
+
+                          <tr>
+                            <td>{{ det_trab.cantidad }} Und</td>
+                            <td>$ {{ det_trab.tarifa }}</td>
+                            <td>$ {{ det_trab.total_sin_recargo }}</td>
+                            <td>$ {{ det_trab.recargo_nocturno }}</td>
+                            <td>$ {{ det_trab.recargo_fin_semana }}</td>
+                            <td>$ {{ det_trab.total_con_recargo }}</td>
+                          </tr>
+
+
+
+                          {% endif %}
+
+                          {% endfor %}
+
+                          <tr>
+                            <th>Total:</th>
+                            <th>$ 0.00</th>
+                            <th>$ 0.00</th>
+                            <th>$ 0.00</th>
+                            <th>$ 0.00</th>
+                            <th>$ 0.00</th>
+                          </tr>
+                        </table>
+                      </div>
+                    </div><!-- fin row -->
+                  </div>
+                </div><!-- fin panel default -->
+              </div>
+
+              {% endfor %}
+
+            </div><!-- fin acordion -->
+
+            {% endif %}
+
+
+          </div><!-- fin col 12 -->
+        </div><!-- fin row -->
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Detalle de los vehiculos</h4>
+
+            {% if det_vehiculo %}
+
+            <div class="panel-group" id="accordionvehiculo" role="tablist" aria-multiselectable="true">
+
+              {% for i in det_vehiculo %}
+
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOnevehiculo{{ i.id }}">
+                  <h4 class="panel-title">
+                    <div class="row">
                       <div class="col-md-4">
-                        <table class="table table-condensed table-bordered" style="text-align: center;">
-                          <tr>
-                            <td colspan="2"><strong>Observación:</strong>
-                              <p>Observación del mueble</p></td>
-                            </tr>
-                          </table>
-                          <table class="table table-condensed table-bordered" style="text-align: center;">
-                              <tr>
-                              <td>Trasladable</td>
-                              <td>Apilable</td>
-                            </tr>
-                            <tr>
-                              <td>Com capacidad carga</td>
-                              <td>Con capacidad interna</td>
-                            </tr>
-                          </table>
 
-                        </div>
+                        {{ i.vehiculo }}
+
                       </div>
-                      <div class="row">
-                        <div class="col-md-3">
-                          <h4>Servicios</h4>
-                          <table class="table table-condensed table-bordered" style="text-align: center;">
-                            <tr>
-                              <th>Aplica a</th>
-                              <th>Servicio</th>
-                              <th>Compld</th>
-                              <th>Precio</th>
-                            </tr>
-                            <tr>
-                              <td>Contenido</td>
-                              <td>Ropero</td>
-                              <td>Media</td>
-                              <td>$ 25</td>
-                            </tr>
-                            <tr>
-                              <td>Mueble</td>
-                              <td>Delicado</td>
-                              <td>Medio</td>
-                              <td>$ 40</td>
-                            </tr>
-                            <th colspan="5">Total: <span style="float:right;margin:0px 8px;">$ 65</span></th>
-                          </table>
-                        </div>
-                        <div class="col-md-5">
-                          <h4>Materiales</h4>
-                          <table class="table table-condensed table-bordered" style="text-align: center;">
-                            <tr>
-                              <th>Material</th>
-                              <th>Cantidad</th>
-                              <th>Peso</th>
-                              <th>Retornable</th>
-                              <th>Precio</th>
-                            </tr>
-                            <tr>
-                              <td>Corrugado</td>
-                              <td>2</td>
-                              <td>0.60 Kg</td>
-                              <td>Si</td>
-                              <td>$ 140</td>
-                            </tr>
-                            <th colspan="5">Total: <span style="float:right;margin:0px 10px;">$ 140</span></th>
-                          </table>
-                        </div>
-                        <div class="col-md-4">
-                          <h4>Contenido</h4>
-                          <table class="table table-condensed table-bordered" style="text-align: center;">
-                            <tr>
-                              <th>Contenido</th>
-                              <th>Densidad</th>
-                              <th>Vol</th>
-                              <th>Peso</th>
-                              <th>%</th>
-                            </tr>
-                            <tr>
-                              <td>Ropa</td>
-                              <td>Media</td>
-                              <td>0.5 m3</td>
-                              <td>70 Kg</td>
-                              <td>100%</td>
-                            </tr>
-                            <th colspan="2">Total: </th>
-                            <th>0.5 m3</th>
-                            <th>70 Kg</th>
-                            <th>100%</th>
-                          </table>
-                        </div>
+                      <div class="col-md-5">
+                        <small>
+
+                          {{ i.vehiculo.capacidad_volumen }} m3 |
+                          {{ i.vehiculo.capacidad_peso }} Kg | {{ i.vehiculo.cargo }} Cantidad: {{ i.cantidad }}
+
+                        </small>
+                      </div>
+                      <div class="col-md-2">
+                        <small>
+                          -Total: $ {{ i.total_con_recargo }}
+                        </small>
+                      </div>
+                      <div class="col-md-1">
+                        <a style="float:right;color:#000;" role="button" data-toggle="collapse" data-parent="#accordionvehiculo" href="#collapseOnevehiculo{{ i.id }}" aria-expanded="false" aria-controls="collapseOnevehiculo{{ i.id }}">
+                          Ver mas
+                        </a>
                       </div>
                     </div>
-                  </div>
+                  </h4>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading" role="tab" id="headingOne4">
-                    <h4 class="panel-title">
-                      <div class="row">
-                        <div class="col-md-4">
-                          <a class="text-uppercase" role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapseOne4" aria-expanded="true" aria-controls="collapseOne4" style="color:#000;">Armario</a>
-                        </div><!--col 4-->
-
-                        <div class="col-md-5">
-
-                          <small>Cubo Pequeño 2.00 Kg 60x90x60</small>
-
-                          <small>Ropero, Delicado</small>
-
-                        </div>
-                        <div class="col-md-3">
-                          <small>- Total: $ 300</small>
-                          <a role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapseOne4" aria-expanded="true" aria-controls="collapseOne4" style="float:right;color:#000;">Ver mas</a>
-                        </div>
-                      </div><!--fin row-->
-                    </h4>
-                  </div>
-                  <div id="collapseOne4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne4">
+                <div id="collapseOnevehiculo{{ i.id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOnevehiculo{{ i.id }}">
                   <div class="panel-body">
-
                     <div class="row">
-                      <div class="col-md-8">
-
-                        <table class="table table-condensed table-bordered" style="text-align: center;">
+                      <div class="col-md-12">
+                        <table style="text-align:center;" class="table table-condensed table-bordered">
                           <tr>
-                            <th>Forma</th>
-                            <th>Tamaño</th>
-                            <th>Peso</th>
-                            <th>A</th>
-                            <th>L</th>
-                            <th>A</th>
+                            <th>Capacidad de volumen</th>
+                            <th>Capacidad de peso</th>
+                            <th>Cargo</th>
+                            <th>Cantidad</th>
+                            <th>Recorrido</th>
+                            <th>Horas</th>
+                            <th>Tarifa por recorrido</th>
+                            <th>Costo recorrido</th>
+                            <th>Tarifa por hora</th>
+                            <th>Costo hora</th>
                           </tr>
-                          <tr>
-                            <td>Cubo</td>
-                            <td>Mediano</td>
-                            <td>1.00 Kg</td>
-                            <td>60 cm</td>
-                            <td>60 cm</td>
-                            <td>60 cm</td>
 
+                          {% for det_veh in det_vehiculo %}
+
+                          <tr>
+                            <td>{{ det_veh.vehiculo.capacidad_volumen }} m3</td>
+                            <td>{{ det_veh.vehiculo.capacidad_peso }} Kg</td>
+                            <td>{{ i.vehiculo.cargo }}</td>
+                            <td>{{ i.cantidad }} Und</td>
+                            <td>{{ det_veh.recorrido }} Km</td>
+                            <td>{{ det_veh.cantidad_hora|date:"H" }} Horas</td>
+                            <td>$ {{ det_veh.tarifa_recorrido }}</td>
+                            <td>$ {{ det_veh.costo_recorrido }}</td>
+                            <td>$ {{ det_veh.tarifa_hora }}</td>
+                            <td>$ {{ det_veh.costo_hora }}</td>
+                          </tr>
+
+                          {% endfor %}
+
+                          <tr>
+                            <th colspan="6">Total:</th>
+                            <th>$ 0.00</th>
+                            <th>$ 0.00</th>
+                            <th>$ 0.00</th>
+                            <th>$ 0.00</th>
                           </tr>
                         </table>
-                        <table class="table table-condensed table-bordered" style="text-align: center;">
-                          <tr>
-                            <th>Volumen</th>
-                            <th>Densidad</th>
-                            <th>Ocupación</th>
-                            <th>Vol. ocupación</th>
-                            <th>Capacidad</th>
-                            <th>Tipo de mueble</th>
-                          </tr>
-                          <tr>
-                            <td>0.50 m3</td>
-                            <td>3.00 Kg/m3</td>
-                            <td>Media / 50%</td>
-                            <td>1.00 m3</td>
-                            <td>0.90 m3</td>
-                            <td>Equipo de oficina</td>
-                          </tr>
+                      </div>
 
-                        </table>
-                      </div>
-                      <div class="col-md-4">
-                        <table class="table table-condensed table-bordered" style="text-align: center;">
-                          <tr>
-                            <td colspan="2"><strong>Observación:</strong>
-                              <p>Observación del mueble</p></td>
-                            </tr>
-                          </table>
-                          <table class="table table-condensed table-bordered" style="text-align: center;">
-                              <tr>
-                              <td>Trasladable</td>
-                              <td>Apilable</td>
-                            </tr>
-                            <tr>
-                              <td>Com capacidad carga</td>
-                              <td>Con capacidad interna</td>
-                            </tr>
-                          </table>
+                    </div><!-- fin row -->
 
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-3">
-                          <h4>Servicios</h4>
-                          <table class="table table-condensed table-bordered" style="text-align: center;">
-                            <tr>
-                              <th>Aplica a</th>
-                              <th>Servicio</th>
-                              <th>Compld</th>
-                              <th>Precio</th>
-                            </tr>
-                            <tr>
-                              <td>Contenido</td>
-                              <td>Ropero</td>
-                              <td>Media</td>
-                              <td>$ 25</td>
-                            </tr>
-                            <tr>
-                              <td>Mueble</td>
-                              <td>Delicado</td>
-                              <td>Medio</td>
-                              <td>$ 40</td>
-                            </tr>
-                            <th colspan="5">Total: <span style="float:right;margin:0px 8px;">$ 65</span></th>
-                          </table>
-                        </div>
-                        <div class="col-md-5">
-                          <h4>Materiales</h4>
-                          <table class="table table-condensed table-bordered" style="text-align: center;">
-                            <tr>
-                              <th>Material</th>
-                              <th>Cantidad</th>
-                              <th>Peso</th>
-                              <th>Retornable</th>
-                              <th>Precio</th>
-                            </tr>
-                            <tr>
-                              <td>Corrugado</td>
-                              <td>2</td>
-                              <td>0.60 Kg</td>
-                              <td>Si</td>
-                              <td>$ 140</td>
-                            </tr>
-                            <th colspan="5">Total: <span style="float:right;margin:0px 10px;">$ 140</span></th>
-                          </table>
-                        </div>
-                        <div class="col-md-4">
-                          <h4>Contenido</h4>
-                          <table class="table table-condensed table-bordered" style="text-align: center;">
-                            <tr>
-                              <th>Contenido</th>
-                              <th>Densidad</th>
-                              <th>Vol</th>
-                              <th>Peso</th>
-                              <th>%</th>
-                            </tr>
-                            <tr>
-                              <td>Ropa</td>
-                              <td>Media</td>
-                              <td>0.5 m3</td>
-                              <td>70 Kg</td>
-                              <td>100%</td>
-                            </tr>
-                            <th colspan="2">Total: </th>
-                            <th>0.5 m3</th>
-                            <th>70 Kg</th>
-                            <th>100%</th>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                    </div>
+
                   </div>
-                </div><!--fin acordion-->
-              </div><!--fin well simulado -->
-              <div class="row">
-                <div class="col-md-4"></div><!--col 4-->
-                <div class="col-md-5"></div>
-                <div class="col-md-3">
-                  <small>TOTAL: $ 550</small>
-                  <a style="float:right;color:#000;" data-toggle="collapse" data-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">
-                    Cerrar
-                  </a>
-                </div>
-              </div><!--fin row total ambiente-->
-            </div><!--fin colapsable ambiente -->
-            </div>
-          </div><!--fin panel default del ambiente-->
+                </div><!-- fin panel default -->
+              </div>
 
-        </div><!-- fin Tab panes detalle -->
+              {% endfor %}
 
-        <div role="tabpanel" class="tab-pane fade" id="infoadicional">informacion adicional en construccion</div>
-      </div>
+            </div><!-- fin acordion -->
 
-    </div><!-- div sin class que cubre a los tab -->
+            {% endif %}
 
-    <div class="row">
-      <div class="col-md-4">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <p>
-              Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.
-            </p>
-          </div>
+
+          </div><!-- fin col 12 -->
+        </div><!-- fin row -->
+      </div><!-- fin Tab panes info adicional -->
+    </div><!-- fin Tab content -->
+
+  </div><!-- div sin class que cubre a los tab -->
+  <div class="row">
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <p>
+            Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.
+          </p>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <p>
-              Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.
-            </p>
-          </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <p>
+            Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.
+          </p>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <p>
-              Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.
-            </p>
-          </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <p>
+            Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.
+          </p>
         </div>
       </div>
-    </div><!-- fin row -->
+    </div>
+  </div><!-- fin row -->
 
-    {% endif %}
+  {% endif %}
 
-    {% endblock content1 %}
+  {% endblock content1 %}
