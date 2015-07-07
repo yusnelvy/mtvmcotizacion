@@ -1,28 +1,3 @@
-{% extends 'inicio/base_lista.html' %}
-
-{% block titulo %}
-
-<title>Provincia</title>
-
-{% endblock titulo %}
-
-{% block titulo_modal %}
-
-Eliminar provincia
-
-{% endblock titulo_modal %}
-
-{% block validacion_modal %}
-
-<p>¿Realmente desea eliminar el registro: <strong id="modal_name"></strong>?</p>
-
-{% endblock validacion_modal %}
-
-{% block titulo_tabla %}
-
-<h2>Listado de provincias </h2>
-
-{% endblock titulo_tabla %}
 
 {% if lista_provincia %}
 
@@ -39,7 +14,7 @@ Eliminar provincia
 {% endblock cantidad_tabla %}
 
 {% block cuerpo_tabla %}
-
+ <table class="table table-hover" id="tabla" style="text-align: center;">
 <tr class="active">
     <th>Provincia</th>
     <th>Pais</th>
@@ -100,46 +75,7 @@ Eliminar provincia
 
   </ul>
 </nav>
+</table>
 {% endblock cuerpo_tabla %}
 
 {% endif %}
-
-{% block ayuda %}
-
-<br>
-<div class="">
-  <div class="well well-lg">
-    <p>Comúnmente, una <strong>provincia</strong> es una entidad subnacional al Estado.</p>
-    <p>Se recomienda agregar las provincias  correspondientes para cada país.</p>
-    <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
-  </div>
-</div>
-
-{% endblock%}
-
-{% block js_sup %}
-<script>
-$(function(){
-  $('#search').keyup(function(){
-    $.ajax({
-      type: "POST",
-      url: "/direccion/provincia/search_provincia/",
-      data: {
-        'search_text': $('#search').val(),
-        'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
-      },
-      success: searchSuccess,
-      dataType: 'Html'
-    });
-
-  });
-});
-
-function searchSuccess(data, textStatus, jqXHR){
-
-  $('#search-results').html(data)
-
-}
-</script>
-
-{% endblock js_sup %}
