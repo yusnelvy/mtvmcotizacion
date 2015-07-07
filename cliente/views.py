@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
+from cotizacion.models import Cotizacion
 import simplejson as json
 import django.db
 
@@ -392,12 +393,14 @@ def ficha_cliente(request, pk):
     lista_email = Email.objects.filter(cliente_id=pk)
     lista_telefono_cliente = Telefono.objects.filter(cliente=pk)
     direccioncliente_lista = Direccion.objects.filter(cliente=pk)
+    lista_cotizacion = Cotizacion.objects.all()
 
     context = {
         'lista_cliente': lista_cliente,
         'lista_email': lista_email,
         'lista_telefono_cliente': lista_telefono_cliente,
         'direccioncliente_lista': direccioncliente_lista,
+        'lista_cotizacion': lista_cotizacion
         }
     return render(request, 'cliente/cliente_ficha.html', context)
 

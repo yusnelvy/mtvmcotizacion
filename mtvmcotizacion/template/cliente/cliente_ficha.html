@@ -213,13 +213,16 @@ Eliminar
 {% endblock content1 %}
 
 {% block content2 %}
+
+{% if lista_cliente %}
+
 <h4>Cotizaciones</h4>
 <div role="tabpanel">
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#cotizaciones" aria-controls="home" role="tab" data-toggle="tab">Activas</a></li>
-    <li role="presentation"><a href="#activas" aria-controls="profile" role="tab" data-toggle="tab">Historial</a></li>
+    <li role="presentation"><a href="#historial" aria-controls="profile" role="tab" data-toggle="tab">Historial</a></li>
   </ul>
 
   <!-- Tab panes -->
@@ -237,18 +240,38 @@ Eliminar
             <th>Estado</th>
             <th width="3">Ver</th>
           </tr>
-          <tr>
-            <td>001</td>
-            <td>09-98-00</td>
-            <td>987678</td>
-            <td>True</td>
-            <td width="3"><a href="#" class="glyphicon glyphicon-share"></a></td>
-          </tr>
+
+{% for cli in lista_cliente %}
+
+{% if lista_cotizacion %}
+
+{% for i in lista_cotizacion %}
+
+{% if i.cliente.id = cli.id and i.estado.id != 5 %}
+
+<tr>
+<td>{{ i.numero_cotizacion }}</td>
+  <td>{{ i.fecha_creacion|date:"d/m/Y" }}</td>
+  <td>{{ i.numero_contrato }}</td>
+  <td>{{ i.estado }}</td>
+    <td>
+    <a width="" href="../../../cotizacion/buscar/{{i.id}}" class="glyphicon glyphicon-tag" ></a>
+  </td>
+</tr>
+
+{% endif %}
+
+{% endfor %}
+
+{% endif %}
+
+{% endfor %}
+
         </table>
       </div>
-
     </div>
-    <div role="tabpanel" class="tab-pane fade" id="activas">
+
+        <div role="tabpanel" class="tab-pane fade" id="historial">
       <div class="panel panel-default">
         <!-- Default panel contents -->
         <!-- Table -->
@@ -260,19 +283,44 @@ Eliminar
             <th>Estado</th>
             <th width="3">Ver</th>
           </tr>
-          <tr>
-            <td>001</td>
-            <td>09-98-00</td>
-            <td>987678</td>
-            <td>True</td>
-            <td width="3"><a href="#" class="glyphicon glyphicon-share"></a></td>
-          </tr>
+
+          {% for cli in lista_cliente %}
+
+{% if lista_cotizacion %}
+
+{% for i in lista_cotizacion %}
+
+{% if i.cliente.id = cli.id %}
+
+<tr>
+<td>{{ i.numero_cotizacion }}</td>
+  <td>{{ i.fecha_creacion|date:"d/m/Y" }}</td>
+  <td>{{ i.numero_contrato }}</td>
+  <td>{{ i.estado }}</td>
+    <td>
+    <a width="" href="../../../cotizacion/buscar/{{i.id}}" class="glyphicon glyphicon-tag" ></a>
+  </td>
+</tr>
+
+{% endif %}
+
+{% endfor %}
+
+{% endif %}
+
+{% endfor %}
+
+
+
         </table>
       </div>
     </div>
-  </div>
 
-</div>
+  </div><!--fin Tab content -->
+
+{% endif %}
+
+
 
 {% endblock content2 %}
 
