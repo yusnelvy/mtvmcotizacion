@@ -13,9 +13,33 @@ from django.template import RequestContext
 import simplejson as json
 import django.db
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 
 # Create your views here.
+def search_provincia(request):
+    if request.method == "POST":
+        search_text = request.POST['search_text']
+    else:
+        search_text = ''
+
+    lista_provincia = Provincia.objects.filter(Q(provincia__icontains=search_text) | Q(pais__pais__icontains=search_text))
+
+    paginator = Paginator(lista_provincia, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        provincias = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        provincias = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        provincias = paginator.page(paginator.num_pages)
+
+    return render_to_response('direccion/ajax_search.html', {'lista_provincia': lista_provincia, 'provincias': provincias})
+
+
 # lista
 def lista_pais(request):
     """docstring"""

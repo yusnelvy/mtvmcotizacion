@@ -10,6 +10,8 @@
     <link href="/static/bootstrap/css/bootstrap3.css" rel="stylesheet">
     <script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
     <script language="Javascript" src="/static/js/ajax.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    {% block js_sup %}{% endblock js_sup %}
 
     {% block titulo %}{% endblock titulo %}
 
@@ -68,6 +70,8 @@
     {% include "inicio/script.html" %}
 
     {% endblock script %}
+
+    {% block js_inf %}{% endblock js_inf %}
 
 </body>
 </html>
