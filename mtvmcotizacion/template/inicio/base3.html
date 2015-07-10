@@ -8,48 +8,34 @@
     <link href="/static/css/estilosForm.css" rel="stylesheet">
     <link href="/static/css/animate.css" rel="stylesheet">
     <link href="/static/bootstrap/css/bootstrap3.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/fuentes/style.css">
     <script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
     <script language="Javascript" src="/static/js/ajax.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
     {% block js_sup %}{% endblock js_sup %}
 
     {% block titulo %}{% endblock titulo %}
 
 </head>
 <body>
-    <br>
-    <br>
-    <br>
 
     {% block header %}{% endblock header %}
 
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a tilte="Mudarte" class="navbar-brand">Mudarte <span class="glyphicon glyphicon-road"></span></a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-                {% block nav1 %}
 
                 {% include "inicio/nav.html" %}
 
-                {% endblock nav1 %}
+                {% block acceso_rapido %}{% endblock acceso_rapido %}
 
-                {% block link %}{% endblock link %}
-
-                {% block nav2 %}
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                 {% include "inicio/nav2.html" %}
 
-                {% endblock nav2 %}
-            </div><!-- /.navbar-collapse -->
+            </div>
         </div><!-- /.container-fluid -->
     </nav>
 
@@ -59,11 +45,64 @@
 
     {% endblock modal %}
 
-    {% block ficha %}{% endblock ficha %}
+    <div class="container-fluid" id="page-wrap">
+        <div class="row">
 
-    {% block content %}{% endblock content %}
+            {% block navegacion %}{% endblock navegacion %}
 
-    {% block footer %}{% endblock footer %}
+            {% block content %}{% endblock content %}
+
+            {% block ficha %}{% endblock ficha %}
+
+        </div>
+            </div>
+            <div class="container-fluid" id="footer">
+        <div class="row">
+            <br>
+            <br>
+            <footer class="hidden-print">
+                <div class="container">
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-6 col-lg-3">
+                            <p>&copy; Mudarte.com.ar 2015</p>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Buscar...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                                </span>
+                            </div><!-- /input-group -->
+                            <div class="redes">
+                                <a href="#"><span class="glyphicon glyphicon-envelope"></span></a>
+                                <a href="#"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+                                <a href="#"><span class="glyphicon glyphicon-lock"></span></a>
+                            </div>
+                        </div><!-- /.col-lg-3 -->
+
+                        <div class="col-xs-0 col-lg-3"></div>
+                        <div class="col-xs-3 col-lg-4">
+                            <h4>Aplicación</h4>
+                            <ul class="w">
+
+                                {% block footerLink %}{% endblock footerLink %}
+
+                            </ul>
+                        </div>
+                        <div class="col-xs-2 col-lg-2">
+                            <h4>Compañia</h4>
+                            <ul class="w">
+                                <li><a href="#">¿Que hacemos?</a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#myModal1">Contactenos</a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#myModal3">Blog</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+</div>
+
 
     {% block script %}
 

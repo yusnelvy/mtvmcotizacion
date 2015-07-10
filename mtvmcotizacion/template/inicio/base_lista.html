@@ -1,5 +1,27 @@
 {% extends 'inicio/base3.html' %}
 
+{% block acceso_rapido %}
+
+        <a title="Volver" class="navbar-brand" role="button" aria-expanded="true" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
+        <a title="Nuevo" class="navbar-brand" role="button" aria-expanded="false" href="nuevo/"><span class="glyphicon-asterisk glyphicon glyphicon-plus"></span></a>
+        <a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
+
+{% endblock acceso_rapido %}
+
+{% block navegacion %}
+
+<div class="col-md-2">
+    <div class="barra-vertical hidden-print" style="">
+        <ul class="nav_l">
+
+            {% block link_navegacion %}{% endblock link_navegacion %}
+
+        </ul>
+    </div>
+</div>
+
+{% endblock navegacion %}
+
 {% block content %}
 
 <!--IniciaModal-->
@@ -21,7 +43,9 @@
             </div>
             <div class="modal-footer">
                 <form method="post" id="frmEliminar">
+
                     {% csrf_token %}
+
                     <input type="hidden" id="modal_id" name="item_id">
                     <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
                     <button type="submit" class="btn btn-default">Sí</button>
@@ -30,41 +54,35 @@
         </div>
     </div>
 </div>
+<div class="ayuda">
+    <button style="padding:0px;" type="button" class="ayuda_btn close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+    {% block ayuda %}{% endblock ayuda %}
+
+</div>
 <!--EndModal-->
+<div class="col-md-10">
+    <div class="">
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-8">
-            <div class="">
+        {% block titulo_tabla %}{% endblock titulo_tabla %}
 
-                {% block titulo_tabla %}{% endblock titulo_tabla %}
+        <input class="form-control hidden-print" style="max-width: 250px;float:right;" type="text" id="search" name="search" placeholder="Buscar...">
+        <br>
 
-                <a href="nuevo/" class="btn btn-default">Nuevo</a>
-                <br>
-                <h3>Search</h3>
-                {% csrf_token %}
+        {% csrf_token %}
 
-                <input type="text" id="search" name="search">
-                <br>
-                <div id="search-results">
-                {% block cantidad_tabla %}{% endblock cantidad_tabla %}
+        <div id="search-results">
 
-                <table class="table table-hover" id="tabla" style="text-align: center;">
+            {% block cantidad_tabla %}{% endblock cantidad_tabla %}
 
-                    {% block cuerpo_tabla %}{% endblock cuerpo_tabla %}
+            <table class="table table-hover" id="tabla" style="text-align: center;">
 
-                </table>
-                </div>
-                <a href="nuevo/" class="btn btn-default">Nuevo</a>
-                <br>
-                <br>
-            </div>
+                {% block cuerpo_tabla %}{% endblock cuerpo_tabla %}
+
+            </table>
         </div>
-        <div class="col-md-4">
-
-            {% block ayuda %}{% endblock ayuda %}
-
-        </div>
+        <br>
+        <br>
     </div>
 </div>
 

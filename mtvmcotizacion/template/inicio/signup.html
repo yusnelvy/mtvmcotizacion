@@ -1,5 +1,31 @@
 {% extends 'inicio/base3.html' %}
 
+{% block acceso_rapido %}
+
+<ul class="nav navbar-nav">
+    <li>
+        <a title="Volver" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
+    </li>
+</ul>
+
+{% endblock acceso_rapido %}
+
+{% block navegacion %}
+
+        <div class="col-md-2">
+            <div class="barra-vertical hidden-print" style="">
+            <ul class="nav_l">
+
+                {% block link_navegacion %}{% endblock link_navegacion %}
+
+            </ul>
+            </div>
+            <br>
+            <br>
+        </div>
+
+{% endblock navegacion %}
+
 {% block titulo %}
 
 <title>Crear usuario</title>
@@ -10,7 +36,6 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-4"></div>
         <div class="col-md-4 animated fadeIn">
             <h2>Crear usuario</h2>
 

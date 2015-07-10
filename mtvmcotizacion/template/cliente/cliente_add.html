@@ -1,5 +1,21 @@
 {% extends "inicio/base_edit.html" %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="../" style="color:#777;">Lista cliente</a></li>
+<li class="linknav"><a href="../estado_civil/" style="color:#777;">Lista de estado civil</a></li>
+<li class="linknav"><a href="../sexo/" style="color:#777;">Lista de sexo</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="../" style="color:#777;">Lista cliente</a></li>
+<li><a href="../estado_civil/" style="color:#777;">Lista de estado civil</a></li>
+<li><a href="../sexo/" style="color:#777;">Lista de sexo</a></li>
+
+{% endblock footerLink %}
+
 {% block titulo %}
 
 <title>Cliente</title>
@@ -25,7 +41,7 @@
 
 {% block ayuda %}
 
-<div class="well well-lg">
+<div class="">
   <p>Los <strong>Clientes</strong> son las personas que se le ofrece el servicio de <strong>mudanza</strong>. </p>
   <p>El <strong>cliente</strong> puede estar activo o inactivo. Puede ver más detalles viendo la ficha del cliente.</p>
   <p>Puede agregar más cliente presionando el botón nuevo.</p>

@@ -40,7 +40,7 @@ Eliminar Cotización
 
 {% block col1 %}
 
-<div class="col-md-12">
+class="col-md-10"
 
 {% endblock col1 %}
 
@@ -92,11 +92,11 @@ Eliminar Cotización
           </span>
         </h2>
       </div>
-      <div class="col-md-3" style="text-align: justify;">
+      <div class="col-md-3" style="text-align: justif;">
         <h3 >
-          <small><strong>Fecha Cotización:</strong> {{ i.fecha_creacion|date:"d/m/Y" }} <br>
+          <small><strong>Fecha creación:</strong> {{ i.fecha_creacion|date:"d/m/Y" }} <br>
           </small>
-          <small><strong>Fecha Mudanza:</strong> {{ i.fecha_estimadamudanza|date:"d/m/Y" }}</small><br>
+          <small><strong>Fecha mudanza:</strong> {{ i.fecha_estimadamudanza|date:"d/m/Y" }}</small><br>
           <small><strong>Cotizador:</strong> {{ i.cotizador }}</small>
         </h3>
       </div>
@@ -342,30 +342,30 @@ Eliminar Cotización
                     </tr>
                     <tr>
                       <td><strong>Servicio:</strong></td>
-                      <td class="text-right" style="border-bottom: 1px solid #000;">40.00</td>
+                      <td class="text-right">40.00</td>
                       <td>$</td>
                     </tr>
-                    <tr>
+                    <tr class="active">
                       <td><strong>Total:</strong></td>
                       <td class="text-right">410</td>
                       <td>$</td>
                     </tr>
-                    <tr>
+                    <tr class="active">
                       <td><strong>Descuento:</strong></td>
                       <td class="text-right">{{ i.monto_descuento }}</td>
                       <td>$</td>
                     </tr>
-                    <tr>
+                    <tr class="active">
                       <td><strong>Total:</strong></td>
                       <td class="text-right">{{ i.total_sin_impuesto }}</td>
                       <td>$</td>
                     </tr>
-                    <tr>
+                    <tr class="active">
                       <td><strong>IVA:</strong></td>
                       <td class="text-right">49.20</td>
                       <td>$</td>
                     </tr>
-                    <tr>
+                    <tr class="active">
                       <td><strong>TOTAL:</strong></td>
                       <td class="text-right">{{ i.total_con_impuesto }}</td>
                       <td>$</td>
@@ -1114,35 +1114,6 @@ Eliminar Cotización
     </div><!-- fin Tab content -->
 
   </div><!-- div sin class que cubre a los tab -->
-  <div class="row">
-    <div class="col-md-4">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <p>
-            Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <p>
-            Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <p>
-            Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div><!-- fin row -->
 
   {% endif %}
 

@@ -1,5 +1,19 @@
 {% extends "inicio/base_edit.html" %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="../../../" style="color:#777;">Lista de clientes</a></li>
+<li class="linknav"><a href="../../../sexo/" style="color:#777;">Lista de sexo</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="../../../" style="color:#777;">Lista de clientes</a></li>
+<li><a href="../../../sexo/" style="color:#777;">Lista de sexo</a></li>
+
+{% endblock footerLink %}
+
 {% block titulo %}
 
 <title>Estado civil</title>
@@ -24,7 +38,7 @@
 
 {% block ayuda %}
 
-<div class="well well-lg">
+<div class="">
   <p>El <strong>Estado civil</strong> es la situación de las personas físicas determinada por sus relaciones de familia, provenientes del matrimonio o del parentesco, que establece ciertos derechos y deberes.</p>
   <p>Edite el estado civil y presione el botón ( Registrar ).</p>
 </div>

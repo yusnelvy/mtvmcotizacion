@@ -1,5 +1,12 @@
 {% extends 'inicio/base3.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="estado_civil/" style="color:#777;">Estado civil</a></li>
+<li class="linknav"><a href="sexo/" style="color:#777;">Sexo</a></li>
+
+{% endblock link_navegacion %}
+
 {% block titulo %}
 
 <title>Direccion: cliente</title>
@@ -7,6 +14,9 @@
 {% endblock %}
 
 {% block content %}
+
+<div class="col-md-2"></div>
+
 
 <!--IniciaModal-->
 <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -81,11 +91,11 @@
 
 {% endif %}
 
+
 {% endblock %}
 
 {% block ayuda %}
 
-<br>
 <div class="well well-lg">
  <p>La <strong>Direccion</strong> del cliente es importante ya que es requisito para la mudanza.  </p>
  <p>Se recomienda agregar al menos una direccion por cada cliente.</p>

@@ -1,5 +1,27 @@
 {% extends 'inicio/base_ficha.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="../../" style="color:#777;">Lista de clientes</a></li>
+<li class="linknav"><a href="../../estado_civil/" style="color:#777;">Lista de estado civil</a></li>
+<li class="linknav"><a href="../../sexo/" style="color:#777;">Lista de sexo</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="../../" style="color:#777;">Lista de clientes</a></li>
+<li><a href="../../estado_civil/" style="color:#777;">Lista de estado civil</a></li>
+<li><a href="../../sexo/" style="color:#777;">Lista de sexo</a></li>
+
+{% endblock footerLink %}
+
+{% block col1 %}
+
+class="col-md-7"
+
+{% endblock col1 %}
+
 {% block titulo %}
 
 <title>Ficha del Cliente</title>
@@ -42,11 +64,12 @@ Eliminar
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#datos" aria-controls="home" role="tab" data-toggle="tab">Datos del cliente</a></li>
     <li role="presentation"><a href="#detalle" aria-controls="profile" role="tab" data-toggle="tab">Información adicional</a></li>
+    <li role="presentation"><a href="#Hcotizacion" aria-controls="profile" role="tab" data-toggle="tab">Historial de cotizaciones</a></li>
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="datos">
+    <div role="tabpanel" class="tab-pane fade in active" id="datos">
       <br>
       <div class="row">
         <div class="col-md-12">
@@ -183,95 +206,30 @@ Eliminar
     </div>
     <div role="tabpanel" class="tab-pane fade" id="detalle">
       <br>
-      <div class="row">
-        <div class="panel panel-default">
-            <table class="table table-hover">
-              <tr>
-                <td class="" colspan="2">
-                  <strong>Comentario:  </strong>
-
-                  {{ lista_cliente.0.comentarios }}
-
-                  <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../editar/{{lista_cliente.0.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-                </td>
-              </tr>
-              <tr>
-                <td><strong>Adicional 1: </strong>{{ lista_cliente.0.adicional1 }}</td>
-                <td><strong>Adicional 3: </strong>{{ lista_cliente.0.adicional3 }}</td>
-              </tr>
-              <tr>
-                <td><strong>Adicional 2: </strong>{{ lista_cliente.0.adicional2 }}</td>
-                <td><strong>Adicional 4: </strong>{{ lista_cliente.0.adicional4 }}</td>
-              </tr>
-            </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-{% endblock content1 %}
-
-{% block content2 %}
-
-{% if lista_cliente %}
-
-<h4>Cotizaciones</h4>
-<div role="tabpanel">
-
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#cotizaciones" aria-controls="home" role="tab" data-toggle="tab">Activas</a></li>
-    <li role="presentation"><a href="#historial" aria-controls="profile" role="tab" data-toggle="tab">Historial</a></li>
-  </ul>
-
-  <!-- Tab panes -->
-  <br>
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane fade in active" id="cotizaciones">
       <div class="panel panel-default">
-        <!-- Default panel contents -->
-        <!-- Table -->
-        <table class="table" style="text-align: center;">
-          <tr class="">
-            <th>Numero</th>
-            <th>Fecha</th>
-            <th>Contrato</th>
-            <th>Estado</th>
-            <th width="3">Ver</th>
+        <table class="table table-hover">
+          <tr>
+            <td class="" colspan="2">
+              <strong>Comentario:  </strong>
+
+              {{ lista_cliente.0.comentarios }}
+
+              <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../editar/{{lista_cliente.0.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+            </td>
           </tr>
-
-{% for cli in lista_cliente %}
-
-{% if lista_cotizacion %}
-
-{% for i in lista_cotizacion %}
-
-{% if i.cliente.id = cli.id and i.estado.id != 5 %}
-
-<tr>
-<td>{{ i.numero_cotizacion }}</td>
-  <td>{{ i.fecha_creacion|date:"d/m/Y" }}</td>
-  <td>{{ i.numero_contrato }}</td>
-  <td>{{ i.estado }}</td>
-    <td>
-    <a width="" href="../../../cotizacion/buscar/{{i.id}}" class="glyphicon glyphicon-tag" ></a>
-  </td>
-</tr>
-
-{% endif %}
-
-{% endfor %}
-
-{% endif %}
-
-{% endfor %}
-
+          <tr>
+            <td><strong>Adicional 1: </strong>{{ lista_cliente.0.adicional1 }}</td>
+            <td><strong>Adicional 3: </strong>{{ lista_cliente.0.adicional3 }}</td>
+          </tr>
+          <tr>
+            <td><strong>Adicional 2: </strong>{{ lista_cliente.0.adicional2 }}</td>
+            <td><strong>Adicional 4: </strong>{{ lista_cliente.0.adicional4 }}</td>
+          </tr>
         </table>
       </div>
     </div>
-
-        <div role="tabpanel" class="tab-pane fade" id="historial">
+    <div role="tabpanel" class="tab-pane fade" id="Hcotizacion">
+      <br>
       <div class="panel panel-default">
         <!-- Default panel contents -->
         <!-- Table -->
@@ -286,50 +244,81 @@ Eliminar
 
           {% for cli in lista_cliente %}
 
-{% if lista_cotizacion %}
+          {% if lista_cotizacion %}
 
-{% for i in lista_cotizacion %}
+          {% for i in lista_cotizacion %}
 
-{% if i.cliente.id = cli.id %}
+          {% if i.cliente.id = cli.id %}
 
-<tr>
-<td>{{ i.numero_cotizacion }}</td>
-  <td>{{ i.fecha_creacion|date:"d/m/Y" }}</td>
-  <td>{{ i.numero_contrato }}</td>
-  <td>{{ i.estado }}</td>
-    <td>
-    <a width="" href="../../../cotizacion/buscar/{{i.id}}" class="glyphicon glyphicon-tag" ></a>
-  </td>
-</tr>
+          <tr>
+            <td>{{ i.numero_cotizacion }}</td>
+            <td>{{ i.fecha_creacion|date:"d/m/Y" }}</td>
+            <td>{{ i.numero_contrato }}</td>
+            <td>{{ i.estado }}</td>
+            <td>
+              <a width="" href="../../../cotizacion/buscar/{{i.id}}" class="glyphicon glyphicon-tag" ></a>
+            </td>
+          </tr>
 
-{% endif %}
+          {% endif %}
 
-{% endfor %}
+          {% endfor %}
 
-{% endif %}
+          {% endif %}
 
-{% endfor %}
-
-
+          {% endfor %}
 
         </table>
       </div>
     </div>
+  </div>
+</div>
+{% if lista_cliente %}
 
-  </div><!--fin Tab content -->
+<br>
+
+<h4>Cotizaciones activas</h4>
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <!-- Table -->
+  <table class="table" style="text-align: center;">
+    <tr class="">
+      <th>Numero</th>
+      <th>Fecha</th>
+      <th>Contrato</th>
+      <th>Estado</th>
+      <th width="3">Ver</th>
+    </tr>
+
+    {% for cli in lista_cliente %}
+
+    {% if lista_cotizacion %}
+
+    {% for i in lista_cotizacion %}
+
+    {% if i.cliente.id = cli.id and i.estado.id != 5 %}
+
+    <tr>
+      <td>{{ i.numero_cotizacion }}</td>
+      <td>{{ i.fecha_creacion|date:"d/m/Y" }}</td>
+      <td>{{ i.numero_contrato }}</td>
+      <td>{{ i.estado }}</td>
+      <td>
+        <a width="" href="../../../cotizacion/buscar/{{i.id}}" class="glyphicon glyphicon-tag" ></a>
+      </td>
+    </tr>
+
+    {% endif %}
+
+    {% endfor %}
+
+    {% endif %}
+
+    {% endfor %}
+
+  </table>
+</div>
 
 {% endif %}
 
-
-
-{% endblock content2 %}
-
-{% block content3 %}
-
-<a href="../../" class="btn btn-default">Lista de clientes</a>
-
-{% endblock content3 %}
-
-{% block content4 %}
-
-{% endblock content4 %}
+{% endblock content1 %}

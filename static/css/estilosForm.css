@@ -58,7 +58,7 @@ th{text-align: center!important;}
   -o-transition: all 3s ease;
   transition: all 3s ease;
 }
-.divider-vertical{ height: 50px; margin: 0 9px; border-left: 1px solid #F2F2F2; border-right: 1px solid #777; }
+.divider-vertical-b,.divider-vertical{ height: 50px; margin: 0px 25px 0px 0px; border-right: 1px solid #e7e7e7; }
 
 .alert-danger {
   padding: 8px 35px 8px 14px;
@@ -75,4 +75,100 @@ th{text-align: center!important;}
 }
 .filtra-cliente>p>label[for=id_cliente],.filtra-cliente>p>select[id=id_cliente] {
   display: none;
+}
+.ayuda {
+    width:40%;
+    right:-100%;
+    top: 81px;
+    position: fixed;
+    z-index: 100;
+    color: #f5f5f5;
+    background: #777;
+    padding: 10px;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+
+.redes{
+  display:block !important;
+  margin-top: 15px;
+  font-size: 50px;
+}
+.redes a span{
+  margin-right: 25px;
+  color: #777;
+}
+.w li a{
+  color: #777!important;
+  text-decoration:;
+}
+.w li a:hover{
+  color: #777!important;
+}
+.w{
+  list-style: none;
+  margin-left: -27px;
+}
+footer{
+  color: #f5f5f5!important;
+  background-image: url("/static/img/dark-canvas.gif");
+  font-family:;
+  font-size: 18px;
+  z-index:1!important;
+  position: relative;
+  bottom: 0px;
+  border-top: 1px solid #e7e7e7;
+}
+body{
+    font-family:;
+    padding-top: 70px;
+}
+.barra-vertical{
+  background:#f5f5f5;
+  width:180px;
+  color: #777!important;
+  height:100%;
+  z-index:0;
+  position:fixed;
+  top: 50px;
+  left: 0px;
+  border-right: 1px solid #e7e7e7;
+}
+.linknav{padding: 10px 1px;z-index:1000;}
+.nav_l{list-style: none;padding: 15px;}
+@media (max-width:992px) {
+  .barra-vertical{
+    background:#f5f5f5;
+    color: #777!important;
+    position:fixed;
+    top: 50px;
+    height: 30px;
+    width:1000px;
+    z-index: 1000;
+    border-bottom: 1px solid #e7e7e7;
+  }
+  .linknav{padding:5px;display:inline;border-right:1px solid #e7e7e7}
+  .nav_l{list-style:none;padding:5px;max-width:1000px;}
+  body{padding-top:70px;}
+  .divider-vertical{display: none;}
+}
+html,body{
+height:100%;
+}
+
+#page-wrap{
+margin: auto;
+height: auto;
+min-height:100%;
+}
+
+#page-wrap:after{
+width: 100%;
+height:150px;
+display:block;
+clear:both;
+}
+
+#footer{
+height: 150px;
+margin: -150px auto 0;
 }
