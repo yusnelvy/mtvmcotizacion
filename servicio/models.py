@@ -47,13 +47,17 @@ class Material(models.Model):
     largo = models.DecimalField(max_digits=5, decimal_places=2)
     alto = models.DecimalField(max_digits=5, decimal_places=2)
     capacidad_peso = models.DecimalField(max_digits=5, decimal_places=2)
-    volumen = models.DecimalField(max_digits=5, decimal_places=2)
     capacidad_volumen = models.DecimalField(max_digits=5, decimal_places=2)
     contenedor = models.BooleanField(default=False)
     unidad = models.ForeignKey(Unidad)
+    #volumen = models.DecimalField(max_digits=5, decimal_places=2) se quito este campo para ser calculado
 
     def __str__(self):
         return self.material
+
+    def _get_volumen(self):
+        return (self.ancho*self.alto*self.largo)
+    volumen = property(_get_volumen)
 
     class Meta:
         verbose_name = "Material"

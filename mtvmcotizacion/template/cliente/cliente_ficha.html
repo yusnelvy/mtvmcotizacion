@@ -165,8 +165,9 @@ Eliminar
                       <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="../../../direccion/{{i.id}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
                       <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('direccion/delete/?codigo={{i.id}}','{{i.id}}','{{ i.zona.ciudad.provincia.pais }}. {{ i.zona.ciudad.provincia }}, {{ i.zona.ciudad }} Zona {{ i.zona }} calle {{ i.calle }} numero {{ i.numero }} Punto de referencia {{ i.punto_referencia }}'); return false" class="glyphicon glyphicon-remove"></a>
                     </small>
+                    <a href="{{ i.get_absolute_url }}">editar</a>
                   </p>
-
+{{ i.full_direccion}}
                   {% endfor %}
 
                 </td>
