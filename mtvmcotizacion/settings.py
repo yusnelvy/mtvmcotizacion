@@ -21,13 +21,9 @@ SECRET_KEY = 'z)sr!is=6dk1x82ajleb$wbqmen^cyrb1_jb7xjw0385mfzb%8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
 # Redirect when login is correct.
 LOGIN_REDIRECT_URL = "/home"
+
 # Redirect when login is not correct.
 LOGIN_URL = '/'
 
@@ -64,41 +60,59 @@ MIDDLEWARE_CLASSES = (
 
 )
 
+# CONFIGURACIÓN DE TEMPLATES:
 # Es una secuencia de valores agrupados llamados procesadores
 # de contexto - que tienen un objeto de solicitud
 # como su argumento y devuelven un diccionario de temas que se
 # fusionó con el contexto
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'django.core.context_processors.tz',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.request'
-)
+#
+TEMPLATES = [
+    {
+        # BACKEND: Referencia directa al Django's template backend API
+        # En el caso de conectar Jinja2 hay que hacer referencia
+        # con django.template.backends.jinja2.Jinja2.
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # DIRS: Lista de directorios donde el engine debe encontrar
+        # los archivos de Templates
+        'DIRS': [
+            os.path.join(os.path.dirname(__file__), 'template').replace('\\', '/'),
+        ],
+        # APP_DIRS: Lista de directorios donde se deben buscar los
+        # templates específicos de aplicaciones en una carpeta llamada
+        # templates en la raíz de cada aplicación.
+        'APP_DIRS': True,
+        # OPTIONS: Permite especificar opciones específicas del BackEnd
+        'OPTIONS': {
+            # 'loaders': []
+            # El estándar de loaders carga lo siguiente:
+            # ('django.template.loaders.filesystem.Loader',
+            #'django.template.loaders.app_directories.Loader')
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.request'
+            ]
+            # 'allowed_include_roots': [
+            #
+            # ]
+        },
+    },
+]
 
-#HAYSTACK_CONNECTIONS = {
-   # 'default': {
-   #     'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-    #    'URL': 'http://127.0.0.1:9200/',
-    #    'INDEX_NAME': 'haystack',
-    #    },
-    #}
+TEMPLATE_DEBUG = True
 
-# http://django-haystack.readthedocs.org/en/latest/signal_processors.html
-#HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+ALLOWED_HOSTS = []
 
-# increase the default number of results (from 20)
-
-#HAYSTACK_SEARCH_RESULTS_PER_PAGE = 40
+TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'template').replace('\\', '/'), )
 
 ROOT_URLCONF = 'mtvmcotizacion.urls'
 
 WSGI_APPLICATION = 'mtvmcotizacion.wsgi.application'
-
-TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'template').replace('\\', '/'), )
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
