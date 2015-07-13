@@ -1,4 +1,29 @@
 {% extends "inicio/base3.html" %}
+
+{% block content %}{% endblock content %}
+
+{% block acceso_rapido %}
+
+<a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
+<a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
+
+
+{% endblock acceso_rapido %}
+
+{% block navegacion %}
+
+        <div class="col-md-2">
+            <div class="barra-vertical hidden-print" style="">
+            <ul class="nav_l">
+
+                {% block link_navegacion %}{% endblock link_navegacion %}
+
+            </ul>
+            </div>
+        </div>
+
+{% endblock navegacion %}
+
 {% block ficha %}
 <!--IniciaModal-->
 <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -31,58 +56,20 @@
 <!--EndModal-->
 
 
-    <div class="container">
+        <div {% block col1 %}class="col-md-5"{% endblock col1 %}>
+
 
         {% block titulo_ficha %}{% endblock titulo_ficha %}
-
-    <div class="row">
-
-
-        {% block col1 %}
-
-        <div class="col-md-7">
-
-        {% endblock col1 %}
 
         {% block content1 %}{% endblock content1 %}
 
         </div>
+<div class="col-md-2"></div>
 
-        {% block col2 %}
+        <div {% block col2 %}class="col-md-5"{% endblock col2 %}>
 
-        <div class="col-md-5">
-
-        {% endblock col2 %}
-
-        {% block content2 %}{% endblock content2%}
+        {% block content3 %}{% endblock content3 %}
 
         </div>
 
-    </div>
-
-    <div class="row">
-
-
-        {% block col3 %}
-
-        <div class="col-md-7">
-
-            {% endblock col3 %}
-
-            {% block content3 %}{% endblock content3 %}
-
-        </div>
-
-        {% block col4 %}
-
-        <div class="col-md-5">
-
-            {% endblock col4 %}
-
-            {% block content4 %}{% endblock content4 %}
-
-        </div>
-
-    </div>
-</div>
 {% endblock ficha %}

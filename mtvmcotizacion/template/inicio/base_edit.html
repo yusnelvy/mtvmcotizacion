@@ -1,48 +1,55 @@
 {% extends "inicio/base3.html" %}
 
-{% block link_base %}
+{% block acceso_rapido %}
 
-<ul class="nav navbar-nav">
-  <li>
-    <a href="javascript:history.back();" class="btn">Regresar</a>
-  </li>
-</ul>
+        <a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
 
-{% endblock link_base %}
+{% endblock acceso_rapido %}
+
+{% block navegacion %}
+
+<div class="col-md-2">
+    <div class="barra-vertical hidden-print" style="">
+        <ul class="nav_l">
+
+            {% block link_navegacion %}{% endblock link_navegacion %}
+
+        </ul>
+    </div>
+</div>
+
+{% endblock navegacion %}
 
 {% block content %}
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-8">
-            <div class="">
+<div class="col-md-5">
+    <div class="">
 
-                {% block titulo_form %}{% endblock titulo_form %}
+        {% block titulo_form %}{% endblock titulo_form %}
 
-                <form action="" method="post">
+        <form action="" method="post">
 
-                    {% csrf_token %}
+            {% csrf_token %}
 
-                    {% block cuerpo_form %}{% endblock cuerpo_form %}
+            {% block cuerpo_form %}{% endblock cuerpo_form %}
 
-                    <button type="submit" class="btn btn-default">Registrar</button>
-                </form>
-            </div>
+            <button type="submit" class="btn btn-default">Registrar</button>
             <br>
-            <div class="col-md-8">
 
-            {% block contenido_adicional %}{% endblock contenido_adicional %}
+        </form>
+    </div>
+    <br>
+    <div class="col-md-4">
 
-            </div>
+        {% block contenido_adicional %}{% endblock contenido_adicional %}
 
-        </div>
-        <div class="col-md-4">
-
-            {% block ayuda %}{% endblock ayuda %}
-
-        </div>
     </div>
 </div>
-<br>
+<div class="ayuda">
+    <button style="padding:0px;" type="button" class="ayuda_btn close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+    {% block ayuda %}{% endblock ayuda %}
+
+</div>
 
 {% endblock content %}

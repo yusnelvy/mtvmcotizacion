@@ -1,98 +1,93 @@
 <ul class="nav navbar-nav navbar-right">
-  <li class="divider-vertical"></li>
-  <li class="">
-    <a title="Blog" href="#" type="button" class="btn" data-toggle="modal" data-target="#myModal3"><span class="glyphicon glyphicon-book"></span>  </a>
-  </li>
-  <li class="">
-    <a title="Contactenos" href="#" type="button" class="btn" data-toggle="modal" data-target="#myModal1"><span class="glyphicon glyphicon-phone"></span>  </a>
-  </li>
-  <li>
-    <a title="Soporte" href="#" class="dropdown-toggle btn" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-thumbs-up"></span>    <span class="badge">2</span> <span class="caret"></span></a>
-    <ul class="dropdown-menu" role="menu">
-      <li class="">
-        <a href="#">notificaciones  <span class="badge">1</span></a>
-      </li>
-      <br>
-      <li class="">
-        <a href="#">notificaciones <span class="badge">1</span></a>
-      </li>
-      <br>
-      <li class="">
-        <a href="#">notificaciones</a>
-      </li>
-      <br>
-      <li role="presentation" class="divider"></li>
-      <br>
-      <li class="">
-        <a href="#">notificaciones</a>
-      </li>
-      <br>
-    </ul>
-  </li>
-  <li>
-    <a title="Notificaciones" href="#" class="dropdown-toggle btn" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-flag"></span>  <span class="badge">9</span>  <span class="caret"></span> </a>
-    <ul class="dropdown-menu" role="menu">
-      <li class="">
-        <a href="#">notificaciones  <span class="badge">2</span></a>
-      </li>
-      <br>
-      <li class="">
-        <a href="#">notificaciones <span class="badge">1</span></a>
-      </li>
-      <br>
-      <li class="">
-        <a href="#">notificaciones</a>
-      </li>
-      <br>
-      <li role="presentation" class="divider"></li>
-      <br>
-      <li class="">
-        <a href="#">notificaciones</a>
-      </li>
-      <br>
-    </ul>
-  </li>
-  <li class="btn-group">
+    <a href="" class="navbar-brand divider-vertical"></a>
+    <li>
+        <a title="Soporte" href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-thumbs-up"></span>    <span class="badge">2</span> <span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li class="">
+                <a href="#">notificaciones  <span class="badge">1</span></a>
+            </li>
+            <br>
+            <li class="">
+                <a href="#">notificaciones <span class="badge">1</span></a>
+            </li>
+            <br>
+            <li class="">
+                <a href="#">notificaciones</a>
+            </li>
+            <br>
+            <li role="presentation" class="divider"></li>
+            <br>
+            <li class="">
+                <a href="#">notificaciones</a>
+            </li>
+            <br>
+        </ul>
+    </li>
+    <li>
+        <a title="Notificaciones" href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-flag"></span>  <span class="badge">9</span>  <span class="caret"></span> </a>
+        <ul class="dropdown-menu" role="menu">
+            <li class="">
+                <a href="#">notificaciones  <span class="badge">2</span></a>
+            </li>
+            <br>
+            <li class="">
+                <a href="#">notificaciones <span class="badge">1</span></a>
+            </li>
+            <br>
+            <li class="">
+                <a href="#">notificaciones</a>
+            </li>
+            <br>
+            <li role="presentation" class="divider"></li>
+            <br>
+            <li class="">
+                <a href="#">notificaciones</a>
+            </li>
+            <br>
+        </ul>
+    </li>
+    <li>
 
-    {% if user.username %}
+        {% if user.username %}
 
-    <a title="{% if user.username %}{{ user.username }}{% endif %}" href="#" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-      <span class="glyphicon glyphicon-user"></span>
-      <span class="caret"></span>
+        <a  title="{% if user.username %}{{ user.username }}{% endif %}" href="#" type="button" class="navbar-brand dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+            <span class="glyphicon glyphicon-user"></span>
+            <span class="caret"></span>
 
-      {% if user.username %}
+            {% if user.username %}
 
-      {{ user.username }}
+            {{ user.username }}
 
-      {% endif %}
+            {% endif %}
 
-    </a>
-    <ul class="dropdown-menu" role="menu">
-      <li>
-        <a href="#">Datos personales</a>
-      </li>
-      <li>
-        <a href="#">Configuraciones</a>
-      </li>
-      <li>
-        <a href="{% url 'uinicio:signup' %}">Crear usuario</a>
-      </li>
-      <li>
-        <a href="{% url 'uinicio:login' %}">Login</a>
-      </li>
-      <li class="divider"></li>
-      <li>
-        <a href="{% url 'uinicio:logout' %}">Salir</a>
-      </li>
-    </ul>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a href="#">Datos personales</a>
+            </li>
+            <li>
+                <a href="#">Configuraciones</a>
+            </li>
+            <li>
+                <a href="{% url 'uinicio:signup' %}">Crear usuario</a>
+            </li>
+            <li>
+                <a href="{% url 'uinicio:login' %}">Login</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a href="{% url 'uinicio:logout' %}">Salir</a>
+            </li>
+        </ul>
 
-    {% else %}
 
-    <a href="/login" title="{% if user.username %}{{ user.username }}{% else %}Login{% endif %}" type="button" class="btn"  data-target="{% if user.username %}#myModal2{% else %}/login{% endif %}"><span class="glyphicon glyphicon-user"></span>
-      Login
-    </a>
+        {% else %}
 
-    {% endif %}
+        <a href="/login" title="{% if user.username %}{{ user.username }}{% else %}Login{% endif %}" type="button" class="navbar-brand"  data-target="{% if user.username %}#myModal2{% else %}/login{% endif %}"><span class="glyphicon glyphicon-user"></span>
+            Login
+        </a>
 
-  </li>
+        {% endif %}
+
+    </li>
 </ul>
