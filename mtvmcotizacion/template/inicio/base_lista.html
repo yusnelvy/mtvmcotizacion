@@ -1,5 +1,15 @@
 {% extends 'inicio/base3.html' %}
 
+{% block link_base %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="nuevo/" type="button" class="btn"><span class="glyphicon glyphicon-hom"></span>Nuevo</a>
+  </li>
+</ul>
+
+{% endblock link_base %}
+
 {% block content %}
 
 <!--IniciaModal-->
@@ -39,9 +49,6 @@
 
                 {% block titulo_tabla %}{% endblock titulo_tabla %}
 
-                <a href="nuevo/" class="btn btn-default">Nuevo</a>
-                <br>
-
                 {% block cantidad_tabla %}{% endblock cantidad_tabla %}
 
                 <table class="table table-hover" id="tabla" style="text-align: center;">
@@ -49,8 +56,6 @@
                     {% block cuerpo_tabla %}{% endblock cuerpo_tabla %}
 
                 </table>
-                <a href="nuevo/" class="btn btn-default">Nuevo</a>
-                <br>
                 <br>
             </div>
         </div>

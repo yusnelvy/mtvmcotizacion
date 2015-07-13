@@ -56,25 +56,17 @@ Eliminar Cliente
 
 <tr class="active">
       <th>Nombre</th>
-      <th>Activo</th>
-      <th>Ver ficha</th>
-      <th>Editar</th>
-      <th>Eliminar</th>
+      <th>Estado</th>
+      <th width="3">Ficha</th>
+      <th width="3">Editar</th>
+      <th width="3">Eliminar</th>
     </tr>
 
 {% for i in lista_cliente %}
 
 <tr id="tr{{i.id}}">
       <td>{{ i.nombre_principal }}</td>
-      <td>
-
-        {% if i.activo %}
-        Si
-        {% else %}
-        No
-        {% endif%}
-
-      </td>
+      <td>{{ i.activo|yesno:"Activo,Inactivo" }}</td>
        <td>
         <a href="cliente_ficha/{{i.id}}/" class="glyphicon glyphicon-tag"></a>
       </td>

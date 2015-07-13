@@ -16,7 +16,7 @@
 
 <div class="form-group">
 
-{{form_edit_ambiente.as_p}}
+  {{form_edit_ambiente.as_p}}
 
 </div>
 
@@ -24,46 +24,61 @@
 
 {% block contenido_adicional %}
 
-{% if ambiente.ambiente_tipo_inmueble_set.all %}
-
-<h4>Tipos de inmuebles relacionados</h4>
+<h4>Tipos de inmuebles que tienen este ambiente asociado</h4>
 <div class="panel panel-default">
-    <!-- Default panel contents -->
-    <!-- Table -->
-    <table class="table" style="text-align: center;">
-        <tr class="">
-            <th width="100">Tipo de inmuebles</th>
-            <th width="3"></th>
-        </tr>
+  <table class="table" style="text-align: center;">
+    <tr class="">
+      <th width="100">Tipo de inmuebles</th>
+      <th width="3"></th>
+    </tr>
 
-{% for i in ambiente.ambiente_tipo_inmueble_set.all %}
+    {% for i in ambiente.ambiente_tipo_inmueble_set.all %}
 
-  <tr id="tr{{i.id}}">
-            <td width="100">{{ i.tipo_inmueble }}</td>
-            <td width="3">
-                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uambientes:edit_ambiente_tipoinmueble' i.id %}?next={% url 'uambientes:edit_ambiente' ambiente.id %}" class="glyphicon glyphicon-edit"></a>
-            </td>
-        </tr>
+    <tr id="tr{{i.id}}">
+      <td width="100">{{ i.tipo_inmueble }}</td>
+      <td width="3">
+        <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uambientes:edit_ambiente_tipoinmueble' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
+      </td>
+    </tr>
 
-{% endfor %}
+    {% endfor %}
 
-    </table>
+  </table>
 </div>
+<br>
+<h4>Muebles típicos asociados a este ambiente</h4>
+<div class="panel panel-default">
+  <table class="table" style="text-align: center;">
+    <tr class="">
+      <th width="100">Muebles típicos</th>
+      <th width="3"></th>
+    </tr>
 
-{% endif %}
+    {% for i in ambiente.mueble_ambiente_set.all %}
 
+    <tr id="tr{{i.id}}">
+      <td width="100">{{ i.mueble }}</td>
+      <td width="3">
+        <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uambientes:edit_ambiente_tipoinmueble' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
+      </td>
+    </tr>
+
+    {% endfor %}
+
+  </table>
+</div>
 {% endblock contenido_adicional %}
 
 {% block ayuda %}
 
 <div class="">
-    <div class="well well-lg">
-      <p>Los <strong>Ambientes</strong> son los diversos espacios que se encuentran en un <strong>Inmueble</strong>.</p>
-      <p>Cree <strong>Ambientes</strong> que no generen ambigüedades o confusiones como <i>Living</i> y <i>Living Room</i>.</p>
-      <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
-      <p>Utilice una clasificación apropiada para los <strong>Ambientes</strong> que permita su comprensión y rápida búsqueda.</p>
-      <p>IMPORTANTE: Esta clasificación es solo de uso referencial, y no será determinante al cargar información de los distintos <strong>Tipos de ambientes</strong> en los cuales se puede encontrar el mismo <strong>Ambiente</strong>.</p>
-    </div>
+  <div class="well well-lg">
+    <p>Los <strong>Ambientes</strong> son los diversos espacios que se encuentran en un <strong>Inmueble</strong>.</p>
+    <p>Cree <strong>Ambientes</strong> que no generen ambigüedades o confusiones como <i>Living</i> y <i>Living Room</i>.</p>
+    <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
+    <p>Utilice una clasificación apropiada para los <strong>Ambientes</strong> que permita su comprensión y rápida búsqueda.</p>
+    <p>IMPORTANTE: Esta clasificación es solo de uso referencial, y no será determinante al cargar información de los distintos <strong>Tipos de ambientes</strong> en los cuales se puede encontrar el mismo <strong>Ambiente</strong>.</p>
   </div>
+</div>
 
 {% endblock%}

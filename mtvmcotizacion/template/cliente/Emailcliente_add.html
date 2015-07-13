@@ -8,15 +8,15 @@
 
 {% block titulo_form %}
 
-  <h2>Agregar email</h2>
+<h2>Agregar email</h2>
 
 {% endblock titulo_form %}
 
 {% block cuerpo_form %}
 
-<div class="form-group">
+<div class="form-group filtra-cliente">
 
-  {{ email_form.as_p }}
+    {{ email_form.as_p }}
 
 
 </div>
@@ -27,8 +27,8 @@
 
 <br>
 <div class="well well-lg">
-  <p>El <strong>Email</strong> del cliente es importante porque por medio de ellos se contacta al cliente y se envían promociones existentes.  </p>
-  <p>Se recomienda agregar al menos un email por cada cliente.</p>
+    <p>El <strong>Email</strong> del cliente es importante porque por medio de ellos se contacta al cliente y se envían promociones existentes.  </p>
+    <p>Se recomienda agregar al menos un email por cada cliente.</p>
 </div>
 
 {% endblock ayuda %}

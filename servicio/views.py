@@ -1,14 +1,17 @@
 from django.shortcuts import render, render_to_response
 from servicio.models import Servicio, Material, \
-    Servicio_Material, Complejidad, Complejidad_Servicio
+    Servicio_Material, Complejidad, \
+    Complejidad_Servicio, Unidad
 from servicio.forms import ServicioForm, MaterialForm,\
-    ServicioMaterialForm, ComplejidadForm, ComplejidadServicioForm
+    ServicioMaterialForm, ComplejidadForm, \
+    ComplejidadServicioForm, UnidadForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 import django.db
 import simplejson as json
 from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 # Create your views here.
@@ -38,8 +41,63 @@ def lista_servicio(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_servicio = Servicio.objects.all()
-    context = {'lista_servicio': lista_servicio}
+
+    paginator = Paginator(lista_servicio, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        servicios = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        servicios = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        servicios = paginator.page(paginator.num_pages)
+
+    context = {'lista_servicio': lista_servicio, 'servicios': servicios}
     return render(request, 'servicio/servicio_lista.html', context)
+
+
+def lista_unidad(request):
+    """docstring"""
+
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_unidad = request.POST['item_id']
+                p = Unidad.objects.get(pk=id_unidad)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+    lista_unidad = Unidad.objects.all()
+
+    paginator = Paginator(lista_unidad, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        unidades = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        unidades = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        unidades = paginator.page(paginator.num_pages)
+
+    context = {'lista_unidad': lista_unidad, 'unidades': unidades}
+    return render(request, 'servicio/unidad_lista.html', context)
 
 
 def lista_material(request):
@@ -67,7 +125,20 @@ def lista_material(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_material = Material.objects.all()
-    context = {'lista_material': lista_material}
+
+    paginator = Paginator(lista_material, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        materiales = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        materiales = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        materiales = paginator.page(paginator.num_pages)
+
+    context = {'lista_material': lista_material, 'materiales': materiales}
     return render(request, 'servicio/material_lista.html', context)
 
 
@@ -96,7 +167,20 @@ def lista_complejidad(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_complejidad = Complejidad.objects.all()
-    context = {'lista_complejidad': lista_complejidad}
+
+    paginator = Paginator(lista_complejidad, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        complejidades = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        complejidades = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        complejidades = paginator.page(paginator.num_pages)
+
+    context = {'lista_complejidad': lista_complejidad, 'complejidades': complejidades}
     return render(request, 'servicio/complejidad_lista.html', context)
 
 
@@ -166,7 +250,7 @@ def buscar_complejidad_servicio(request, idserv=0, idcomp=0):
     else:
         buscar_complejidadservicio = Complejidad_Servicio.objects.all()
 
-    context = {'buscar_complejidadservicio': buscar_complejidadservicio}
+    context = {'buscar_complejidadservicio': buscar_complejidadservicio, 'idserv': idserv}
     return render(request, 'servicio/complejidadservicio_lista.html', context)
 
 
@@ -182,6 +266,20 @@ def add_servicio(request):
         form_servicio = ServicioForm()
     return render_to_response('servicio/servicio_add.html',
                               {'form_servicio': form_servicio, 'create': True},
+                              context_instance=RequestContext(request))
+
+
+def add_unidad(request):
+    """docstring"""
+    if request.method == 'POST':
+        form_unidad = UnidadForm(request.POST)
+        if form_unidad.is_valid():
+            form_unidad.save()
+            return HttpResponseRedirect(reverse('uservicios:lista_unidad'))
+    else:
+        form_unidad = UnidadForm()
+    return render_to_response('servicio/unidad_add.html',
+                              {'form_unidad': form_unidad, 'create': True},
                               context_instance=RequestContext(request))
 
 
@@ -221,21 +319,21 @@ def add_serviciomaterial(request, id_ser):
             form_serviciomaterial.save()
             return HttpResponseRedirect(reverse('uservicios:buscar_servicio_material', args=('0', '0')))
     else:
-        form_serviciomaterial = ServicioMaterialForm({'servicio': id_ser})
+        form_serviciomaterial = ServicioMaterialForm(initial={'servicio': id_ser})
     return render_to_response('servicio/serviciomaterial_add.html',
                               {'form_serviciomaterial': form_serviciomaterial, 'create': True},
                               context_instance=RequestContext(request))
 
 
-def add_complejidadservicio(request):
+def add_complejidadservicio(request, id_ser):
     """docstring"""
     if request.method == 'POST':
         form_complejidadservicio = ComplejidadServicioForm(request.POST)
         if form_complejidadservicio.is_valid():
             form_complejidadservicio.save()
-            return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio', args=('0', '0')))
+            return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio', args=(id_ser, '0')))
     else:
-        form_complejidadservicio = ComplejidadServicioForm()
+        form_complejidadservicio = ComplejidadServicioForm(initial={'servicio': id_ser})
     return render_to_response('servicio/complejidadservicio_add.html',
                               {'form_complejidadservicio': form_complejidadservicio, 'create': True},
                               context_instance=RequestContext(request))
@@ -246,6 +344,8 @@ def edit_servicio(request, pk):
     """docstring"""
     servicio = Servicio.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_servicio = ServicioForm(request.POST, instance=servicio)
@@ -254,7 +354,10 @@ def edit_servicio(request, pk):
             # formulario validado correctamente
             form_edit_servicio.save()
 
-            return HttpResponseRedirect(reverse('uservicios:lista_servicio'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('uservicios:lista_servicio'))
 
     else:
         # formulario inicial
@@ -265,9 +368,39 @@ def edit_servicio(request, pk):
                               context_instance=RequestContext(request))
 
 
+def edit_unidad(request, pk):
+    """docstring"""
+    unidad = Unidad.objects.get(pk=pk)
+
+    redirect_to = request.REQUEST.get('next', '')
+
+    if request.method == 'POST':
+        # formulario enviado
+        form_edit_unidad = UnidadForm(request.POST, instance=unidad)
+
+        if form_edit_unidad.is_valid():
+            # formulario validado correctamente
+            form_edit_unidad.save()
+
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('uservicios:lista_unidad'))
+
+    else:
+        # formulario inicial
+        form_edit_unidad = UnidadForm(instance=unidad)
+
+    return render_to_response('servicio/unidad_edit.html',
+                              {'form_edit_unidad': form_edit_unidad, 'unidad': unidad, 'create': False},
+                              context_instance=RequestContext(request))
+
+
 def edit_material(request, pk):
     """docstring"""
     material = Material.objects.get(pk=pk)
+
+    redirect_to = request.REQUEST.get('next', '')
 
     if request.method == 'POST':
         # formulario enviado
@@ -277,7 +410,10 @@ def edit_material(request, pk):
             # formulario validado correctamente
             form_edit_material.save()
 
-            return HttpResponseRedirect(reverse('uservicios:lista_material'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('uservicios:lista_material'))
 
     else:
         # formulario inicial
@@ -292,6 +428,8 @@ def edit_complejidad(request, pk):
     """docstring"""
     complejidad = Complejidad.objects.get(pk=pk)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         form_edit_complejidad = ComplejidadForm(request.POST, instance=complejidad)
@@ -300,7 +438,10 @@ def edit_complejidad(request, pk):
             # formulario validado correctamente
             form_edit_complejidad.save()
 
-            return HttpResponseRedirect(reverse('uservicios:lista_complejidad'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('uservicios:lista_complejidad'))
 
     else:
         # formulario inicial

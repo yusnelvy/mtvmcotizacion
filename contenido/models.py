@@ -1,36 +1,15 @@
 from django.db import models
 from mueble.models import Mueble
+from servicio.models import Servicio
 
 
 # Create your models here.
-class Contenedor(models.Model):
-    """docstring for Contenedor"""
-    def __init__(self, *args, **kwargs):
-        super(Contenedor, self).__init__(*args, **kwargs)
-
-    contenedor = models.CharField(max_length=100, unique=True)
-    capacidad_volumen = models.DecimalField(max_digits=5, decimal_places=2)
-    capacidad_peso = models.DecimalField(max_digits=5, decimal_places=2)
-    volumen_contenedor = models.DecimalField(max_digits=5, decimal_places=2)
-    peso_contenedor = models.DecimalField(max_digits=5, decimal_places=2)
-    retornable = models.BooleanField(default=None)
-
-    def __str__(self):
-        return self.contenedor
-
-    class Meta:
-        verbose_name = "contenedor"
-        verbose_name_plural = "contenedores"
-        ordering = ['contenedor']
-
-
 class Contenido(models.Model):
     """docstring for Contenido"""
     def __init__(self, *args, **kwargs):
         super(Contenido, self).__init__(*args, **kwargs)
 
     contenido = models.CharField(max_length=100, unique=True)
-    contenedor = models.ForeignKey(Contenedor)
     densidad_baja = models.DecimalField(max_digits=7, decimal_places=2)
     densidad_media = models.DecimalField(max_digits=7, decimal_places=2)
     densidad_alta = models.DecimalField(max_digits=7, decimal_places=2)
@@ -52,8 +31,7 @@ class Contenido_Tipico(models.Model):
 
     contenido = models.ForeignKey(Contenido)
     mueble = models.ForeignKey(Mueble)
-    cantidad = models.DecimalField(max_digits=2, decimal_places=2)
-    unique_together = ("Contenido", "Mueble")
+    cantidad = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
         return self.contenido
@@ -62,3 +40,23 @@ class Contenido_Tipico(models.Model):
         verbose_name = "Contenido Tipico"
         verbose_name_plural = "Contenidos Tipicos"
         ordering = ['mueble', 'contenido']
+        unique_together = (("contenido", "mueble"),)
+
+
+class Contenido_Servicio(models.Model):
+    """docstring for Contenido_Servicio"""
+    def __init__(self, *args, **kwargs):
+        super(Contenido_Servicio, self).__init__(*args, **kwargs)
+
+    contenido = models.ForeignKey(Contenido)
+    servicio = models.ForeignKey(Servicio)
+    predefinido = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.contenido
+
+    class Meta:
+        verbose_name = "Contenido Servicio"
+        verbose_name_plural = "Contenidos Servicios"
+        ordering = ['servicio', 'contenido']
+        unique_together = (("contenido", "servicio"),)

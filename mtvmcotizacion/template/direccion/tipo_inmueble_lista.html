@@ -2,13 +2,13 @@
 
 {% block titulo %}
 
-<title>Tipo de inmueble</title>
+<title>Tipos de inmueble</title>
 
 {% endblock titulo %}
 
 {% block titulo_modal %}
 
-Eliminar Tipo de inmueble
+Eliminar tipo de inmueble
 
 {% endblock titulo_modal %}
 
@@ -18,9 +18,19 @@ Eliminar Tipo de inmueble
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/direccion/complejidad_inmueble/" class="btn">Complejidad de inmueble</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% block titulo_tabla %}
 
-<h2>Listado de tipos de inmuebles </h2>
+<h2>Tipos de inmueble</h2>
 
 {% endblock titulo_tabla %}
 
@@ -28,7 +38,7 @@ Eliminar Tipo de inmueble
 
 {% block cantidad_tabla %}
 
-<h6>Cantidad de tipo de inmuebles encontradas:
+<h6>Cantidad de tipos de inmueble encontrados:
   <span class="badge" id="count_reg">
 
     {{ lista_tipo_inmueble.count }}
@@ -46,17 +56,59 @@ Eliminar Tipo de inmueble
     <th width="3">Eliminar</th>
 </tr>
 
-{% for i in lista_tipo_inmueble %}
+{% for i in tipoinmuebles %}
 
 <tr id="tr{{i.id}}">
     <td>{{ i.tipo_inmueble }}</td>
-    <td width="3"><a title="Editar" data-toggle="tooltip" data-placement="right" href="{{i.id}}/" class="glyphicon glyphicon-edit"></a></td>
+    <td width="3"><a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'udireciones:edit_tipo_inmueble' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a></td>
     <td width="3">
         <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.tipo_inmueble}}"></a>
   </td>
 </tr>
 
 {% endfor %}
+
+<nav>
+  <ul class="pagination">
+
+    {% if tipoinmuebles.has_previous %}
+
+    <li>
+      <a href="?page={{ tipoinmuebles.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+
+    {% endif %}
+
+    <li class="current">
+      <a style="color:#000;"> Página
+
+        {{ tipoinmuebles.number }}
+
+        de
+
+        {{ tipoinmuebles.paginator.num_pages }}
+
+        Desde el tipo de inmueble
+
+        {{ tipoinmuebles.start_index }}
+
+        hasta el tipo de inmueble
+
+        {{ tipoinmuebles.end_index }}
+
+      </a>
+    </li>
+
+    {% if tipoinmuebles.has_next %}
+
+    <li>
+      <a href="?page={{ tipoinmuebles.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+
+    {% endif %}
+
+  </ul>
+</nav>
 
 {% endblock cuerpo_tabla %}
 

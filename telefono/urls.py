@@ -4,7 +4,7 @@ from telefono import views
 
 urlpatterns = patterns('',
                        url(r'^$', views.lista_telefono, name='lista_telefono'),
-                       url(r'^nuevo', views.add_telefono, name='add_telefono'),
+                       url(r'^nuevo/(?P<id_cli>\d+)/', views.add_telefono, name='add_telefono'),
                        url(r'^editar/(?P<pk>\d+)/$', views.edit_telefono,
                            name='edit_telefono'),
                        url(r'^tipo_telefono/$', views.lista_tipotelefono,

@@ -4,25 +4,29 @@ from cotizacion.models import Estado_Cotizacion, \
     Vehiculo_Cotizacion, Cotizacion_direccion, \
     Cotizacion_trabajador, Cotizacion_Ambiente, \
     Cotizacion_Mueble, Cotizacion_Servicio, \
-    Cotizacion_Material, Cotizacion_Contenedor, \
-    Cotizacion_Contenido
+    Cotizacion_Material, Cotizacion_Contenido
 from cotizacion.forms import EstadoCotizacionForm, \
     PisoForm, TiempoCargaForm, CotizacionForm, VehiculoForm, \
     VehiculoCotizacionForm, CotizaciondireccionForm, \
     CotizaciontrabajadorForm, CotizacionAmbienteForm, \
     CotizacionMuebleForm, CotizacionServicioForm, \
-    CotizacionMaterialForm, CotizacionContenedorForm, \
-    CotizacionContenidoForm
+    CotizacionMaterialForm, CotizacionContenidoForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 import simplejson as json
 import django.db
-from django.db.models import F
+#from django.db.models import F
+
+from servicio.forms import Complejidad_Servicio
+
+from django.db.models import Sum
+
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 # Create your views here.
@@ -53,7 +57,18 @@ def lista_estado_cotizacion(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_estadocotizacion = Estado_Cotizacion.objects.all()
-    context = {'lista_estadocotizacion': lista_estadocotizacion}
+    paginator = Paginator(lista_estadocotizacion, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        estadoscotizacion = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        estadoscotizacion = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        estadoscotizacion = paginator.page(paginator.num_pages)
+    context = {'lista_estadocotizacion': lista_estadocotizacion, 'estadoscotizacion': estadoscotizacion}
     return render(request, 'cotizacion/estadocotizacion_lista.html', context)
 
 
@@ -111,7 +126,18 @@ def lista_tiempocarga(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_tiempocarga = Tiempo_Carga.objects.all()
-    context = {'lista_tiempocarga': lista_tiempocarga}
+    paginator = Paginator(lista_tiempocarga, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        tiempocargas = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        tiempocargas = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        tiempocargas = paginator.page(paginator.num_pages)
+    context = {'lista_tiempocarga': lista_tiempocarga, 'tiempocargas': tiempocargas}
     return render(request, 'cotizacion/tiempocarga_lista.html', context)
 
 
@@ -170,7 +196,20 @@ def lista_vehiculo(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_vehiculo = Vehiculo.objects.all()
-    context = {'lista_vehiculo': lista_vehiculo}
+
+    paginator = Paginator(lista_vehiculo, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        vehiculos = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        vehiculos = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        vehiculos = paginator.page(paginator.num_pages)
+
+    context = {'lista_vehiculo': lista_vehiculo, 'vehiculos': vehiculos}
     return render(request, 'cotizacion/vehiculo_lista.html', context)
 
 
@@ -354,7 +393,7 @@ def buscar_cotizacionservicio(request, idcotizacionmueble):
     return render(request, 'cotizacion/cotizacionservicio_lista.html', context)
 
 
-def buscar_cotizacionmaterial(request, idcotizacionmueble):
+def buscar_cotizacionmaterial(request, idcotizacionservicio):
     """docstring"""
 
     if request.method == "POST":
@@ -378,43 +417,13 @@ def buscar_cotizacionmaterial(request, idcotizacionmueble):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    id_cotizacionmueble = Cotizacion_Mueble.objects.get(id=idcotizacionmueble)
-    buscar_cotizacionmaterial = Cotizacion_Material.objects.filter(cotizacion_mueble_id=id_cotizacionmueble)
+    id_cotizacionservicio = Cotizacion_Servicio.objects.get(id=idcotizacionservicio)
+    buscar_cotizacionmaterial = Cotizacion_Material.objects.filter(cotizacion_servicio_id=id_cotizacionservicio)
     context = {'buscar_cotizacionmaterial': buscar_cotizacionmaterial}
     return render(request, 'cotizacion/cotizacionmaterial_lista.html', context)
 
 
-def buscar_cotizacioncontenedor(request, idcotizacionmueble):
-    """docstring"""
-
-    if request.method == "POST":
-        if "item_id" in request.POST:
-            try:
-                id_cotizacioncontenedor = request.POST['item_id']
-                p = Cotizacion_Contenedor.objects.get(pk=id_cotizacioncontenedor)
-                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
-                p.delete()
-
-                 # Elinamos objeto de la base de datos
-                return HttpResponse(json.dumps(mensaje), content_type='application/json')
-
-            except django.db.IntegrityError:
-
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
-                return HttpResponse(json.dumps(mensaje), content_type='application/json')
-
-            except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
-                return HttpResponse(json.dumps(mensaje), content_type='application/json')
-
-    id_cotizacionmueble = Cotizacion_Mueble.objects.get(id=idcotizacionmueble)
-    buscar_cotizacioncontenedor = Cotizacion_Contenedor.objects.filter(cotizacion_mueble_id=id_cotizacionmueble)
-    context = {'buscar_cotizacioncontenedor': buscar_cotizacioncontenedor}
-    return render(request, 'cotizacion/cotizacioncontenedor_lista.html', context)
-
-
-def buscar_cotizacioncontenido(request, idcotizacioncontenedor):
+def buscar_cotizacioncontenido(request, idcotizacionmueble):
     """docstring"""
 
     if request.method == "POST":
@@ -438,8 +447,8 @@ def buscar_cotizacioncontenido(request, idcotizacioncontenedor):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    id_cotizacioncontenedor = Cotizacion_Contenedor.objects.get(id=idcotizacioncontenedor)
-    buscar_cotizacioncontenido = Cotizacion_Contenido.objects.filter(cotizacion_contenedor_id=id_cotizacioncontenedor)
+    id_cotizacionmueble = Cotizacion_Mueble.objects.get(id=idcotizacionmueble)
+    buscar_cotizacioncontenido = Cotizacion_Contenido.objects.filter(cotizacion_mueble_id=id_cotizacionmueble)
     context = {'buscar_cotizacioncontenido': buscar_cotizacioncontenido}
     return render(request, 'cotizacion/cotizacioncontenido_lista.html', context)
 
@@ -453,8 +462,11 @@ def buscar_cotizacion(request, pk):
     det_trabajador = Cotizacion_trabajador.objects.filter(cotizacion_id=pk)
     det_ambiente = Cotizacion_Ambiente.objects.filter(cotizacion_id=pk)
     det_mueble = Cotizacion_Mueble.objects.filter(cotizacion_ambiente__cotizacion_id=pk)
-    det_servicio = Cotizacion_Servicio.objects.filter(cotizacion_mueble__cotizacion_ambiente__cotizacion_id=pk)
-    det_material = Cotizacion_Material.objects.filter(cotizacion_mueble__cotizacion_ambiente__cotizacion_id=pk)
+    det_servicio = Cotizacion_Servicio.objects.filter(cotizacion_mueble__cotizacion_ambiente__cotizacion_id=pk, cotizacion_contenido_id=None)
+    det_material = Cotizacion_Material.objects.filter(cotizacion_servicio__cotizacion_mueble__cotizacion_ambiente__cotizacion_id=pk)
+    det_contenido = Cotizacion_Contenido.objects.filter(cotizacion_mueble__cotizacion_ambiente__cotizacion_id=pk)
+    det_servicio_contenido = Cotizacion_Servicio.objects.filter(cotizacion_mueble__cotizacion_ambiente__cotizacion_id=pk).exclude(cotizacion_contenido_id=None)
+    det_complejidad = Complejidad_Servicio.objects.filter(servicio__cotizacion_servicio__cotizacion_mueble__cotizacion_ambiente__cotizacion_id=pk)
 
     for modelObject in buscar_cotizacion:
         suma = modelObject.volumen_contenedores + modelObject.volumen_muebles_cotizado
@@ -468,10 +480,12 @@ def buscar_cotizacion(request, pk):
         'total_m': suma,
         'det_mueble': det_mueble,
         'det_servicio': det_servicio,
-        'det_material': det_material
-
+        'det_material': det_material,
+        'det_contenido': det_contenido,
+        'det_servicio_contenido': det_servicio_contenido,
+        'det_complejidad': det_complejidad
     }
-    return render(request, 'cotizacion/cotizacion_buscar.html', context)
+    return render(request, 'cotizacion/cotizacion_buscar2.html', context)
 
 
 # agregar nuevo
@@ -573,7 +587,7 @@ def add_vehiculocotizacion(request):
                               context_instance=RequestContext(request))
 
 
-def add_cotizaciondireccion(request):
+def add_cotizaciondireccion(request, idcotizacion):
     """docstring"""
 
     if request.method == 'POST':
@@ -584,13 +598,13 @@ def add_cotizaciondireccion(request):
             return HttpResponseRedirect(reverse('ucotizaciones:buscar_direccioncotizacion', args=(id_cot.cotizacion.id,)))
 
     else:
-        form_cotizaciondireccion = CotizaciondireccionForm()
+        form_cotizaciondireccion = CotizaciondireccionForm(initial={'cotizacion': idcotizacion})
     return render_to_response('cotizacion/direccioncotizacion_add.html',
                               {'form_cotizaciondireccion': form_cotizaciondireccion, 'create': True},
                               context_instance=RequestContext(request))
 
 
-def add_cotizaciontrabajador(request):
+def add_cotizaciontrabajador(request, idcotizacion):
     """docstring"""
 
     if request.method == 'POST':
@@ -601,13 +615,13 @@ def add_cotizaciontrabajador(request):
             return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizaciontrabajador', args=(id_cot.cotizacion.id,)))
 
     else:
-        form_cotizaciontrabajador = CotizaciontrabajadorForm()
+        form_cotizaciontrabajador = CotizaciontrabajadorForm(initial={'cotizacion': idcotizacion})
     return render_to_response('cotizacion/cotizaciontrabajador_add.html',
                               {'form_cotizaciontrabajador': form_cotizaciontrabajador, 'create': True},
                               context_instance=RequestContext(request))
 
 
-def add_cotizacionambiente(request):
+def add_cotizacionambiente(request, idcotizacion):
     """docstring"""
 
     if request.method == 'POST':
@@ -615,16 +629,25 @@ def add_cotizacionambiente(request):
         if form_cotizacionambiente.is_valid():
             id_reg = form_cotizacionambiente.save()
             id_cot = Cotizacion_Ambiente.objects.get(id=id_reg.id)
+
+            cotiza = Cotizacion_Ambiente.objects.filter(cotizacion=id_cot.cotizacion.id)
+            cant_ambiente = cotiza.count()
+            #cant_mueble = cotiza.aggregate(Sum('cantidad_muebles'))
+            #prueba para ver si actualiza el campo cant ambiente en la cotizacion
+            reporter = Cotizacion.objects.filter(pk=id_cot.cotizacion.id)
+            reporter.update(cantidad_ambientes=cant_ambiente)
+            #reporter.update(cantidad_muebles=cant_mueble)
+
             return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionambiente', args=(id_cot.cotizacion.id,)))
 
     else:
-        form_cotizacionambiente = CotizacionAmbienteForm()
+        form_cotizacionambiente = CotizacionAmbienteForm(initial={'cotizacion': idcotizacion})
     return render_to_response('cotizacion/cotizacionambiente_add.html',
                               {'form_cotizacionambiente': form_cotizacionambiente, 'create': True},
                               context_instance=RequestContext(request))
 
 
-def add_cotizacionmueble(request):
+def add_cotizacionmueble(request, idcotizacionambiente):
     """docstring"""
 
     if request.method == 'POST':
@@ -632,16 +655,31 @@ def add_cotizacionmueble(request):
         if form_cotizacionmueble.is_valid():
             id_reg = form_cotizacionmueble.save()
             id_cot = Cotizacion_Mueble.objects.get(id=id_reg.id)
+
+            cant_mueble_amb = Cotizacion_Mueble.objects.filter(cotizacion_ambiente=id_cot.cotizacion_ambiente.id).count()
+
+            #prueba para ver si actualiza el campo cant ambiente en la cotizacion
+            reporter = Cotizacion_Ambiente.objects.filter(pk=id_cot.cotizacion_ambiente.id)
+            reporter.update(cantidad_muebles=cant_mueble_amb)
+
+            cotiza = Cotizacion_Ambiente.objects.filter(cotizacion=id_cot.cotizacion_ambiente.cotizacion)
+            cant_ambiente = cotiza.count()
+            #cant_mueble = cotiza.annotate(Sum('cantidad_muebles'))
+
+            reporter2 = Cotizacion.objects.filter(cotizacion_ambiente=id_cot.cotizacion_ambiente.id)
+            reporter2.update(cantidad_ambientes=cant_ambiente)
+           # reporter2.update(cantidad_muebles=int(cant_mueble))
+
             return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionmueble', args=(id_cot.cotizacion_ambiente.id,)))
 
     else:
-        form_cotizacionmueble = CotizacionMuebleForm()
+        form_cotizacionmueble = CotizacionMuebleForm(initial={'cotizacion_ambiente': idcotizacionambiente})
     return render_to_response('cotizacion/cotizacionmueble_add.html',
                               {'form_cotizacionmueble': form_cotizacionmueble, 'create': True},
                               context_instance=RequestContext(request))
 
 
-def add_cotizacionservicio(request):
+def add_cotizacionservicio(request, idcotizacionmueble, idcotizacioncontenido=None):
     """docstring"""
 
     if request.method == 'POST':
@@ -652,14 +690,36 @@ def add_cotizacionservicio(request):
             return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionservicio', args=(id_cot.cotizacion_mueble.id,)))
 
     else:
-        form_cotizacionservicio = CotizacionServicioForm()
+        if idcotizacioncontenido is None:
+
+            data = {'cotizacion_mueble': idcotizacionmueble}
+
+        else:
+            data = {
+                'cotizacion_mueble': idcotizacionmueble,
+                'cotizacion_contenido': idcotizacioncontenido
+                }
+
+        form_cotizacionservicio = CotizacionServicioForm(initial=data)
     return render_to_response('cotizacion/cotizacionservicio_add.html',
                               {'form_cotizacionservicio': form_cotizacionservicio, 'create': True},
                               context_instance=RequestContext(request))
 
 
-def add_cotizacionmaterial(request):
+def add_cotizacionmaterial(request, idcotizacionservicio):
     """docstring"""
+
+    if request.method == 'GET':
+        mat = request.GET.get('material')
+        material = Cotizacion_Mueble.objects.filter(id=mat)
+
+        data = {
+            'precio_unitario': mat,
+            'peso_unitario':  material,
+            'recuperable': material
+        }
+
+        form_cotizacionmaterial = (data)
 
     if request.method == 'POST':
         form_cotizacionmaterial = CotizacionMaterialForm(request.POST)
@@ -667,34 +727,20 @@ def add_cotizacionmaterial(request):
             id_reg = form_cotizacionmaterial.save()
             id_cot = Cotizacion_Material.objects.get(id=id_reg.id)
 
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionmaterial', args=(id_cot.cotizacion_mueble.id,)))
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionmaterial', args=(id_cot.cotizacion_servicio.id,)))
 
     else:
-        form_cotizacionmaterial = CotizacionMaterialForm()
+
+        form_cotizacionmaterial = CotizacionMaterialForm(initial={'cotizacion_servicio': idcotizacionservicio})
+
+    det_material = Cotizacion_Material.objects.filter(cotizacion_servicio_id=idcotizacionservicio)
+
     return render_to_response('cotizacion/cotizacionmaterial_add.html',
-                              {'form_cotizacionmaterial': form_cotizacionmaterial, 'create': True},
+                              {'form_cotizacionmaterial': form_cotizacionmaterial, 'det_material': det_material, 'create': True},
                               context_instance=RequestContext(request))
 
 
-def add_cotizacioncontenedor(request):
-    """docstring"""
-
-    if request.method == 'POST':
-        form_cotizacioncontenedor = CotizacionContenedorForm(request.POST)
-        if form_cotizacioncontenedor.is_valid():
-            id_reg = form_cotizacioncontenedor.save()
-            id_cot = Cotizacion_Contenedor.objects.get(id=id_reg.id)
-
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacioncontenedor', args=(id_cot.cotizacion_mueble.id,)))
-
-    else:
-        form_cotizacioncontenedor = CotizacionContenedorForm()
-    return render_to_response('cotizacion/cotizacioncontenedor_add.html',
-                              {'form_cotizacioncontenedor': form_cotizacioncontenedor, 'create': True},
-                              context_instance=RequestContext(request))
-
-
-def add_cotizacioncontenido(request):
+def add_cotizacioncontenido(request, idcotizacionmueble):
     """docstring"""
 
     if request.method == 'POST':
@@ -702,10 +748,10 @@ def add_cotizacioncontenido(request):
         if form_cotizacioncontenido.is_valid():
             id_reg = form_cotizacioncontenido.save()
             id_cot = Cotizacion_Contenido.objects.get(id=id_reg.id)
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacioncontenido', args=(id_cot.cotizacion_contenedor.id,)))
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacioncontenido', args=(id_cot.cotizacion_mueble.id,)))
 
     else:
-        form_cotizacioncontenido = CotizacionContenidoForm()
+        form_cotizacioncontenido = CotizacionContenidoForm(initial={'cotizacion_mueble': idcotizacionmueble})
     return render_to_response('cotizacion/cotizacioncontenido_add.html',
                               {'form_cotizacioncontenido': form_cotizacioncontenido, 'create': True},
                               context_instance=RequestContext(request))
@@ -721,6 +767,8 @@ def edit_estadocotizacion(request, pk):
     except Exception as ex:
         mensaje = "se ha producido un error"+str(ex)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         editar_estadocotizacion = EstadoCotizacionForm(request.POST, instance=id_estadocotizacion)
@@ -729,7 +777,10 @@ def edit_estadocotizacion(request, pk):
             # formulario validado correctamente
             editar_estadocotizacion.save()
 
-            return HttpResponseRedirect(reverse('ucotizaciones:lista_estado_cotizacion'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('ucotizaciones:lista_estado_cotizacion'))
 
     else:
         # formulario inicial
@@ -799,6 +850,8 @@ def edit_tiempocarga(request, pk):
 @permission_required('cotizacion.change_cotizacion')
 def edit_cotizacion(request, pk):
 
+    redirect_to = request.REQUEST.get('next', '')
+
     try:
         id_cotizacion = Cotizacion.objects.get(pk=pk)
     except ObjectDoesNotExist as ex:
@@ -812,12 +865,16 @@ def edit_cotizacion(request, pk):
 
         if editar_cotizacion.is_valid():
             # formulario validado correctamente
-            id_reg = editar_cotizacion.save()
+            editar_cotizacion.save()
 
             #prueba para actualizar un campo calculable
-            reporter = Cotizacion.objects.filter(pk=id_reg.id)
-            reporter.update(cantidad_ambientes=F('cantidad_ambientes')+1)
+            #reporter = Cotizacion.objects.filter(pk=id_reg.id)
+            #reporter.update(cantidad_ambientes=F('cantidad_ambientes')+1)
 
+        if redirect_to:
+
+            return HttpResponseRedirect(redirect_to)
+        else:
             return HttpResponseRedirect(reverse('ucotizaciones:lista_cotizacion'))
 
     else:
@@ -838,6 +895,8 @@ def edit_vehiculo(request, pk):
     except Exception as ex:
         mensaje = "se ha producido un error"+str(ex)
 
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.method == 'POST':
         # formulario enviado
         editar_vehiculo = VehiculoForm(request.POST, instance=id_vehiculo)
@@ -846,7 +905,10 @@ def edit_vehiculo(request, pk):
             # formulario validado correctamente
             editar_vehiculo.save()
 
-            return HttpResponseRedirect(reverse('ucotizaciones:lista_vehiculo'))
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('ucotizaciones:lista_vehiculo'))
 
     else:
         # formulario inicial
@@ -1042,7 +1104,7 @@ def edit_cotizacionmaterial(request, pk):
             # formulario validado correctamente
             editar_cotizacionmaterial.save()
 
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionmaterial', args=(id_cotizacionmaterial.cotizacion_mueble.id,)))
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionmaterial', args=(id_cotizacionmaterial.cotizacion_servicio.id,)))
 
     else:
         # formulario inicial
@@ -1050,34 +1112,6 @@ def edit_cotizacionmaterial(request, pk):
         mensaje = ""
     return render_to_response('cotizacion/cotizacionmaterial_edit.html',
                               {'editar_cotizacionmaterial': editar_cotizacionmaterial, 'id_cotizacionmaterial': pk, 'create': False, 'mensaje': mensaje},
-                              context_instance=RequestContext(request))
-
-
-def edit_cotizacioncontenedor(request, pk):
-
-    try:
-        id_cotizacioncontenedor = Cotizacion_Contenedor.objects.get(pk=pk)
-    except ObjectDoesNotExist as ex:
-        mensaje = "El registro no existe"
-    except Exception as ex:
-        mensaje = "se ha producido un error"+str(ex)
-
-    if request.method == 'POST':
-        # formulario enviado
-        editar_cotizacioncontenedor = CotizacionContenedorForm(request.POST, instance=id_cotizacioncontenedor)
-
-        if editar_cotizacioncontenedor.is_valid():
-            # formulario validado correctamente
-            editar_cotizacioncontenedor.save()
-
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacioncontenedor', args=(id_cotizacioncontenedor.cotizacion_mueble.id,)))
-
-    else:
-        # formulario inicial
-        editar_cotizacioncontenedor = CotizacionContenedorForm(instance=id_cotizacioncontenedor)
-        mensaje = ""
-    return render_to_response('cotizacion/cotizacioncontenedor_edit.html',
-                              {'editar_cotizacioncontenedor': editar_cotizacioncontenedor, 'id_cotizacioncontenedor': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
 
@@ -1098,7 +1132,7 @@ def edit_cotizacioncontenido(request, pk):
             # formulario validado correctamente
             editar_cotizacioncontenido.save()
 
-            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacioncontenido', args=(id_cotizacioncontenido.cotizacion_contenedor.id,)))
+            return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacioncontenido', args=(id_cotizacioncontenido.cotizacion_mueble.id,)))
 
     else:
         # formulario inicial

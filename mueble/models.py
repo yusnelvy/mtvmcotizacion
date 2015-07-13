@@ -33,7 +33,7 @@ class Ocupacion(models.Model):
     class Meta:
         verbose_name = "Ocupacion"
         verbose_name_plural = "Ocupaciones"
-        ordering = ['descripcion']
+        ordering = ['id']
 
 
 class Forma_Mueble(models.Model):
@@ -58,7 +58,6 @@ class Mueble(models.Model):
         super(Mueble, self).__init__(*args, **kwargs)
 
     mueble = models.CharField(max_length=100, unique=True)
-    ambiente = models.ForeignKey(Ambiente)
     tipo_mueble = models.ForeignKey(Tipo_Mueble)
     forma = models.ForeignKey(Forma_Mueble)
     ocupacion = models.ForeignKey(Ocupacion)
@@ -90,7 +89,7 @@ class Tamano(models.Model):
     class Meta:
         verbose_name = "Tamano"
         verbose_name_plural = "Tamanos"
-        #ordering = ['descripcion']
+        ordering = ['id']
 
 
 class Densidad(models.Model):
@@ -106,7 +105,7 @@ class Densidad(models.Model):
     class Meta:
         verbose_name = "Densidad"
         verbose_name_plural = "Densidades"
-        #ordering = ['descripcion']
+        ordering = ['id']
 
 
 class Tamano_Mueble(models.Model):
@@ -117,7 +116,6 @@ class Tamano_Mueble(models.Model):
     tamano = models.ForeignKey(Tamano, on_delete=models.PROTECT)
     mueble = models.ForeignKey(Mueble, on_delete=models.PROTECT)
     densidad = models.ForeignKey(Densidad, on_delete=models.PROTECT)
-    unique_together = ("Tamano", "Mueble", "Densidad")
     ancho = models.DecimalField(max_digits=5, decimal_places=2)
     largo = models.DecimalField(max_digits=5, decimal_places=2)
     alto = models.DecimalField(max_digits=5, decimal_places=2)
@@ -131,6 +129,7 @@ class Tamano_Mueble(models.Model):
         verbose_name = "Tamano del mueble"
         verbose_name_plural = "Tamanos del mueble"
         ordering = ['mueble', 'tamano', 'densidad']
+        unique_together = (("tamano", "mueble", "densidad"),)
 
 
 class Mueble_Ambiente(models.Model):
@@ -140,7 +139,7 @@ class Mueble_Ambiente(models.Model):
 
     mueble = models.ForeignKey(Mueble)
     ambiente = models.ForeignKey(Ambiente)
-    unique_together = ("Ambiente", "Mueble")
+    predefinido = models.BooleanField(default=None)
 
     def __str__(self):
         return u' %s - %s' % (self.mueble, self.ambiente)
@@ -149,3 +148,4 @@ class Mueble_Ambiente(models.Model):
         verbose_name = "Mueble del Ambiente"
         verbose_name_plural = "Muebles  del Ambiente"
         ordering = ['ambiente', 'mueble']
+        unique_together = (("mueble", "ambiente"),)

@@ -1,67 +1,180 @@
- {% extends 'inicio/base3.html' %}
- {% block content %}
+{% extends 'inicio/base_ficha.html' %}
 
-<!--IniciaModal-->
- <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-    <h3 id="myModalLabel">Eliminar ambiente</h3>
-    </div>
-    <div class="modal-body">
-    <p>¿Realmente desea eliminar el registro <span id="modal_name"></span>?</p>
-    </div>
-    <div class="modal-footer">
-        <form method="post" id="frmEliminar">
-            {% csrf_token %}
-            <input type="hidden" id="modal_id" name="item_id">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-            <button type="submit" class="btn btn-danger">Eliminar</button>
-        </form>
-    </div>
-</div>
-<!--EndModal-->
+{% block titulo %}
+
+<title>Cotizacion</title>
+
+{% endblock titulo %}
+
+{% block titulo_modal %}
+
+Eliminar cotizacion ambiente
+
+{% endblock titulo_modal %}
+
+{% block validacion_modal %}
+
+<p>¿Realmente desea eliminar el registro: <strong id="modal_name"></strong>?</p>
+
+{% endblock validacion_modal %}
+
+{% block titulo_ficha %}
+
+<h2>Detalles de los ambientes de la cotizacion N° 000
+
 {% if buscar_cotizacionambiente %}
 
-<h6>Cantidad de registros encontrados:
-  <span class="badge" id="count_reg">
-    {{ buscar_cotizacionambiente.count }}
-  </span>
-</h6>
-
-  <table class="table table-hover" id="tabla">
-
-   <tr class="active">
-    <th>ambiente </th>
-    <th>cotizacion</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
-  </tr>
-
-  {% for i in buscar_cotizacionambiente %}
-
-  <tr id="tr{{i.id}}">
-    <td>{{ i.ambiente }}</td>
-    <td>{{ i.cotizacion }}</td>
-    <td>
-      <a href="../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
-      {# <button id ="editar" data-telid="{{i.id}}" class="btn btn-mini btn-primary" type="button">editar</button> #}
-    </td>
-    <td>
-      <a href="#myModal" role="button" class="btn btn-danger delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.ambiente}}"><i class="icon-trash icon-white"></i>Eliminar</a>
-    </td>
-    <input type="hidden" value="{{i.id}}" id="idtele">
-  </tr>
-
-  {% endfor %}
-
-</table>
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
-</div>
-
-{% else %}
-
-<p><a href="nuevo/" class="btn btn-default">Nuevo</a></p>
-<p> No se encontro registro.</p>
+{{ cotizacion.numero_cotizacion }}
 
 {% endif %}
 
-{% endblock %}
+</h2>
+
+{% endblock titulo_ficha %}
+
+{% block content1 %}
+
+
+
+{% if buscar_cotizacionambiente %}
+
+<div class="row">
+  <a href="../nuevo" class="btn btn-default">Nuevo</a>
+  <br>
+  <br>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+{% for i in buscar_cotizacionambiente %}
+
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading{{i.id}}">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{i.id}}" aria-expanded="true" aria-controls="collapse{{i.id}}">
+
+          {{ i.ambiente }}
+
+        </a>
+      </h4>
+    </div>
+    <div id="collapse{{i.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{i.id}}">
+      <table class="table table-hover">
+        <tr>
+          <td class="text-right"><strong>Piso:</strong></td>
+          <td>
+
+            {{ i.piso }}
+
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right" width="210"><strong>Factor del piso:</strong></td>
+          <td>
+
+            {{ i.piso.factor }} <abbr title="Unidades" class="initialism">U</abbr>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right" width="210"><strong>Cantidad de mueble:</strong></td>
+          <td>
+
+            {{ i.cantidad_muebles }} <abbr title="Unidades" class="initialism">U</abbr>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right"><strong>Volumen de muebles:</strong></td>
+          <td>
+
+            {{ i.volumen_muebles }} <abbr title="Unidades" class="initialism">U</abbr>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right"><strong>Peso de muebles:</strong></td>
+          <td>
+
+            {{ i.peso_muebles }} <abbr title="Unidades" class="initialism">U</abbr>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right"><strong>Cantidad de contenedores:</strong></td>
+          <td>
+
+            {{ i.cantidad_contenedores }} <abbr title="Unidades" class="initialism">U</abbr>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right"><strong>Volumen de contenedores:</strong></td>
+          <td>
+
+            {{ i.volumen_contenedores }} <abbr title="Unidades" class="initialism">U</abbr>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right"><strong>Peso de contenedores:</strong></td>
+          <td>
+
+            {{ i.peso_contenedores }} <abbr title="Unidades" class="initialism">U</abbr>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right"><strong>Volumen de contenidos:</strong></td>
+          <td>
+
+            {{ i.volumen_contenidos }} <abbr title="Unidades" class="initialism">U</abbr>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right"><strong>Peso de contenidos:</strong></td>
+          <td>
+
+            {{ i.peso_contenidos }} <abbr title="Unidades" class="initialism">U</abbr>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right"><strong>Peso de materiales:</strong></td>
+          <td>
+
+            {{ i.peso_materiales }} <abbr title="Unidades" class="initialism">U</abbr>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right"><strong>Observaciones:</strong></td>
+          <td>
+
+            {{ i.observaciones }}
+
+            <a href="../editar/{{i.id}}" style="float:right;" title="Editar {{ i.ambiente }}" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+{% endfor %}
+
+</div>
+  <a href="../nuevo" class="btn btn-default">Nuevo</a>
+</div>
+
+{% endif %}
+
+{% endblock content1 %}
+
+{% block content2 %}
+
+<div class="well well-lg">
+  <p>Lista de <strong>Ambientes</strong> con sus detalles de la cotizacion N° 000   .</p>
+  <p>Presione el boton (nuevo) para agregar ambientes con sus detalles.</p>
+</div>
+
+{% endblock content2 %}

@@ -1,35 +1,54 @@
- {% extends 'inicio/base_ficha.html' %}
+{% extends 'inicio/base_ficha.html' %}
 
- {% block titulo %}
+{% block titulo %}
 
-<title>Complejidad - servicio</title>
+<title>Niveles de complejidad para servicios</title>
 
 {% endblock titulo %}
 
- {% block titulo_modal %}
+{% block titulo_modal %}
 
-Eliminar complejidad servicio
+Eliminar nivel de complejidad para el servicio
 
- {% endblock titulo_modal %}
+{% endblock titulo_modal %}
 
- {% block validacion_modal %}
+{% block validacion_modal %}
 
-<p>¿Desea eliminar <span id="modal_name"></span>?</p>
+<p>¿Desea eliminar el registro: <span id="modal_name"></span>?</p>
 
- {% endblock validacion_modal %}
+{% endblock validacion_modal %}
 
- {% block titulo_ficha %}
+{% block link %}
 
-<h2>Relacion complejidad - servicio</h2>
-<a href="/servicio/" class="btn btn-default">Lista de servicios</a>
-<a href="/servicio/complejidad_servicio/0/0/" class="btn btn-default">Ver todos</a>
-<a href="/servicio/complejidad_servicio/nuevo" class="btn btn-default">Nuevo</a>
+<ul class="nav navbar-nav">
+  <li>
+    <a href="javascript:history.back();" class="btn">Regresar</a>
+  </li>
+  <li>
 
- {% endblock titulo_ficha %}
 
- {% block content1 %}
+    <a href="/servicio/complejidad_servicio/nuevo/{{ idserv }}/" class="btn">Nuevo</a>
+  </li>
+  <li>
+    <a href="/servicio/complejidad_servicio/0/0/" class="btn">Ver todos</a>
+  </li>
+  <li>
+    <a href="/servicio/" class="btn">Servicios</a>
+  </li>
+  <li>
+    <a href="/servicio/complejidad/" class="btn">Niveles de complejidad</a>
+  </li>
+</ul>
 
- {% if buscar_complejidadservicio %}
+{% endblock link %}
+
+{% block titulo_ficha %}
+
+<h2>Niveles de complejidad para el servicio</h2>
+
+{% endblock titulo_ficha %}
+
+{% block content1 %}
 
 <h6>Cantidad de registros encontrados:
   <span class="badge" id="count_reg">
@@ -39,41 +58,36 @@ Eliminar complejidad servicio
 
   </span>
 </h6>
- <div class="panel panel-default">
+<div class="panel panel-default">
   <table class="table table-hover" style="text-align: center;">
-   <tr class="active">
-    <th>Servicio</th>
-    <th width="">Complejidad</th>
-    <th>Tarifa</th>
-    <th width="3">Editar</th>
-    <th width="3">Eliminar</th>
-  </tr>
+    <tr class="active">
+      <th>Servicio</th>
+      <th>Complejidad</th>
+      <th>Tarifa</th>
+      <th width="3">Editar</th>
+      <th width="3">Eliminar</th>
+    </tr>
 
-  {% for i in buscar_complejidadservicio %}
+    {% for i in buscar_complejidadservicio %}
 
-  <tr id="tr{{i.id}}">
-    <td>{{ i.servicio }}</td>
-    <td width="">{{ i.complejidad }}</td>
-    <td>{{ i.tarifa }}</td>
-    <td width="3">
-      <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
-    </td>
-    <td width="3">
-      <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="servicio: {{i.servicio}}"></a>
-    </td>
-  </tr>
+    <tr id="tr{{i.id}}">
+      <td>{{ i.servicio }}</td>
+      <td>{{ i.complejidad }}</td>
+      <td>{{ i.tarifa }}</td>
+      <td>
+        <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
+      </td>
+      <td>
+        <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="servicio: {{i.servicio}}"></a>
+      </td>
+    </tr>
 
-  {% endfor %}
+    {% endfor %}
 
-</table>
+  </table>
 </div>
-{% else %}
 
-<p>Agregue complejidad de servicios</p>
-
-{% endif %}
-
- {% endblock content1 %}
+{% endblock content1 %}
 
 {% block content2 %}
 

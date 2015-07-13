@@ -4,13 +4,13 @@
 
 {% block titulo_form %}
 
-<h2>Agregar relacion servicio - material </h2>
+<h2>Agregar relacion material al servicio {{ Servicio    }} </h2>
 
 {% endblock titulo_form %}
 
 {% block cuerpo_form %}
 
-<div class="form-group">
+<div class="form-group filtra-servicio">
 
     {{form_serviciomaterial.as_p}}
 

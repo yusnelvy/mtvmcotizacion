@@ -24,16 +24,17 @@
 
 {% block contenido_adicional %}
 
-{% if servicio.servicio_material_set.all %}
+<h4>
+    Materiales asociados al servicio
+    <a title="Agregar" data-toggle="tooltip" data-placement="right" href="/servicio/servicio_material/nuevo/{{ servicio.id }}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+</h4>
 
-<h4>Materiales asociados al servicio</h4>
 <div class="panel panel-default">
-    <!-- Default panel contents -->
-    <!-- Table -->
     <table class="table" style="text-align: center;">
         <tr class="">
             <th width="">Material</th>
-            <th width="300">Cantidad</th>
+            <th>Cantidad</th>
+            <th>Cálculo</th>
             <th width="3">Editar</th>
         </tr>
 
@@ -41,9 +42,10 @@
 
         <tr id="tr{{det.id}}">
             <td width="">{{ det.material }}</td>
-            <td width="300">{{ det.cantidad }}</td>
+            <td>{{ det.cantidad }}</td>
+            <td>{{ det.calculo }}</td>
             <td width="3">
-                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_serviciomaterial' det.id %}?next={% url 'uservicios:edit_servicio' servicio.id %}" class="glyphicon glyphicon-edit"></a>
+                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_serviciomaterial' det.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
             </td>
         </tr>
 
@@ -52,38 +54,32 @@
     </table>
 </div>
 
-{% endif %}
-
-{% if servicio.complejidad_servicio_set.all %}
-
-<h4>Complijidad y tarifas asociadas al servicio</h4>
+<h4>
+    Complejidad y tarifas asociadas al servicio
+    <a title="Agregar" data-toggle="tooltip" data-placement="right" href="/servicio/complejidad_servicio/nuevo/{{ servicio.id }}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+</h4>
 <div class="panel panel-default">
-    <!-- Default panel contents -->
-    <!-- Table -->
     <table class="table" style="text-align: center;">
-        <tr class="">
-            <th width="">Complejidad</th>
-            <th width="300">Tarifa</th>
+        <tr>
+            <th>Complejidad</th>
+            <th>Tarifa</th>
             <th width="3">Editar</th>
         </tr>
 
         {% for det in servicio.complejidad_servicio_set.all %}
 
         <tr id="tr{{det.id}}">
-            <td width="">{{ det.complejidad }}</td>
-            <td width="300">{{ det.tarifa }}</td>
+            <td>{{ det.complejidad }}</td>
+            <td>{{ det.tarifa }}</td>
             <td width="3">
-                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_complejidadservicio' det.id %}?next={% url 'uservicios:edit_servicio' servicio.id %}" class="glyphicon glyphicon-edit"></a>
+                <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_complejidadservicio' det.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
             </td>
         </tr>
-
 
         {% endfor %}
 
     </table>
 </div>
-
-{% endif %}
 
 {% endblock contenido_adicional %}
 

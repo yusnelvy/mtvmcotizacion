@@ -18,12 +18,27 @@ Eliminar complejidad
 
 {% endblock validacion_modal %}
 
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/servicio/" class="btn">Servicios</a>
+  </li>
+  <li>
+    <a href="/material/" class="btn">Materiales</a>
+  </li>
+  <li>
+    <a href="/servicio/complejidad_servicio/0/0/" class="btn">Niveles de complejidad de servicios</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
 {% if lista_complejidad %}
 
 {% block titulo_tabla %}
 
 <h2>Niveles de complejidad</h2>
-<a href="/servicio/" class="btn btn-default">Lista de servicios</a>
 
 {% endblock titulo_tabla %}
 
@@ -47,17 +62,59 @@ Eliminar complejidad
       <th>Eliminar</th>
     </tr>
 
-    {% for i in lista_complejidad %}
+    {% for i in complejidades %}
     <tr id="tr{{i.id}}">
       <td>{{ i.descripcion }}</td>
       <td>
-        <a title="Editar" data-toggle="tooltip" data-placement="right" href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
+        <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_complejidad' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
       </td>
       <td>
         <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.descripcion}}"></a>
       </td>
     </tr>
   {% endfor %}
+
+<nav>
+  <ul class="pagination">
+
+    {% if complejidades.has_previous %}
+
+    <li>
+      <a href="?page={{ complejidades.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+
+    {% endif %}
+
+    <li class="current">
+      <a style="color:#000;"> Página
+
+        {{ complejidades.number }}
+
+        de
+
+        {{ complejidades.paginator.num_pages }}
+
+        Desde el servicio
+
+        {{ complejidades.start_index }}
+
+        hasta el servicio
+
+        {{ complejidades.end_index }}
+
+      </a>
+    </li>
+
+    {% if complejidades.has_next %}
+
+    <li>
+      <a href="?page={{ complejidades.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+
+    {% endif %}
+
+  </ul>
+</nav>
 
 {% endblock cuerpo_tabla %}
 

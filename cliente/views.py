@@ -123,7 +123,7 @@ def lista_email(request, id_cli):
     cliente = Cliente.objects.get(id=id_cli)
 
     lista_email = Email.objects.filter(cliente_id=cliente)
-    context = {'lista_email': lista_email}
+    context = {'lista_email': lista_email, 'id_cli': id_cli}
     return render(request, 'cliente/emailcliente_lista.html', context)
 
 
@@ -154,7 +154,7 @@ def lista_telefono_cliente(request, id_cli):
 
     lista_telefono_cliente = Telefono.objects.select_related().filter(cliente=cliente)
 
-    context = {'lista_telefono_cliente': lista_telefono_cliente}
+    context = {'lista_telefono_cliente': lista_telefono_cliente, 'id_cli': id_cli}
     return render(request, 'cliente/telefonocliente_lista.html', context)
 
 
@@ -185,20 +185,20 @@ def lista_direccioncliente(request, id_cli):
 
     direccioncliente_lista = Direccion.objects.filter(cliente=cliente)
 
-    context = {'direccioncliente_lista': direccioncliente_lista}
+    context = {'direccioncliente_lista': direccioncliente_lista, 'id_cli': id_cli}
     return render(request, 'cliente/direccioncliente_lista.html', context)
 
 
 # agregar nuevo
 def add_cliente(request):
-
+    mensaje = ''
     if request.method == 'POST':
         try:
             cliente_form = ClienteForm(request.POST)
 
             if cliente_form.is_valid():
                 cliente_form.save()
-
+                mensaje = 'Se ha guardado la información del cliente'
                 return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
 
         except Exception as ex:
@@ -207,7 +207,6 @@ def add_cliente(request):
 
     else:
         cliente_form = ClienteForm()
-        mensaje = ''
 
     return render_to_response('cliente/cliente_add.html',
                               {'cliente_form': cliente_form, 'create': True, 'mensaje': mensaje},
@@ -262,7 +261,7 @@ def add_estadocivil(request):
                               context_instance=RequestContext(request))
 
 
-def add_email(request):
+def add_email(request, id_cli):
 
     if request.method == 'POST':
         try:
@@ -276,7 +275,7 @@ def add_email(request):
             email_form = EmailForm()
 
     else:
-        email_form = EmailForm()
+        email_form = EmailForm(initial={'cliente': id_cli})
         mensaje = ''
 
     return render_to_response('cliente/Emailcliente_add.html',
@@ -399,7 +398,6 @@ def ficha_cliente(request, pk):
         'lista_email': lista_email,
         'lista_telefono_cliente': lista_telefono_cliente,
         'direccioncliente_lista': direccioncliente_lista,
-        'id_cli': pk
         }
     return render(request, 'cliente/cliente_ficha.html', context)
 

@@ -1,7 +1,9 @@
 from django.forms import ModelForm
 from direccion.models import Pais, Provincia, Ciudad, \
     Zona, Tipo_direccion, Direccion, Tipo_Inmueble, \
-    Complejidad_Inmueble, Tarifa_valor, Inmueble, locaciones
+    Complejidad_Inmueble, Inmueble
+
+#from haystack.forms import SearchForm
 
 
 class PaisForm(ModelForm):
@@ -51,12 +53,9 @@ class ComplejidadInmuebleForm(ModelForm):
     class Meta:
         model = Complejidad_Inmueble
         fields = '__all__'
-
-
-class TarifaValorForm(ModelForm):
-    class Meta:
-        model = Tarifa_valor
-        fields = '__all__'
+        labels = {
+            'valor_ambiente': ('Valor por ambiente'),
+            'valor_metrocubico': ('Valor por m3')}
 
 
 class InmuebleForm(ModelForm):
@@ -64,8 +63,10 @@ class InmuebleForm(ModelForm):
         model = Inmueble
         fields = '__all__'
 
+#class PaisSearchForm(SearchForm):
 
-class locacionesForm(ModelForm):
-    class Meta:
-        model = locaciones
-        fields = '__all__'
+
+#class PaisSearchForm(SearchForm):
+
+   #d ef no_query_found(self):
+      # return self.searchqueryset.all()

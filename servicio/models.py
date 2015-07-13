@@ -13,9 +13,25 @@ class Servicio(models.Model):
         return self.servicio
 
     class Meta:
-        verbose_name = "servicio"
-        verbose_name_plural = "servicios"
+        verbose_name = "Servicio"
+        verbose_name_plural = "Servicios"
         ordering = ['servicio']
+
+
+class Unidad(models.Model):
+    """docstring for Unidad"""
+    def __init__(self, *args, **kwargs):
+        super(Unidad, self).__init__(*args, **kwargs)
+
+    unidad = models.CharField(max_length=20, unique=True)
+
+    def __str__(self):
+        return self.unidad
+
+    class Meta:
+        verbose_name = "Unidad"
+        verbose_name_plural = "Unidads"
+        ordering = ['unidad']
 
 
 class Material(models.Model):
@@ -27,6 +43,14 @@ class Material(models.Model):
     precio = models.DecimalField(max_digits=7, decimal_places=2)
     peso = models.DecimalField(max_digits=5, decimal_places=2)
     recuperable = models.BooleanField(default=False)
+    ancho = models.DecimalField(max_digits=5, decimal_places=2)
+    largo = models.DecimalField(max_digits=5, decimal_places=2)
+    alto = models.DecimalField(max_digits=5, decimal_places=2)
+    capacidad_peso = models.DecimalField(max_digits=5, decimal_places=2)
+    volumen = models.DecimalField(max_digits=5, decimal_places=2)
+    capacidad_volumen = models.DecimalField(max_digits=5, decimal_places=2)
+    contenedor = models.BooleanField(default=False)
+    unidad = models.ForeignKey(Unidad)
 
     def __str__(self):
         return self.material
@@ -44,7 +68,6 @@ class Servicio_Material(models.Model):
 
     servicio = models.ForeignKey(Servicio)
     material = models.ForeignKey(Material)
-    unique_together = ("Servicio", "Material")
     cantidad = models.DecimalField(max_digits=5, decimal_places=2)
     Calculo = models.TextField(max_length=200)
 
@@ -55,6 +78,7 @@ class Servicio_Material(models.Model):
         verbose_name = "Material del Servicio"
         verbose_name_plural = "Materiales del Servicio"
         ordering = ['servicio', 'material']
+        unique_together = (("servicio", "material"),)
 
 
 class Complejidad(models.Model):
@@ -89,3 +113,4 @@ class Complejidad_Servicio(models.Model):
         verbose_name = "Complejidad del Servicio"
         verbose_name_plural = "Complejidades del Servicio"
         ordering = ['servicio', 'complejidad']
+        unique_together = (("servicio", "complejidad"),)
