@@ -1,4 +1,10 @@
-from django.shortcuts import render, render_to_response
+import inspect
+import datetime
+import re
+import six
+
+from django.shortcuts import render, render_to_response, redirect
+from django.views.generic import ListView
 from cotizacion.models import Estado_Cotizacion, \
     Piso, Tiempo_Carga, Cotizacion, Vehiculo, \
     Vehiculo_Cotizacion, Cotizacion_direccion, \
@@ -27,10 +33,56 @@ from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from servicio.models import Material
+
+from django.views.generic import View
+from django.conf import settings
 
 
 # Create your views here.
 # lista
+
+class EstadoCotizacionList(ListView):
+    """docstring"""
+    model = Estado_Cotizacion
+    context_object_name = 'estadoscotizacion'
+    template_name = 'cotizacion/estadocotizacion_lista.html'
+
+
+class EstadoCreate(View):
+    """docstring"""
+    form_estadocotizacion = EstadoCotizacionForm
+    template_name = 'cotizacion/estadocotizacion_add.html'
+
+    raise_exception = True
+
+    def dispatch(self, request, *args, **kwargs):
+        # Al igual que con ArticleCreateView, dejo al lector
+        # que cambie el comportamiento de este método para saber
+        # si esta logueado y tiene permisos.
+        # Ver el comentario de ArticleCreateView en el método
+        # dispatch
+        if not request.user.has_perms('cotizacion.add_estado_cotizacion'):
+            return redirect(settings.LOGIN_URL)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        form_estadocotizacion = self.form_estadocotizacion()
+        return render_to_response('cotizacion/estadocotizacion_add.html',
+                                  {'form_estadocotizacion': form_estadocotizacion, 'create': True},
+                                  context_instance=RequestContext(request))
+
+    def post(self, request, *args, **kwargs):
+        form_estadocotizacion = self.form_estadocotizacion(request.POST)
+        if form_estadocotizacion.is_valid():
+            form_estadocotizacion.save()
+            return HttpResponseRedirect(reverse('ucotizaciones:lista_estado_cotizacion'))
+
+        return render_to_response('cotizacion/estadocotizacion_add.html',
+                                  {'form_estadocotizacion': form_estadocotizacion, 'create': True},
+                                  context_instance=RequestContext(request))
+
+
 @login_required
 def lista_estado_cotizacion(request):
     """docstring"""
@@ -632,11 +684,11 @@ def add_cotizacionambiente(request, idcotizacion):
 
             cotiza = Cotizacion_Ambiente.objects.filter(cotizacion=id_cot.cotizacion.id)
             cant_ambiente = cotiza.count()
-            #cant_mueble = cotiza.aggregate(Sum('cantidad_muebles'))
+            cant_mueble = cotiza.aggregate(cant_total=Sum('cantidad_muebles'))
             #prueba para ver si actualiza el campo cant ambiente en la cotizacion
             reporter = Cotizacion.objects.filter(pk=id_cot.cotizacion.id)
             reporter.update(cantidad_ambientes=cant_ambiente)
-            #reporter.update(cantidad_muebles=cant_mueble)
+            reporter.update(cantidad_muebles=cant_mueble['cant_total'])
 
             return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionambiente', args=(id_cot.cotizacion.id,)))
 
@@ -664,11 +716,11 @@ def add_cotizacionmueble(request, idcotizacionambiente):
 
             cotiza = Cotizacion_Ambiente.objects.filter(cotizacion=id_cot.cotizacion_ambiente.cotizacion)
             cant_ambiente = cotiza.count()
-            #cant_mueble = cotiza.annotate(Sum('cantidad_muebles'))
+            cant_mueble = cotiza.aggregate(cant_total=Sum('cantidad_muebles'))
 
             reporter2 = Cotizacion.objects.filter(cotizacion_ambiente=id_cot.cotizacion_ambiente.id)
             reporter2.update(cantidad_ambientes=cant_ambiente)
-           # reporter2.update(cantidad_muebles=int(cant_mueble))
+            reporter2.update(cantidad_muebles=(cant_mueble['cant_total']))
 
             return HttpResponseRedirect(reverse('ucotizaciones:buscar_cotizacionmueble', args=(id_cot.cotizacion_ambiente.id,)))
 
@@ -708,20 +760,8 @@ def add_cotizacionservicio(request, idcotizacionmueble, idcotizacioncontenido=No
 
 def add_cotizacionmaterial(request, idcotizacionservicio):
     """docstring"""
-
-    if request.method == 'GET':
-        mat = request.GET.get('material')
-        material = Cotizacion_Mueble.objects.filter(id=mat)
-
-        data = {
-            'precio_unitario': mat,
-            'peso_unitario':  material,
-            'recuperable': material
-        }
-
-        form_cotizacionmaterial = (data)
-
     if request.method == 'POST':
+
         form_cotizacionmaterial = CotizacionMaterialForm(request.POST)
         if form_cotizacionmaterial.is_valid():
             id_reg = form_cotizacionmaterial.save()
@@ -1141,3 +1181,21 @@ def edit_cotizacioncontenido(request, pk):
     return render_to_response('cotizacion/cotizacioncontenido_edit.html',
                               {'editar_cotizacioncontenido': editar_cotizacioncontenido, 'id_cotizacioncontenido': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
+
+
+def cargar_datos_material(request, idcotizacionservicio):
+    mat_id = None
+    if request.method == 'GET':
+        mat_id = request.GET['id_material']
+
+    if mat_id:
+        material = Material.objects.get(id=int(mat_id))
+        if material:
+            datos = [
+                {"precio": material.precio,
+                 "peso": material.peso,
+                 "recuperable": material.recuperable
+                 }]
+
+    #return HttpResponse(datos)
+    return HttpResponse(json.dumps(datos), content_type='application/json')

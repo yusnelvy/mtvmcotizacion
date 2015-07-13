@@ -5,6 +5,7 @@ from cotizacion.models import Estado_Cotizacion, \
     Cotizacion_trabajador, Cotizacion_Ambiente, \
     Cotizacion_Mueble, Cotizacion_Servicio, \
     Cotizacion_Material, Cotizacion_Contenido
+from servicio.models import Material
 
 
 class EstadoCotizacionForm(ModelForm):
@@ -101,6 +102,18 @@ class CotizacionMaterialForm(ModelForm):
     class Meta:
         model = Cotizacion_Material
         fields = '__all__'
+
+    def get_form(self, step=None, data=None, files=None):
+        form = super(CotizacionMaterialForm, self).get_form(step, data, files)
+
+        # determine the step if not given
+        if step is None:
+            step = self.steps.current
+
+        if step == '1':
+            form.precio_unitario = Material.objects.values('precio').filter(self.request.material)
+            form.peso_unitario = 0
+        return form
 
 
 class CotizacionContenidoForm(ModelForm):

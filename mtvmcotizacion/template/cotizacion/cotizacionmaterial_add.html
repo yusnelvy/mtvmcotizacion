@@ -1,18 +1,54 @@
+{% extends 'inicio/base_edit.html' %}
+{% block cuerpo_form %}
 <div class="col-md-1"></div>
 <div class="col-md-4">
   <h2>Agregar</h2>
-  {{det_material.0.get_precio_unitario}}
-  {{det_material.0.material}}
   <form action="" method="post">
     {% csrf_token %}
     <br><br>
    <div class="form-group"> {{ form_cotizacionmaterial.as_p }}
 
     </div>
-
+<div id="recuperable">ddd</div>
+<a href='{% url "ucotizaciones:cargar_datos_material" 1 %}'>{% url "ucotizaciones:cargar_datos_material" 1 %}</a>
       <button type="submit" class="btn btn-default">Registrar</button>
       <a href="javascript:history.back();" class="btn btn-default">Regresar</a>
       <br><br>
     </form>
   </div>
 
+{% endblock cuerpo_form %}
+
+{% block js_sup %}
+<script>
+  $(document).ready(function(){
+    document.getElementById('id_material').focus()
+      $("#id_material").on("change", function(){
+          id_material = $("#id_material").val();
+          idservicio = $("#id_cotizacion_servicio").val();
+          $.get('/cotizacion/cotizacion_material/nuevo/'+idservicio+'/cargar/',
+              {id_material: id_material},
+              function(data){
+             $("#id_precio_unitario").val(data[0].precio);
+             $("#id_peso_unitario").val(data[0].peso);
+
+              if(data[0].recuperable==true){
+                $("#id_recuperable").removeAttr("checked");
+                $("#id_recuperable").attr("checked","checked");
+              }else{
+                $("#id_recuperable").removeAttr("checked");
+              }
+          });
+      });
+
+       $("#id_recuperable").click(function(event){
+           if($(this).is(":checked")) {
+              $("#id_recuperable").attr("checked","checked");
+           }else{
+               $("#id_recuperable").removeAttr("checked");
+           }
+         });
+  });
+</script>
+
+{% endblock js_sup %}

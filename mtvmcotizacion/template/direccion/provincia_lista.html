@@ -132,3 +132,30 @@ Eliminar provincia
 </div>
 
 {% endblock%}
+
+{% block js_sup %}
+<script>
+$(function(){
+  $('#search').keyup(function(){
+    $.ajax({
+      type: "POST",
+      url: "/direccion/provincia/search_provincia/",
+      data: {
+        'search_text': $('#search').val(),
+        'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+      },
+      success: searchSuccess,
+      dataType: 'Html'
+    });
+
+  });
+});
+
+function searchSuccess(data, textStatus, jqXHR){
+
+  $('#search-results').html(data)
+
+}
+</script>
+
+{% endblock js_sup %}

@@ -52,5 +52,8 @@ urlpatterns = patterns('',
                            name='add_inmueble'),
                        url(r'^inmueble/editar/(?P<pk>\d+)/$', views.edit_inmueble,
                            name='edit_inmueble'),
+                       url(r'^provincia/search_provincia/$', views.search_provincia,
+                           name='search_provincia'),
+
 
                        )

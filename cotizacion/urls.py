@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, url
 from cotizacion import views
+from cotizacion.views import EstadoCreate
 
 
 urlpatterns = patterns('',
@@ -13,6 +14,8 @@ urlpatterns = patterns('',
                            name='lista_estado_cotizacion'),
                        url(r'^estado_cotizacion/nuevo', views.add_estadocotizacion,
                            name='add_estadocotizacion'),
+                       url(r'^estado_cotizacion/nuevo2/$', EstadoCreate.as_view(),
+                           name='EstadoCreate'),
                        url(r'^estado_cotizacion/editar/(?P<pk>\d+)/$',
                            views.edit_estadocotizacion, name='edit_estadocotizacion'),
                        url(r'^piso/$', views.lista_piso,
@@ -92,5 +95,7 @@ urlpatterns = patterns('',
                            name='add_cotizacioncontenido'),
                        url(r'^cotizacion_contenido/editar/(?P<pk>\d+)/$',
                            views.edit_cotizacioncontenido, name='edit_cotizacioncontenido'),
+                       url(r'^cotizacion_material/nuevo/(?P<idcotizacionservicio>\d+)/cargar/$', views.cargar_datos_material,
+                           name='cargar_datos_material'),
 
                        )

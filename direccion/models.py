@@ -122,6 +122,13 @@ class Direccion(models.Model):
 
         return u' %s - %s - %s' % (self.calle, self.numero, self.piso)
 
+    def full_direccion(self):
+        return '%s. %s, %s zona %s, %s, %s %s' % (self.pais, self.provincia,
+                                                  self.ciudad, self.zona,
+                                                  "calle "+self.calle,
+                                                  "número "+self.numero,
+                                                  "Punto de referencia "+self.punto_referencia)
+
     class Meta:
         verbose_name = "Direccion"
         verbose_name_plural = "Direcciones"

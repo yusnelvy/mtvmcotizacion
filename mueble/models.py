@@ -125,6 +125,10 @@ class Tamano_Mueble(models.Model):
     def __str__(self):
         return u' %s - %s - %s' % (self.mueble, self.tamano, self.densidad)
 
+    def _get_densidad_valor(self):
+        return self.peso/(self.ancho*self.alto*self.largo)
+    densidad_valor = property(_get_densidad_valor)
+
     class Meta:
         verbose_name = "Tamano del mueble"
         verbose_name_plural = "Tamanos del mueble"
