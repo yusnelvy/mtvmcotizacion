@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 
 # Create your models here.
@@ -8,7 +9,7 @@ class Presupuesto(models.Model):
     nombre_cliente = models.CharField(max_length=250)
     telefono = models.CharField(max_length=100)
     email = models.EmailField()
-    cotizador = models.ForeignKey(User, related_name="creadopor")
+    cotizador = models.ForeignKey(User, related_name="creado_por")
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_estimadamudanza = models.DateTimeField()
     descripcion_vehiculo = models.TextField()
@@ -30,11 +31,13 @@ class Presupuesto(models.Model):
                                                      blank=True, default=0.00)
     total_volumen_contenidos = models.DecimalField(max_digits=7, decimal_places=2,
                                                    blank=True, default=0.00)
-    total_m3 = models.DecimalField(max_digits=7, decimal_places=2)
-    recorrido_km = models.DecimalField(max_digits=7, decimal_places=2)
-    tiempo_recorrido = models.TimeField()
-    tiempo_carga = models.TimeField()
-    tiempo_total = models.TimeField()
+    total_m3 = models.DecimalField(max_digits=7, decimal_places=2,
+                                   blank=True, default=0.00)
+    recorrido_km = models.DecimalField(max_digits=7, decimal_places=2,
+                                       blank=True, default=0.00)
+    tiempo_recorrido = models.TimeField(blank=True, default='00:00')
+    tiempo_carga = models.TimeField(blank=True, default='00:00')
+    tiempo_total = models.TimeField(blank=True, default='00:00')
     monto_vehiculo_hora = models.DecimalField(max_digits=7, decimal_places=2,
                                               blank=True, default=0.00)
     monto_vehiculo_recorrido = models.DecimalField(max_digits=7, decimal_places=2,
@@ -45,32 +48,31 @@ class Presupuesto(models.Model):
                                              blank=True, default=0.00)
     monto_impuesto = models.DecimalField(max_digits=7, decimal_places=2,
                                          blank=True, default=0.00)
-    monto_con_impuesto = models.DecimalField(max_digits=7, decimal_places=2)
+    monto_con_impuesto = models.DecimalField(max_digits=7, decimal_places=2,
+                                             blank=True, default=0.00)
 
     def __str__(self):
-        return self.nro_presupuesto
+        return self.dni
 
     class Meta:
         verbose_name = "Presupuesto"
         verbose_name_plural = "Presupuestos"
-        ordering = ['nro_presupuesto']
 
 
 class Presupuesto_direccion(models.Model):
-    presupuesto = models.ForeignKey()
+    presupuesto = models.ForeignKey(Presupuesto)
     direccion = models.TextField()
     tipo_direccion = models.CharField(max_length=100)
-    inmueble = models.CharField(max_length=100)
     tipo_inmueble = models.CharField(max_length=100)
     ocupacidad_inmueble = models.CharField(max_length=100)
-    valor_ocupacidad = models.DecimalField()
+    valor_ocupacidad = models.DecimalField(max_digits=3, decimal_places=2)
     pisos = models.IntegerField()
-    pisos_escalera = models.IntegerField()
+    pisos_escalera = models.IntegerField(blank=True, default=0)
     rampa = models.BooleanField()
     ascensor = models.BooleanField()
     ascensor_servicio = models.BooleanField()
-    pisos_ascensor_servicio = models.IntegerField()
-    pisos_ascensor = models.IntegerField()
+    pisos_ascensor_servicio = models.IntegerField(blank=True, default=0)
+    pisos_ascensor = models.IntegerField(blank=True, default=0)
     complejidad = models.CharField(max_length=100)
     factor_complejidad = models.DecimalField(max_digits=4, decimal_places=2)
     valor_ambiente_complejidad = models.DecimalField(max_digits=13, decimal_places=2)

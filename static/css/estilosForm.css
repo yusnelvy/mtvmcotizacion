@@ -83,7 +83,7 @@ th{text-align: center!important;}
 
 .filtra-servicio>p>label[for=id_servicio],.filtra-servicio>p>select[id=id_servicio] {
   display: none;
-
+}
 .ayuda {
     width:40%;
     right:-100%;
