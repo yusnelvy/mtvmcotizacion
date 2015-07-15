@@ -19,7 +19,19 @@ function main(){
         }
 
     });
-            $('.row').click(function(){
+            $('#page-wrap').click(function(){
+        // $('nav').toggle();
+
+        if(contador == 0){
+
+            $('.ayuda').animate({
+                right: '-100%'
+            });
+            contador = 1;
+        }
+
+    });
+          $('#footer').click(function(){
         // $('nav').toggle();
 
         if(contador == 0){
@@ -33,20 +45,6 @@ function main(){
     });
 
 };
-
-(function($) {
-    var $window = $(window),
-        $nav2 = $('nav');
-
-    $window.resize(function resize() {
-        if ($window.width() < 976) {
-            return $nav.removeClass('navbar-fixed-top');
-        }
-
-        $nav.addClass('navbar-fixed-top');
-    }).trigger('resize');
-})(jQuery);
-
 
     $(window).scroll(function()
         {

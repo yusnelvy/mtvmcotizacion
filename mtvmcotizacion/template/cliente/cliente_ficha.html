@@ -2,17 +2,17 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="../../" style="color:#777;">Lista de clientes</a></li>
-<li class="linknav"><a href="../../estado_civil/" style="color:#777;">Lista de estado civil</a></li>
-<li class="linknav"><a href="../../sexo/" style="color:#777;">Lista de sexo</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_cliente' %}" style="color:#777;">Lista de clientes</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_estadocivil' %}" style="color:#777;">Lista de estado civil</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_sexo' %}" style="color:#777;">Lista de sexo</a></li>
 
 {% endblock link_navegacion %}
 
 {% block footerLink %}
 
-<li><a href="../../" style="color:#777;">Lista de clientes</a></li>
-<li><a href="../../estado_civil/" style="color:#777;">Lista de estado civil</a></li>
-<li><a href="../../sexo/" style="color:#777;">Lista de sexo</a></li>
+<li><a href="{% url 'uclientes:lista_cliente' %}" style="color:#777;">Lista de clientes</a></li>
+<li><a href="{% url 'uclientes:lista_estadocivil' %}" style="color:#777;">Lista de estado civil</a></li>
+<li><a href="{% url 'uclientes:lista_sexo' %}" style="color:#777;">Lista de sexo</a></li>
 
 {% endblock footerLink %}
 

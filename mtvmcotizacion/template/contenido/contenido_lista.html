@@ -57,6 +57,46 @@ Eliminar tipo de contenido
 
 {% endblock cantidad_tabla %}
 
+{% block pagination %}
+
+{% if contenidos.has_previous %}
+
+<li>
+  <a href="?page={{ contenidos.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ contenidos.number }}
+
+    de
+
+    {{ contenidos.paginator.num_pages }}
+
+    Desde el contenido
+
+    {{ contenidos.start_index }}
+
+    hasta el contenido
+
+    {{ contenidos.end_index }}
+
+  </a>
+</li>
+
+{% if contenidos.has_next %}
+
+<li>
+  <a href="?page={{ contenidos.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
 {% block cuerpo_tabla %}
 
 <tr class="active">
@@ -92,48 +132,6 @@ Eliminar tipo de contenido
 </tr>
 
 {% endfor %}
-
-<nav>
-  <ul class="pagination">
-
-    {% if contenidos.has_previous %}
-
-    <li>
-      <a href="?page={{ contenidos.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-
-    {% endif %}
-
-    <li class="current">
-      <a style="color:#000;"> Página
-
-        {{ contenidos.number }}
-
-        de
-
-        {{ contenidos.paginator.num_pages }}
-
-        Desde el contenido
-
-        {{ contenidos.start_index }}
-
-        hasta el contenido
-
-        {{ contenidos.end_index }}
-
-      </a>
-    </li>
-
-    {% if contenidos.has_next %}
-
-    <li>
-      <a href="?page={{ contenidos.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-
-    {% endif %}
-
-  </ul>
-</nav>
 
 {% endblock cuerpo_tabla %}
 

@@ -34,7 +34,8 @@
 </tr>
 
 {% endfor %}
-<nav>
+
+<nav class="nav-pagination">
   <ul class="pagination">
 
     {% if provincias.has_previous %}
@@ -76,6 +77,7 @@
   </ul>
 </nav>
 </table>
+
 {% endblock cuerpo_tabla %}
 
 {% endif %}

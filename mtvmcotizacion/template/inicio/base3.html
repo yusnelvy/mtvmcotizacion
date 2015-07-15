@@ -18,7 +18,7 @@
     {% block titulo %}{% endblock titulo %}
 
 </head>
-<body>
+<body class="">
 
     {% block header %}{% endblock header %}
 
@@ -55,19 +55,19 @@
             {% block ficha %}{% endblock ficha %}
 
         </div>
-            </div>
-            <div class="container-fluid" id="footer">
+    </div>
+    <div class="container-fluid hidden-print" id="footer">
         <div class="row">
             <br>
             <br>
-            <footer class="hidden-print">
+            <footer>
                 <div class="container">
                     <br>
                     <div class="row">
                         <div class="col-xs-6 col-lg-3">
                             <p>&copy; Mudarte.com.ar 2015</p>
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Buscar...">
+                                <input type="text" class="form-control" id="search" name="search" placeholder="Buscar...">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
                                 </span>
@@ -78,11 +78,11 @@
                                 <a href="#"><span class="glyphicon glyphicon-lock"></span></a>
                             </div>
                         </div><!-- /.col-lg-3 -->
-
                         <div class="col-xs-0 col-lg-3"></div>
                         <div class="col-xs-3 col-lg-4">
                             <h4>Aplicación</h4>
                             <ul class="w">
+                                <li><a href="/index/" style="color:#777;">Inicio</a></li>
 
                                 {% block footerLink %}{% endblock footerLink %}
 
@@ -94,21 +94,22 @@
                                 <li><a href="#">¿Que hacemos?</a></li>
                                 <li><a href="#" data-toggle="modal" data-target="#myModal1">Contactenos</a></li>
                                 <li><a href="#" data-toggle="modal" data-target="#myModal3">Blog</a></li>
-
                             </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="copyright">
+                            <p>Copyright © Todos los Derechos Reservados.</p>
                         </div>
                     </div>
                 </div>
             </footer>
         </div>
-</div>
+    </div>
 
-
-    {% block script %}
+    {% block script %}{% endblock script %}
 
     {% include "inicio/script.html" %}
-
-    {% endblock script %}
 
     {% block js_inf %}{% endblock js_inf %}
 

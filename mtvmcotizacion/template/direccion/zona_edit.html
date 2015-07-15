@@ -19,16 +19,17 @@
   {{ form_edit_zona.as_p }}
 
 </div>
+<script type="text/javascript">
+document.getElementById('id_zona').focus()
+</script>
 
 {% endblock cuerpo_form %}
 
 {% block ayuda %}
 
 <div class="">
-    <div class="well well-lg">
         <p>La <strong>zona </strong>es aquella porción geográfica altamente poblada, característica de las grandes ciudades.</p>
         <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
     </div>
-</div>
 
 {% endblock%}
