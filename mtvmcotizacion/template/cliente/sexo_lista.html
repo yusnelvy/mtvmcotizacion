@@ -2,15 +2,15 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="../" style="color:#777;">Lista de clientes</a></li>
-<li class="linknav"><a href="../estado_civil/" style="color:#777;">Lista de estado civil</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_cliente' %}" style="color:#777;">Lista de clientes</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_estadocivil' %}" style="color:#777;">Lista de estado civil</a></li>
 
 {% endblock link_navegacion %}
 
 {% block footerLink %}
 
-<li><a href="../" style="color:#777;">Lista de clientes</a></li>
-<li><a href="../estado_civil/" style="color:#777;">Lista de estado civil</a></li>
+<li><a href="{% url 'uclientes:lista_cliente' %}" style="color:#777;">Lista de clientes</a></li>
+<li><a href="{% url 'uclientes:lista_estadocivil' %}" style="color:#777;">Lista de estado civil</a></li>
 
 {% endblock footerLink %}
 
@@ -57,8 +57,8 @@ Eliminar Sexo
 
 <tr class="active">
   <th>Sexo</th>
-  <th>Editar</th>
-  <th>Eliminar</th>
+  <th width="3">Editar</th>
+  <th width="3">Eliminar</th>
 </tr>
 
 {% for i in lista_sexo %}

@@ -1,5 +1,17 @@
 {% extends 'inicio/base_lista.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'utrabajadores:lista_cargotrabajador' %}" style="color:#777;">Trabajadores</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'utrabajadores:lista_cargotrabajador' %}">Trabajadores</a></li>
+
+{% endblock footerLink %}
+
 {% block titulo %}
 
 <title>Modelos de vehículo</title>
@@ -50,6 +62,46 @@
 
 {% endblock cantidad_tabla %}
 
+{% block pagination %}
+
+{% if vehiculos.has_previous %}
+
+<li>
+  <a href="?page={{ vehiculos.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ vehiculos.number }}
+
+    de
+
+    {{ vehiculos.paginator.num_pages }}
+
+    Desde el vehiculo
+
+    {{ vehiculos.start_index }}
+
+    hasta el vehiculo
+
+    {{ vehiculos.end_index }}
+
+  </a>
+</li>
+
+{% if vehiculos.has_next %}
+
+<li>
+  <a href="?page={{ vehiculos.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
 {% block cuerpo_tabla %}
 
 <tr class="active">
@@ -82,48 +134,6 @@
 </tr>
 
 {% endfor %}
-
-<nav>
-  <ul class="pagination">
-
-    {% if vehiculos.has_previous %}
-
-    <li>
-      <a href="?page={{ vehiculos.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-
-    {% endif %}
-
-    <li class="current">
-      <a style="color:#000;"> Página
-
-        {{ vehiculos.number }}
-
-        de
-
-        {{ vehiculos.paginator.num_pages }}
-
-        Desde el vehiculo
-
-        {{ vehiculos.start_index }}
-
-        hasta el vehiculo
-
-        {{ vehiculos.end_index }}
-
-      </a>
-    </li>
-
-    {% if vehiculos.has_next %}
-
-    <li>
-      <a href="?page={{ vehiculos.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-
-    {% endif %}
-
-  </ul>
-</nav>
 
 {% endblock cuerpo_tabla %}
 

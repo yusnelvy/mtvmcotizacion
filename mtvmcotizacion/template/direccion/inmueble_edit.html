@@ -19,16 +19,18 @@
   {{ form_edit_inmueble.as_p }}
 
 </div>
+<script type="text/javascript">
+document.getElementById('id_inmueble').focus()
+</script>
 
 {% endblock cuerpo_form %}
 
 {% block ayuda %}
 
-<div class="well well-lg">
+<div class="">
  <p>El <strong>Inmueble</strong> es una propiedad que no puede ser trasladado o separado del lugar en que se halla, como casas o edificios. </p>
  <p>Agregue cada campo del formulario para editar el <strong>Inmueble</strong> y luego presione registrar.</p>
  <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
-
 </div>
 
 {% endblock ayuda %}

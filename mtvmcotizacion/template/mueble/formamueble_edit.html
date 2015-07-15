@@ -19,6 +19,9 @@
 {{ form_edit_formamueble.as_p }}
 
 </div>
+<script type="text/javascript">
+document.getElementById('id_forma').focus()
+</script>
 
 {% endblock cuerpo_form %}
 
@@ -51,7 +54,7 @@
 
 {% block ayuda %}
 
-<div class="well well-lg">
+<div class="">
   <p>La <strong>Forma de mueble</strong> es una clasificación referencial de los <strong>Muebles</strong> que permite prever su tratamiento para efectos del traslado.</p>
   <p>Esta clasificación no afecta el precio de la cotización, pero será útil para la identificación de <strong>Muebles</strong> y su ubicación durante el traslado.</p>
 </div>

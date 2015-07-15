@@ -2,15 +2,15 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="../../" style="color:#777;">Lista de clientes</a></li>
-<li class="linknav"><a href="../../sexo/" style="color:#777;">Lista de sexo</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_cliente' %}" style="color:#777;">Lista de clientes</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_sexo' %}" style="color:#777;">Lista de sexo</a></li>
 
 {% endblock link_navegacion %}
 
 {% block footerLink %}
 
-<li><a href="../../" style="color:#777;">Lista de clientes</a></li>
-<li><a href="../../sexo/" style="color:#777;">Lista de sexo</a></li>
+<li><a href="{% url 'uclientes:lista_cliente' %}" style="color:#777;">Lista de clientes</a></li>
+<li><a href="{% url 'uclientes:lista_sexo' %}" style="color:#777;">Lista de sexo</a></li>
 
 {% endblock footerLink %}
 
@@ -34,6 +34,9 @@
             {{ mensaje }}
 
 </div>
+<script type="text/javascript">
+document.getElementById('id_estado_civil').focus()
+</script>
 
 {% endblock cuerpo_form %}
 

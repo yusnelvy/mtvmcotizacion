@@ -45,8 +45,8 @@ Eliminar Direccion
     <th>Direccion</th>
     <th>Adicional</th>
     <th>Cliente</th>
-    <th>Editar</th>
-    <th>Eliminar</th>
+    <th width="">Editar</th>
+    <th width="">Eliminar</th>
 </tr>
 
 {% for i in lista_direccion %}
@@ -81,12 +81,11 @@ Eliminar Direccion
 
 {% block ayuda %}
 
-<div class="well well-lg">
+<div class="">
  <p>Las <strong> Direcciones</strong> son unos de los requisitos clave para la mudanza  </p>
  <p>Se recomienda agregar al menos una dieccion por cada cliente.</p>
  <p>Para agregar nueva direccion presione el boton (Nuevo)</p>
  <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
-
 </div>
 
 {% endblock ayuda %}

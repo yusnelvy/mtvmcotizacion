@@ -19,6 +19,9 @@
   {{ form_edit_complejidad_inmueble.as_p }}
 
 </div>
+<script type="text/javascript">
+document.getElementById('id_complejidad').focus()
+</script>
 
 {% endblock cuerpo_form %}
 
@@ -54,10 +57,8 @@
 {% block ayuda %}
 
 <div class="">
-  <div class="well well-lg">
     <p><strong>Complejidad inmueble</strong> se refiere al esfuerzo necesario para el traslado de la mudanza.</p>
     <p>Al momento de evaluar o realizar una mudanza, los Niveles de complejidad serán determinados por las características físicas del Mueble o del Contenido según la sensibilidad del cotizador basada en los indicadores a evaluar.</p>
   </div>
-</div>
 
 {% endblock%}

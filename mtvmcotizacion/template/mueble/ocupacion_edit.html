@@ -19,6 +19,9 @@
 {{ form_edit_ocupacion.as_p }}
 
 </div>
+<script type="text/javascript">
+document.getElementById('id_descripcion').focus()
+</script>
 
 {% endblock cuerpo_form %}
 
@@ -50,7 +53,7 @@
 
 {% block ayuda %}
 
-<div class="well well-lg">
+<div class="">
   <p>El <strong>Nivel de ocupación</strong> permite estimar la cantidad de contenido que tiene un <strong>Mueble</strong> de forma que se pueda determinar la cantidad de <strong>Contenedores</strong> que serán necesarios para el traslado del mismo.</p>
   <p>El <strong>Nivel de ocupación</strong> se asume de forma estimada con un nivel de precisión que permite asignar de forma justa la cantidad de <strong>Contenedores</strong> sin perjudicar al cliente por una cantidad excesiva de estos.</p>
   <p>La cantidad de <strong>Contenedores</strong> asignados incide sobre el precio final de la cotización.</p>

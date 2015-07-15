@@ -2,15 +2,15 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="estado_civil/" style="color:#777;">Lista de estado civil</a></li>
-<li class="linknav"><a href="sexo/" style="color:#777;">Lista de sexo</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_estadocivil' %}" style="color:#777;">Lista de estado civil</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_sexo' %}" style="color:#777;">Lista de sexo</a></li>
 
 {% endblock link_navegacion %}
 
 {% block footerLink %}
 
-<li><a href="estado_civil/">Lista de estado civil</a></li>
-<li><a href="sexo/" style="color:#777;">Lista de sexo</a></li>
+<li><a href="{% url 'uclientes:lista_estadocivil' %}">Lista de estado civil</a></li>
+<li><a href="{% url 'uclientes:lista_sexo' %}" style="color:#777;">Lista de sexo</a></li>
 
 {% endblock footerLink %}
 
@@ -71,7 +71,7 @@ Eliminar Cliente
       <td>{{ i.nombre_principal }}</td>
       <td>{{ i.activo|yesno:"Activo,Inactivo" }}</td>
        <td>
-        <a href="cliente_ficha/{{i.id}}/" class="glyphicon glyphicon-tag"></a>
+        <a href="cliente_ficha/{{i.id}}/" class="glyphicon glyphicon-file"></a>
       </td>
       <td>
         <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uclientes:edit_cliente' i.id %}?next={% url 'uclientes:lista_cliente' %}" class="glyphicon glyphicon-edit"></a>

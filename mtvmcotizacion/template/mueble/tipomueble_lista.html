@@ -18,28 +18,6 @@ Eliminar tipo de mueble
 
 {% endblock validacion_modal %}
 
-{% block link %}
-
-<ul class="nav navbar-nav">
-  <li>
-    <a href="/mueble/" class="btn">Muebles</a>
-  </li>
-  <li>
-    <a href="/mueble/ocupacion/" class="btn">Ocupación</a>
-  </li>
-  <li>
-    <a href="/mueble/forma_mueble/" class="btn">Formas</a>
-  </li>
-  <li>
-    <a href="/mueble/tamano/" class="btn">Tamaños</a>
-  </li>
-  <li>
-    <a href="/mueble/densidad/" class="btn">Densidad</a>
-  </li>
-</ul>
-
-{% endblock link %}
-
 {% block titulo_tabla %}
 
 <div class="btn-procesos">
@@ -59,6 +37,46 @@ Eliminar tipo de mueble
 </h6>
 
 {% endblock cantidad_tabla %}
+
+{% block pagination %}
+
+{% if tipomuebles.has_previous %}
+
+<li>
+  <a href="?page={{ tipomuebles.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ tipomuebles.number }}
+
+    de
+
+    {{ tipomuebles.paginator.num_pages }}
+
+    Desde el tipo de mueble
+
+    {{ tipomuebles.start_index }}
+
+    hasta el tipo de mueble
+
+    {{ tipomuebles.end_index }}
+
+  </a>
+</li>
+
+{% if tipomuebles.has_next %}
+
+<li>
+  <a href="?page={{ tipomuebles.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
 
 {% block cuerpo_tabla %}
 
@@ -84,55 +102,13 @@ Eliminar tipo de mueble
 
 {% endfor %}
 
-<nav>
-  <ul class="pagination">
-
-    {% if tipomuebles.has_previous %}
-
-    <li>
-      <a href="?page={{ tipomuebles.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-
-    {% endif %}
-
-    <li class="current">
-      <a style="color:#000;"> Página
-
-        {{ tipomuebles.number }}
-
-        de
-
-        {{ tipomuebles.paginator.num_pages }}
-
-        Desde el tipo de mueble
-
-        {{ tipomuebles.start_index }}
-
-        hasta el tipo de mueble
-
-        {{ tipomuebles.end_index }}
-
-      </a>
-    </li>
-
-    {% if tipomuebles.has_next %}
-
-    <li>
-      <a href="?page={{ tipomuebles.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-
-    {% endif %}
-
-  </ul>
-</nav>
-
 {% endblock cuerpo_tabla %}
 
 {% endif %}
 
 {% block ayuda %}
 
-<div class="well well-lg">
+<div class="">
   <p>El <strong>Tipo de mueble</strong> es una clasificación referencial de los <strong>Muebles</strong> que permite encontrarlos por su nombre genérico, el cual agrupará a otros <strong>Muebles</strong> similares.</p>
   <p>Una buena clasificación de los <strong>Muebles</strong> facilita el trabajo del cotizador al momento de seleccionarlos, según se encuentran en un <strong>Ambiente</strong>.</p>
   <p>También incidirá significativamente sobre el rendimiento del cotizador, debido a que podrá hacer más rápido el trabajo de levantamiento de información en campo.</p>
