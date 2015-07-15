@@ -27,6 +27,8 @@ urlpatterns = patterns('',  # C0103: El error es la forma del nombre urlpatterns
                        url(r'^trabajador/', include('trabajador.urls', namespace="utrabajadores")),
                        url(r'^cotizacion/', include('cotizacion.urls', namespace="ucotizaciones")),
                        url(r'^chaining/', include('smart_selects.urls')),
+                       url(r'^presupuesto/', include('presupuesto.urls', namespace="upresupuestos")),
+
                        #url(r'^search/', SearchView(load_all=False)),
                        #url(r'^search/', include('haystack.urls')),
                        )
