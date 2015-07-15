@@ -36,17 +36,17 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'direccion',
-    'cliente',
-    'telefono',
     'ambiente',
-    'servicio',
-    'mueble',
+    'cliente',
     'contenido',
-    'trabajador',
     'cotizacion',
+    'direccion',
     'inicio',
-    #'haystack',
+    'mueble',
+    'presupuesto',
+    'servicio',
+    'telefono',
+    'trabajador',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -84,9 +84,10 @@ TEMPLATES = [
         # OPTIONS: Permite especificar opciones específicas del BackEnd
         'OPTIONS': {
             # 'loaders': []
+            # Los loaders son los módulos que permiten cargar las aplicaciones
             # El estándar de loaders carga lo siguiente:
             # ('django.template.loaders.filesystem.Loader',
-            #'django.template.loaders.app_directories.Loader')
+            # 'django.template.loaders.app_directories.Loader')
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.debug',
