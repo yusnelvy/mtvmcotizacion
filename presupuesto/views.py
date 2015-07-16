@@ -97,9 +97,7 @@ class PresupuestoDireccionView(View):
             formResult.tipo_inmueble = tipo_inmueble.tipo_inmueble
             formResult.ocupacidad_inmueble = ocupacidad_inmueble.descripcion
             formResult.valor_ocupacidad = ocupacidad_inmueble.valor
-
             formResult.save()
-
             # <process form cleaned data>
             redirect_to = request.GET['next']
 
@@ -156,8 +154,22 @@ class PresupuestoDireccionUpdate(UpdateView):
     form_class = PresupuestoDireccionForm
     model = Presupuesto_direccion
 
+    def get_initial(self):
+        super(PresupuestoDireccionUpdate, self).get_initial()
+        lista_ocupacion = Ocupacion.objects.get(descripcion=self.object.ocupacidad_inmueble)
+        lista_tipoinmueble = Tipo_Inmueble.objects.get(tipo_inmueble=self.object.tipo_inmueble)
+        self.initial = {"lista_ocupacion": lista_ocupacion.id, 'lista_tipoinmueble': lista_tipoinmueble.id}
+        return self.initial
+
     def form_valid(self, form):
+        tipo_inmueble = Tipo_Inmueble.objects.get(id=self.request.POST['lista_tipoinmueble'])
+        ocupacidad_inmueble = Ocupacion.objects.get(id=self.request.POST['lista_ocupacion'])
+
         self.object = form.save(commit=False)
+        self.object.tipo_inmueble = tipo_inmueble.tipo_inmueble
+        self.object.ocupacidad_inmueble = ocupacidad_inmueble.descripcion
+        self.object.valor_ocupacidad = ocupacidad_inmueble.valor
+
         self.object.save()
 
         redirect_to = self.request.GET['next']
