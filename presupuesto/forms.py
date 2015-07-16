@@ -31,8 +31,8 @@ class PresupuestoForm(ModelForm):
 class PresupuestoDireccionForm(ModelForm):
 
     """Docstring"""
-    lista_tipoinmueble = ModelChoiceField(Tipo_Inmueble.objects, widget=RadioSelect, empty_label=None)
-    lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=RadioSelect, empty_label=None)
+    lista_tipoinmueble = ModelChoiceField(Tipo_Inmueble.objects, widget=RadioSelect, empty_label=None, label='Tipo de inmueble')
+    lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=RadioSelect, empty_label=None, label='Ocupación del inmueble')
 
     class Meta:
         model = Presupuesto_direccion
@@ -50,13 +50,16 @@ class PresupuestoDireccionForm(ModelForm):
             'pisos_ascensor_servicio', \
             'presupuesto', \
             'tipo_direccion', \
+            'tipo_inmueble', \
+            'ocupacidad_inmueble', \
+            'valor_ocupacidad', \
             'complejidad', \
             'factor_complejidad', \
             'valor_ambiente_complejidad', \
             'valor_metrocubico_complejiadad'
 
         labels = {
-            'nombre_cliente': ('Cliente')
+            'nombre_cliente': ('Cliente'),
         }
         error_messages = {
             'nombre_cliente': {
