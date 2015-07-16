@@ -1,3 +1,5 @@
+""" docstring """
+
 from django.shortcuts import render, render_to_response
 from trabajador.models import Cargo_trabajador
 from trabajador.forms import CargotrabajadorForm
@@ -50,7 +52,7 @@ def lista_cargotrabajador(request):
         cargos = paginator.page(paginator.num_pages)
 
     context = {'lista_cargo': lista_cargo, 'cargos': cargos}
-    return render(request, 'trabajador/cargotrabajador_lista.html', context)
+    return render(request, 'cargotrabajador_lista.html', context)
 
 
 # agregar nuevo
@@ -65,7 +67,7 @@ def add_cargotrabajador(request):
 
     else:
         form_cargotrabajador = CargotrabajadorForm()
-    return render_to_response('trabajador/cargotrabajador_add.html',
+    return render_to_response('cargotrabajador_add.html',
                               {'form_cargotrabajador': form_cargotrabajador, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -94,6 +96,6 @@ def edit_cargotrabajador(request, pk):
         # formulario inicial
         form_edit_cargotrabajador = CargotrabajadorForm(instance=id_cargo)
 
-    return render_to_response('trabajador/cargotrabajador_edit.html',
+    return render_to_response('cargotrabajador_edit.html',
                               {'form_edit_cargotrabajador': form_edit_cargotrabajador, 'create': False},
                               context_instance=RequestContext(request))
