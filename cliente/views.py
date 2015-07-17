@@ -40,7 +40,18 @@ def lista_sexo(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_sexo = Sexo.objects.all()
-    context = {'lista_sexo': lista_sexo}
+
+    sexo_links = zip([
+        'Clientes',
+        'Estado civil',
+    ],
+    [
+        'uclientes:lista_cliente',
+        'uclientes:lista_estadocivil',
+    ])
+
+    context = {'lista_sexo': lista_sexo, 'sexo_links': sexo_links}
+
     return render(request, 'sexo_lista.html', context)
 
 
@@ -63,12 +74,23 @@ def lista_estadocivil(request):
                 tiene algun registro asociado"}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-            except: # ERROR requiere definir un tipo de error para la excepción
+            except:  # ERROR requiere definir un tipo de error para la excepción
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_estadocivil = Estado_civil.objects.all()
-    context = {'lista_estadocivil': lista_estadocivil}
+
+    estadocivil_links = zip([
+        'Clientes',
+        'Sexo',
+    ],
+    [
+        'uclientes:lista_cliente',
+        'uclientes:lista_sexo',
+    ])
+
+    context = {'lista_estadocivil': lista_estadocivil, 'estadocivil_links': estadocivil_links}
+
     return render(request, 'estadocivil_lista.html', context)
 
 

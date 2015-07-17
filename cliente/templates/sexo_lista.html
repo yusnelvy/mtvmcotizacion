@@ -2,15 +2,21 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="{% url 'uclientes:lista_cliente' %}" style="color:#777;">Lista de clientes</a></li>
-<li class="linknav"><a href="{% url 'uclientes:lista_estadocivil' %}" style="color:#777;">Lista de estado civil</a></li>
+{% for i, j in sexo_links %}
+
+<li class="linknav"><a href="{% url j %}" style="color:#777;">{{ i }}</a></li>
+
+{% endfor %}
 
 {% endblock link_navegacion %}
 
 {% block footerLink %}
 
-<li><a href="{% url 'uclientes:lista_cliente' %}" style="color:#777;">Lista de clientes</a></li>
-<li><a href="{% url 'uclientes:lista_estadocivil' %}" style="color:#777;">Lista de estado civil</a></li>
+{% for i, j in cliente_links %}
+
+<li><a href="{% url j %}">{{ i }}</a></li>
+
+{% endfor %}
 
 {% endblock footerLink %}
 

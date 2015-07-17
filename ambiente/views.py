@@ -49,8 +49,16 @@ def lista_ambiente(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         ambientes = paginator.page(paginator.num_pages)
-    context = {'lista_ambiente': lista_ambiente, 'ambientes': ambientes}
-    return render(request, 'ambiente/ambiente_lista.html', context)
+
+    ambiente_links = zip([
+        'Ambientes por tipo de inmueble',
+    ],
+    [
+        'uambientes:lista_ambiente_tipo_inmueble',
+    ])
+
+    context = {'lista_ambiente': lista_ambiente, 'ambientes': ambientes, 'ambiente_links': ambiente_links}
+    return render(request, 'ambiente_lista.html', context)
 
 
 def lista_ambiente_tipo_inmueble(request):
@@ -89,7 +97,7 @@ def lista_ambiente_tipo_inmueble(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         listas_inmueble = paginator.page(paginator.num_pages)
     context = {'lista_ambtipoinmueble': lista_ambtipoinmueble, 'lista_inmueble': lista_inmueble, 'listas_inmueble': listas_inmueble}
-    return render(request, 'ambiente/ambientetipoinmueble_lista.html', context)
+    return render(request, 'ambientetipoinmueble_lista.html', context)
 
 
 def buscar_ambiente(request, id_tipoinmueble):
@@ -98,7 +106,7 @@ def buscar_ambiente(request, id_tipoinmueble):
 
     lista_ambiente = Ambiente.objects.filter(pk=tipo_inmueble.ambiente_id)
     context = {'lista_ambiente': lista_ambiente}
-    return render(request, 'ambiente/ambiente_lista.html', context)
+    return render(request, 'ambiente_lista.html', context)
 
 
 # agregar nuevo
@@ -111,7 +119,7 @@ def add_ambiente(request):
             return HttpResponseRedirect(reverse('uambientes:lista_ambiente'))
     else:
         form_ambiente = AmbienteForm()
-    return render_to_response('ambiente/ambiente_add.html',
+    return render_to_response('ambiente_add.html',
                               {'form_ambiente': form_ambiente, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -125,7 +133,7 @@ def add_ambiente_tipoinmueble(request, id_ti):
             return HttpResponseRedirect(reverse('uambientes:lista_ambiente_tipo_inmueble'))
     else:
         form_ambtipoinmueble = AmbienteTipoInmuebleForm(initial={'tipo_inmueble': id_ti})
-    return render_to_response('ambiente/ambientetipoinmueble_add.html',
+    return render_to_response('ambientetipoinmueble_add.html',
                               {'form_ambtipoinmueble': form_ambtipoinmueble, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -155,7 +163,7 @@ def edit_ambiente(request, pk):
         # formulario inicial
         form_edit_ambiente = AmbienteForm(instance=id_ambiente)
 
-    return render_to_response('ambiente/ambiente_edit.html',
+    return render_to_response('ambiente_edit.html',
                               {'form_edit_ambiente': form_edit_ambiente, 'ambiente': id_ambiente, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -183,6 +191,6 @@ def edit_ambiente_tipoinmueble(request, pk):
         # formulario inicial
         form_edit_ambtipoinmueble = AmbienteTipoInmuebleForm(instance=ambtipoinmueble)
 
-    return render_to_response('ambiente/ambientetipoinmueble_edit.html',
+    return render_to_response('ambientetipoinmueble_edit.html',
                               {'form_edit_ambtipoinmueble': form_edit_ambtipoinmueble, 'create': False},
                               context_instance=RequestContext(request))

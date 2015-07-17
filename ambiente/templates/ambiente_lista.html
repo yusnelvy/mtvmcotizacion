@@ -2,15 +2,21 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="{% url 'uambientes:lista_ambiente_tipo_inmueble' %}" style="color:#777;">Ambiente tipo inmueble</a></li>
-<li class="linknav"><a href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}" style="color:#777;">Muebles x ambiente</a></li>
+{% for i, j in ambiente_links %}
+
+<li class="linknav"><a href="{% url j %}" style="color:#777;">{{ i }}</a></li>
+
+{% endfor %}
 
 {% endblock link_navegacion %}
 
 {% block footerLink %}
 
-<li><a href="{% url 'uambientes:lista_ambiente_tipo_inmueble' %}">Ambiente tipo inmueble</a></li>
-<li><a href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}" style="color:#777;">Muebles x ambiente</a></li>
+{% for i, j in ambiente_links %}
+
+<li class="linknav"><a href="{% url j %}" style="color:#777;">{{ i }}</a></li>
+
+{% endfor %}
 
 {% endblock footerLink %}
 
