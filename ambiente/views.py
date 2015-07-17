@@ -77,7 +77,18 @@ def lista_ambiente_tipo_inmueble(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
     lista_inmueble = Tipo_Inmueble.objects.filter()
     lista_ambtipoinmueble = Ambiente_Tipo_inmueble.objects.all()
-    context = {'lista_ambtipoinmueble': lista_ambtipoinmueble, 'lista_inmueble': lista_inmueble}
+    paginator = Paginator(lista_inmueble, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        listas_inmueble = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        listas_inmueble = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        listas_inmueble = paginator.page(paginator.num_pages)
+    context = {'lista_ambtipoinmueble': lista_ambtipoinmueble, 'lista_inmueble': lista_inmueble, 'listas_inmueble': listas_inmueble}
     return render(request, 'ambiente/ambientetipoinmueble_lista.html', context)
 
 

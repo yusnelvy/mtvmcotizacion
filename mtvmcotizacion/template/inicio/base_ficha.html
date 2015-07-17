@@ -7,6 +7,7 @@
 <a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
 <a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
 
+{% block acceso_ %}{% endblock acceso_ %}
 
 {% endblock acceso_rapido %}
 
@@ -53,6 +54,12 @@
     </div>
 </div>
 </div>
+<div class="ayuda well well-lg">
+    <button style="padding:0px;" type="button" class="ayuda_btn close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+    {% block ayuda %}{% endblock ayuda %}
+
+</div>
 <!--EndModal-->
 
 
@@ -61,6 +68,14 @@
 
         {% block titulo_ficha %}{% endblock titulo_ficha %}
 
+            <nav class="nav-pagination hidden-print">
+                <ul class="pagination" >
+
+                    {% block pagination %}{% endblock pagination %}
+
+                </ul>
+            </nav>
+
         {% block content1 %}{% endblock content1 %}
 
         </div>
@@ -68,8 +83,24 @@
 
         <div {% block col2 %}class="col-md-5"{% endblock col2 %}>
 
-        {% block content3 %}{% endblock content3 %}
+        {% block content2 %}{% endblock content2 %}
 
         </div>
+        <script type="text/javascript">
+        $("#addClass").click(function () {
+            $('.btn-colapsable').addClass('in');
+            $('.btn-colapsable').css('height','auto');
+            $("#removeClass").css('display','inline-block');
+            $("#addClass").css('display','none');
+        });
+        $("#removeClass").click(function () {
+            $('.btn-colapsable').removeClass('in');
+            $('.btn-colapsable').css('height','auto');
+            $("#removeClass").css('display','none');
+            $("#addClass").css('display','inline-block');;
+
+        });
+
+        </script>
 
 {% endblock ficha %}

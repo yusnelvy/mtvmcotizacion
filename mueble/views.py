@@ -5,6 +5,7 @@ from mueble.models import Tipo_Mueble, Ocupacion,\
 from mueble.forms import TipoMuebleForm, OcupacionForm,\
     FormaMuebleForm, MuebleForm, TamanoForm, \
     TamanoMuebleForm, MuebleAmbienteForm, DensidadForm
+from ambiente.models import Ambiente
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
@@ -466,7 +467,8 @@ def buscar_mueble_ambiente(request, idambiente=0):
         buscar_muebleambiente = Mueble_Ambiente.objects.all()
         mensaje = ""
 
-    paginator = Paginator(buscar_muebleambiente, 25)
+    lista_ambiente = Ambiente.objects.all()
+    paginator = Paginator(lista_ambiente, 25)
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -479,7 +481,7 @@ def buscar_mueble_ambiente(request, idambiente=0):
         muebleambientes = paginator.page(paginator.num_pages)
 
     context = {'buscar_muebleambiente': buscar_muebleambiente,
-               'muebleambientes': muebleambientes, 'ambiente': idambiente, 'mensaje': mensaje}
+               'muebleambientes': muebleambientes, 'ambiente': idambiente, 'mensaje': mensaje, 'lista_ambiente': lista_ambiente}
     return render(request, 'mueble/muebleambiente_lista.html', context)
 
 

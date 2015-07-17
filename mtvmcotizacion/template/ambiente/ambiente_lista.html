@@ -1,5 +1,19 @@
 {% extends 'inicio/base_lista.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'uambientes:lista_ambiente_tipo_inmueble' %}" style="color:#777;">Ambiente tipo inmueble</a></li>
+<li class="linknav"><a href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}" style="color:#777;">Muebles x ambiente</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'uambientes:lista_ambiente_tipo_inmueble' %}">Ambiente tipo inmueble</a></li>
+<li><a href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}" style="color:#777;">Muebles x ambiente</a></li>
+
+{% endblock footerLink %}
+
 {% block titulo %}
 
 <title>Ambientes</title>
@@ -126,12 +140,10 @@ Eliminar ambiente
 {% block ayuda %}
 
 <div class="">
-  <div class="well well-lg">
     <p>Los <strong>Ambientes</strong> son los diversos espacios que se encuentran en un <strong>Inmueble</strong>.</p>
     <p>Para comodidad mejor comprensión de su uso y aplicación, los <strong>Ambientes</strong> se agrupan en <strong>Tipos de ambiente</strong>.</p>
     <p>Al momento de evaluar o realizar una mudanza, los ambientes servirán para clasificar todos los muebles y contenidos que serán trasladados.</p>
     <p>El uso de etiquetas en los muebles y contenidos implica la identificación del ambiente en el cual fueron encontrados en el inmueble de origen, para una precisa clasificación en el inmueble destino.</p>
-  </div>
 </div>
 
 {% endblock%}

@@ -14,7 +14,8 @@
 
 {% block cuerpo_form %}
 
-<div class="form-group">
+<style>.filtra-contenido>p>label[for=id_contenido],.filtra-contenido>p>select[id=id_contenido]{display:none;}</style>
+<div class="form-group filtra-contenido">
 
     {{form_contenidoservicio.as_p}}
 
@@ -24,7 +25,7 @@
 
 {% block ayuda %}
 
-<div class="well well-lg">
+<div class="">
   <p>Los <strong>Tipos de contenido</strong> son los artículos que se encuentran en los <strong>Muebles</strong> y están conformados por una ámplia variedad de objetos con diversas formas, tamaños y tratamientos.</p>
   <p>Los <strong>Tipos de contenido</strong> son el ejemplo más emblemático del uso de la estadística para la estimación del esfuerzo en las mudanzas, de este modo se facilita el trabajo del cotizador al momento de describir sus detalles a medida que se encuentran en un <strong>Ambiente</strong>.</p>
   <p>También incidirá significativamente sobre el rendimiento del cotizador, debido a que podrá hacer más rápido el trabajo de levantamiento de información en campo.</p>

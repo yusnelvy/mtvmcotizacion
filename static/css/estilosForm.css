@@ -157,7 +157,6 @@ body{
   .divider-vertical{display: none;}
   .ayuda{top:120px;overflow-y: scroll;max-height: 80%;width: 60%;}
   body{margin-top:27px!important;}
-  .nav-pagination {float:right!important;}
 }
 html,body{
 height:100%;
