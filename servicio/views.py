@@ -216,7 +216,20 @@ def buscar_servicio_material(request, idserv=0, idmat=0):
         buscar_serviciomaterial = Servicio_Material.objects.all()
         lista_servicio = Servicio.objects.all()
 
-    context = {'buscar_serviciomaterial': buscar_serviciomaterial, 'lista_servicio': lista_servicio}
+    lista_servicio = Servicio.objects.all()
+    paginator = Paginator(lista_servicio, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        servicios = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        servicios = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        servicios = paginator.page(paginator.num_pages)
+
+    context = {'buscar_serviciomaterial': buscar_serviciomaterial, 'servicios': servicios, 'lista_servicio': lista_servicio}
     return render(request, 'servicio/serviciomaterial_lista.html', context)
 
 
