@@ -17,7 +17,7 @@ urlpatterns = patterns('',  # C0103: El error es la forma del nombre urlpatterns
 
                        url(r'^', include('inicio.urls', namespace='uinicio')),
                        url(r'^admin/', include(admin.site.urls)),
-                       url(r'^direccion/', include('direccion.urls', namespace="udireciones")),
+                       url(r'^direccion/', include('direccion.urls', namespace="udirecciones")),
                        url(r'^telefono/', include('telefono.urls', namespace="utelefonos")),
                        url(r'^cliente/', include('cliente.urls', namespace="uclientes")),
                        url(r'^ambiente/', include('ambiente.urls', namespace="uambientes")),

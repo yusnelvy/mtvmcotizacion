@@ -1,16 +1,24 @@
 {% extends 'inicio/base_lista.html' %}
 
+</div>
+
 {% block link_navegacion %}
 
-<li class="linknav"><a href="{% url 'uclientes:lista_estadocivil' %}" style="color:#777;">Lista de estado civil</a></li>
-<li class="linknav"><a href="{% url 'uclientes:lista_sexo' %}" style="color:#777;">Lista de sexo</a></li>
+{% for i, j in cliente_links %}
+
+<li class="linknav"><a href="{% url j %}" style="color:#777;">{{ i }}</a></li>
+
+{% endfor %}
 
 {% endblock link_navegacion %}
 
 {% block footerLink %}
 
-<li><a href="{% url 'uclientes:lista_estadocivil' %}">Lista de estado civil</a></li>
-<li><a href="{% url 'uclientes:lista_sexo' %}" style="color:#777;">Lista de sexo</a></li>
+{% for i, j in cliente_links %}
+
+<li><a href="{% url j %}">{{ i }}</a></li>
+
+{% endfor %}
 
 {% endblock footerLink %}
 
@@ -32,15 +40,11 @@ Eliminar Cliente
 
 {% endblock validacion_modal %}
 
-
-
 {% block titulo_tabla %}
 
 <h2>Listado de clientes </h2>
 
 {% endblock titulo_tabla %}
-
-{% if lista_cliente %}
 
 {% block cantidad_tabla %}
 
@@ -84,8 +88,6 @@ Eliminar Cliente
 {% endfor %}
 
 {% endblock cuerpo_tabla %}
-
-{% endif %}
 
 {% block ayuda %}
 
