@@ -12,6 +12,7 @@ import django.db
 import simplejson as json
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Count
 
 
 # Create your views here.
@@ -260,10 +261,24 @@ def buscar_complejidad_servicio(request, idserv=0, idcomp=0):
     if int(idcomp) != 0 | int(idserv) != 0:
 
         buscar_complejidadservicio = Complejidad_Servicio.objects.filter(Q(complejidad=idcomp) | Q(servicio=idserv))
+        listar_servicios = Complejidad_Servicio.objects.filter(Q(complejidad=idcomp) | Q(servicio=idserv)).values('servicio', 'servicio__servicio').annotate(tcount=Count('servicio')).order_by('servicio')
     else:
         buscar_complejidadservicio = Complejidad_Servicio.objects.all()
+        listar_servicios = Complejidad_Servicio.objects.values('servicio', 'servicio__servicio').annotate(tcount=Count('servicio')).order_by('servicio')
 
-    context = {'buscar_complejidadservicio': buscar_complejidadservicio, 'idserv': idserv}
+    paginator = Paginator(listar_servicios, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        servicios = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        servicios = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        servicios = paginator.page(paginator.num_pages)
+
+    context = {'buscar_complejidadservicio': buscar_complejidadservicio, 'servicios': servicios, 'listar_servicios': listar_servicios, 'idserv': idserv}
     return render(request, 'servicio/complejidadservicio_lista.html', context)
 
 

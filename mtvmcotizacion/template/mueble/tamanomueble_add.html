@@ -14,7 +14,8 @@
 
 {% block cuerpo_form %}
 
-<div class="form-group">
+<style>.filtra-mueble>p>label[for=id_mueble],.filtra-mueble>p>select[id=id_mueble]{display:none;}</style>
+<div class="form-group filtra-mueble">
 
     {{ form_tamanomueble.as_p }}
 

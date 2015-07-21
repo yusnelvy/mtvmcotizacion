@@ -83,6 +83,7 @@ def buscar_contenidotipico(request, idmueble=0):
     if idmueble != '0':
         try:
             buscar_contenidotipico = Contenido_Tipico.objects.filter(mueble=idmueble)
+            lista_mueble = Mueble.objects.filter(mueble=idmueble)
             mensaje = ""
         except ObjectDoesNotExist as ex:
             buscar_contenidotipico = ""
@@ -93,9 +94,9 @@ def buscar_contenidotipico(request, idmueble=0):
             mensaje = "se ha producido un error"+str(ex)
     else:
         buscar_contenidotipico = Contenido_Tipico.objects.all()
+        lista_mueble = Mueble.objects.all()
         mensaje = ""
 
-    lista_mueble = Mueble.objects.all()
     paginator = Paginator(lista_mueble, 25)
     # Show 25 contacts per page
     page = request.GET.get('page')

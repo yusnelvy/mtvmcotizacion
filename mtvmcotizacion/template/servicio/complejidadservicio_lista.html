@@ -1,5 +1,12 @@
 {% extends 'inicio/base_ficha.html' %}
 
+{% block acceso_ %}
+
+<a id="addClass" style="cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
+<a id="removeClass" style="display:none;cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
+
+{% endblock acceso_ %}
+
 {% block titulo %}
 
 <title>Niveles de complejidad para servicios</title>
@@ -40,6 +47,52 @@ Eliminar nivel de complejidad para el servicio
 
 {% endblock link %}
 
+{% block col1 %}
+
+class="col-md-7"
+
+{% endblock col1 %}
+
+{% block pagination %}
+
+{% if servicios.has_previous %}
+
+<li>
+  <a href="?page={{ servicios.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ servicios.number }}
+
+    de
+
+    {{ servicios.paginator.num_pages }}
+
+    Desde el mueble
+
+    {{ servicios.start_index }}
+
+    hasta el mueble
+
+    {{ servicios.end_index }}
+
+  </a>
+</li>
+
+{% if servicios.has_next %}
+
+<li>
+  <a href="?page={{ servicios.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
 {% block titulo_ficha %}
 
 <h2>Niveles de complejidad para el servicio</h2>
@@ -48,53 +101,80 @@ Eliminar nivel de complejidad para el servicio
 
 {% block content1 %}
 
-<h6>Cantidad de registros encontrados:
+{% if servicios %}
+
+<h6>Cantidad de servicios:
   <span class="badge" id="count_reg">
 
-    {{ buscar_complejidadservicio.count }}
-
+    {{ listar_servicios.count }}
 
   </span>
 </h6>
-<div class="panel panel-default">
-  <table class="table table-hover" style="text-align: center;">
-    <tr class="active">
-      <th>Servicio</th>
-      <th>Complejidad</th>
-      <th>Tarifa</th>
-      <th width="3">Editar</th>
-      <th width="3">Eliminar</th>
-    </tr>
+<br>
+<br>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-    {% for i in buscar_complejidadservicio %}
+  {% for im in servicios %}
 
-    <tr id="tr{{i.id}}">
-      <td>{{ i.servicio }}</td>
-      <td>{{ i.complejidad }}</td>
-      <td>{{ i.tarifa }}</td>
-      <td>
-        <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
-      </td>
-      <td>
-        <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="servicio: {{i.servicio}}"></a>
-      </td>
-    </tr>
+  <div class="panel panel-default">
+    <div style="cursor:pointer;" class="panel-heading" role="tab" id="heading{{im.servicio}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.servicio}}" aria-expanded="false" aria-controls="collapse{{im.servicio}}">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.servicio}}" aria-expanded="false" aria-controls="collapse{{im.servicio}}">
 
-    {% endfor %}
+          {{ im.servicio__servicio }}
 
-  </table>
+        </a>
+        <span class="caret hidden-print" style="float:right;"></span>
+      </h4>
+    </div>
+    <div id="collapse{{im.servicio}}" class="panel-collapse collapse btn-colapsable {% if forloop.first %} in {% endif %}" role="tabpanel" aria-labelledby="heading{{im.servicio}}">
+      <table class="table table-hover" id="tabla" style="text-align: center;">
+        <tr class="">
+          <th width="300" class="hidden-print">Complejidad</th>
+          <th width="" class="hidden-print">Tarifa</th>
+          <th width="" class="hidden-print">Factor tiempo</th>
+          <th width="" class="hidden-print">
+            <a href="{% url 'uservicios:add_complejidadservicio' im.servicio %}" class="glyphicon glyphicon-plus" style="float:right;"></a>
+          </th>
+        </tr>
+
+        {% for i in buscar_complejidadservicio %}
+
+        {% if i.servicio.id == im.servicio %}
+
+        <tr id="tr{{i.id}}">
+          <td width="300">{{ i.complejidad }}</td>
+          <td width="">{{ i.tarifa}}</td>
+          <td width="">{{ i.factor_tiempo }}</td>
+          <td width="3" class="hidden-print">
+            <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="complejidad {{i.complejidad}} del servicio: {{i.servicio}}"></a>
+          </td>
+        </tr>
+
+        {% endif %}
+
+        {% endfor %}
+
+      </table>
+    </div>
+  </div>
+
+  {% endfor %}
+
 </div>
+
+{% endif %}
 
 {% endblock content1 %}
 
-{% block content2 %}
+{% block ayuda %}
 
-<div class="ayuda">
+<div class="">
   <p>Los <strong>Niveles de complejidad</strong> se refieren al nivel de esfuerzo y consumo de tiempo en los cuales se incurrirá para la aplicación de los <strong>Servicios</strong> a los <strong>Muebles</strong> y <strong>Contenidos</strong> que serán mudados.</p>
   <p>Los <strong>Niveles de complejidad</strong> de este modo se asocian a factores de consumo de material y de consumo de tiempo, que lo llevan a tener una tarifa específica que compensa el esfuerzo para la aplicación de un <strong>Servicio</strong> específico con el <strong>Nivel de complejidad</strong> seleccionado.</p>
   <p>Al momento de evaluar o realizar una mudanza, los <strong>Niveles de complejidad</strong> serán determinados por las características físicas del <strong>Mueble</strong> o del <strong>Contenido</strong> según la sensibilidad del cotizador basada en los indicadores a evaluar.</p>
   <p>Los indicadores para definir <strong>Niveles de complejidad</strong> incluyen fragilidad de los objeto, necesidad de mantener un orden específico, formas irregulares difíciles de embalar, gran número de piezas para armar o desarmar, dificultad para sujetar el objeto, necesidad de que participe más de una persona, etc.</p>
 </div>
 
-{% endblock content2 %}
+{% endblock ayuda %}
 
