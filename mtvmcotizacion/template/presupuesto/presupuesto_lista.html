@@ -41,8 +41,8 @@ Eliminar presupuesto
 {% block cuerpo_tabla %}
 
 <tr class="active">
-  <th>N° presupuesto</th>
   <th>Fecha</th>
+  <th>N° presupuesto</th>
   <th>Dni</th>
   <th>cliente</th>
   <th width="">Ver ficha</th>
@@ -53,8 +53,8 @@ Eliminar presupuesto
 {% for i in presupuestos %}
 
 <tr id="tr{{i.id}}">
-  <td>000{{ i.id }}</td>
-  <td>{{ i.fecha_creacion }}</td>
+  <td>{{ i.fecha_creacion|date:"d/m/Y" }}</td>
+  <td>{{ i.id }}</td>
   <td>{{ i.dni }}</td>
   <td>{{ i.nombre_cliente }}</td>
   <td>
