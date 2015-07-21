@@ -1,5 +1,12 @@
 {% extends 'inicio/base_ficha.html' %}
 
+{% block acceso_ %}
+
+<a id="addClass" style="cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
+<a id="removeClass" style="display:none;cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
+
+{% endblock acceso_ %}
+
 {% block titulo %}
 
 <title>Muebles por ambiente</title>
@@ -37,92 +44,166 @@ Eliminar tamaño del mueble
 
 {% endblock link %}
 
-{% block titulo_ficha %}
-<div class="ayuda">
-  <button style="padding:20px;" type="button" class="ayuda_btn close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <div class="well well-lg">
+{% block pagination %}
 
-      <p>Los <strong>Mueble</strong> serán los objetos que se verán afectados durante una mudanza, algunos de ellos recibiendo servicios, otros almacenando contenidos.</p>
-      <p>Los <strong>Muebles</strong>, durante una mudanza, estarán asociados a un <strong>Ambiente</strong> de origen, y podrán ser trasladables o no. En caso de no ser trasladables, el único sentido de registrarlos consiste en la identificación de los <strong>Contenidos</strong> que mantienen, como puede ser el caso de los <i>muebles de cocina empotrada</i> o los <i>armarios empotrados</i> que generarán <strong>Contenedores</strong> pero ellos mismos no formarán parte de la mudanza.</p>
-      <p>Los muebles deben contar con un equilibrio entre lo general y lo específico, de manera que pueda estandarizarse la inmensa diversidad de posibilidades que se encuentra en el mercado, en solo unos pocos <i>muebles representativos</i> del resto.</p>
-    </div>
-</div>
-<div class="btn-procesos">
-<a href="/mueble/" class="btn btn-default">Lista de muebles</a>
-<a href="/mueble/tamano_mueble/0/" class="btn btn-default">Ver todos</a>
-</div>
+{% if lista_muebles.has_previous %}
+
+<li>
+  <a href="?page={{ lista_muebles.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ lista_muebles.number }}
+
+    de
+
+    {{ lista_muebles.paginator.num_pages }}
+
+    Desde el contenido
+
+    {{ lista_muebles.start_index }}
+
+    hasta el contenido
+
+    {{ lista_muebles.end_index }}
+
+  </a>
+</li>
+
+{% if lista_muebles.has_next %}
+
+<li>
+  <a href="?page={{ lista_muebles.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
+{% block titulo_ficha %}
+
 <h2>Tamaños de muebles</h2>
 
 {% endblock titulo_ficha %}
 
 {% block col1 %}
 
-class="col-md-8"
+class="col-md-7"
 
-  {% endblock col1 %}
+{% endblock col1 %}
 
-  {% block content1 %}
+{% block content1 %}
 
-  {% if buscar_tamanomueble %}
+{% if lista_muebles %}
 
-  <h6>Cantidad de registros encontrados:
-    <span class="badge" id="count_reg">
+<h6>Cantidad de muebles:
+  <span class="badge" id="count_reg">
 
-      {{ buscar_tamanomueble.count }}
+    {{ lista_mueble.count }}
 
-    </span>
-  </h6>
+  </span>
+</h6>
+<br>
+<br>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+  {% for im in lista_muebles %}
+
   <div class="panel panel-default">
-    <table class="table table-hover" style="text-align: center;">
-      <tr class="active">
-        <th>Mueble</th>
-        <th>Tamaño</th>
-        <th>Densidad (Kgs/m3)</th>
-        <th>Ancho (cms)</th>
-        <th>Largo (cms)</th>
-        <th>Alto (cms)</th>
-        <th>Peso (Kgs)</th>
-        <th>Predefinido</th>
-        <th width="3">Editar</th>
-        <th width="3">Eliminar</th>
-      </tr>
+    <div style="cursor:pointer;" class="panel-heading" role="tab" id="heading{{im.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
 
-      {% for i in buscar_tamanomueble %}
+          {{ im.mueble }}
 
-      <tr id="tr{{i.id}}">
-        <td>{{ i.mueble }}</td>
-        <td>{{ i.tamano }}</td>
-        <td>{{ i.densidad }}</td>
-        <td>{{ i.ancho }}</td>
-        <td>{{ i.largo }}</td>
-        <td>{{ i.alto }}</td>
-        <td>{{ i.peso }}</td>
-        <td>{{i.predefinido|yesno:"Si,No" }}</td>
-        <td width="3">
-          <a title="Editar" data-toggle="tooltip" data-placement="right" href="../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
-        </td>
-        <td width="3">
-          <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="Mueble: {{i.mueble}} Tamaño: {{ i.tamano }}"></a>
-        </td>
-      </tr>
+        </a>
+        <span class="caret hidden-print" style="float:right;"></span>
+      </h4>
+    </div>
+    <div id="collapse{{im.id}}" class="panel-collapse collapse btn-colapsable {% if forloop.first %} in {% endif %}" role="tabpanel" aria-labelledby="heading{{im.id}}">
+      <table class="table table-hover">
+        <tr>
+          <a href="{% url 'umuebles:add_tamanomueble' im.id %}" class="glyphicon glyphicon-plus" style="float:right;padding:5px 10px;"></a>
+        </tr>
+      </table>
+
+      {% if listar_tamano %}
+
+      {% for t in listar_tamano %}
+
+      {% if t.mueble = im.id %}
+
+      <div class="container-fluid">
+        <h5>{{ t.tamano__descripcion }}</h5>
+      </div>
+      <table class="table table-hover table-condensed table-bordere" style="text-align: center;">
+        <tr>
+          <th>Densidad</th>
+          <th>Ancho</th>
+          <th>Largo</th>
+          <th>Alto</th>
+          <th>Peso</th>
+          <th>Predefinido</th>
+          <th></th>
+        </tr>
+
+        {% if buscar_tamanomueble %}
+
+        {% for d in buscar_tamanomueble %}
+
+        {% if d.tamano.id  =  t.tamano %}
+
+        {% if d.mueble.id = im.id %}
+
+        <tr>
+          <td>{{ d.densidad }}</td>
+          <td>{{ d.ancho }} m</td>
+          <td>{{ d.largo }} m</td>
+          <td>{{ d.alto }} m</td>
+          <td>{{ d.peso }} Kg</td>
+          <td>{{ d.predefinido|yesno:"Si,No" }}</td>
+          <td width="3">
+            <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{d.id}}" data-name="la densidad: {{ d.densidad }} Tamaño: {{ d.tamano }} del Mueble: {{d.mueble}}"></a>
+          </td>
+        </tr>
+
+        {% endif %}
+
+        {% endif %}
+
+        {% endfor %}
+
+        {% endif %}
+
+      </table>
+
+      {% endif %}
 
       {% endfor %}
 
-    </table>
+      {% endif %}
+
+    </div>
   </div>
+
+  {% endfor %}
 
   {% endif %}
 
-  {% endblock content1 %}
+</div>
 
-  {% block col2 %}
+{% endblock content1 %}
 
-class="col-md-4"
+{% block ayuda %}
 
-    {% endblock col2 %}
+<div class="">
+  <p>Los <strong>Mueble</strong> serán los objetos que se verán afectados durante una mudanza, algunos de ellos recibiendo servicios, otros almacenando contenidos.</p>
+  <p>Los <strong>Muebles</strong>, durante una mudanza, estarán asociados a un <strong>Ambiente</strong> de origen, y podrán ser trasladables o no. En caso de no ser trasladables, el único sentido de registrarlos consiste en la identificación de los <strong>Contenidos</strong> que mantienen, como puede ser el caso de los <i>muebles de cocina empotrada</i> o los <i>armarios empotrados</i> que generarán <strong>Contenedores</strong> pero ellos mismos no formarán parte de la mudanza.</p>
+  <p>Los muebles deben contar con un equilibrio entre lo general y lo específico, de manera que pueda estandarizarse la inmensa diversidad de posibilidades que se encuentra en el mercado, en solo unos pocos <i>muebles representativos</i> del resto.</p>
+</div>
 
-    {% block content2 %}
-
-
-
-    {% endblock content2 %}
+{% endblock ayuda %}

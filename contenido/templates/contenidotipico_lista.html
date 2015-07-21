@@ -44,8 +44,6 @@ Eliminar contenido típico
 
 {% endblock link %}
 
-{% if lista_mueble %}
-
 {% block titulo_ficha %}
 
 <h2>Contenidos típicos por mueble</h2>
@@ -99,6 +97,8 @@ class="col-md-7"
 {% endblock pagination %}
 
 {% block content1 %}
+
+{% if contenidotipicos %}
 
 <h6>Cantidad de muebles:
   <span class="badge" id="count_reg">
@@ -159,6 +159,8 @@ class="col-md-7"
 
 </div>
 
+{% endif %}
+
 {% endblock content1 %}
 
 {% block ayuda %}
@@ -170,5 +172,3 @@ class="col-md-7"
 </div>
 
 {% endblock ayuda %}
-
-{% endif %}
