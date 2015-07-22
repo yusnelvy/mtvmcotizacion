@@ -60,6 +60,7 @@ class Presupuesto(models.Model):
 
 
 class Presupuesto_direccion(models.Model):
+    """docstring"""
     presupuesto = models.ForeignKey(Presupuesto)
     direccion = models.TextField()
     tipo_direccion = models.CharField(max_length=100)

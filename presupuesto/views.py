@@ -1,5 +1,5 @@
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic import ListView, DetailView, View, UpdateView
 from presupuesto.models import Presupuesto, Presupuesto_Detalle, \
     Presupuesto_direccion
@@ -8,7 +8,28 @@ from presupuesto.forms import PresupuestoForm, \
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from direccion.models import Complejidad_Inmueble, Tipo_Inmueble
-from mueble.models import Ocupacion
+from mueble.models import Ocupacion, Mueble, Tamano_Mueble, Tamano
+from ambiente.models import Ambiente
+
+from formtools.wizard.views import SessionWizardView
+
+
+class ContactWizard(SessionWizardView):
+    def get_form(self, step=None, data=None, files=None):
+        form = super(ContactWizard, self).get_form(step, data, files)
+
+        # determine the step if not given
+        if step is None:
+            step = self.steps.current
+
+        if step == '2':
+            form.lista_tamano = self.form_list
+        return form
+
+    def done(self, form_list, **kwargs):
+        return render_to_response('presupuesto/presupuestodetalle_add.html', {
+            'form_data': [form.cleaned_data for form in form_list],
+        })
 
 
 # Create your views here.
@@ -53,7 +74,12 @@ class PresupuestoView(View):
     template_name = 'presupuesto/presupuesto_add.html'
 
     def get(self, request, *args, **kwargs):
-        form = self.form_class()
+
+        data = {
+            'cotizador': self.request.user
+        }
+
+        form = self.form_class(initial=data)
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
@@ -72,7 +98,31 @@ class PresupuestoDireccionView(View):
 
     def get(self, request, *args, **kwargs):
 
+        if self.request.is_ajax():
+            ocupacion_id = self.request.GET.get('id_ocupacion')
+            tipoinmueble_id = self.request.GET.get('id_tipoinmueble')
+
+            if tipoinmueble_id:
+                tipoinmueble = Tipo_Inmueble.objects.get(id=tipoinmueble_id)
+                if tipoinmueble:
+                    tipoinmueble = [{
+                        'tipoinmueble': tipoinmueble.tipo_inmueble,
+                    }]
+
+                return JsonResponse(tipoinmueble, safe=False)
+
+            if ocupacion_id:
+                ocupacion = Ocupacion.objects.get(id=ocupacion_id)
+                if ocupacion:
+                    ocupacion = [{
+                        'ocupacion': ocupacion.descripcion,
+                        'valorocupacion': ocupacion.valor
+                    }]
+
+                return JsonResponse(ocupacion, safe=False)
+
         complejidad = Complejidad_Inmueble.objects.get(complejidad='Media')
+        ocupacion = Ocupacion.objects.get(id=3)
 
         data = {
             'presupuesto': self.request.GET['pre'],
@@ -81,7 +131,9 @@ class PresupuestoDireccionView(View):
             'factor_complejidad': complejidad.factor,
             'valor_ambiente_complejidad': complejidad.valor_ambiente,
             'valor_metrocubico_complejiadad': complejidad.valor_metrocubico,
-            'lista_ocupacion': 3
+            'lista_ocupacion': ocupacion.id,
+            'ocupacidad_inmueble': ocupacion.descripcion,
+            'valor_ocupacidad': ocupacion.valor
         }
         form = self.form_class(initial=data)
         return render(request, self.template_name, {'form': form})
@@ -115,7 +167,63 @@ class PresupuestoDetalleView(View):
 
     def get(self, request, *args, **kwargs):
 
-        form = self.form_class()
+        if self.request.is_ajax():
+            ambiente_id = self.request.GET.get('id_lista_ambiente')
+            mueble_id = self.request.GET.get('id_lista_mueble')
+            tamano_id = self.request.GET.get('id_lista_tamano')
+            ocupacion_id = self.request.GET.get('id_ocupacion')
+
+            if (mueble_id and tamano_id is None):
+                mueble = Mueble.objects.get(id=mueble_id)
+                if mueble:
+                    mueble = [{
+                        'mueble': mueble.mueble,
+                        'ocupacion': mueble.ocupacion.id,
+                        'descripocupacion': mueble.ocupacion.descripcion,
+                        'valorocupacion': mueble.ocupacion.valor,
+                        'capacidadmueble': mueble.capacidad
+                    }]
+
+                return JsonResponse(mueble, safe=False)
+
+            if ambiente_id:
+                ambiente = Ambiente.objects.get(id=ambiente_id)
+                if ambiente:
+                    ambiente = [{
+                        'ambiente': ambiente.ambiente,
+                    }]
+                return JsonResponse(ambiente, safe=False)
+
+            if tamano_id:
+                tamano = Tamano_Mueble.objects.filter(tamano_id=tamano_id, mueble_id=mueble_id)[:1]
+
+                if tamano:
+                    tamano = [{
+                        'tamano': tamano[0].tamano.descripcion,
+                        'densidad': tamano[0].densidad.descripcion,
+                        'ancho': tamano[0].ancho,
+                        'largo': tamano[0].largo,
+                        'alto': tamano[0].alto,
+                        'peso': tamano[0].peso
+                    }]
+
+                return JsonResponse(tamano, safe=False)
+
+            if ocupacion_id:
+                ocupacion = Ocupacion.objects.get(id=ocupacion_id)
+                if ocupacion:
+                    ocupacion = [{
+                        'ocupacion': ocupacion.descripcion,
+                        'valorocupacion': ocupacion.valor
+                    }]
+
+                return JsonResponse(ocupacion, safe=False)
+
+        data = {
+            'presupuesto': self.request.GET.get('pre')
+            }
+
+        form = self.form_class(initial=data)
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
@@ -184,6 +292,20 @@ class PresupuestoDetalleUpdate(UpdateView):
     form_class = PresupuestoDetalleForm
     model = Presupuesto_Detalle
 
+    def get_initial(self):
+        super(PresupuestoDetalleUpdate, self).get_initial()
+        lista_ambiente = Ambiente.objects.get(ambiente=self.object.ambiente)
+        lista_mueble = Mueble.objects.get(mueble=self.object.mueble)
+        lista_tamano = Tamano.objects.get(descripcion=self.object.tamano)
+        lista_ocupacion = Ocupacion.objects.get(descripcion=self.object.ocupacidad)
+        self.initial = {
+            "lista_mueble": lista_mueble.id,
+            "lista_ambiente": lista_ambiente.id,
+            "lista_tamano": lista_tamano.id,
+            "lista_ocupacion": lista_ocupacion.id
+            }
+        return self.initial
+
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.save()
@@ -193,3 +315,13 @@ class PresupuestoDetalleUpdate(UpdateView):
             return HttpResponseRedirect(redirect_to)
         else:
             return render_to_response(self.template_name, self.get_context_data())
+
+
+def ajax_tamano_request(request):
+    # Expect an auto 'type' to be passed in via Ajax and POST
+    if request.is_ajax() and request.method == 'POST':
+        mueble = Mueble.objects.filter(id=request.POST.get('mueble', ''))
+        tamanos = mueble.Tamano_Mueble.all()
+        # get all the colors for this type of auto.
+        mensaje = {'tamanos': tamanos}
+        return JsonResponse(mensaje, safe=False)

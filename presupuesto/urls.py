@@ -1,8 +1,10 @@
 from django.conf.urls import patterns, url
 from presupuesto.views import PresupuestoView, PresupuestoList, PresupuestoDetail, \
     PresupuestoDireccionView, PresupuestoDetalleView, PresupuestoDireccionUpdate, \
-    PresupuestoDetalleUpdate, PresupuestoUpdate
+    PresupuestoDetalleUpdate, PresupuestoUpdate, ContactWizard
 from presupuesto import views
+from presupuesto.forms import PresupuestoDetalleForm1, PresupuestoDetalleForm2, \
+    PresupuestoDetalleForm3
 
 
 urlpatterns = patterns('',
@@ -16,6 +18,10 @@ urlpatterns = patterns('',
                            name='PresupuestoDireccionUpdate'),
                        url(r'^detalle/nuevo', PresupuestoDetalleView.as_view(),
                            name='PresupuestoDetalleView'),
-                       url(r'^detalle/(?P<pk>\d+)/$', views.PresupuestoDetalleUpdate,
+                       url(r'^detalle/(?P<pk>\d+)/$', PresupuestoDetalleUpdate.as_view(),
                            name='PresupuestoDetalleUpdate'),
+                       url(r'^ajax_tamano_request/$', views.ajax_tamano_request,
+                           name='ajax_tamano_request'),
+                       url(r'^detalle/$', ContactWizard.as_view([PresupuestoDetalleForm1, PresupuestoDetalleForm2, PresupuestoDetalleForm3])),
+
                        )

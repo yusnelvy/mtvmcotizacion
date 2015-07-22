@@ -20,7 +20,32 @@
 </div>
 
 {% endblock cuerpo_form %}
+{% block js_sup %}
+<script>
+$(document).ready(function(){
+    $("input[name=lista_tipoinmueble]").click(function () {
+        id_tipoinmueble = $('input[name=lista_tipoinmueble]:checked').val();
+        $.get('/presupuesto/direccion/nuevo',
+            {id_tipoinmueble: id_tipoinmueble},
+            function(data){
+                $("#id_tipo_inmueble").val(data[0].tipoinmueble);
+            });
+    });
 
+    $("input[name=lista_ocupacion]").click(function () {
+        id_ocupacion = $('input[name=lista_ocupacion]:checked').val();
+        $.get('/presupuesto/direccion/nuevo',
+            {id_ocupacion: id_ocupacion},
+            function(data){
+                $("#id_ocupacidad_inmueble").val(data[0].ocupacion);
+                $("#id_valor_ocupacidad").val(data[0].valorocupacion);
+            });
+    });
+
+});
+
+</script>
+{% endblock js_sup %}
 {% block ayuda %}
 
 <div class="well well-lg">

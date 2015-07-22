@@ -13,6 +13,7 @@ import django.db
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
+from django.db.models import Count
 
 
 # Create your views here.
@@ -409,6 +410,8 @@ def buscar_tamano_mueble(request, idmueble=0):
     if idmueble != '0':
         try:
             buscar_tamanomueble = Tamano_Mueble.objects.filter(mueble=idmueble)
+            buscar_ta2 = Tamano_Mueble.objects.filter(mueble=idmueble).values('tamano', 'tamano__descripcion', 'mueble').annotate(tcount=Count('tamano')).order_by('tamano')
+
             mensaje = ""
         except ObjectDoesNotExist as ex:
             buscar_tamanomueble = ""
@@ -421,8 +424,9 @@ def buscar_tamano_mueble(request, idmueble=0):
     else:
         buscar_tamanomueble = Tamano_Mueble.objects.all()
         mensaje = ""
+        buscar_ta2 = Tamano_Mueble.objects.values('tamano', 'tamano__descripcion', 'mueble').annotate(tcount=Count('tamano')).order_by('tamano')
 
-    context = {'buscar_tamanomueble': buscar_tamanomueble, 'mensaje': mensaje}
+    context = {'buscar_tamanomueble': buscar_tamanomueble, 'buscar_ta2': buscar_ta2, 'mensaje': mensaje}
     return render(request, 'mueble/tamanomueble_lista.html', context)
 
 
