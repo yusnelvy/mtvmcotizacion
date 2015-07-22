@@ -38,6 +38,46 @@
 
 {% endblock cantidad_tabla %}
 
+{% block pagination %}
+
+{% if tiempocargas.has_previous %}
+
+<li>
+  <a href="?page={{ tiempocargas.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ tiempocargas.number }}
+
+    de
+
+    {{ tiempocargas.paginator.num_pages }}
+
+    Desde el tiempo de carga
+
+    {{ tiempocargas.start_index }}
+
+    hasta el tiempo de carga
+
+    {{ tiempocargas.end_index }}
+
+  </a>
+</li>
+
+{% if tiempocargas.has_next %}
+
+<li>
+  <a href="?page={{ tiempocargas.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
 {% block cuerpo_tabla %}
 
 <tr class="active">
@@ -46,8 +86,8 @@
   <th>Cantidad de objetos</th>
   <th>Rango m3</th>
   <th>Rango Kgs</th>
-  <th>Editar</th>
-  <th>Eliminar</th>
+  <th width="3">Editar</th>
+  <th width="3">Eliminar</th>
 </tr>
 
 {% for i in tiempocargas %}
@@ -68,47 +108,6 @@
 </tr>
 
 {% endfor %}
-<nav>
-  <ul class="pagination">
-
-    {% if tiempocargas.has_previous %}
-
-    <li>
-      <a href="?page={{ tiempocargas.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-
-    {% endif %}
-
-    <li class="current">
-      <a style="color:#000;"> Página
-
-        {{ tiempocargas.number }}
-
-        de
-
-        {{ tiempocargas.paginator.num_pages }}
-
-        Desde el tiempo de carga
-
-        {{ tiempocargas.start_index }}
-
-        hasta el tiempo de carga
-
-        {{ tiempocargas.end_index }}
-
-      </a>
-    </li>
-
-    {% if tiempocargas.has_next %}
-
-    <li>
-      <a href="?page={{ tiempocargas.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-
-    {% endif %}
-
-  </ul>
-</nav>
 
 {% endblock cuerpo_tabla %}
 

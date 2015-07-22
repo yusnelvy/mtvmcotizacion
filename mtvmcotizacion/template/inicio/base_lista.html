@@ -2,9 +2,9 @@
 
 {% block acceso_rapido %}
 
-        <a title="Volver" class="navbar-brand" role="button" aria-expanded="true" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
-        <a title="Nuevo" class="navbar-brand" role="button" aria-expanded="false" href="nuevo/"><span class="glyphicon-asterisk glyphicon glyphicon-plus"></span></a>
-        <a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
+<a title="Volver" class="navbar-brand" role="button" aria-expanded="true" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
+<a title="Nuevo" class="navbar-brand" role="button" aria-expanded="false" href="nuevo/"><span class="glyphicon-asterisk glyphicon glyphicon-plus"></span></a>
+<a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
 
 {% endblock acceso_rapido %}
 
@@ -54,7 +54,7 @@
         </div>
     </div>
 </div>
-<div class="ayuda">
+<div class="ayuda well well-lg">
     <button style="padding:0px;" type="button" class="ayuda_btn close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
     {% block ayuda %}{% endblock ayuda %}
@@ -63,11 +63,9 @@
 <!--EndModal-->
 <div class="col-md-10">
     <div class="">
+        <input class="form-control hidden-print" style="max-width: 250px;float:right;" type="text" id="search" name="search" placeholder="Buscar...">
 
         {% block titulo_tabla %}{% endblock titulo_tabla %}
-
-        <input class="form-control hidden-print" style="max-width: 250px;float:right;" type="text" id="search" name="search" placeholder="Buscar...">
-        <br>
 
         {% csrf_token %}
 
@@ -75,6 +73,13 @@
 
             {% block cantidad_tabla %}{% endblock cantidad_tabla %}
 
+            <nav class="nav-pagination hidden-print">
+                <ul class="pagination" >
+
+                    {% block pagination %}{% endblock pagination %}
+
+                </ul>
+            </nav>
             <table class="table table-hover" id="tabla" style="text-align: center;">
 
                 {% block cuerpo_tabla %}{% endblock cuerpo_tabla %}
@@ -85,5 +90,8 @@
         <br>
     </div>
 </div>
+<script type="text/javascript">
+document.getElementById('search').focus()
+</script>
 
 {% endblock content %}

@@ -1,0 +1,36 @@
+{% extends "inicio/base_edit.html" %}
+
+{% block titulo %}
+
+<title>Cliente: Email</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+<h2>Agregar email</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group filtra-cliente">
+
+    {{ email_form.as_p }}
+
+
+</div>
+<script type="text/javascript">
+document.getElementById('id_email').focus()
+</script>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+    <p>El <strong>Email</strong> del cliente es importante porque por medio de ellos se contacta al cliente y se envían promociones existentes.  </p>
+    <p>Se recomienda agregar al menos un email por cada cliente.</p>
+</div>
+
+{% endblock ayuda %}

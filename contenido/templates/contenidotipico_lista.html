@@ -1,0 +1,174 @@
+{% extends 'inicio/base_ficha.html' %}
+
+{% block acceso_ %}
+
+<a id="addClass" style="cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
+<a id="removeClass" style="display:none;cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
+
+{% endblock acceso_ %}
+
+{% block titulo %}
+
+<title class="hidden-print">Contenidos típicos por mueble</title>
+
+{% endblock titulo %}
+
+{% block titulo_modal %}
+
+Eliminar contenido típico
+
+{% endblock titulo_modal %}
+
+{% block validacion_modal %}
+
+<p>¿Desea eliminar el registro: <span id="modal_name"></span>?</p>
+
+{% endblock validacion_modal %}
+
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/contenido/contenido_tipico/nuevo" class="btn">Nuevo</a>
+  </li>
+  <li>
+    <a href="/contenido/contenido_tipico/0/" class="btn">Ver todos</a>
+  </li>
+  <li>
+    <a href="/contenido/" class="btn">Contenidos</a>
+  </li>
+  <li>
+    <a href="/mueble/" class="btn">Muebles</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
+{% block titulo_ficha %}
+
+<h2>Contenidos típicos por mueble</h2>
+
+{% endblock titulo_ficha %}
+
+{% block col1 %}
+
+class="col-md-7"
+
+{% endblock col1 %}
+
+{% block pagination %}
+
+{% if contenidotipicos.has_previous %}
+
+<li>
+  <a href="?page={{ contenidotipicos.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ contenidotipicos.number }}
+
+    de
+
+    {{ contenidotipicos.paginator.num_pages }}
+
+    Desde el contenido
+
+    {{ contenidotipicos.start_index }}
+
+    hasta el contenido
+
+    {{ contenidotipicos.end_index }}
+
+  </a>
+</li>
+
+{% if contenidotipicos.has_next %}
+
+<li>
+  <a href="?page={{ contenidotipicos.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
+{% block content1 %}
+
+{% if contenidotipicos %}
+
+<h6>Cantidad de muebles:
+  <span class="badge" id="count_reg">
+
+    {{ lista_mueble.count }}
+
+  </span>
+</h6>
+<br>
+<br>
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+  {% for im in contenidotipicos %}
+
+  <div class="panel panel-default">
+    <div style="cursor:pointer;" class="panel-heading" role="tab" id="heading{{im.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
+
+          {{ im.mueble }}
+
+        </a>
+        <span class="caret hidden-print" style="float:right;"></span>
+      </h4>
+    </div>
+    <div id="collapse{{im.id}}" class="panel-collapse collapse btn-colapsable {% if forloop.first %} in {% endif %}" role="tabpanel" aria-labelledby="heading{{im.id}}">
+
+      <table class="table table-hover" id="tabla" style="text-align: center;">
+        <tr class="">
+          <th class="hidden-print">Contenido</th>
+          <th width="3" class="hidden-print">
+            <a href="{% url 'ucontenidos:add_contenidotipico' im.id %}" class="glyphicon glyphicon-plus" style="float:right;"></a>
+          </th>
+        </tr>
+
+        {% for i in buscar_contenidotipico %}
+
+        {% if i.mueble == im %}
+
+        <tr id="tr{{i.id}}">
+          <td>{{ i.contenido }}</td>
+          <td width="3" class="hidden-print">
+            <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="Contenido: {{i.contenido}} Mueble: {{ i.mueble }}"></a>
+          </td>
+
+        </tr>
+
+        {% endif %}
+
+        {% endfor %}
+
+      </table>
+    </div>
+  </div>
+
+  {% endfor %}
+
+</div>
+
+{% endif %}
+
+{% endblock content1 %}
+
+{% block ayuda %}
+
+<div class="">
+  <p>Los <strong>Tipos de contenido</strong> son los artículos que se encuentran en los <strong>Muebles</strong> y están conformados por una ámplia variedad de objetos con diversas formas, tamaños y tratamientos.</p>
+  <p>Los <strong>Tipos de contenido</strong> son el ejemplo más emblemático del uso de la estadística para la estimación del esfuerzo en las mudanzas, de este modo se facilita el trabajo del cotizador al momento de describir sus detalles a medida que se encuentran en un <strong>Ambiente</strong>.</p>
+  <p>También incidirá significativamente sobre el rendimiento del cotizador, debido a que podrá hacer más rápido el trabajo de levantamiento de información en campo.</p>
+</div>
+
+{% endblock ayuda %}

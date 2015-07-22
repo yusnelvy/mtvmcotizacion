@@ -7,20 +7,21 @@
 <a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
 <a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
 
+{% block acceso_ %}{% endblock acceso_ %}
 
 {% endblock acceso_rapido %}
 
 {% block navegacion %}
 
-        <div class="col-md-2">
-            <div class="barra-vertical hidden-print" style="">
-            <ul class="nav_l">
+<div class="col-md-2">
+    <div class="barra-vertical hidden-print" style="">
+        <ul class="nav_l">
 
-                {% block link_navegacion %}{% endblock link_navegacion %}
+            {% block link_navegacion %}{% endblock link_navegacion %}
 
-            </ul>
-            </div>
-        </div>
+        </ul>
+    </div>
+</div>
 
 {% endblock navegacion %}
 
@@ -29,47 +30,76 @@
 <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
-           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">
 
-                {% block titulo_modal %}{% endblock titulo_modal %}
+                    {% block titulo_modal %}{% endblock titulo_modal %}
 
-            </h4>
-        </div>
-        <div class="modal-body">
+                </h4>
+            </div>
+            <div class="modal-body">
 
-            {% block validacion_modal %}{% endblock validacion_modal %}
+                {% block validacion_modal %}{% endblock validacion_modal %}
 
-        </div>
-        <div class="modal-footer">
-            <form method="post" id="frmEliminar">
-                {% csrf_token %}
-                <input type="hidden" id="modal_id" name="item_id">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-                <button type="submit" class="btn btn-default">Sí</button>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <form method="post" id="frmEliminar">
+                    {% csrf_token %}
+                    <input type="hidden" id="modal_id" name="item_id">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+                    <button type="submit" class="btn btn-default">Sí</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+<div class="ayuda well well-lg">
+    <button style="padding:0px;" type="button" class="ayuda_btn close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+    {% block ayuda %}{% endblock ayuda %}
+
 </div>
 <!--EndModal-->
 
+<div {% block col1 %}class="col-md-5"{% endblock col1 %}>
 
-        <div {% block col1 %}class="col-md-5"{% endblock col1 %}>
 
+    {% block titulo_ficha %}{% endblock titulo_ficha %}
 
-        {% block titulo_ficha %}{% endblock titulo_ficha %}
+    <nav class="nav-pagination hidden-print">
+        <ul class="pagination" >
 
-        {% block content1 %}{% endblock content1 %}
+            {% block pagination %}{% endblock pagination %}
 
-        </div>
+        </ul>
+    </nav>
+
+    {% block content1 %}{% endblock content1 %}
+
+</div>
 <div class="col-md-2"></div>
 
-        <div {% block col2 %}class="col-md-5"{% endblock col2 %}>
+<div {% block col2 %}class="col-md-5"{% endblock col2 %}>
 
-        {% block content3 %}{% endblock content3 %}
+    {% block content2 %}{% endblock content2 %}
 
-        </div>
+</div>
+<script type="text/javascript">
+$("#addClass").click(function () {
+    $('.btn-colapsable').addClass('in');
+    $('.btn-colapsable').css('height','auto');
+    $("#removeClass").css('display','inline-block');
+    $("#addClass").css('display','none');
+});
+$("#removeClass").click(function () {
+    $('.btn-colapsable').removeClass('in');
+    $('.btn-colapsable').css('height','auto');
+    $("#removeClass").css('display','none');
+    $("#addClass").css('display','inline-block');;
+
+});
+
+</script>
 
 {% endblock ficha %}

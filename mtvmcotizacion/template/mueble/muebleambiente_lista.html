@@ -1,5 +1,12 @@
 {% extends 'inicio/base_ficha.html' %}
 
+{% block acceso_ %}
+
+<a id="addClass" style="cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
+<a id="removeClass" style="display:none;cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
+
+{% endblock acceso_ %}
+
 {% block titulo %}
 
 <title>Muebles por ambiente</title>
@@ -34,123 +41,131 @@ Eliminar mueble por ambiente
 
 {% endblock link %}
 
-{% block titulo_ficha %}
+{% block col1 %}
 
-<div class="ayuda">
-  <button style="padding:20px;" type="button" class="ayuda_btn close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
- <div class="well well-lg">
-      <p>Los <strong>Mueble</strong> serán los objetos que se verán afectados durante una mudanza, algunos de ellos recibiendo servicios, otros almacenando contenidos.</p>
-      <p>Los <strong>Muebles</strong>, durante una mudanza, estarán asociados a un <strong>Ambiente</strong> de origen, y podrán ser trasladables o no. En caso de no ser trasladables, el único sentido de registrarlos consiste en la identificación de los <strong>Contenidos</strong> que mantienen, como puede ser el caso de los <i>muebles de cocina empotrada</i> o los <i>armarios empotrados</i> que generarán <strong>Contenedores</strong> pero ellos mismos no formarán parte de la mudanza.</p>
-      <p>Los muebles deben contar con un equilibrio entre lo general y lo específico, de manera que pueda estandarizarse la inmensa diversidad de posibilidades que se encuentra en el mercado, en solo unos pocos <i>muebles representativos</i> del resto.</p>
-    </div>
-</div>
-<div class="btn-procesos">
-<a href="/mueble/" class="btn btn-default">Lista de muebles</a>
-<a href="/mueble/mueble_ambiente/0/" class="btn btn-default">Ver todos</a>
-</div>
+class="col-md-6"
+
+{% endblock col1 %}
+
+{% block pagination %}
+
+{% if muebleambientes.has_previous %}
+
+<li>
+  <a href="?page={{ muebleambientes.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ muebleambientes.number }}
+
+    de
+
+    {{ muebleambientes.paginator.num_pages }}
+
+    Desde el mueble
+
+    {{ muebleambientes.start_index }}
+
+    hasta el mueble
+
+    {{ muebleambientes.end_index }}
+
+  </a>
+</li>
+
+{% if muebleambientes.has_next %}
+
+<li>
+  <a href="?page={{ muebleambientes.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
+{% block titulo_ficha %}
 
 <h2>Muebles por ambiente</h2>
 
 {% endblock titulo_ficha %}
 
-{% block col1 %}
+{% block content1 %}
 
-class="col-md-10"
+{% if lista_ambiente %}
 
-  {% endblock col1 %}
+<h6>Cantidad de ambientes:
+  <span class="badge" id="count_reg">
 
-  {% block content1 %}
+    {{ lista_ambiente.count }}
 
-  <nav>
-    <ul class="pagination">
+  </span>
+</h6>
+<br>
+<br>
 
-      {% if muebleambientes.has_previous %}
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-      <li>
-        <a href="?page={{ muebleambientes.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-      </li>
+  {% for im in muebleambientes %}
 
-      {% endif %}
+  <div class="panel panel-default">
+    <div style="cursor:pointer;" class="panel-heading" role="tab" id="heading{{im.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
 
-      <li class="current">
-        <a style="color:#000;"> Página
-
-          {{ muebleambientes.number }}
-
-          de
-
-          {{ muebleambientes.paginator.num_pages }}
-
-          Desde el mueble
-
-          {{ muebleambientes.start_index }}
-
-          hasta el mueble
-
-          {{ muebleambientes.end_index }}
+          {{ im.ambiente }}
 
         </a>
-      </li>
+        <span class="caret hidden-print" style="float:right;"></span>
+      </h4>
+    </div>
+    <div id="collapse{{im.id}}" class="panel-collapse collapse btn-colapsable {% if forloop.first %} in {% endif %}" role="tabpanel" aria-labelledby="heading{{im.id}}">
+      <table class="table table-hover" id="tabla" style="text-align: center;">
+        <tr class="">
+          <th class="hidden-print">Mueble</th>
+          <th class="hidden-print">Predefinido</th>
+          <th width="3" class="hidden-print">
+            <a href="{% url 'umuebles:add_muebleambiente' im.id %}" class="glyphicon glyphicon-plus" style="float:right;"></a>
+          </th>
+        </tr>
 
-      {% if muebleambientes.has_next %}
+        {% for i in buscar_muebleambiente %}
 
-      <li>
-        <a href="?page={{ muebleambientes.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-      </li>
+        {% if i.ambiente == im %}
 
-      {% endif %}
+        <tr id="tr{{i.id}}">
+          <td>{{ i.mueble }}</td>
+          <td>{{ i.predefinido|yesno:"Si,No" }}</td>
+          <td width="3" class="hidden-print">
+            <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.servicio}}"></a>
+          </td>
+        </tr>
 
-    </ul>
-  </nav>
+        {% endif %}
 
-  {% if buscar_muebleambiente %}
+        {% endfor %}
 
-  <h6>Cantidad de registros encontrados:
-    <span class="badge" id="count_reg">
-
-      {{ buscar_muebleambiente.count }}
-
-    </span>
-  </h6>
-  <div class="panel panel-default">
-    <table class="table table-hover" style="text-align: center;">
-      <tr class="active">
-        <th>Mueble</th>
-        <th>Ambiente</th>
-        <th width="3">Editar</th>
-        <th width="3">Eliminar</th>
-      </tr>
-
-      {% for i in muebleambientes %}
-
-      <tr id="tr{{i.id}}">
-        <td>{{ i.mueble }}</td>
-        <td>{{ i.ambiente }}</td>
-        <td width="3">
-          <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'umuebles:edit_muebleambiente' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit" ></a>
-        </td>
-        <td width="3">
-          <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="Ambiente: {{i.ambiente}} Mueble: {{ i.mueble }}"></a>
-        </td>
-      </tr>
-
-      {% endfor %}
-
-    </table>
+      </table>
+    </div>
   </div>
 
-  {% endif %}
+  {% endfor %}
 
-  {% endblock content1 %}
+</div>
 
-  {% block col2 %}
+{% endif %}
 
+{% endblock content1 %}
 
+{% block ayuda %}
 
-    {% endblock col2 %}
+<div class="">
+  <p>Los <strong>Mueble</strong> serán los objetos que se verán afectados durante una mudanza, algunos de ellos recibiendo servicios, otros almacenando contenidos.</p>
+  <p>Los <strong>Muebles</strong>, durante una mudanza, estarán asociados a un <strong>Ambiente</strong> de origen, y podrán ser trasladables o no. En caso de no ser trasladables, el único sentido de registrarlos consiste en la identificación de los <strong>Contenidos</strong> que mantienen, como puede ser el caso de los <i>muebles de cocina empotrada</i> o los <i>armarios empotrados</i> que generarán <strong>Contenedores</strong> pero ellos mismos no formarán parte de la mudanza.</p>
+  <p>Los muebles deben contar con un equilibrio entre lo general y lo específico, de manera que pueda estandarizarse la inmensa diversidad de posibilidades que se encuentra en el mercado, en solo unos pocos <i>muebles representativos</i> del resto.</p>
+</div>
 
-    {% block content2%}
-
-
-
-    {% endblock content2 %}
+{% endblock ayuda %}

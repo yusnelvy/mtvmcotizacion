@@ -109,6 +109,7 @@ class Complejidad_Servicio(models.Model):
     complejidad = models.ForeignKey(Complejidad)
     tarifa = models.DecimalField(max_digits=13, decimal_places=2)
     servicio = models.ForeignKey(Servicio)
+    factor_tiempo = models.DecimalField(max_digits=7, decimal_places=2)
 
     def __str__(self):
         return self.complejidad

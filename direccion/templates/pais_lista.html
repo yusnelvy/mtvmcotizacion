@@ -1,0 +1,132 @@
+{% extends 'inicio/base_lista.html' %}
+
+{% block titulo %}
+
+<title>País</title>
+
+{% endblock titulo %}
+
+{% block titulo_modal %}
+
+Eliminar país
+
+{% endblock titulo_modal %}
+
+{% block validacion_modal %}
+
+<p>¿Realmente desea eliminar el registro: <strong id="modal_name"></strong>?</p>
+
+{% endblock validacion_modal %}
+
+{% block link %}
+
+<ul class="nav navbar-nav">
+  <li>
+    <a href="/direccion/provincia/" class="btn">Provincias</a>
+  </li>
+  <li>
+    <a href="/direccion/ciudad/" class="btn">Ciudades</a>
+  </li>
+  <li>
+    <a href="/direccion/zona/" class="btn">Zonas</a>
+  </li>
+</ul>
+
+{% endblock link %}
+
+{% block titulo_tabla %}
+
+<h2>Listado de Países</h2>
+
+{% endblock titulo_tabla %}
+
+{% if lista_pais %}
+
+{% block cantidad_tabla %}
+
+<h6>Cantidad de Países encontrados:
+  <span class="badge" id="count_reg">
+
+    {{ lista_pais.count }}
+
+  </span>
+</h6>
+
+{% endblock cantidad_tabla %}
+
+{% block pagination %}
+
+{% if paises.has_previous %}
+
+    <li>
+      <a href="?page={{ paises.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+
+    {% endif %}
+
+    <li class="current">
+      <a style="color:#000;"> Página
+
+        {{ paises.number }}
+
+        de
+
+        {{ paises.paginator.num_pages }}
+
+        Desde el pais
+
+        {{ paises.start_index }}
+
+        hasta el pais
+
+        {{ paises.end_index }}
+
+      </a>
+    </li>
+
+    {% if paises.has_next %}
+
+    <li>
+      <a href="?page={{ paises.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+
+    {% endif %}
+
+{% endblock pagination %}
+
+{% block cuerpo_tabla %}
+
+<tr class="active">
+  <th>Pais</th>
+  <th width="3">Editar</th>
+  <th width="3">Eliminar</th>
+</tr>
+
+{% for i in paises %}
+
+<tr id="tr{{i.id}}">
+  <td>
+
+    {{ i.pais }}
+  </td>
+  <td width="3"><a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'udireciones:edit_pais' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a></td>
+  <td width="3">
+    <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.pais}}"></a>
+  </td>
+</tr>
+
+{% endfor %}
+
+{% endblock cuerpo_tabla %}
+
+{% endif %}
+
+
+{% block ayuda %}
+
+<div class="">
+    <p>En esta sección se registran los <strong>Países</strong>, utilizando para ello su nombre completo en español.</p>
+    <p>La información pre-cargada contiene un listado de todos los <strong>Países</strong> existentes al momento de implementación del sistema. Es posible que existan cambios en los nombres de algunos, e incluso la necesidad de incluir otros. Por lo que se recomienda, antes de incluir un nuevo <strong>País</strong>, revisar con detenimiento dicha lista para evitar duplicados.</p>
+  </div>
+
+{% endblock %}

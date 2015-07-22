@@ -19,6 +19,7 @@ class Sexo(models.Model):
 
 class Estado_civil(models.Model):
     """docstring for Estado_civil"""
+
     def __init__(self, *args, **kwargs):
         super(Estado_civil, self).__init__(*args, **kwargs)
     estado_civil = models.CharField(max_length=25, unique=True)

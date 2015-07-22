@@ -5,6 +5,7 @@ from mueble.models import Tipo_Mueble, Ocupacion,\
 from mueble.forms import TipoMuebleForm, OcupacionForm,\
     FormaMuebleForm, MuebleForm, TamanoForm, \
     TamanoMuebleForm, MuebleAmbienteForm, DensidadForm
+from ambiente.models import Ambiente
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
@@ -13,6 +14,7 @@ import django.db
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
+from django.db.models import Count
 
 
 # Create your views here.
@@ -409,6 +411,8 @@ def buscar_tamano_mueble(request, idmueble=0):
     if idmueble != '0':
         try:
             buscar_tamanomueble = Tamano_Mueble.objects.filter(mueble=idmueble)
+            listar_tamano = Tamano_Mueble.objects.filter(mueble=idmueble).values('tamano', 'tamano__descripcion', 'mueble').annotate(tcount=Count('tamano')).order_by('tamano')
+            lista_mueble = Mueble.objects.filter(id=idmueble)
             mensaje = ""
         except ObjectDoesNotExist as ex:
             buscar_tamanomueble = ""
@@ -420,9 +424,24 @@ def buscar_tamano_mueble(request, idmueble=0):
 
     else:
         buscar_tamanomueble = Tamano_Mueble.objects.all()
+        lista_mueble = Mueble.objects.all()
+        listar_tamano = Tamano_Mueble.objects.values('tamano', 'tamano__descripcion', 'mueble').annotate(tcount=Count('tamano')).order_by('tamano')
+
         mensaje = ""
 
-    context = {'buscar_tamanomueble': buscar_tamanomueble, 'mensaje': mensaje}
+    paginator = Paginator(lista_mueble, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        lista_muebles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        lista_muebles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        lista_muebles = paginator.page(paginator.num_pages)
+
+    context = {'buscar_tamanomueble': buscar_tamanomueble, 'lista_muebles': lista_muebles, 'lista_mueble': lista_mueble, 'listar_tamano': listar_tamano, 'mensaje': mensaje}
     return render(request, 'mueble/tamanomueble_lista.html', context)
 
 
@@ -466,7 +485,8 @@ def buscar_mueble_ambiente(request, idambiente=0):
         buscar_muebleambiente = Mueble_Ambiente.objects.all()
         mensaje = ""
 
-    paginator = Paginator(buscar_muebleambiente, 25)
+    lista_ambiente = Ambiente.objects.all()
+    paginator = Paginator(lista_ambiente, 25)
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -479,7 +499,7 @@ def buscar_mueble_ambiente(request, idambiente=0):
         muebleambientes = paginator.page(paginator.num_pages)
 
     context = {'buscar_muebleambiente': buscar_muebleambiente,
-               'muebleambientes': muebleambientes, 'ambiente': idambiente, 'mensaje': mensaje}
+               'muebleambientes': muebleambientes, 'ambiente': idambiente, 'mensaje': mensaje, 'lista_ambiente': lista_ambiente}
     return render(request, 'mueble/muebleambiente_lista.html', context)
 
 
@@ -554,7 +574,7 @@ def add_densidad(request):
                               context_instance=RequestContext(request))
 
 
-def add_tamanomueble(request):
+def add_tamanomueble(request, id_m):
     """docstring"""
     if request.method == 'POST':
         form_tamanomueble = TamanoMuebleForm(request.POST)
@@ -564,7 +584,7 @@ def add_tamanomueble(request):
             return HttpResponseRedirect(reverse('umuebles:buscar_tamano_mueble', args=(id_tm.mueble.id,)))
 
     else:
-        form_tamanomueble = TamanoMuebleForm()
+        form_tamanomueble = TamanoMuebleForm(initial={'mueble': id_m})
     return render_to_response('mueble/tamanomueble_add.html',
                               {'form_tamanomueble': form_tamanomueble, 'create': True},
                               context_instance=RequestContext(request))
