@@ -4,11 +4,12 @@ Ayuda del mueble/forms.py
 
 """
 from django.forms import ModelForm, ModelChoiceField, RadioSelect, Select
-from presupuesto.models import Presupuesto, Presupuesto_direccion, Presupuesto_Detalle
+from presupuesto.models import Presupuesto, Presupuesto_direccion, Presupuesto_Detalle, Presupuesto_servicio
 from django.core.exceptions import NON_FIELD_ERRORS
 from mueble.models import Ocupacion, Tamano_Mueble, Mueble, Tamano
 from direccion.models import Tipo_Inmueble
 from ambiente.models import Ambiente
+from servicio.models import Servicio, Material
 from django import forms
 
 
@@ -85,8 +86,8 @@ class PresupuestoDetalleForm(ModelForm):
 
     """Docstring"""
 
-    lista_ambiente = ModelChoiceField(Ambiente.objects, widget=Select, empty_label=None, label='Ambientes')
-    lista_mueble = ModelChoiceField(Mueble.objects, widget=Select, empty_label=None, label='Muebles')
+    lista_ambiente = ModelChoiceField(Ambiente.objects, widget=Select, empty_label='--seleccione el ambiente--', label='Ambientes')
+    lista_mueble = ModelChoiceField(Mueble.objects, widget=Select, empty_label='--seleccione el mueble--', label='Muebles')
     lista_tamano = ModelChoiceField(Tamano.objects, widget=Select, label='Tamano')
     lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=RadioSelect, empty_label=None, label='Ocupación del inmueble')
 
@@ -116,3 +117,28 @@ class PresupuestoDetalleForm(ModelForm):
             'capacidad_volumen_contenedor', \
             'peso_contenido', \
             'peso_contenedor'
+
+
+class PresupuestoServicioForm(ModelForm):
+
+    """Docstring"""
+    lista_servicio = ModelChoiceField(Servicio.objects, widget=Select, empty_label='--seleccione el servicio--', label='Servicios')
+    lista_material = ModelChoiceField(Material.objects, widget=Select, empty_label='--seleccione el material--', label='Materiales')
+
+    class Meta:
+        model = Presupuesto_servicio
+        fields = 'lista_servicio', \
+            'lista_material', \
+            'detalle_presupuesto', \
+            'servicio', \
+            'tarifa', \
+            'material', \
+            'monto_material', \
+            'volumen_material', \
+            'peso_material'
+
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                'servicio': "%(model_name)s's %(field_labels)s esta vacio.",
+            }
+        }

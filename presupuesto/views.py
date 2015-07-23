@@ -2,16 +2,19 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic import ListView, DetailView, View, UpdateView
 from presupuesto.models import Presupuesto, Presupuesto_Detalle, \
-    Presupuesto_direccion
+    Presupuesto_direccion, Presupuesto_servicio
 from presupuesto.forms import PresupuestoForm, \
-    PresupuestoDireccionForm, PresupuestoDetalleForm
+    PresupuestoDireccionForm, PresupuestoDetalleForm, \
+    PresupuestoServicioForm
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from direccion.models import Complejidad_Inmueble, Tipo_Inmueble
 from mueble.models import Ocupacion, Mueble, Tamano_Mueble, Tamano
 from ambiente.models import Ambiente
+from servicio.models import Servicio, Complejidad_Servicio, Material
 
 from formtools.wizard.views import SessionWizardView
+from django.forms.formsets import formset_factory
 
 
 class ContactWizard(SessionWizardView):
@@ -54,7 +57,8 @@ class PresupuestoDetail(DetailView):
         # Call the base implementation first to get a context
         context = super(PresupuestoDetail, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the books
-        context['presupuesto_list'] = Presupuesto.objects.all()
+        context['detalle_list'] = Presupuesto_Detalle.objects.filter(presupuesto=self.object.pk)
+        context['direccion_list'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk)
         context['now'] = timezone.now()
         return context
 
@@ -66,6 +70,30 @@ class PresupuestoDetalleList(ListView):
 
     def get_queryset(self):
         queryset = super(PresupuestoDetalleList, self).get_queryset()
+        return queryset.filter()
+
+
+class PresupuestoDetalleDetail(DetailView):
+
+    model = Presupuesto_Detalle
+    template_name = 'presupuesto/presupuestodetalle_ficha.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(PresupuestoDetail, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['servicio_list'] = Presupuesto_servicio.objects.filter(detalle_presupuesto=self.object.pk)
+        context['now'] = timezone.now()
+        return context
+
+
+class PresupuestoDireccionList(ListView):
+    model = Presupuesto_direccion
+    paginate_by = 25
+    template_name = 'presupuesto/presupuestodireccion_lista.html'
+
+    def get_queryset(self):
+        queryset = super(PresupuestoDireccionList, self).get_queryset()
         return queryset.filter(presupuesto_id=self.kwargs['presupuesto_id'])
 
 
@@ -206,7 +234,6 @@ class PresupuestoDetalleView(View):
                         'alto': tamano[0].alto,
                         'peso': tamano[0].peso
                     }]
-
                 return JsonResponse(tamano, safe=False)
 
             if ocupacion_id:
@@ -220,7 +247,8 @@ class PresupuestoDetalleView(View):
                 return JsonResponse(ocupacion, safe=False)
 
         data = {
-            'presupuesto': self.request.GET.get('pre')
+            'presupuesto': self.request.GET.get('pre'),
+            'ambiente': self.request.GET.get('amb')
             }
 
         form = self.form_class(initial=data)
@@ -239,6 +267,95 @@ class PresupuestoDetalleView(View):
                 return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
 
         return render(request, self.template_name, {'form': form})
+
+
+class PresupuestoServicioView(View):
+    form_class = PresupuestoServicioForm
+    template_name = 'presupuesto/presupuestoservicio_add2.html'
+
+    def get(self, request, *args, **kwargs):
+
+        if self.request.is_ajax():
+            servicio_id = self.request.GET.get('id_lista_servicio')
+            material_id = self.request.GET.get('id_lista_material')
+
+            if servicio_id:
+                servicio = Servicio.objects.get(id=servicio_id)
+                if servicio:
+                    complejidada = Complejidad_Servicio.objects.filter(servicio=servicio.id, complejidad__descripcion='Media')
+                    servicio = [{
+                        'servicio': servicio.servicio,
+                        'tarifa': complejidada[0].tarifa,
+                    }]
+                return JsonResponse(servicio, safe=False)
+
+            if material_id:
+                material = Material.objects.get(id=material_id)
+                if material:
+                    material = [{
+                        'material': material.material,
+                        'precio': material.precio,
+                        'peso': material.peso,
+                        'volumen': round((material.ancho*material.largo*material.alto), 2)
+                    }]
+                return JsonResponse(material, safe=False)
+
+        if self.request.GET.get('serv'):
+            serviciod = self.request.GET.get('serv')
+            servicio = Servicio.objects.get(servicio=serviciod)
+            complejidada = Complejidad_Servicio.objects.filter(servicio=servicio.id, complejidad__descripcion='Media')
+
+            data = {
+                'detalle_presupuesto': self.request.GET.get('pre'),
+                'servicio': servicio.servicio,
+                'lista_servicio': servicio.id,
+                'tarifa': complejidada[0].tarifa
+            }
+        else:
+            data = {
+                'detalle_presupuesto': self.request.GET.get('pre'),
+            }
+
+        form = self.form_class(initial=data)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            # <process form cleaned data>
+            redirect_to = request.GET['next']
+
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+
+        return render(request, self.template_name, {'form': form})
+
+
+class PresupuestoServicioViewFomset(View):
+    form_class_formset = formset_factory(PresupuestoServicioForm, extra=5)
+    template_name = 'presupuesto/presupuestoservicio_add.html'
+
+    def get(self, request, *args, **kwargs):
+
+        data = {
+            'detalle_presupuesto': self.request.GET.get('pre'),
+            }
+
+        formset = self.form_class_formset(initial=[data])
+        return render(request, self.template_name, {'formset': formset})
+
+    def post(self, request, *args, **kwargs):
+        formset = self.form_class_formset(request.POST)
+        if formset.is_valid():
+            for form in formset:
+                formset.save()
+            # <process formset cleaned data>
+            return HttpResponseRedirect('/presupuesto/')
+
+        return render(request, self.template_name, {'formset': formset})
 
 
 class PresupuestoUpdate(UpdateView):
@@ -317,6 +434,32 @@ class PresupuestoDetalleUpdate(UpdateView):
             return render_to_response(self.template_name, self.get_context_data())
 
 
+class PresupuestoServicioUpdate(UpdateView):
+    template_name = 'presupuesto/presupuestoservivio_edit.html'
+    form_class = PresupuestoServicioForm
+    model = Presupuesto_servicio
+
+    def get_initial(self):
+        super(PresupuestoServicioUpdate, self).get_initial()
+        lista_servicio = Servicio.objects.get(servicio=self.object.servicio)
+        lista_material = Material.objects.get(material=self.object.material)
+        self.initial = {
+            "lista_servicio": lista_servicio.id,
+            "lista_material": lista_material.id
+            }
+        return self.initial
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+
+        redirect_to = self.request.GET['next']
+        if redirect_to:
+            return HttpResponseRedirect(redirect_to)
+        else:
+            return render_to_response(self.template_name, self.get_context_data())
+
+
 def ajax_tamano_request(request):
     # Expect an auto 'type' to be passed in via Ajax and POST
     if request.is_ajax() and request.method == 'POST':
@@ -325,3 +468,6 @@ def ajax_tamano_request(request):
         # get all the colors for this type of auto.
         mensaje = {'tamanos': tamanos}
         return JsonResponse(mensaje, safe=False)
+
+
+#
