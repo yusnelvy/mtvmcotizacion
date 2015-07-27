@@ -130,6 +130,8 @@ class Vehiculo(models.Model):
     capacidad_volumen = models.DecimalField(max_digits=7, decimal_places=2)
     capacidad_peso = models.DecimalField(max_digits=7, decimal_places=2)
     cargo = models.ForeignKey(Cargo_trabajador)
+    cantidad_total = models.PositiveIntegerField(default=0)
+    cantidad_disponible = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.modelo

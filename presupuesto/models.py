@@ -111,6 +111,7 @@ class Presupuesto_Detalle(models.Model):
     capacidad_volumen_contenedor = models.DecimalField(max_digits=5, decimal_places=2)
     peso_contenido = models.DecimalField(max_digits=7, decimal_places=2)
     peso_contenedor = models.DecimalField(max_digits=7, decimal_places=2)
+    descripcion_contenedor = models.CharField(max_length=100)
 
     def __str__(self):
         return u' %s - %s - %s' % (self.presupuesto, self.ambiente, self.mueble)
@@ -131,7 +132,7 @@ class Presupuesto_servicio(models.Model):
     peso_material = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
-        return u' %s - %s - %s' % (self.detalle_presupuesto, self.servicio)
+        return u' %s - %s' % (self.detalle_presupuesto, self.servicio)
 
     class Meta:
         verbose_name = "Servicio"

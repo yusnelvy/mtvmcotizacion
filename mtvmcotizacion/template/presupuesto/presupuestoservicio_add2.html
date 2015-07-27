@@ -30,7 +30,7 @@
 $(document).ready(function(){
   $("#id_lista_servicio").on("change", function(){
     id_lista_servicio = $("#id_lista_servicio").val();
-    $.get('/presupuesto/servicio/'+id_lista_servicio,
+    $.get('/presupuesto/servicio/nuevo'+id_lista_servicio,
       {id_lista_servicio: id_lista_servicio},
           function(data){
             $("#id_servicio").val(data[0].servicio);
@@ -40,7 +40,7 @@ $(document).ready(function(){
 
   $("#id_lista_material").on("change", function(){
       id_lista_material = $("#id_lista_material").val();
-      $.get('/presupuesto/servicio/'+id_lista_servicio,
+      $.get('/presupuesto/servicio/nuevo'+id_lista_servicio,
         {id_lista_material: id_lista_material},
             function(data){
               $("#id_material").val(data[0].material);

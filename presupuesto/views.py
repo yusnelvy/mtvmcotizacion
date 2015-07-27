@@ -77,10 +77,11 @@ class PresupuestoDetalleDetail(DetailView):
 
     model = Presupuesto_Detalle
     template_name = 'presupuesto/presupuestodetalle_ficha.html'
+    context_object_name = "detallepresupuesto"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(PresupuestoDetail, self).get_context_data(**kwargs)
+        context = super(PresupuestoDetalleDetail, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the books
         context['servicio_list'] = Presupuesto_servicio.objects.filter(detalle_presupuesto=self.object.pk)
         context['now'] = timezone.now()
