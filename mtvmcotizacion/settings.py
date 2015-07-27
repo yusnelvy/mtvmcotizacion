@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'servicio',
     'telefono',
     'trabajador',
+    'formtools',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -108,8 +109,6 @@ TEMPLATES = [
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
-
-TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'template').replace('\\', '/'), )
 
 ROOT_URLCONF = 'mtvmcotizacion.urls'
 

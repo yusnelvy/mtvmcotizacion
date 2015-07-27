@@ -60,6 +60,7 @@ class Presupuesto(models.Model):
 
 
 class Presupuesto_direccion(models.Model):
+    """docstring"""
     presupuesto = models.ForeignKey(Presupuesto)
     direccion = models.TextField()
     tipo_direccion = models.CharField(max_length=100)
@@ -110,6 +111,7 @@ class Presupuesto_Detalle(models.Model):
     capacidad_volumen_contenedor = models.DecimalField(max_digits=5, decimal_places=2)
     peso_contenido = models.DecimalField(max_digits=7, decimal_places=2)
     peso_contenedor = models.DecimalField(max_digits=7, decimal_places=2)
+    descripcion_contenedor = models.CharField(max_length=100)
 
     def __str__(self):
         return u' %s - %s - %s' % (self.presupuesto, self.ambiente, self.mueble)
@@ -118,3 +120,21 @@ class Presupuesto_Detalle(models.Model):
         verbose_name = "detalle del presupuesto"
         verbose_name_plural = "detalle del presupuesto"
         ordering = ['presupuesto', 'ambiente', 'mueble']
+
+
+class Presupuesto_servicio(models.Model):
+    detalle_presupuesto = models.ForeignKey(Presupuesto_Detalle)
+    servicio = models.CharField(max_length=100)
+    tarifa = models.DecimalField(max_digits=7, decimal_places=2)
+    material = models.TextField()
+    monto_material = models.DecimalField(max_digits=7, decimal_places=2)
+    volumen_material = models.DecimalField(max_digits=5, decimal_places=2)
+    peso_material = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return u' %s - %s' % (self.detalle_presupuesto, self.servicio)
+
+    class Meta:
+        verbose_name = "Servicio"
+        verbose_name_plural = "Servicios"
+        ordering = ['detalle_presupuesto', 'servicio']

@@ -56,7 +56,7 @@ class Material(models.Model):
         return self.material
 
     def _get_volumen(self):
-        return (self.ancho*self.alto*self.largo)
+        return (self.ancho*self.alto*self.largo)/1000000
     volumen = property(_get_volumen)
 
     class Meta:

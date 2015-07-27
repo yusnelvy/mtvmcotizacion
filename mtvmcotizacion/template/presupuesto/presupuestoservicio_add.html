@@ -8,7 +8,7 @@
 
 {% block titulo_form %}
 
-  <h2>Editar detalle</h2>
+  <h2>Agregar servicio</h2>
 
 {% endblock titulo_form %}
 
@@ -16,17 +16,22 @@
 
 <div class="form-group">
 
-  {{ form.as_p }}
+
+  {{formset.managament_form}}
+  {% for form in formset %}
+    {{ form.as_p }}
+  {% endfor %}
 
 </div>
+{{form_data}}
 
 {% endblock cuerpo_form %}
+
 {% block js_sup %}
 <script>
 $(document).ready(function(){
   $("#id_lista_ambiente").on("change", function(){
     id_lista_ambiente = $("#id_lista_ambiente").val();
-    $("#id_ambiente").val(id_lista_ambiente);
     $.get('/presupuesto/detalle/nuevo',
       {id_lista_ambiente: id_lista_ambiente},
           function(data){
@@ -88,13 +93,14 @@ $(document).ready(function(){
 <script>
 function calcular_densidad(peso,ancho,largo,alto){
     var resultado;
-    resultado= ((ancho*largo*alto)/peso);
+    resultado= (peso/(ancho*largo*alto));
 
   return resultado.toFixed(2);
 }
 </script>
 
 {% endblock js_sup %}
+
 {% block ayuda %}
 
 <div class="well well-lg">
