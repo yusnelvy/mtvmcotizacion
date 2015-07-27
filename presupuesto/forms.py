@@ -31,22 +31,22 @@ class PresupuestoForm(ModelForm):
 class PresupuestoDireccionForm(ModelForm):
 
     """Docstring"""
-    lista_tipoinmueble = ModelChoiceField(Tipo_Inmueble.objects, widget=RadioSelect, empty_label=None, label='Tipo de inmueble')
-    lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=RadioSelect, empty_label=None, label='Ocupación del inmueble')
+    lista_tipoinmueble = ModelChoiceField(Tipo_Inmueble.objects, widget=RadioSelect, empty_label=None, label='Tipo de inmueble:')
+    lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=RadioSelect, empty_label=None, label='Nivel de ocupación del inmueble:')
 
     class Meta:
         model = Presupuesto_direccion
         fields = 'direccion', \
             'lista_tipoinmueble', \
-            'total_m2', \
-            'distancia_vehiculo',\
             'lista_ocupacion', \
-            'pisos', \
-            'pisos_escalera', \
             'rampa', \
             'ascensor', \
-            'pisos_ascensor', \
             'ascensor_servicio', \
+            'distancia_vehiculo',\
+            'total_m2', \
+            'pisos', \
+            'pisos_escalera', \
+            'pisos_ascensor', \
             'pisos_ascensor_servicio', \
             'presupuesto', \
             'tipo_direccion', \
@@ -57,10 +57,11 @@ class PresupuestoDireccionForm(ModelForm):
             'factor_complejidad', \
             'valor_ambiente_complejidad', \
             'valor_metrocubico_complejiadad'
-
         labels = {
             'nombre_cliente': ('Cliente'),
-        }
+            'direccion': ('Dirección del inmueble'),
+            }
+        readonly_fields = ('tipo_direccion')
         error_messages = {
             'nombre_cliente': {
                 'required': 'Please enter your name',
