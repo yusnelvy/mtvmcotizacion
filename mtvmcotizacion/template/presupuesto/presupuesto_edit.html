@@ -14,7 +14,10 @@
 
 {% block cuerpo_form %}
 
-<div class="form-group">
+<style>
+    .filtra-campos>p>#id_descripcion_vehiculo,.filtra-campos>p>#id_tiempo_recorrido,.filtra-campos>p>#id_tiempo_carga,.filtra-campos>p>#id_tiempo_total,.filtra-campos>p>label[for=id_descripcion_vehiculo],.filtra-campos>p>label[for=id_descripcion_persona],.filtra-campos>p>#id_descripcion_persona,.filtra-campos>p>input[type=number],.filtra-campos>p>label[for=id_cantidad_vehiculo],.filtra-campos>p>label[for=id_cantidad_persona],.filtra-campos>p>label[for=id_cantidad_ambientes],.filtra-campos>p>label[for=id_cantidad_muebles],.filtra-campos>p>label[for=id_cantidad_contenedores],.filtra-campos>p>label[for=id_total_peso_contenedores],.filtra-campos>p>label[for=id_total_peso_muebles],.filtra-campos>p>label[for=id_total_peso_contenidos],.filtra-campos>p>label[for=id_total_volumen_muebles],.filtra-campos>p>label[for=id_total_volumen_contenedores],.filtra-campos>p>label[for=id_total_volumen_contenidos],.filtra-campos>p>label[for=id_total_m3],.filtra-campos>p>label[for=id_recorrido_km],.filtra-campos>p>label[for=id_tiempo_recorrido],.filtra-campos>p>label[for=id_tiempo_carga],.filtra-campos>p>label[for=id_tiempo_total],.filtra-campos>p>label[for=id_monto_vehiculo_hora],.filtra-campos>p>label[for=id_monto_vehiculo_recorrido],.filtra-campos>p>label[for=id_monto_persona],.filtra-campos>p>label[for=id_monto_sin_impuesto],.filtra-campos>p>label[for=id_monto_impuesto],.filtra-campos>p>label[for=id_monto_con_impuesto]{display: none;}
+</style>
+<div class="form-group filtra-campos">
 
   {{ form.as_p }}
 
@@ -24,7 +27,7 @@
 
 {% block ayuda %}
 
-<div class="well well-lg">
+<div class="">
   <p>La <strong>Presupuesto</strong>  es la acción y efecto de cotizar, poner precio a algo, estimar a alguien o algo en relación con un fin. el documento informa y establece el valor del servicios.</p>
 </div>
 
