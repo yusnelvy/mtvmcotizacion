@@ -39,12 +39,52 @@
 
 {% endblock cantidad_tabla %}
 
+{% block pagination %}
+
+{% if estadoscotizacion.has_previous %}
+
+<li>
+  <a href="?page={{ estadoscotizacion.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ estadoscotizacion.number }}
+
+    de
+
+    {{ estadoscotizacion.paginator.num_pages }}
+
+    Desde el estado
+
+    {{ estadoscotizacion.start_index }}
+
+    hasta el estado
+
+    {{ estadoscotizacion.end_index }}
+
+  </a>
+</li>
+
+{% if estadoscotizacion.has_next %}
+
+<li>
+  <a href="?page={{ estadoscotizacion.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
 {% block cuerpo_tabla %}
 
 <tr class="active">
   <th>Estado</th>
-  <th>Editar</th>
-  <th>Eliminar</th>
+  <th width="3">Editar</th>
+  <th width="3">Eliminar</th>
 </tr>
 
 {% for i in estadoscotizacion %}
@@ -62,47 +102,6 @@
 
 {% endfor %}
 
-<nav>
-  <ul class="pagination">
-
-    {% if estadoscotizacion.has_previous %}
-
-    <li>
-      <a href="?page={{ estadoscotizacion.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-
-    {% endif %}
-
-    <li class="current">
-      <a style="color:#000;"> Página
-
-        {{ estadoscotizacion.number }}
-
-        de
-
-        {{ estadoscotizacion.paginator.num_pages }}
-
-        Desde el estado
-
-        {{ estadoscotizacion.start_index }}
-
-        hasta el estado
-
-        {{ estadoscotizacion.end_index }}
-
-      </a>
-    </li>
-
-    {% if estadoscotizacion.has_next %}
-
-    <li>
-      <a href="?page={{ estadoscotizacion.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-
-    {% endif %}
-
-  </ul>
-</nav>
 {% endblock cuerpo_tabla %}
 
 {% endif %}

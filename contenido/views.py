@@ -1,6 +1,7 @@
 from django.shortcuts import render, render_to_response
 from contenido.models import Contenido, \
     Contenido_Tipico, Contenido_Servicio
+from mueble.models import Mueble
 from contenido.forms import ContenidoForm, \
     ContenidoTipicoForm, ContenidoServicioForm
 from django.http import HttpResponse, HttpResponseRedirect
@@ -82,6 +83,7 @@ def buscar_contenidotipico(request, idmueble=0):
     if idmueble != '0':
         try:
             buscar_contenidotipico = Contenido_Tipico.objects.filter(mueble=idmueble)
+            lista_mueble = Mueble.objects.filter(mueble=idmueble)
             mensaje = ""
         except ObjectDoesNotExist as ex:
             buscar_contenidotipico = ""
@@ -92,9 +94,10 @@ def buscar_contenidotipico(request, idmueble=0):
             mensaje = "se ha producido un error"+str(ex)
     else:
         buscar_contenidotipico = Contenido_Tipico.objects.all()
+        lista_mueble = Mueble.objects.all()
         mensaje = ""
 
-    paginator = Paginator(buscar_contenidotipico, 25)
+    paginator = Paginator(lista_mueble, 25)
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -106,7 +109,7 @@ def buscar_contenidotipico(request, idmueble=0):
         # If page is out of range (e.g. 9999), deliver last page of results.
         contenidotipicos = paginator.page(paginator.num_pages)
 
-    context = {'buscar_contenidotipico': buscar_contenidotipico, 'contenidotipicos': contenidotipicos}
+    context = {'buscar_contenidotipico': buscar_contenidotipico, 'contenidotipicos': contenidotipicos, 'lista_mueble': lista_mueble}
     return render(request, 'contenido/contenidotipico_lista.html', context)
 
 
@@ -148,7 +151,20 @@ def buscar_contenidoservicio(request, idservicio=0):
     else:
         buscar_contenidoservicio = Contenido_Servicio.objects.all()
         mensaje = ""
-    context = {'buscar_contenidoservicio': buscar_contenidoservicio}
+
+    lista_contenido = Contenido.objects.all()
+    paginator = Paginator(lista_contenido, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        contenidos = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contenidos = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contenidos = paginator.page(paginator.num_pages)
+    context = {'buscar_contenidoservicio': buscar_contenidoservicio, 'contenidos': contenidos, 'lista_contenido': lista_contenido}
     return render(request, 'contenido/contenidoservicio_lista.html', context)
 
 
@@ -167,7 +183,7 @@ def add_contenido(request):
                               context_instance=RequestContext(request))
 
 
-def add_contenidotipico(request):
+def add_contenidotipico(request, id_m):
     """docstring"""
     if request.method == 'POST':
         form_contenidotipico = ContenidoTipicoForm(request.POST)
@@ -175,13 +191,13 @@ def add_contenidotipico(request):
             form_contenidotipico.save()
             return HttpResponseRedirect(reverse('ucontenidos:buscar_contenidotipico', args=('0')))
     else:
-        form_contenidotipico = ContenidoTipicoForm()
+        form_contenidotipico = ContenidoTipicoForm(initial={'mueble': id_m})
     return render_to_response('contenido/contenidotipico_add.html',
                               {'form_contenidotipico': form_contenidotipico, 'create': True},
                               context_instance=RequestContext(request))
 
 
-def add_contenidoservicio(request):
+def add_contenidoservicio(request, id_c):
     """docstring"""
     if request.method == 'POST':
         form_contenidoservicio = ContenidoServicioForm(request.POST)
@@ -189,7 +205,7 @@ def add_contenidoservicio(request):
             form_contenidoservicio.save()
             return HttpResponseRedirect(reverse('ucontenidos:buscar_contenidoservicio', args=('0')))
     else:
-        form_contenidoservicio = ContenidoServicioForm()
+        form_contenidoservicio = ContenidoServicioForm(initial={'contenido': id_c})
     return render_to_response('contenido/contenidoservicio_add.html',
                               {'form_contenidoservicio': form_contenidoservicio, 'create': True},
                               context_instance=RequestContext(request))

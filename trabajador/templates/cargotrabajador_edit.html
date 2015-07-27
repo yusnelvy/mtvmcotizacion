@@ -1,0 +1,47 @@
+{% extends "inicio/base_edit.html" %}
+
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'utrabajadores:lista_cargotrabajador' %}" style="color:#777;">Trabajadores</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'utrabajadores:lista_cargotrabajador' %}">Trabajadores</a></li>
+
+{% endblock footerLink %}
+
+{% block titulo %}
+
+<title>Editar rol de trabajador</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+<h2>Editar rol de trabajador</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+{{ form_edit_cargotrabajador.as_p }}
+
+</div>
+<script type="text/javascript">
+document.getElementById('id_cargo').focus()
+</script>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="">
+  <p>Los <strong>Roles de trabajador</strong> son figuras que representan roles aplicados durante las mudanzas, cuya aplicación en la misma genera un costo, que podrá modificarse para asignar más cantidad o calidad de recursos para lograr mejor tiempo de carga y descarga.</p>
+  <p>Los <strong>Roles de trabajador</strong> se diferencian de los <i>cargos laborales</i> porque en este caso se asocian a un nivel de productividad y una tarifa basada en el rol, que no se distingue en los últimos.</p>
+</div>
+
+{% endblock ayuda %}

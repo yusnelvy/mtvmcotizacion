@@ -15,12 +15,15 @@
     {{form_complejidadservicio.as_p}}
 
 </div>
+<script type="text/javascript">
+document.getElementById('id_complejidad').focus()
+</script>
 
 {% endblock cuerpo_form %}
 
 {% block ayuda %}
 
-<div class="well well-lg">
+<div class="">
   <p>Los <strong>Niveles de complejidad</strong> se refieren al nivel de esfuerzo y consumo de tiempo en los cuales se incurrirá para la aplicación de los <strong>Servicios</strong> a los <strong>Muebles</strong> y <strong>Contenidos</strong> que serán mudados.</p>
   <p>Los <strong>Niveles de complejidad</strong> de este modo se asocian a factores de consumo de material y de consumo de tiempo, que lo llevan a tener una tarifa específica que compensa el esfuerzo para la aplicación de un <strong>Servicio</strong> específico con el <strong>Nivel de complejidad</strong> seleccionado.</p>
   <p>Al momento de evaluar o realizar una mudanza, los <strong>Niveles de complejidad</strong> serán determinados por las características físicas del <strong>Mueble</strong> o del <strong>Contenido</strong> según la sensibilidad del cotizador basada en los indicadores a evaluar.</p>

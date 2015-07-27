@@ -19,12 +19,15 @@
     {{ form_material.as_p }}
 
 </div>
+<script type="text/javascript">
+document.getElementById('id_material').focus()
+</script>
 
 {% endblock cuerpo_form %}
 
 {% block ayuda %}
 
-<div class="well well-lg">
+<div class="">
     <p>Los <strong>Materiales</strong> son utilizados en la aplicación de un <strong>Servicio</strong> para lograr que el traslado de los <strong>Muebles</strong> se efectúe en las mejores condiciones posibles.</p>
     <p>Los <strong>Materiales</strong> se consumen en una proporción relativa a las características del <strong>Servicio</strong> en el que se aplican y las características de los <strong>Mueble</strong> que los reciben.</p>
     <p>Al momento de evaluar o realizar una mudanza, los <strong>Materiales</strong> inciden sobre el precio final de la misma.</p>

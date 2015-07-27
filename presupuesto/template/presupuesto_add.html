@@ -1,0 +1,31 @@
+{% extends "inicio/base_edit.html" %}
+
+{% block titulo %}
+
+<title>Presupuesto</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+  <h2>Agregar presupuesto</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ form.as_p }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>La <strong>Presupuesto</strong>  es la acción y efecto de cotizar, poner precio a algo, estimar a alguien o algo en relación con un fin. el documento informa y establece el valor del servicios.</p>
+</div>
+
+{% endblock ayuda %}

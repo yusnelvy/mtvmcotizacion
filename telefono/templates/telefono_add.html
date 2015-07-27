@@ -1,0 +1,35 @@
+{% extends "inicio/base_edit.html" %}
+
+{% block titulo %}
+
+<title>Telefono</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+<h2>Agregar teléfono</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group filtra-cliente">
+
+    {{ form_telefono.as_p }}
+
+</div>
+<script type="text/javascript">
+document.getElementById('id_tipo_telefono').focus()
+</script>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="">
+    <p>El <strong>Telefono</strong> del cliente es importante porque por medio de ellos se contacta al cliente.  </p>
+    <p>Se recomienda agregar al menos un telefono por cada cliente.</p>
+</div>
+
+{% endblock ayuda %}

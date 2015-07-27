@@ -1,0 +1,34 @@
+{% extends 'inicio/base_edit.html' %}
+
+{% block titulo %}
+
+<title>Contenidos tipico</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+<h2>Agregar contenido tipico </h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<style>.filtra-mueble>p>label[for=id_mueble],.filtra-mueble>p>select[id=id_mueble]{display:none;}</style>
+<div class="form-group filtra-mueble">
+
+    {{form_contenidotipico.as_p}}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="">
+  <p>Los <strong>Tipos de contenido</strong> son los artículos que se encuentran en los <strong>Muebles</strong> y están conformados por una ámplia variedad de objetos con diversas formas, tamaños y tratamientos.</p>
+  <p>Los <strong>Tipos de contenido</strong> son el ejemplo más emblemático del uso de la estadística para la estimación del esfuerzo en las mudanzas, de este modo se facilita el trabajo del cotizador al momento de describir sus detalles a medida que se encuentran en un <strong>Ambiente</strong>.</p>
+  <p>También incidirá significativamente sobre el rendimiento del cotizador, debido a que podrá hacer más rápido el trabajo de levantamiento de información en campo.</p>
+</div>
+
+{% endblock ayuda %}

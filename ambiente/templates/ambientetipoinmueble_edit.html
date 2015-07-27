@@ -1,0 +1,51 @@
+{% extends "inicio/base_edit.html" %}
+
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'uambientes:lista_ambiente' %}" style="color:#777;">Ambientes</a></li>
+<li class="linknav"><a href="{% url 'uambientes:lista_ambiente_tipo_inmueble' %}" style="color:#777;">Ambiente tipo inmueble</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'uambientes:lista_ambiente' %}" style="color:#777;">Ambientes</a></li>
+<li class="linknav"><a href="{% url 'uambientes:lista_ambiente_tipo_inmueble' %}" style="color:#777;">Ambiente tipo inmueble</a></li>
+
+{% endblock footerLink %}
+
+{% block titulo %}
+
+<title>Editar ambientes  por tipo inmueble</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+<h2>Editar ambiente por tipo de inmueble</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+{{ form_edit_ambtipoinmueble.as_p }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block contenido_adicional %}
+
+{% endblock contenido_adicional %}
+
+{% block ayuda %}
+
+<div class="">
+    <p>Los <strong>Ambientes</strong> son los diversos espacios que se encuentran en un <strong>Inmueble</strong>.</p>
+    <p>Para ello existen las relaciones entre <strong>Tipos de inmuebles</strong> y <strong>Ambientes</strong>, los cuales clasifican a los ambientes según su tipo de inmueble.</p>
+    <p>Edite la informcacon de la relacion <strong>Ambientes por tipo de inmuebles</strong> y luego presione registrar.</p>
+</div>
+
+{% endblock%}

@@ -1,0 +1,35 @@
+{% extends "inicio/base_edit.html" %}
+
+{% block titulo %}
+
+<title>País</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+  <h2>Agregar país</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ form_pais.as_p }}
+
+</div>
+<script type="text/javascript">
+document.getElementById('id_pais').focus()
+</script>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="">
+    <p>En esta sección se registran los <strong>Países</strong>, utilizando para ello su nombre completo en español.</p>
+    <p>La información pre-cargada contiene un listado de todos los <strong>Países</strong> existentes al momento de implementación del sistema. Es posible que existan cambios en los nombres de algunos, e incluso la necesidad de incluir otros. Por lo que se recomienda, antes de incluir un nuevo <strong>País</strong>, revisar con detenimiento dicha lista para evitar duplicados.</p>
+</div>
+
+{% endblock %}

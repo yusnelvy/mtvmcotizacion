@@ -19,6 +19,9 @@
     {{form_edit_tipomueble.as_p}}
 
 </div>
+<script type="text/javascript">
+document.getElementById('id_tipo_mueble').focus()
+</script>
 
 {% endblock cuerpo_form %}
 
@@ -51,7 +54,7 @@
 
 {% block ayuda %}
 
-<div class="well well-lg">
+<div class="">
   <p>El <strong>Tipo de mueble</strong> es una clasificación referencial de los <strong>Muebles</strong> que permite encontrarlos por su nombre genérico, el cual agrupará a otros <strong>Muebles</strong> similares.</p>
   <p>Una buena clasificación de los <strong>Muebles</strong> facilita el trabajo del cotizador al momento de seleccionarlos, según se encuentran en un <strong>Ambiente</strong>.</p>
   <p>También incidirá significativamente sobre el rendimiento del cotizador, debido a que podrá hacer más rápido el trabajo de levantamiento de información en campo.</p>

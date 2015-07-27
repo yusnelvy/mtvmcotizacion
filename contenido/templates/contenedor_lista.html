@@ -1,0 +1,84 @@
+{% extends 'inicio/base_lista.html' %}
+
+{% block titulo %}
+
+<title>Contenedores</title>
+
+{% endblock titulo %}
+
+{% block titulo_modal %}
+
+Eliminar tipo de contenedor
+
+{% endblock titulo_modal %}
+
+{% block validacion_modal %}
+
+<p>¿Realmente desea eliminar el registro: <strong id="modal_name"></strong>?</p>
+
+{% endblock validacion_modal %}
+
+{% block titulo_tabla %}
+
+<h2>Lista de contenedores</h2>
+<a href="/contenido/" class="btn btn-default">Lista contenidos</a>
+
+{% endblock titulo_tabla %}
+
+{% if lista_contenedor %}
+
+{% block cantidad_tabla %}
+
+<h6>Cantidad de contenedores registrados:
+  <span class="badge" id="count_reg">
+
+    {{ lista_contenedor.count }}
+
+  </span>
+</h6>
+
+{% endblock cantidad_tabla %}
+
+{% block cuerpo_tabla %}
+
+   <tr class="active">
+    <th>Contenedor</th>
+    <th>Volúmen (m3)</th>
+    <th>Peso (Kgs)</th>
+    <th>Retornable</th>
+    <th width="3">Editar</th>
+    <th width="3">Eliminar</th>
+  </tr>
+
+  {% for i in lista_contenedor %}
+
+  <tr id="tr{{i.id}}">
+    <td>{{ i.contenedor }}</td>
+    <td>{{ i.capacidad_volumen }}</td>
+    <td>{{ i.capacidad_peso }}</td>
+    <td>{{i.retornable|yesno:"Si,No"}}</td>
+    <td>
+      <a title="Editar" data-toggle="tooltip" data-placement="right" href="editar/{{i.id}}" class="glyphicon glyphicon-edit"></a>
+    </td>
+    <td>
+      <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.contenedor}}"></a>
+    </td>
+    <input type="hidden" value="{{i.id}}" id="idtele">
+  </tr>
+
+  {% endfor %}
+
+{% endblock cuerpo_tabla %}
+
+{% endif %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>El <strong>Tipo de contenedor</strong> permite trasladar los <strong>Contenidos</strong> encontrados en los <strong>Muebles</strong> durante una mudanza.</p>
+  <p>Se cuenta con <strong>Tipos de contenedores</strong> retornables como los <i>Canastos</i> y descartables como las <i>Cajas de cartón</i>.</p>
+  <p>Un <strong>Tipo de contenedor</strong> retornable no incide sobre el precio de la cotización, a diferencia del <strong>Tipo de contenedor</strong> no retornable que será un costo para el cliente.</p>
+  <p>De los <strong>Tipos de contenedores</strong> se considera importante para la logística el volúmen y peso que pueden llevar, así como el volúmen y peso que ellos mismos representan para la carga de los camiones.</p>
+</div>
+
+{% endblock ayuda %}

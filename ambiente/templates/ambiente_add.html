@@ -1,0 +1,54 @@
+{% extends "inicio/base_edit.html" %}
+
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'uambientes:lista_ambiente_tipo_inmueble' %}" style="color:#777;">Ambiente tipo inmueble</a></li>
+<li class="linknav"><a href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}" style="color:#777;">Muebles x ambiente</a></li>
+<li class="linknav"><a href="{% url 'uambientes:lista_ambiente' %}" style="color:#777;">Ambientes</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'uambientes:lista_ambiente_tipo_inmueble' %}">Ambiente tipo inmueble</a></li>
+<li><a href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}" style="color:#777;">Muebles x ambiente</a></li>
+<li><a href="{% url 'uambientes:lista_ambiente' %}" style="color:#777;">Ambientes</a></li>
+
+{% endblock footerLink %}
+
+{% block titulo %}
+
+<title>Agregar ambiente</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+<h2>Agregar ambiente</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+    <div class="form-group">
+
+        {{ form_ambiente.as_p }}
+
+    </div>
+<script type="text/javascript">
+document.getElementById('id_ambiente').focus()
+</script>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="">
+      <p>Los <strong>Ambientes</strong> son los diversos espacios que se encuentran en un <strong>Inmueble</strong>.</p>
+      <p>Cree <strong>Ambientes</strong> que no generen ambigüedades o confusiones como <i>Living</i> y <i>Living Room</i>.</p>
+      <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
+      <p>Utilice una clasificación apropiada para los <strong>Ambientes</strong> que permita su comprensión y rápida búsqueda.</p>
+      <p>IMPORTANTE: La clasificación por <strong>Tipo de ambiente</strong> es solo de uso referencial, y no será determinante al cargar información de los distintos <strong>Tipos de inmuebles</strong> en los cuales se puede encontrar el mismo <strong>Ambiente</strong>.</p>
+  </div>
+
+{% endblock%}
