@@ -414,6 +414,7 @@ def buscar_tamano_mueble(request, idmueble=0):
             listar_tamano = Tamano_Mueble.objects.filter(mueble=idmueble).values('tamano', 'tamano__descripcion', 'mueble').annotate(tcount=Count('tamano')).order_by('tamano')
             lista_mueble = Mueble.objects.filter(id=idmueble)
             mensaje = ""
+
         except ObjectDoesNotExist as ex:
             buscar_tamanomueble = ""
             mensaje = "registro no existe"
@@ -428,6 +429,7 @@ def buscar_tamano_mueble(request, idmueble=0):
         listar_tamano = Tamano_Mueble.objects.values('tamano', 'tamano__descripcion', 'mueble').annotate(tcount=Count('tamano')).order_by('tamano')
 
         mensaje = ""
+        buscar_ta2 = Tamano_Mueble.objects.values('tamano', 'tamano__descripcion', 'mueble').annotate(tcount=Count('tamano')).order_by('tamano')
 
     paginator = Paginator(lista_mueble, 25)
     # Show 25 contacts per page
@@ -442,6 +444,7 @@ def buscar_tamano_mueble(request, idmueble=0):
         lista_muebles = paginator.page(paginator.num_pages)
 
     context = {'buscar_tamanomueble': buscar_tamanomueble, 'lista_muebles': lista_muebles, 'lista_mueble': lista_mueble, 'listar_tamano': listar_tamano, 'mensaje': mensaje}
+
     return render(request, 'mueble/tamanomueble_lista.html', context)
 
 

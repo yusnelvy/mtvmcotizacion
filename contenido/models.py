@@ -32,6 +32,7 @@ class Contenido_Tipico(models.Model):
     contenido = models.ForeignKey(Contenido)
     mueble = models.ForeignKey(Mueble)
     cantidad = models.DecimalField(max_digits=5, decimal_places=2)
+    predefinido = models.BooleanField(default=False)
 
     def __str__(self):
         return self.contenido
