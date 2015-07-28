@@ -37,7 +37,7 @@ def search_provincia(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         provincias = paginator.page(paginator.num_pages)
 
-    return render_to_response('direccion/ajax_search.html', {'lista_provincia': lista_provincia, 'provincias': provincias})
+    return render_to_response('ajax_search.html', {'lista_provincia': lista_provincia, 'provincias': provincias})
 
 
 # lista
@@ -84,7 +84,7 @@ def lista_pais(request):
         paises = paginator.page(paginator.num_pages)
 
     context = {'lista_pais': lista_pais, 'paises': paises}
-    return render(request, 'direccion/pais_lista.html', context)
+    return render(request, 'pais_lista.html', context)
 
 
 def lista_provincia(request):
@@ -126,7 +126,7 @@ def lista_provincia(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         provincias = paginator.page(paginator.num_pages)
     context = {'lista_provincia': lista_provincia, 'provincias': provincias}
-    return render(request, 'direccion/provincia_lista.html', context)
+    return render(request, 'provincia_lista.html', context)
 
 
 def lista_ciudad(request):
@@ -168,7 +168,7 @@ def lista_ciudad(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         ciudades = paginator.page(paginator.num_pages)
     context = {'lista_ciudad': lista_ciudad, 'ciudades': ciudades}
-    return render(request, 'direccion/ciudad_lista.html', context)
+    return render(request, 'ciudad_lista.html', context)
 
 
 def lista_zona(request):
@@ -210,7 +210,7 @@ def lista_zona(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         zonas = paginator.page(paginator.num_pages)
     context = {'lista_zona': lista_zona, 'zonas': zonas}
-    return render(request, 'direccion/zona_lista.html', context)
+    return render(request, 'zona_lista.html', context)
 
 
 def lista_tipo_direccion(request):
@@ -253,7 +253,7 @@ def lista_tipo_direccion(request):
         tipodirecciones = paginator.page(paginator.num_pages)
 
     context = {'lista_tipodireccion': lista_tipodireccion, 'tipodirecciones': tipodirecciones}
-    return render(request, 'direccion/tipodireccion_lista.html', context)
+    return render(request, 'tipodireccion_lista.html', context)
 
 
 def lista_direccion(request):
@@ -283,7 +283,7 @@ def lista_direccion(request):
 
     lista_direccion = Direccion.objects.all()
     context = {'lista_direccion': lista_direccion}
-    return render(request, 'direccion/direccion_lista.html', context)
+    return render(request, 'direccion_lista.html', context)
 
 
 def lista_tipo_inmueble(request):
@@ -326,7 +326,7 @@ def lista_tipo_inmueble(request):
         tipoinmuebles = paginator.page(paginator.num_pages)
 
     context = {'lista_tipo_inmueble': lista_tipo_inmueble, 'tipoinmuebles': tipoinmuebles}
-    return render(request, 'direccion/tipo_inmueble_lista.html', context)
+    return render(request, 'tipo_inmueble_lista.html', context)
 
 
 def lista_complejidad_inmueble(request):
@@ -369,7 +369,7 @@ def lista_complejidad_inmueble(request):
         complejidadinmuebles = paginator.page(paginator.num_pages)
 
     context = {'lista_complejidad_inmueble': lista_complejidad_inmueble, 'complejidadinmuebles': complejidadinmuebles}
-    return render(request, 'direccion/complejidad_inmueble_lista.html', context)
+    return render(request, 'complejidad_inmueble_lista.html', context)
 
 
 def lista_inmueble(request, iddireccion):
@@ -401,7 +401,7 @@ def lista_inmueble(request, iddireccion):
     lista_inmueble = Inmueble.objects.filter(direccion_id=id_direccion)
 
     context = {'lista_inmueble': lista_inmueble}
-    return render(request, 'direccion/inmueble_lista.html', context)
+    return render(request, 'inmueble_lista.html', context)
 
 
 # agregar nuevo
@@ -411,10 +411,10 @@ def add_pais(request):
         form_pais = PaisForm(request.POST)
         if form_pais.is_valid():
             form_pais.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_pais'))
+            return HttpResponseRedirect(reverse('udirecciones:lista_pais'))
     else:
         form_pais = PaisForm()
-    return render_to_response('direccion/pais_add.html',
+    return render_to_response('pais_add.html',
                               {'form_pais': form_pais, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -425,10 +425,10 @@ def add_provincia(request):
         form_provincia = ProvinciaForm(request.POST)
         if form_provincia.is_valid():
             form_provincia.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_provincia'))
+            return HttpResponseRedirect(reverse('udirecciones:lista_provincia'))
     else:
         form_provincia = ProvinciaForm()
-    return render_to_response('direccion/provincia_add.html',
+    return render_to_response('provincia_add.html',
                               {'form_provincia': form_provincia, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -439,10 +439,10 @@ def add_ciudad(request):
         form_ciudad = CiudadForm(request.POST)
         if form_ciudad.is_valid():
             form_ciudad.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_ciudad'))
+            return HttpResponseRedirect(reverse('udirecciones:lista_ciudad'))
     else:
         form_ciudad = CiudadForm()
-    return render_to_response('direccion/ciudad_add.html',
+    return render_to_response('ciudad_add.html',
                               {'form_ciudad': form_ciudad, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -453,10 +453,10 @@ def add_zona(request):
         form_zona = ZonaForm(request.POST, request.FILES)
         if form_zona.is_valid():
             form_zona.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_zona'))
+            return HttpResponseRedirect(reverse('udirecciones:lista_zona'))
     else:
         form_zona = ZonaForm()
-    return render_to_response('direccion/zona_add.html',
+    return render_to_response('zona_add.html',
                               {'form_zona': form_zona, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -467,11 +467,11 @@ def add_tipo_direccion(request):
         form_tipodireccion = TipoDireccionForm(request.POST)
         if form_tipodireccion.is_valid():
             form_tipodireccion.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_tipo_direccion'))
+            return HttpResponseRedirect(reverse('udirecciones:lista_tipo_direccion'))
     else:
         form_tipodireccion = TipoDireccionForm()
 
-    return render_to_response('direccion/tipodireccion_add.html',
+    return render_to_response('tipodireccion_add.html',
                               {'form_tipodireccion': form_tipodireccion, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -488,7 +488,7 @@ def add_direccion(request, id_cli):
     else:
         form_direccion = DireccionForm(initial={'cliente': id_cli})
 
-    return render_to_response('direccion/direccion_add.html',
+    return render_to_response('direccion_add.html',
                               {'form_direccion': form_direccion, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -499,11 +499,11 @@ def add_tipo_inmueble(request):
         form_tipo_inmueble = TipoInmuebleForm(request.POST)
         if form_tipo_inmueble.is_valid():
             form_tipo_inmueble.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_tipo_inmueble'))
+            return HttpResponseRedirect(reverse('udirecciones:lista_tipo_inmueble'))
     else:
         form_tipo_inmueble = TipoInmuebleForm()
 
-    return render_to_response('direccion/tipo_inmueble_add.html',
+    return render_to_response('tipo_inmueble_add.html',
                               {'form_tipo_inmueble': form_tipo_inmueble, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -514,11 +514,11 @@ def add_complejidad_inmueble(request):
         form_complejidad = ComplejidadInmuebleForm(request.POST)
         if form_complejidad.is_valid():
             form_complejidad.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_complejidad_inmueble'))
+            return HttpResponseRedirect(reverse('udirecciones:lista_complejidad_inmueble'))
     else:
         form_complejidad = ComplejidadInmuebleForm()
 
-    return render_to_response('direccion/complejidad_inmueble_add.html',
+    return render_to_response('complejidad_inmueble_add.html',
                               {'form_complejidad': form_complejidad, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -530,11 +530,11 @@ def add_inmueble(request):
         if form_inmueble.is_valid():
             id_reg = form_inmueble.save()
             id_di = Inmueble.objects.get(id=id_reg.id)
-            return HttpResponseRedirect(reverse('udireciones:lista_inmueble', args=(id_di.direccion.id,)))
+            return HttpResponseRedirect(reverse('udirecciones:lista_inmueble', args=(id_di.direccion.id,)))
     else:
         form_inmueble = InmuebleForm()
 
-    return render_to_response('direccion/inmueble_add.html',
+    return render_to_response('inmueble_add.html',
                               {'form_inmueble': form_inmueble, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -557,12 +557,12 @@ def edit_pais(request, pk):
             if redirect_to:
                 return HttpResponseRedirect(redirect_to)
             else:
-                return HttpResponseRedirect(reverse('udireciones:lista_pais'))
+                return HttpResponseRedirect(reverse('udirecciones:lista_pais'))
     else:
         # formulario inicial
         form_edit_pais = PaisForm(instance=pais)
 
-    return render_to_response('direccion/pais_edit.html',
+    return render_to_response('pais_edit.html',
                               {'form_edit_pais': form_edit_pais, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -584,13 +584,13 @@ def edit_provincia(request, pk):
             if redirect_to:
                 return HttpResponseRedirect(redirect_to)
             else:
-                return HttpResponseRedirect(reverse('udireciones:lista_provincia'))
+                return HttpResponseRedirect(reverse('udirecciones:lista_provincia'))
 
     else:
         # formulario inicial
         form_edit_provincia = ProvinciaForm(instance=provincia)
 
-    return render_to_response('direccion/provincia_edit.html',
+    return render_to_response('provincia_edit.html',
                               {'form_edit_provincia': form_edit_provincia, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -613,13 +613,13 @@ def edit_ciudad(request, pk):
                 return HttpResponseRedirect(redirect_to)
             else:
 
-                return HttpResponseRedirect(reverse('udireciones:lista_ciudad'))
+                return HttpResponseRedirect(reverse('udirecciones:lista_ciudad'))
 
     else:
         # formulario inicial
         form_edit_ciudad = CiudadForm(instance=ciudad)
 
-    return render_to_response('direccion/ciudad_edit.html',
+    return render_to_response('ciudad_edit.html',
                               {'form_edit_ciudad': form_edit_ciudad, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -641,13 +641,13 @@ def edit_zona(request, pk):
             if redirect_to:
                 return HttpResponseRedirect(redirect_to)
             else:
-                return HttpResponseRedirect(reverse('udireciones:lista_zona'))
+                return HttpResponseRedirect(reverse('udirecciones:lista_zona'))
 
     else:
         # formulario inicial
         form_edit_zona = ZonaForm(instance=zona)
 
-    return render_to_response('direccion/zona_edit.html',
+    return render_to_response('zona_edit.html',
                               {'form_edit_zona': form_edit_zona, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -669,13 +669,13 @@ def edit_tipo_direccion(request, pk):
             if redirect_to:
                 return HttpResponseRedirect(redirect_to)
             else:
-                return HttpResponseRedirect(reverse('udireciones:lista_tipo_direccion'))
+                return HttpResponseRedirect(reverse('udirecciones:lista_tipo_direccion'))
 
     else:
         # formulario inicial
         form_edit_tipodireccion = TipoDireccionForm(instance=tipodireccion)
 
-    return render_to_response('direccion/tipodireccion_edit.html',
+    return render_to_response('tipodireccion_edit.html',
                               {'form_edit_tipodireccion': form_edit_tipodireccion, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -698,14 +698,14 @@ def edit_direccion(request, pk):
             return HttpResponseRedirect(redirect_to)
         else:
 
-            #return HttpResponseRedirect(reverse('udireciones:lista_direccion'))
+            #return HttpResponseRedirect(reverse('udirecciones:lista_direccion'))
             return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
 
     else:
         # formulario inicial
         form_edit_direccion = DireccionForm(instance=direccion)
 
-    return render_to_response('direccion/direccion_edit.html',
+    return render_to_response('direccion_edit.html',
                               {'form_edit_direccion': form_edit_direccion, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -724,11 +724,11 @@ def edit_tipo_inmueble(request, pk):
             if redirect_to:
                 return HttpResponseRedirect(redirect_to)
             else:
-                return HttpResponseRedirect(reverse('udireciones:lista_tipo_inmueble'))
+                return HttpResponseRedirect(reverse('udirecciones:lista_tipo_inmueble'))
     else:
         form_edit_tipo_inmueble = TipoInmuebleForm(instance=tipo_inmueble)
 
-    return render_to_response('direccion/tipo_inmueble_edit.html',
+    return render_to_response('tipo_inmueble_edit.html',
                               {'form_edit_tipo_inmueble': form_edit_tipo_inmueble, 'tipo_inmueble': tipo_inmueble,
                                'create': True}, context_instance=RequestContext(request))
 
@@ -742,11 +742,11 @@ def edit_complejidad_inmueble(request, pk):
         form_edit_complejidad_inmueble = ComplejidadInmuebleForm(request.POST, instance=complejidad_inmueble)
         if form_edit_complejidad_inmueble.is_valid():
             form_edit_complejidad_inmueble.save()
-            return HttpResponseRedirect(reverse('udireciones:lista_complejidad_inmueble'))
+            return HttpResponseRedirect(reverse('udirecciones:lista_complejidad_inmueble'))
     else:
         form_edit_complejidad_inmueble = ComplejidadInmuebleForm(instance=complejidad_inmueble)
 
-    return render_to_response('direccion/complejidad_inmueble_edit.html',
+    return render_to_response('complejidad_inmueble_edit.html',
                               {'form_edit_complejidad_inmueble': form_edit_complejidad_inmueble,
                                'complejidad_inmueble': complejidad_inmueble, 'create': True}, context_instance=RequestContext(request))
 
@@ -765,10 +765,10 @@ def edit_inmueble(request, pk):
             if redirect_to:
                 return HttpResponseRedirect(redirect_to)
             else:
-                return HttpResponseRedirect(reverse('udireciones:lista_inmueble', args=(inmueble.direccion.id,)))
+                return HttpResponseRedirect(reverse('udirecciones:lista_inmueble', args=(inmueble.direccion.id,)))
     else:
         form_edit_inmueble = InmuebleForm(instance=inmueble)
 
-    return render_to_response('direccion/inmueble_edit.html',
+    return render_to_response('inmueble_edit.html',
                               {'form_edit_inmueble': form_edit_inmueble, 'create': True},
                               context_instance=RequestContext(request))
