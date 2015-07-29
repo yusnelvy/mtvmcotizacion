@@ -32,6 +32,13 @@ METROSCUADRADO_INMUEBLE = (
     ('240', 'Mas de 200 metros cuadrado'),
     )
 
+PISOS_CHOICES = (
+    ('1', '1'),
+    ('2', '2'),
+    ('3', '3'),
+)
+
+
 # Create your models here.
 class Presupuesto(models.Model):
     dni = models.CharField(max_length=20)
@@ -64,9 +71,9 @@ class Presupuesto(models.Model):
                                    blank=True, default=0.00)
     recorrido_km = models.DecimalField(max_digits=7, decimal_places=2,
                                        blank=True, default=0.00)
-    tiempo_recorrido = models.TimeField(blank=True, default='00:00')
-    tiempo_carga = models.TimeField(blank=True, default='00:00')
-    tiempo_total = models.TimeField(blank=True, default='00:00')
+    tiempo_recorrido = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
+    tiempo_carga = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
+    tiempo_total = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
     monto_vehiculo_hora = models.DecimalField(max_digits=7, decimal_places=2,
                                               blank=True, default=0.00)
     monto_vehiculo_recorrido = models.DecimalField(max_digits=7, decimal_places=2,
@@ -154,11 +161,12 @@ class Presupuesto_Detalle(models.Model):
 class Presupuesto_servicio(models.Model):
     detalle_presupuesto = models.ForeignKey(Presupuesto_Detalle)
     servicio = models.CharField(max_length=100)
-    tarifa = models.DecimalField(max_digits=7, decimal_places=2)
+    tarifa = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
     material = models.TextField()
-    monto_material = models.DecimalField(max_digits=7, decimal_places=2)
-    volumen_material = models.DecimalField(max_digits=5, decimal_places=2)
-    peso_material = models.DecimalField(max_digits=5, decimal_places=2)
+    monto_material = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
+    volumen_material = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
+    peso_material = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
+    tiempo_aplicado = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
 
     def __str__(self):
         return u' %s - %s' % (self.detalle_presupuesto, self.servicio)

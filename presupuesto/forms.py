@@ -125,26 +125,20 @@ class PresupuestoDetalleForm(ModelForm):
             'capacidad_peso_contenedor', \
             'capacidad_volumen_contenedor', \
             'peso_contenido', \
-            'peso_contenedor'
+            'peso_contenedor', \
+            'descripcion_contenedor'
 
 
 class PresupuestoServicioForm(ModelForm):
 
     """Docstring"""
     lista_servicio = ModelChoiceField(Servicio.objects, widget=Select, empty_label='--seleccione el servicio--', label='Servicios')
-    lista_material = ModelChoiceField(Material.objects, widget=Select, empty_label='--seleccione el material--', label='Materiales')
 
     class Meta:
         model = Presupuesto_servicio
         fields = 'lista_servicio', \
-            'lista_material', \
             'detalle_presupuesto', \
-            'servicio', \
-            'tarifa', \
-            'material', \
-            'monto_material', \
-            'volumen_material', \
-            'peso_material'
+            'servicio'
 
         error_messages = {
             NON_FIELD_ERRORS: {

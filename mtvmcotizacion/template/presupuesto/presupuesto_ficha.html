@@ -9,12 +9,10 @@
 
 {% block content1 %}
 
-{{direccion_list}}
-
-{{detalle_list}}
 
 <div class="panel panel-default">
   <p>Hoy es: {{ now|date }}</p>
+  <p><a data-toggle="tooltip" data-placement="right" href="" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a></p>
   <table class="table table-hover">
     <tr>
       <td>
@@ -62,8 +60,7 @@
   <td class="">
     <strong>Dirección de Origen: </strong><br>
 
-    {% for direc_origen in presupuesto.presupuesto_direccion_set.all %}
-    {% if direc_origen.tipo_direccion == "Origen" %}
+    {% for direc_origen in direccion_origen %}
     {{ direc_origen.direccion }}
     <p>
       <span style="">
@@ -94,7 +91,6 @@
       <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('direccion/delete/?codigo={{direc_origen.id}}','{{direc_origen.id}}'); return false" class="glyphicon glyphicon-remove"></a>
     </small>
   </p>
-  {% endif %}
   {% endfor %}
 
 </td>
@@ -108,8 +104,7 @@
   <td class="">
     <strong>Dirección de Destino: </strong><br>
 
-    {% for direc_destino in presupuesto.presupuesto_direccion_set.all %}
-    {% if direc_destino.tipo_direccion == "Destino" %}
+    {% for direc_destino in direccion_destino %}
     {{ direc_destino.direccion }}
     <p>
       <span style="">
@@ -140,7 +135,6 @@
     </small>
     <a href="{{ direc_destino.get_absolute_url }}">editar</a>
   </p>
-  {% endif %}
   {% endfor %}
 
 </td>
@@ -154,7 +148,7 @@
   <td class="">
     <strong>Descripcion objetos a mudar </strong><br>
 
-    {% for det_mueble in presupuesto.presupuesto_detalle_set.all %}
+    {% for det_mueble in detalle_list %}
     ambiente: {{ det_mueble.ambiente }}<br>
     <p>
       <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ det_mueble.ambiente }}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
