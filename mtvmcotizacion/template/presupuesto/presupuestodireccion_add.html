@@ -6,16 +6,22 @@
 
 {% endblock titulo %}
 
+{% block col_edit %}
+
+class="col-md-10"
+
+{% endblock col_edit %}
+
 {% block titulo_form %}
 
-<h2 disabled>Agregar dirección {{ form.tipo_direccion|lower }}</h2>
+<h2>Agregar dirección de {{ form.tipo_direccion.value|lower }}</h2>
 
 {% endblock titulo_form %}
 
 {% block cuerpo_form %}
 
 <style>
-.campo>span>textarea,.campo>span>input[type=date],.campo>span>input[type=password],.campo>span>input[type=number],.campo>span>input[type=text],.campo>span>input[type=email],.campo>span>input[type=url]{
+#id_total_m2,#id_distancia_vehiculo,#id_pisos_ascensor_servicio,#id_pisos_ascensor,#id_pisos_escalera,#id_pisos,#id_lista_tipoinmueble,#id_direccion,.campo>label>input[type=date],.campo>label>input[type=password],.campo>label>input[type=number],.campo>label>input[type=text],.campo>label>input[type=email],.campo>label>input[type=url]{
   box-sizing: border-box;
   border-radius: 6px;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
@@ -34,7 +40,7 @@
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
   width: 100%;
 }
-.campo>span>input:focus,.campo>span>textarea:focus{
+#id_total_m2:focus,#id_distancia_vehiculo:focus,#id_pisos_ascensor_servicio:focus,#id_pisos_ascensor:focus,#id_pisos_escalera:focus,#id_pisos:focus,#id_lista_tipoinmueble:focus,#id_direccion:focus,.campo>label>input:focus,.campo>label>textarea:focus{
   border-color: #66afe9;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
@@ -42,27 +48,39 @@
 }
 .campo>label{display:block;font-family: inherit;font: inherit;}
 .campo{display:inline-block;margin-bottom: 15px;text-align: left;}
-.campo span ul{list-style: none;}
-.campo span ul li label{font: inherit;font-family: inherit;}
+.campo label ul{list-style: none;}
+.campo label ul li label{font: inherit;font-family: inherit;}
 h2 input{border: none;box-shadow: none;pointer-events:none;width: 110px;}
 .control-campos>.presupuesto,.control-campos>.tipo_direccion,.control-campos>.valor_ambiente_complejidad,.control-campos>.factor_complejidad,.control-campos>.valor_metrocubico_complejiadad,.control-campos>.complejidad,.control-campos>.valor_ocupacidad,.control-campos>.ocupacidad_inmueble,.control-campos>.tipo_inmueble{display:none;}
-.control-campos>.direccion{width: 100%;text-align: left;}
-.control-campos>.lista_tipoinmueble,.control-campos>.lista_ocupacion{width: 49.59%;display:inline-table;text-align: left;}
-.control-campos>.rampa,.control-campos>.ascensor,.control-campos>.ascensor_servicio{width: 32%;}
-.control-campos>.distancia_vehiculo,.control-campos>.total_m2,.control-campos>.pisos,.control-campos>.pisos_escalera,.control-campos>.pisos_ascensor,.control-campos>.pisos_ascensor_servicio{width: 49.59%!important;}
+.control-campos>.direccion,#s_direccion{width: 65%!important;text-align: left;}
+.control-campos>.lista_tipoinmueble{width: 34%;display:inline-table;text-align: left;}
+.control-campos>.lista_ocupacion{width: 34%;}
+.control-campos>.rampa,.control-campos>.ascensor,.control-campos>.ascensor_servicio{}
+.control-campos>.distancia_vehiculo,.control-campos>.total_m2,.control-campos>.pisos,.control-campos>.pisos_escalera,.control-campos>.pisos_ascensor,.control-campos>.pisos_ascensor_servicio{width: 32.59%!important;}
+.alerta{position: absolute;top:-15px;}
+.control-campos>.rampa,.control-campos>.ascensor,.control-campos>.ascensor_servicio{display:block-table;margin-left: 50px;}
+.checkbox{display:inline-table!important;margin-left: 50px;}
+#s_rampa>label,#s_ascensor>label,#s_ascensor_servicio>label{float: right;margin-left: 5px;margin-bottom:50px;}
+#s_rampa label,#s_ascensor label,#s_ascensor_servicio label {margin-left: -10px;}
+@media (max-width:992px) {
+  .control-campos>.distancia_vehiculo,.control-campos>.total_m2,.control-campos>.pisos,.control-campos>.pisos_escalera,.control-campos>.pisos_ascensor,.control-campos>.pisos_ascensor_servicio{width: 49.59%!important;}
+  .control-campos>.lista_ocupacion{width: 25%;}
+}
 </style>
-<!--<div class="form-group control-campos">
-{{ form.as_p }}
-</div><-->
+
 <div class="form-group control-campos">
+
+  {% if form.errors %}
+
+    <p class="alert-danger alerta">Complete todos los campos y luego clic en registrar.</p>
+
+  {% endif %}
 
   {% for i in form %}
 
-  <div class="campo form-group {{i.name}}">
-    <label for="id_{{i.name}}">{{ i.label }} </label>
-    <span>
-      {{ i }}
-    </span>
+  <div class="campo form-group {{i.name}}" id="s_{{i.name}}">
+    <label for="{{ i.id_for_label }}">{{ i.label }} </label>
+    <label>{{ i }}</label>
   </div>
 
   {% endfor %}
@@ -70,12 +88,25 @@ h2 input{border: none;box-shadow: none;pointer-events:none;width: 110px;}
 </div>
 <script type="text/javascript">
 document.getElementById('id_direccion').focus()
-document.getElementById('id_tipo_direccion').setAttribute('disabled','disabled')
-$('#id_tipo_direccion').css('background','#fff')
+document.getElementById('id_tipo_direccion').setAttribute('disabled','disable')
+document.getElementById('id_pisos').setAttribute('type','number')
+document.getElementById('s_rampa').setAttribute('class','checkbox checkbox-primary')
+document.getElementById('s_ascensor').setAttribute('class','checkbox checkbox-primary')
+document.getElementById('s_ascensor_servicio').setAttribute('class','checkbox checkbox-primary')
+$( "l" ).addClass( "radio radio-primary" );
+$('#s_pis').css('display','none')
+$(document).ready(function() {
+    setTimeout(function() {
+        $(".alerta").fadeOut(1500);
+    },3000);
+});
 </script>
 
+
 {% endblock cuerpo_form %}
+
 {% block js_sup %}
+
 <script>
 $(document).ready(function(){
     $("input[name=lista_tipoinmueble]").click(function () {
@@ -100,7 +131,9 @@ $(document).ready(function(){
 });
 
 </script>
+
 {% endblock js_sup %}
+
 {% block ayuda %}
 
 <div>
