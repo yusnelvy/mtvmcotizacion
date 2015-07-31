@@ -47,7 +47,7 @@ class Muebleclass():
 
         lista_mueble = Mueble.objects.all()
         context = {'lista_mueble': lista_mueble}
-        return render(request, 'mueble/mueble_lista.html', context)
+        return render(request, 'mueble_lista.html', context)
 
 
 class AddMuebleClass(Muebleclass):
@@ -63,7 +63,7 @@ class AddMuebleClass(Muebleclass):
 
         listaM = MuebleListView()
         listaM.lista_mueble()
-        return render_to_response('mueble/mueble_add.html',
+        return render_to_response('mueble_add.html',
                                   {'form_mueble': form_mueble, 'listaM': listaM, 'create': True},
                                   context_instance=RequestContext(request))
 
@@ -72,7 +72,7 @@ class MuebleListView(ListView):
 
     context_object_name = 'lista_mueble'
     queryset = Mueble.objects.all()
-    template_name = 'mueble/mueble_lista.html'
+    template_name = 'mueble_lista.html'
 
 
 class TamanoMuebleListView(MuebleListView, ListView):
@@ -80,7 +80,7 @@ class TamanoMuebleListView(MuebleListView, ListView):
     lista_m = MuebleListView()
     context_object_name = 'buscar_tamanomueble'
     queryset = Tamano_Mueble.objects.all()
-    template_name = 'mueble/tamanomueble_lista.html'
+    template_name = 'tamanomueble_lista.html'
 
 
 def lista_mueble(request):
@@ -120,7 +120,7 @@ def lista_mueble(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         muebles = paginator.page(paginator.num_pages)
     context = {'lista_mueble': lista_mueble, 'muebles': muebles}
-    return render(request, 'mueble/mueble_lista.html', context)
+    return render(request, 'mueble_lista.html', context)
 
 
 def buscar_mueble(request, idtipomueble):
@@ -130,7 +130,7 @@ def buscar_mueble(request, idtipomueble):
 
     buscar_muebleambiente = Mueble.objects.filter(tipo_mueble_id=tipomueble)
     context = {'buscar_muebleambiente': buscar_muebleambiente}
-    return render(request, 'mueble/mueble_buscar.html', context)
+    return render(request, 'mueble_buscar.html', context)
 
 
 def add_mueble(request):
@@ -142,7 +142,7 @@ def add_mueble(request):
             return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
     else:
         form_mueble = MuebleForm()
-    return render_to_response('mueble/mueble_add.html',
+    return render_to_response('mueble_add.html',
                               {'form_mueble': form_mueble, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -170,7 +170,7 @@ def edit_mueble(request, pk):
         # formulario inicial
         form_edit_mueble = MuebleForm(instance=mueble)
 
-    return render_to_response('mueble/mueble_edit.html',
+    return render_to_response('mueble_edit.html',
                               {'form_edit_mueble': form_edit_mueble, 'mueble': mueble, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -214,7 +214,7 @@ def lista_tipo_mueble(request):
         tipomuebles = paginator.page(paginator.num_pages)
 
     context = {'lista_tipomueble': lista_tipomueble, 'tipomuebles': tipomuebles}
-    return render(request, 'mueble/tipomueble_lista.html', context)
+    return render(request, 'tipomueble_lista.html', context)
 
 
 def lista_ocupacion(request):
@@ -255,7 +255,7 @@ def lista_ocupacion(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         ocupaciones = paginator.page(paginator.num_pages)
     context = {'lista_ocupacion': lista_ocupacion, 'ocupaciones': ocupaciones}
-    return render(request, 'mueble/ocupacion_lista.html', context)
+    return render(request, 'ocupacion_lista.html', context)
 
 
 def lista_forma_mueble(request):
@@ -297,7 +297,7 @@ def lista_forma_mueble(request):
         formamuebles = paginator.page(paginator.num_pages)
 
     context = {'lista_formamueble': lista_formamueble, 'formamuebles': formamuebles}
-    return render(request, 'mueble/formamueble_lista.html', context)
+    return render(request, 'formamueble_lista.html', context)
 
 
 def lista_tamano(request):
@@ -339,7 +339,7 @@ def lista_tamano(request):
         tamanos = paginator.page(paginator.num_pages)
 
     context = {'lista_tamano': lista_tamano, 'tamanos': tamanos}
-    return render(request, 'mueble/tamano_lista.html', context)
+    return render(request, 'tamano_lista.html', context)
 
 
 def lista_densidad(request):
@@ -381,7 +381,7 @@ def lista_densidad(request):
         densidades = paginator.page(paginator.num_pages)
 
     context = {'lista_densidad': lista_densidad, 'densidades': densidades}
-    return render(request, 'mueble/densidad_lista.html', context)
+    return render(request, 'densidad_lista.html', context)
 
 
 def buscar_tamano_mueble(request, idmueble=0):
@@ -445,7 +445,7 @@ def buscar_tamano_mueble(request, idmueble=0):
 
     context = {'buscar_tamanomueble': buscar_tamanomueble, 'lista_muebles': lista_muebles, 'lista_mueble': lista_mueble, 'listar_tamano': listar_tamano, 'mensaje': mensaje}
 
-    return render(request, 'mueble/tamanomueble_lista.html', context)
+    return render(request, 'tamanomueble_lista.html', context)
 
 
 def buscar_mueble_ambiente(request, idambiente=0):
@@ -503,7 +503,7 @@ def buscar_mueble_ambiente(request, idambiente=0):
 
     context = {'buscar_muebleambiente': buscar_muebleambiente,
                'muebleambientes': muebleambientes, 'ambiente': idambiente, 'mensaje': mensaje, 'lista_ambiente': lista_ambiente}
-    return render(request, 'mueble/muebleambiente_lista.html', context)
+    return render(request, 'muebleambiente_lista.html', context)
 
 
 # agregar nuevo
@@ -516,7 +516,7 @@ def add_tipo_mueble(request):
             return HttpResponseRedirect(reverse('umuebles:lista_tipo_mueble'))
     else:
         form_tipomueble = TipoMuebleForm()
-    return render_to_response('mueble/tipomueble_add.html',
+    return render_to_response('tipomueble_add.html',
                               {'form_tipomueble': form_tipomueble, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -530,7 +530,7 @@ def add_ocupacion(request):
             return HttpResponseRedirect(reverse('umuebles:lista_ocupacion'))
     else:
         form_ocupacion = OcupacionForm()
-    return render_to_response('mueble/ocupacion_add.html',
+    return render_to_response('ocupacion_add.html',
                               {'form_ocupacion': form_ocupacion, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -544,7 +544,7 @@ def add_formamueble(request):
             return HttpResponseRedirect(reverse('umuebles:lista_forma_mueble'))
     else:
         form_formamueble = FormaMuebleForm()
-    return render_to_response('mueble/formamueble_add.html',
+    return render_to_response('formamueble_add.html',
                               {'form_formamueble': form_formamueble, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -558,7 +558,7 @@ def add_tamano(request):
             return HttpResponseRedirect(reverse('umuebles:lista_tamano'))
     else:
         form_tamano = TamanoForm()
-    return render_to_response('mueble/tamano_add.html',
+    return render_to_response('tamano_add.html',
                               {'form_tamano': form_tamano, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -572,7 +572,7 @@ def add_densidad(request):
             return HttpResponseRedirect(reverse('umuebles:lista_densidad'))
     else:
         form_densidad = DensidadForm()
-    return render_to_response('mueble/densidad_add.html',
+    return render_to_response('densidad_add.html',
                               {'form_densidad': form_densidad, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -588,7 +588,7 @@ def add_tamanomueble(request, id_m):
 
     else:
         form_tamanomueble = TamanoMuebleForm(initial={'mueble': id_m})
-    return render_to_response('mueble/tamanomueble_add.html',
+    return render_to_response('tamanomueble_add.html',
                               {'form_tamanomueble': form_tamanomueble, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -603,7 +603,7 @@ def add_muebleambiente(request, idambiente):
             return HttpResponseRedirect(reverse('umuebles:buscar_mueble_ambiente', args=(id_am.ambiente.id,)))
     else:
         form_muebleambiente = MuebleAmbienteForm(initial={'ambiente': idambiente})
-    return render_to_response('mueble/muebleambiente_add.html',
+    return render_to_response('muebleambiente_add.html',
                               {'form_muebleambiente': form_muebleambiente, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -632,7 +632,7 @@ def edit_tipo_mueble(request, pk):
         # formulario inicial
         form_edit_tipomueble = TipoMuebleForm(instance=tipomueble)
 
-    return render_to_response('mueble/tipomueble_edit.html',
+    return render_to_response('tipomueble_edit.html',
                               {'form_edit_tipomueble': form_edit_tipomueble, 'tipomueble': tipomueble, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -660,7 +660,7 @@ def edit_ocupacion(request, pk):
         # formulario inicial
         form_edit_ocupacion = OcupacionForm(instance=ocupacion)
 
-    return render_to_response('mueble/ocupacion_edit.html',
+    return render_to_response('ocupacion_edit.html',
                               {'form_edit_ocupacion': form_edit_ocupacion, 'ocupacion': ocupacion, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -687,7 +687,7 @@ def edit_forma_mueble(request, pk):
         # formulario inicial
         form_edit_formamueble = FormaMuebleForm(instance=formamueble)
 
-    return render_to_response('mueble/formamueble_edit.html',
+    return render_to_response('formamueble_edit.html',
                               {'form_edit_formamueble': form_edit_formamueble, 'formamueble': formamueble, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -715,7 +715,7 @@ def edit_tamano(request, pk):
         # formulario inicial
         form_edit_tamano = TamanoForm(instance=tamano)
 
-    return render_to_response('mueble/tamano_edit.html',
+    return render_to_response('tamano_edit.html',
                               {'form_edit_tamano': form_edit_tamano, 'tamano': tamano, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -743,7 +743,7 @@ def edit_densidad(request, pk):
         # formulario inicial
         form_edit_densidad = DensidadForm(instance=densidad)
 
-    return render_to_response('mueble/densidad_edit.html',
+    return render_to_response('densidad_edit.html',
                               {'form_edit_densidad': form_edit_densidad, 'densidad': densidad, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -774,7 +774,7 @@ def edit_tamanomueble(request, pk):
 #como obtener el valor calculado en el model para saber la densidad de un mueble
     valor = tamanomueble.densidad_valor
 
-    return render_to_response('mueble/tamanomueble_edit.html',
+    return render_to_response('tamanomueble_edit.html',
                               {'form_edit_tamanomueble': form_edit_tamanomueble, 'create': False, 'valor': valor},
                               context_instance=RequestContext(request))
 
@@ -802,6 +802,6 @@ def edit_muebleambiente(request, pk):
         # formulario inicial
         form_edit_muebleambiente = MuebleAmbienteForm(instance=muebleambiente)
 
-    return render_to_response('mueble/muebleambiente_edit.html',
+    return render_to_response('muebleambiente_edit.html',
                               {'form_edit_muebleambiente': form_edit_muebleambiente, 'create': False},
                               context_instance=RequestContext(request))

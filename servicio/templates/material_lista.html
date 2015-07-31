@@ -1,5 +1,16 @@
 {% extends 'inicio/base_lista.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}" style="color:#777;">Servicios</a></li>
+<li class="linknav"><a href="{% url 'uservicios:lista_unidad' %}" style="color:#777;">Unidades</a></li>
+<li class="linknav"><a href="{% url 'uservicios:lista_complejidad' %}" style="color:#777;">Complejidades</a></li>
+<li class="linknav"><a href="{% url 'uservicios:buscar_complejidad_servicio' 0 0 %}" style="color:#777;">Niveles de complejidad para el servicio
+</a></li>
+<li class="linknav"><a href="{% url 'uservicios:buscar_servicio_material' 0 0 %}" style="color:#777;">Servicios con sus materiales relacionados</a></li>
+
+{% endblock link_navegacion %}
+
 {% block titulo %}
 
 <title>Materiales</title>

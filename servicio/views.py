@@ -56,7 +56,7 @@ def lista_servicio(request):
         servicios = paginator.page(paginator.num_pages)
 
     context = {'lista_servicio': lista_servicio, 'servicios': servicios}
-    return render(request, 'servicio/servicio_lista.html', context)
+    return render(request, 'servicio_lista.html', context)
 
 
 def lista_unidad(request):
@@ -98,7 +98,7 @@ def lista_unidad(request):
         unidades = paginator.page(paginator.num_pages)
 
     context = {'lista_unidad': lista_unidad, 'unidades': unidades}
-    return render(request, 'servicio/unidad_lista.html', context)
+    return render(request, 'unidad_lista.html', context)
 
 
 def lista_material(request):
@@ -140,7 +140,7 @@ def lista_material(request):
         materiales = paginator.page(paginator.num_pages)
 
     context = {'lista_material': lista_material, 'materiales': materiales}
-    return render(request, 'servicio/material_lista.html', context)
+    return render(request, 'material_lista.html', context)
 
 
 def lista_complejidad(request):
@@ -182,7 +182,7 @@ def lista_complejidad(request):
         complejidades = paginator.page(paginator.num_pages)
 
     context = {'lista_complejidad': lista_complejidad, 'complejidades': complejidades}
-    return render(request, 'servicio/complejidad_lista.html', context)
+    return render(request, 'complejidad_lista.html', context)
 
 
 def buscar_servicio_material(request, idserv=0, idmat=0):
@@ -231,7 +231,7 @@ def buscar_servicio_material(request, idserv=0, idmat=0):
         servicios = paginator.page(paginator.num_pages)
 
     context = {'buscar_serviciomaterial': buscar_serviciomaterial, 'servicios': servicios, 'lista_servicio': lista_servicio}
-    return render(request, 'servicio/serviciomaterial_lista.html', context)
+    return render(request, 'serviciomaterial_lista.html', context)
 
 
 def buscar_complejidad_servicio(request, idserv=0, idcomp=0):
@@ -279,7 +279,7 @@ def buscar_complejidad_servicio(request, idserv=0, idcomp=0):
         servicios = paginator.page(paginator.num_pages)
 
     context = {'buscar_complejidadservicio': buscar_complejidadservicio, 'servicios': servicios, 'listar_servicios': listar_servicios, 'idserv': idserv}
-    return render(request, 'servicio/complejidadservicio_lista.html', context)
+    return render(request, 'complejidadservicio_lista.html', context)
 
 
 # agregar nuevo
@@ -292,7 +292,7 @@ def add_servicio(request):
             return HttpResponseRedirect(reverse('uservicios:lista_servicio'))
     else:
         form_servicio = ServicioForm()
-    return render_to_response('servicio/servicio_add.html',
+    return render_to_response('servicio_add.html',
                               {'form_servicio': form_servicio, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -306,7 +306,7 @@ def add_unidad(request):
             return HttpResponseRedirect(reverse('uservicios:lista_unidad'))
     else:
         form_unidad = UnidadForm()
-    return render_to_response('servicio/unidad_add.html',
+    return render_to_response('unidad_add.html',
                               {'form_unidad': form_unidad, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -320,7 +320,7 @@ def add_material(request):
             return HttpResponseRedirect(reverse('uservicios:lista_material'))
     else:
         form_material = MaterialForm()
-    return render_to_response('servicio/material_add.html',
+    return render_to_response('material_add.html',
                               {'form_material': form_material, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -334,7 +334,7 @@ def add_complejidad(request):
             return HttpResponseRedirect(reverse('uservicios:lista_complejidad'))
     else:
         form_complejidad = ComplejidadForm()
-    return render_to_response('servicio/complejidad_add.html',
+    return render_to_response('complejidad_add.html',
                               {'form_complejidad': form_complejidad, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -348,7 +348,7 @@ def add_serviciomaterial(request, id_ser):
             return HttpResponseRedirect(reverse('uservicios:buscar_servicio_material', args=('0', '0')))
     else:
         form_serviciomaterial = ServicioMaterialForm(initial={'servicio': id_ser})
-    return render_to_response('servicio/serviciomaterial_add.html',
+    return render_to_response('serviciomaterial_add.html',
                               {'form_serviciomaterial': form_serviciomaterial, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -362,7 +362,7 @@ def add_complejidadservicio(request, id_ser):
             return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio', args=(id_ser, '0')))
     else:
         form_complejidadservicio = ComplejidadServicioForm(initial={'servicio': id_ser})
-    return render_to_response('servicio/complejidadservicio_add.html',
+    return render_to_response('complejidadservicio_add.html',
                               {'form_complejidadservicio': form_complejidadservicio, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -391,7 +391,7 @@ def edit_servicio(request, pk):
         # formulario inicial
         form_edit_servicio = ServicioForm(instance=servicio)
 
-    return render_to_response('servicio/servicio_edit.html',
+    return render_to_response('servicio_edit.html',
                               {'form_edit_servicio': form_edit_servicio, 'servicio': servicio, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -419,7 +419,7 @@ def edit_unidad(request, pk):
         # formulario inicial
         form_edit_unidad = UnidadForm(instance=unidad)
 
-    return render_to_response('servicio/unidad_edit.html',
+    return render_to_response('unidad_edit.html',
                               {'form_edit_unidad': form_edit_unidad, 'unidad': unidad, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -447,7 +447,7 @@ def edit_material(request, pk):
         # formulario inicial
         form_edit_material = MaterialForm(instance=material)
 
-    return render_to_response('servicio/material_edit.html',
+    return render_to_response('material_edit.html',
                               {'form_edit_material': form_edit_material, 'material': material, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -475,7 +475,7 @@ def edit_complejidad(request, pk):
         # formulario inicial
         form_edit_complejidad = ComplejidadForm(instance=complejidad)
 
-    return render_to_response('servicio/complejidad_edit.html',
+    return render_to_response('complejidad_edit.html',
                               {'form_edit_complejidad': form_edit_complejidad, 'complejidad': complejidad, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -504,7 +504,7 @@ def edit_complejidadservicio(request, pk):
         # formulario inicial
         form_edit_complejidadservicio = ComplejidadServicioForm(instance=complejidadservicio)
 
-    return render_to_response('servicio/complejidadservicio_edit.html',
+    return render_to_response('complejidadservicio_edit.html',
                               {'form_edit_complejidadservicio': form_edit_complejidadservicio, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -532,6 +532,6 @@ def edit_serviciomaterial(request, pk):
         # formulario inicial
         form_edit_serviciomaterial = ServicioMaterialForm(instance=serviciomaterial)
 
-    return render_to_response('servicio/serviciomaterial_edit.html',
+    return render_to_response('serviciomaterial_edit.html',
                               {'form_edit_serviciomaterial': form_edit_serviciomaterial, 'create': False},
                               context_instance=RequestContext(request))

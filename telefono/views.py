@@ -36,7 +36,7 @@ def lista_tipotelefono(request):
 
     obj_list = Tipo_telefono.objects.all()
     context = {'obj_list': obj_list}
-    return render(request, 'telefono/tipotelefono_lista.html', context)
+    return render(request, 'tipotelefono_lista.html', context)
 
 
 def lista_telefono(request):
@@ -65,7 +65,7 @@ def lista_telefono(request):
 
     telefono = Telefono.objects.all()
     context = {'telefono': telefono}
-    return render(request, 'telefono/telefono_lista.html', context)
+    return render(request, 'telefono_lista.html', context)
 
 
 # agregar nuevo
@@ -80,7 +80,7 @@ def add_tipotelefono(request):
 
     else:
         form_tipotelefono = TipoTelefonoForm()
-    return render_to_response('telefono/tipotelefono_add.html',
+    return render_to_response('tipotelefono_add.html',
                               {'form_tipotelefono': form_tipotelefono, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -101,7 +101,7 @@ def add_telefono(request, id_cli):
             return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
     else:
         form_telefono = TelefonoForm(initial={'cliente': id_cli})
-    return render_to_response('telefono/telefono_add.html',
+    return render_to_response('telefono_add.html',
                               {'form_telefono': form_telefono, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -125,7 +125,7 @@ def edit_tipotelefono(request, pk):
         # formulario inicial
         form_edit_tipotelefono = TipoTelefonoForm(instance=id_tipo)
 
-    return render_to_response('telefono/tipotelefono_edit.html',
+    return render_to_response('tipotelefono_edit.html',
                               {'form_edit_tipotelefono': form_edit_tipotelefono, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -156,6 +156,6 @@ def edit_telefono(request, pk):
         # formulario inicial
         form_edit_telefono = TelefonoForm(instance=id_telefono)
 
-    return render_to_response('telefono/telefono_edit.html',
+    return render_to_response('telefono_edit.html',
                               {'form_edit_telefono': form_edit_telefono, 'telefono': id_telefono, 'create': False},
                               context_instance=RequestContext(request))

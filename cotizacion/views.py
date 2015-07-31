@@ -190,7 +190,7 @@ def lista_tiempocarga(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         tiempocargas = paginator.page(paginator.num_pages)
     context = {'lista_tiempocarga': lista_tiempocarga, 'tiempocargas': tiempocargas}
-    return render(request, 'cotizacion/tiempocarga_lista.html', context)
+    return render(request, 'tiempocarga_lista.html', context)
 
 
 @login_required
@@ -220,7 +220,7 @@ def lista_cotizacion(request):
 
     lista_cotizacion = Cotizacion.objects.all()
     context = {'lista_cotizacion': lista_cotizacion}
-    return render(request, 'cotizacion/cotizacion_lista.html', context)
+    return render(request, 'cotizacion_lista.html', context)
 
 
 def lista_vehiculo(request):

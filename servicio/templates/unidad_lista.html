@@ -1,5 +1,11 @@
 {% extends 'inicio/base_lista.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'uservicios:lista_material' %}" style="color:#777;">Materiales</a></li>
+
+{% endblock link_navegacion %}
+
 {% block titulo %}
 
 <title>unidades</title>

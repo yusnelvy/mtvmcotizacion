@@ -1,5 +1,11 @@
 {% extends 'inicio/base_ficha.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'uambientes:lista_ambiente' %}" style="color:#777;">Ambiente</a></li>
+
+{% endblock link_navegacion %}
+
 {% block acceso_ %}
 
 <a id="addClass" style="cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>

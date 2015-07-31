@@ -1,5 +1,20 @@
 {% extends 'inicio/base_lista.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}" style="color:#777;">Servicios
+</a></li>
+
+
+{% endblock link_navegacion %}
+{% block footerLink %}
+
+<li><a href="{% url 'uservicios:lista_servicio' %}">Servicios</a></li>
+
+
+{% endblock footerLink %}
+
+
 {% block titulo %}
 
 <title>Complejidad</title>
