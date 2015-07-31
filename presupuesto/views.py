@@ -263,12 +263,17 @@ class PresupuestoDetalleView(View):
 
                 return JsonResponse(ocupacion, safe=False)
 
-        lista_ambiente = Ambiente.objects.get(ambiente=self.request.GET.get('amb'))
-        data = {
-            'presupuesto': self.request.GET.get('pre'),
-            'ambiente': self.request.GET.get('amb'),
-            'lista_ambiente': lista_ambiente.id
-            }
+        if self.request.GET.get('amb'):
+            lista_ambiente = Ambiente.objects.get(ambiente=self.request.GET.get('amb'))
+            data = {
+                'presupuesto': self.request.GET.get('pre'),
+                'ambiente': self.request.GET.get('amb'),
+                'lista_ambiente': lista_ambiente.id
+                }
+        else:
+            data = {
+                'presupuesto': self.request.GET.get('pre'),
+                }
 
         form = self.form_class(initial=data)
         return render(request, self.template_name, {'form': form})

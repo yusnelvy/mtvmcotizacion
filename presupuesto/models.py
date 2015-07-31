@@ -3,40 +3,46 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 PISOS_CHOICES = (
-    ('0', '0'),
-    ('1', '1'),
-    ('2', '2'),
-    ('4', '4'),
-    ('5', '5'),
-    ('6', '6'),
-    ('7', '7'),
-    ('8', '8'),
-    ('9', '9'),
-    ('10', '10 o mas'),
+    (1, '1'),
+    (2, '2'),
+    (3, '3'),
+    (4, '4'),
+    (5, '5'),
+    (6, '6'),
+    (7, '7'),
+    (8, '8'),
+    (9, '9'),
+    (10, '10 o más'),
+)
+PISOS_RECORRER_CHOICES = (
+    (0, '0'),
+    (1, '1'),
+    (2, '2'),
+    (4, '4'),
+    (5, '5'),
+    (6, '6'),
+    (7, '7'),
+    (8, '8'),
+    (9, '9'),
+    (10, '10 o más'),
 )
 DISTANCIA_VEHICULO_INMUEBLE = (
-    ('10', 'De 1 metro a 10 metros'),
-    ('20', 'De 11 metros a 20 metros'),
-    ('30', 'De 21 metros a 30 metros'),
-    ('40', 'De 31 metros a 40 metros'),
-    ('50', 'De 41 metros a 50 metros'),
-    ('60', 'De 51 metros a 60 metros'),
-    ('70', 'Mas de 60 metros'),
+    (10, 'De 1 metro a 10 metros'),
+    (20, 'De 11 metros a 20 metros'),
+    (30, 'De 21 metros a 30 metros'),
+    (40, 'De 31 metros a 40 metros'),
+    (50, 'De 41 metros a 50 metros'),
+    (60, 'De 51 metros a 60 metros'),
+    (60, 'Mas de 60 metros'),
     )
 METROSCUADRADO_INMUEBLE = (
-    ('40', 'Entre 40 metros cuadrado'),
-    ('80', 'Entre 41 a 80 metros cuadrado'),
-    ('120', 'Entre 81 a 120 metros cuadrado'),
-    ('160', 'Entre 121 a 160 metros cuadrado'),
-    ('200', 'Entre 161 a 200 metros cuadrado'),
-    ('240', 'Mas de 200 metros cuadrado'),
+    (40, 'Entre 40 metros cuadrado'),
+    (80, 'Entre 41 a 80 metros cuadrado'),
+    (120, 'Entre 81 a 120 metros cuadrado'),
+    (160, 'Entre 121 a 160 metros cuadrado'),
+    (200, 'Entre 161 a 200 metros cuadrado'),
+    (200, 'Mas de 200 metros cuadrado'),
     )
-
-PISOS_CHOICES = (
-    ('1', '1'),
-    ('2', '2'),
-    ('3', '3'),
-)
 
 
 # Create your models here.
@@ -104,7 +110,7 @@ class Presupuesto_direccion(models.Model):
     ocupacidad_inmueble = models.CharField(max_length=100)
     valor_ocupacidad = models.DecimalField(max_digits=3, decimal_places=2)
     pisos = models.IntegerField(choices=PISOS_CHOICES, default=0)
-    pisos_escalera = models.IntegerField(choices=PISOS_CHOICES, default=0)
+    pisos_escalera = models.IntegerField(choices=PISOS_RECORRER_CHOICES, default=0)
     rampa = models.BooleanField()
     ascensor = models.BooleanField()
     ascensor_servicio = models.BooleanField()
