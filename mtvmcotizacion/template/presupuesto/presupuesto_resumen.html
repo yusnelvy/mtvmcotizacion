@@ -10,8 +10,6 @@
 
 <div class="panel panel-default">
   <p>Hoy es: {{ now|date }}</p>
-  {% url 'upresupuestos:update_presupuesto' presupuesto.id %}
-  <p><a data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a></p>
   <table class="table table-hover">
     <tr>
       <td>
@@ -48,11 +46,204 @@
 
   </span>
 </p>
+<p>
+    </span>
+    <strong>Descripción vehiculo: </strong>
+
+    {{ presupuesto.descripcion_vehiculo}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>cantidad vehiculo: </strong>
+
+    {{ presupuesto.cantidad_vehiculo}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>cantidad_ambientes: </strong>
+
+    {{ presupuesto.cantidad_ambientes}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>cantidad_muebles:  </strong>
+
+    {{ presupuesto.cantidad_muebles}}
+
+  </span>
+</p>
+
+<p>
+    </span>
+    <strong>cantidad_contenedores:  </strong>
+
+    {{ presupuesto.cantidad_contenedores}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>descripcion_persona:  </strong>
+
+    {{ presupuesto.descripcion_persona}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>cantidad_persona:  </strong>
+
+    {{ presupuesto.cantidad_persona}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>total_peso_contenedores:  </strong>
+
+    {{ presupuesto.total_peso_contenedores}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>total_peso_muebles:  </strong>
+
+    {{ presupuesto.total_peso_muebles}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>total_peso_contenidos:  </strong>
+
+    {{ presupuesto.total_peso_contenidos}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>total_volumen_muebles:  </strong>
+
+    {{ presupuesto.total_volumen_muebles}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>total_volumen_contenedores:  </strong>
+
+    {{ presupuesto.total_volumen_contenedores}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>total_volumen_contenidos:  </strong>
+
+    {{ presupuesto.total_volumen_contenidos}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>total_m3:  </strong>
+
+    {{ presupuesto.total_m3}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>tiempo_recorrido:  </strong>
+
+    {{ presupuesto.tiempo_recorrido}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>recorrido_km:  </strong>
+
+    {{ presupuesto.recorrido_km}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>tiempo_carga:  </strong>
+
+    {{ presupuesto.tiempo_carga}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>tiempo_total: </strong>
+
+    {{ presupuesto.tiempo_total}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>monto_vehiculo_hora: </strong>
+
+    {{ presupuesto.monto_vehiculo_hora}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>monto_vehiculo_recorrido: </strong>
+
+    {{ presupuesto.monto_vehiculo_recorrido}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>monto_persona: </strong>
+
+    {{ presupuesto.monto_persona}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>monto_sin_impuesto: </strong>
+
+    {{ presupuesto.monto_sin_impuesto}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>monto_impuesto: </strong>
+
+    {{ presupuesto.monto_impuesto}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>monto_con_impuesto: </strong>
+
+    {{ presupuesto.monto_con_impuesto}}
+
+  </span>
+</p>
+
 </td>
 <td colspan="2">
 </td>
 <td>
-  <a title="Editar cliente" data-toggle="tooltip" data-placement="right" href="../../editar/{{presupuesto.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
 </td>
 </tr>
 <tr>
@@ -84,19 +275,12 @@
         valor de complejidad por m3:{{ direc_origen.valor_metrocubico_complejiadad }}<br>
       </span>
     </p>
-
-    <small>
-      <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_origen.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-      <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('direccion/delete/?codigo={{direc_origen.id}}','{{direc_origen.id}}'); return false" class="glyphicon glyphicon-remove"></a>
-    </small>
-  </p>
   {% endfor %}
 
 </td>
 <td width="3"></td>
 <td width="3"></td>
 <td width="3">
-  <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Origen&pre={{presupuesto.id}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
 </td>
 </tr>
 <tr>
@@ -127,12 +311,6 @@
         valor de complejidad por ambiente: {{ direc_destino.valor_ambiente_complejidad }}<br>
         valor de complejidad por m3:{{ direc_destino.valor_metrocubico_complejiadad }}<br>
       </span>
-    </p>
-    <small>
-      <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_destino.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-      <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('direccion/delete/?codigo={{i.id}}','{{i.id}}'); return false" class="glyphicon glyphicon-remove"></a>
-    </small>
-    <a href="{{ direc_destino.get_absolute_url }}">editar</a>
   </p>
   {% endfor %}
 
@@ -140,7 +318,6 @@
 <td width="3"></td>
 <td width="3"></td>
 <td width="3">
-  <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Destino&pre={{presupuesto.id}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
 </td>
 </tr>
 <tr>
@@ -150,7 +327,6 @@
     {% for det_mueble in detalle_list %}
     ambiente: {{ det_mueble.ambiente }}<br>
     <p>
-      <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ det_mueble.ambiente }}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
       <span style="">
         <strong>mueble: </strong>
         {{ det_mueble.mueble }}<br>
@@ -174,22 +350,11 @@
 
       </span>
     </p>
-    <p>
-      <small>
-        <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDetalleUpdate' det_mueble.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-        <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('direccion/delete/?codigo={{i.id}}','{{i.id}}','{{ i.zona.ciudad.provincia.pais }}. {{ i.zona.ciudad.provincia }}, {{ i.zona.ciudad }} Zona {{ i.zona }} calle {{ i.calle }} numero {{ i.numero }} Punto de referencia {{ i.punto_referencia }}'); return false" class="glyphicon glyphicon-remove"></a>
-
-
-      </small>
-    </p>
     <strong>Descripcion servicios y materiales </strong>
-    <a href="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ det_mueble.id }}">Agregar servicio</a>
-    <br>
     {% for det_servivio in det_mueble.presupuesto_servicio_set.all %}
     servicio: {{ det_servivio.servicio }}<br>
     tarifa: {{ det_servivio.tarifa }}
     <p>
-      <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&serv={{ det_servivio.servicio }}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
       <span style="">
         <strong>material: </strong>
         {{ det_servivio.material }}<br>
@@ -197,13 +362,6 @@
         volumen: {{ det_servivio.volumen_material }}<br>
         peso: {{ det_servivio.peso_material }}<br>
       </span>
-    </p>
-    <p>
-      <small>
-        <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoServicioUpdate' det_servivio.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-        <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('direccion/delete/?codigo={{i.id}}','{{i.id}}'); return false" class="glyphicon glyphicon-remove"></a>
-
-      </small>
     </p>
 
     {% endfor %}
@@ -213,7 +371,6 @@
   <td width="3"></td>
   <td width="3"></td>
   <td width="3">
-    <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
   </td>
 </tr>
 
@@ -225,7 +382,7 @@
 {% block ayuda %}
 
 <div class="well well-lg">
-  <p>La <strong>Cotizacion</strong>  es la acción y efecto de cotizar, poner precio a algo, estimar a alguien o algo en relación con un fin. el documento informa y establece el valor del servicios.</p>
+  <p>el <strong>presupuesto</strong>  es la acción y efecto de cotizar, poner precio a algo, estimar a alguien o algo en relación con un fin. el documento informa y establece el valor del servicios.</p>
 </div>
 
 {% endblock ayuda %}

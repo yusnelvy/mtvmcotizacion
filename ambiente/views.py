@@ -50,12 +50,8 @@ def lista_ambiente(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         ambientes = paginator.page(paginator.num_pages)
 
-    ambiente_links = zip([
-        'Ambientes por tipo de inmueble',
-    ],
-    [
-        'uambientes:lista_ambiente_tipo_inmueble',
-    ])
+    ambiente_links = zip(['Ambientes por tipo de inmueble', ],
+                         ['uambientes:lista_ambiente_tipo_inmueble', ])
 
     context = {'lista_ambiente': lista_ambiente, 'ambientes': ambientes, 'ambiente_links': ambiente_links}
     return render(request, 'ambiente_lista.html', context)
