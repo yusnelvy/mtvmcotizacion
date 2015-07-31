@@ -11,10 +11,13 @@ from django.utils import timezone
 from direccion.models import Complejidad_Inmueble, Tipo_Inmueble
 from mueble.models import Ocupacion, Mueble, Tamano_Mueble, Tamano
 from ambiente.models import Ambiente
-from servicio.models import Servicio, Complejidad_Servicio, Material
+from servicio.models import Servicio, Complejidad_Servicio, Material, Servicio_Material
+from contenido.models import Contenido_Tipico, Contenido_Servicio
 
 from formtools.wizard.views import SessionWizardView
 from django.forms.formsets import formset_factory
+
+from django.db.models import Count
 
 
 class ContactWizard(SessionWizardView):
@@ -58,7 +61,8 @@ class PresupuestoDetail(DetailView):
         context = super(PresupuestoDetail, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the books
         context['detalle_list'] = Presupuesto_Detalle.objects.filter(presupuesto=self.object.pk)
-        context['direccion_list'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk)
+        context['direccion_origen'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk, tipo_direccion="Origen")
+        context['direccion_destino'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk, tipo_direccion="Destino")
         context['now'] = timezone.now()
         return context
 
@@ -204,13 +208,23 @@ class PresupuestoDetalleView(View):
 
             if (mueble_id and tamano_id is None):
                 mueble = Mueble.objects.get(id=mueble_id)
+                contenido = Contenido_Tipico.objects.filter(mueble=mueble_id, predefinido=True)[:1]
+                contenidoservicio = Contenido_Servicio.objects.filter(contenido=contenido[0].contenido_id, predefinido=True)
+                contenedor = Material.objects.filter(servicio_material__servicio_id=contenidoservicio[0].servicio_id, contenedor=True)[:1]
+
                 if mueble:
                     mueble = [{
                         'mueble': mueble.mueble,
                         'ocupacion': mueble.ocupacion.id,
                         'descripocupacion': mueble.ocupacion.descripcion,
                         'valorocupacion': mueble.ocupacion.valor,
-                        'capacidadmueble': mueble.capacidad
+                        'capacidadmueble': mueble.capacidad,
+                        'densidadcontenido': contenido[0].contenido.densidad_media,
+                        'vol_contenedor': round(contenedor[0].volumen, 2),
+                        'peso_contenedor': round(contenedor[0].peso, 2),
+                        'capacidadvolcontenedor': contenedor[0].capacidad_volumen,
+                        'capacidadpesocontenedor': contenedor[0].capacidad_peso,
+                        'descripcioncontenedor': contenedor[0].material
                     }]
 
                 return JsonResponse(mueble, safe=False)
@@ -233,7 +247,9 @@ class PresupuestoDetalleView(View):
                         'ancho': tamano[0].ancho,
                         'largo': tamano[0].largo,
                         'alto': tamano[0].alto,
-                        'peso': tamano[0].peso
+                        'peso': tamano[0].peso,
+                        'valor_densidad': round(tamano[0].densidad_valor, 2),
+                        'volumen_mueble': round(tamano[0].volumenmueble, 2),
                     }]
                 return JsonResponse(tamano, safe=False)
 
@@ -247,10 +263,17 @@ class PresupuestoDetalleView(View):
 
                 return JsonResponse(ocupacion, safe=False)
 
-        data = {
-            'presupuesto': self.request.GET.get('pre'),
-            'ambiente': self.request.GET.get('amb')
-            }
+        if self.request.GET.get('amb'):
+            lista_ambiente = Ambiente.objects.get(ambiente=self.request.GET.get('amb'))
+            data = {
+                'presupuesto': self.request.GET.get('pre'),
+                'ambiente': self.request.GET.get('amb'),
+                'lista_ambiente': lista_ambiente.id
+                }
+        else:
+            data = {
+                'presupuesto': self.request.GET.get('pre'),
+                }
 
         form = self.form_class(initial=data)
         return render(request, self.template_name, {'form': form})
@@ -259,6 +282,15 @@ class PresupuestoDetalleView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             form.save()
+
+            presu = Presupuesto_Detalle.objects.filter(presupuesto=self.request.POST.get('presupuesto'))
+            cant_ambiente = presu.annotate(acount=Count('ambiente')).order_by('ambiente')
+            cant_mueble = presu.count()
+            #prueba para ver si actualiza el campo cant ambiente en la cotizacion
+            reporter = Presupuesto.objects.filter(pk=self.request.POST.get('presupuesto'))
+            reporter.update(cantidad_ambientes=cant_ambiente['acount'])
+            reporter.update(cantidad_muebles=cant_mueble)
+
             # <process form cleaned data>
             redirect_to = request.GET['next']
 
@@ -272,45 +304,28 @@ class PresupuestoDetalleView(View):
 
 class PresupuestoServicioView(View):
     form_class = PresupuestoServicioForm
-    template_name = 'presupuesto/presupuestoservicio_add2.html'
+    template_name = 'presupuesto/presupuestoservicio_add.html'
 
     def get(self, request, *args, **kwargs):
 
         if self.request.is_ajax():
             servicio_id = self.request.GET.get('id_lista_servicio')
-            material_id = self.request.GET.get('id_lista_material')
-
             if servicio_id:
                 servicio = Servicio.objects.get(id=servicio_id)
                 if servicio:
-                    complejidada = Complejidad_Servicio.objects.filter(servicio=servicio.id, complejidad__descripcion='Media')
                     servicio = [{
-                        'servicio': servicio.servicio,
-                        'tarifa': complejidada[0].tarifa,
+                        'servicio': servicio.servicio
                     }]
                 return JsonResponse(servicio, safe=False)
-
-            if material_id:
-                material = Material.objects.get(id=material_id)
-                if material:
-                    material = [{
-                        'material': material.material,
-                        'precio': material.precio,
-                        'peso': material.peso,
-                        'volumen': round((material.ancho*material.largo*material.alto), 2)
-                    }]
-                return JsonResponse(material, safe=False)
 
         if self.request.GET.get('serv'):
             serviciod = self.request.GET.get('serv')
             servicio = Servicio.objects.get(servicio=serviciod)
-            complejidada = Complejidad_Servicio.objects.filter(servicio=servicio.id, complejidad__descripcion='Media')
 
             data = {
                 'detalle_presupuesto': self.request.GET.get('pre'),
                 'servicio': servicio.servicio,
-                'lista_servicio': servicio.id,
-                'tarifa': complejidada[0].tarifa
+                'lista_servicio': servicio.id
             }
         else:
             data = {
@@ -321,9 +336,33 @@ class PresupuestoServicioView(View):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
+
         form = self.form_class(request.POST)
         if form.is_valid():
-            form.save()
+            complejidad = Complejidad_Servicio.objects.filter(servicio=self.request.POST.get('lista_servicio'), complejidad__descripcion='Media')
+            if complejidad:
+                tarifa = complejidad[0].tarifa
+                factor_tiempo = complejidad[0].factor_tiempo
+
+            materiales = Servicio_Material.objects.filter(servicio=self.request.POST.get('lista_servicio'))
+            mueble = Presupuesto_Detalle.objects.get(id=self.request.POST.get('detalle_presupuesto'))
+
+            for material in materiales:
+                tiempoaplicado = 0
+                if material.material.contenedor is True:
+                    tiempoaplicado = factor_tiempo
+                else:
+                    tiempoaplicado = (factor_tiempo * mueble.volumen_mueble)
+
+                agregar = Presupuesto_servicio.objects.create(servicio=self.request.POST.get('servicio'),
+                                                              tarifa=tarifa, material=material.material.material,
+                                                              monto_material=material.material.precio,
+                                                              volumen_material=material.material.volumen,
+                                                              peso_material=material.material.peso,
+                                                              detalle_presupuesto_id=self.request.POST.get('detalle_presupuesto'),
+                                                              tiempo_aplicado=tiempoaplicado)
+                agregar.save()
+
             # <process form cleaned data>
             redirect_to = request.GET['next']
 
@@ -337,7 +376,7 @@ class PresupuestoServicioView(View):
 
 class PresupuestoServicioViewFomset(View):
     form_class_formset = formset_factory(PresupuestoServicioForm, extra=5)
-    template_name = 'presupuesto/presupuestoservicio_add.html'
+    template_name = 'presupuesto/presupuestoservicio_add2.html'
 
     def get(self, request, *args, **kwargs):
 
@@ -368,11 +407,28 @@ class PresupuestoUpdate(UpdateView):
         self.object = form.save(commit=False)
         self.object.save()
 
-        redirect_to = self.request.GET['next']
+        redirect_to = request.GET['next']
         if redirect_to:
             return HttpResponseRedirect(redirect_to)
         else:
             return render_to_response(self.template_name, self.get_context_data())
+
+
+class PresupuestoGenarar(UpdateView):
+    template_name = 'presupuesto/presupuesto_edit.html'
+    form_class = PresupuestoForm
+    model = Presupuesto
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+
+        redirect_to = request.GET['next']
+        if redirect_to:
+            return HttpResponseRedirect(redirect_to)
+        else:
+            return render_to_response(self.template_name, self.get_context_data())
+
 
 
 class PresupuestoDireccionUpdate(UpdateView):
@@ -427,6 +483,14 @@ class PresupuestoDetalleUpdate(UpdateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.save()
+
+        presu = Presupuesto_Detalle.objects.filter(presupuesto=self.request.POST.get('presupuesto'))
+        cant_ambiente = presu.annotate(acount=Count('ambiente')).order_by('ambiente')
+        cant_mueble = presu.count()
+        #prueba para ver si actualiza el campo cant ambiente en la cotizacion
+        reporter = Presupuesto.objects.filter(pk=self.request.POST.get('presupuesto'))
+        reporter.update(cantidad_ambientes=cant_ambiente[0].acount)
+        reporter.update(cantidad_muebles=cant_mueble)
 
         redirect_to = self.request.GET['next']
         if redirect_to:

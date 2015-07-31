@@ -53,7 +53,7 @@ def lista_contenido(request):
         contenidos = paginator.page(paginator.num_pages)
 
     context = {'lista_contenido': lista_contenido, 'contenidos': contenidos}
-    return render(request, 'contenido/contenido_lista.html', context)
+    return render(request, 'contenido_lista.html', context)
 
 
 def buscar_contenidotipico(request, idmueble=0):
@@ -110,7 +110,7 @@ def buscar_contenidotipico(request, idmueble=0):
         contenidotipicos = paginator.page(paginator.num_pages)
 
     context = {'buscar_contenidotipico': buscar_contenidotipico, 'contenidotipicos': contenidotipicos, 'lista_mueble': lista_mueble}
-    return render(request, 'contenido/contenidotipico_lista.html', context)
+    return render(request, 'contenidotipico_lista.html', context)
 
 
 def buscar_contenidoservicio(request, idservicio=0):
@@ -165,7 +165,7 @@ def buscar_contenidoservicio(request, idservicio=0):
         # If page is out of range (e.g. 9999), deliver last page of results.
         contenidos = paginator.page(paginator.num_pages)
     context = {'buscar_contenidoservicio': buscar_contenidoservicio, 'contenidos': contenidos, 'lista_contenido': lista_contenido}
-    return render(request, 'contenido/contenidoservicio_lista.html', context)
+    return render(request, 'contenidoservicio_lista.html', context)
 
 
 # agregar nuevo
@@ -178,7 +178,7 @@ def add_contenido(request):
             return HttpResponseRedirect(reverse('ucontenidos:lista_contenido'))
     else:
         form_contenido = ContenidoForm()
-    return render_to_response('contenido/contenido_add.html',
+    return render_to_response('contenido_add.html',
                               {'form_contenido': form_contenido, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -192,7 +192,7 @@ def add_contenidotipico(request, id_m):
             return HttpResponseRedirect(reverse('ucontenidos:buscar_contenidotipico', args=('0')))
     else:
         form_contenidotipico = ContenidoTipicoForm(initial={'mueble': id_m})
-    return render_to_response('contenido/contenidotipico_add.html',
+    return render_to_response('contenidotipico_add.html',
                               {'form_contenidotipico': form_contenidotipico, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -206,7 +206,7 @@ def add_contenidoservicio(request, id_c):
             return HttpResponseRedirect(reverse('ucontenidos:buscar_contenidoservicio', args=('0')))
     else:
         form_contenidoservicio = ContenidoServicioForm(initial={'contenido': id_c})
-    return render_to_response('contenido/contenidoservicio_add.html',
+    return render_to_response('contenidoservicio_add.html',
                               {'form_contenidoservicio': form_contenidoservicio, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -234,7 +234,7 @@ def edit_contenido(request, pk):
         # formulario inicial
         form_edit_contenido = ContenidoForm(instance=contenido)
 
-    return render_to_response('contenido/contenido_edit.html',
+    return render_to_response('contenido_edit.html',
                               {'form_edit_contenido': form_edit_contenido, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -261,7 +261,7 @@ def edit_contenidotipico(request, pk):
         # formulario inicial
         form_edit_contenidotipico = ContenidoTipicoForm(instance=contenidotipico)
 
-    return render_to_response('contenido/contenidotipico_edit.html',
+    return render_to_response('contenidotipico_edit.html',
                               {'form_edit_contenidotipico': form_edit_contenidotipico, 'create': False},
                               context_instance=RequestContext(request))
 
@@ -284,6 +284,6 @@ def edit_contenidoservicio(request, pk):
         # formulario inicial
         form_edit_contenidoservicio = ContenidoServicioForm(instance=contenidoservicio)
 
-    return render_to_response('contenido/contenidoservicio_edit.html',
+    return render_to_response('contenidoservicio_edit.html',
                               {'form_edit_contenidoservicio': form_edit_contenidoservicio, 'create': False},
                               context_instance=RequestContext(request))
