@@ -33,7 +33,8 @@ class PresupuestoForm(ModelForm):
         model = Presupuesto
         fields = '__all__'
         labels = {
-            'nombre_cliente': ('Cliente')
+            'nombre_cliente': ('Cliente'),
+            'fecha_estimadamudanza': ('Fecha estimada de la mudanza')
         }
         error_messages = {
             NON_FIELD_ERRORS: {
@@ -45,21 +46,21 @@ class PresupuestoForm(ModelForm):
 class PresupuestoDireccionForm(ModelForm):
 
     """Docstring"""
-    lista_tipoinmueble = ModelChoiceField(Tipo_Inmueble.objects, widget=RadioSelect, empty_label=None, label='Tipo de inmueble:')
-    lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=RadioSelect, empty_label=None, label='Nivel de ocupación del inmueble:')
+    lista_tipoinmueble = ModelChoiceField(Tipo_Inmueble.objects, widget=Select, empty_label=None, label='Tipo de inmueble:')
+    lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=Select, empty_label=None, label='Nivel de ocupación del inmueble:')
 
     class Meta:
         model = Presupuesto_direccion
         fields = 'direccion', \
             'lista_tipoinmueble', \
             'lista_ocupacion', \
+            'total_m2', \
+            'distancia_vehiculo',\
+            'pisos', \
+            'pisos_escalera', \
             'rampa', \
             'ascensor', \
             'ascensor_servicio', \
-            'distancia_vehiculo',\
-            'total_m2', \
-            'pisos', \
-            'pisos_escalera', \
             'pisos_ascensor', \
             'pisos_ascensor_servicio', \
             'presupuesto', \
@@ -70,10 +71,17 @@ class PresupuestoDireccionForm(ModelForm):
             'complejidad', \
             'factor_complejidad', \
             'valor_ambiente_complejidad', \
-            'valor_metrocubico_complejiadad'
+            'valor_metrocubico_complejiadad',
         labels = {
             'nombre_cliente': ('Cliente'),
-            'direccion': ('Dirección del inmueble'),
+            'direccion': ('Dirección del inmueble:'),
+            'ascensor_servicio': ('Ascensor de servicio'),
+            'distancia_vehiculo': ('Distancia del inmueble al vehículo (m):'),
+            'total_m2': ('Metros cuadrado del inmueble (m2):'),
+            'pisos': ('Cantidad de pisos del inmueble:'),
+            'pisos_escalera': ('Cantidad de pisos a recorrer por escaleras:'),
+            'pisos_ascensor': ('Cantidad de pisos a recorrer por el ascensor:'),
+            'pisos_ascensor_servicio': ('Cantidad de pisos a recorrer por el ascensor de servicio:'),
             }
         readonly_fields = ('tipo_direccion')
         error_messages = {
@@ -87,10 +95,10 @@ class PresupuestoDetalleForm(ModelForm):
 
     """Docstring"""
 
-    lista_ambiente = ModelChoiceField(Ambiente.objects, widget=Select, empty_label='--seleccione el ambiente--', label='Ambientes')
-    lista_mueble = ModelChoiceField(Mueble.objects, widget=Select, empty_label='--seleccione el mueble--', label='Muebles')
-    lista_tamano = ModelChoiceField(Tamano.objects, widget=Select, label='Tamano')
-    lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=RadioSelect, empty_label=None, label='Ocupación del inmueble')
+    lista_ambiente = ModelChoiceField(Ambiente.objects, widget=Select, empty_label='--seleccione el ambiente--', label='Ambiente del inmueble:')
+    lista_mueble = ModelChoiceField(Mueble.objects, widget=Select, empty_label='--seleccione el mueble--', label='Mueble del ambiente:')
+    lista_tamano = ModelChoiceField(Tamano.objects, widget=Select, empty_label='seleccione el tamaño', label='Tamaño del mueble:')
+    lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=RadioSelect, empty_label=None, label='Ocupación del mueble:')
 
     class Meta:
         model = Presupuesto_Detalle
@@ -119,6 +127,11 @@ class PresupuestoDetalleForm(ModelForm):
             'peso_contenido', \
             'peso_contenedor', \
             'descripcion_contenedor'
+        labels = {
+            'ancho': ('Ancho del mueble:'),
+            'largo': ('Largo del mueble:'),
+            'alto': ('Alto del mueble:'),
+            }
 
 
 class PresupuestoServicioForm(ModelForm):

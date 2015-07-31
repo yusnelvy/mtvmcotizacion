@@ -2,22 +2,209 @@
 
 {% block titulo %}
 
-<title>Presupuesto</title>
+<title>Presupuesto: dirección</title>
 
 {% endblock titulo %}
 
+{% block col_edit %}
+
+class="col-md-10"
+
+{% endblock col_edit %}
+
 {% block titulo_form %}
 
-  <h2>Editar dirección</h2>
+  <h2>Editar dirección de {{ form.tipo_direccion.value|lower }}</h2>
 
 {% endblock titulo_form %}
 
 {% block cuerpo_form %}
 
-<div class="form-group">
-  {{ form.as_p }}
+<style>
+#id_divider,#id_lista_ocupacion,#id_total_m2,#id_distancia_vehiculo,#id_pisos_ascensor_servicio,#id_pisos_ascensor,#id_pisos_escalera,#id_pisos,#id_lista_tipoinmueble,#id_direccion,.campo>label>input[type=date],.campo>label>input[type=password],.campo>label>input[type=number],.campo>label>input[type=text],.campo>label>input[type=email],.campo>label>input[type=url]{
+  box-sizing: border-box;
+  border-radius: 6px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
+  font-size: 18px;
+  height: 46px;
+  line-height: 1.33333;
+  padding: 10px 16px;
+  display:block;
+  background-color: #FFF;
+  background-image: none;
+  border: 1px solid #CCC;
+  color: #555;
+  font-family: inherit;
+  font: inherit;
+  margin: 0px;
+  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  width: 100%;
+}
+#id_lista_ocupacion:focus,#id_total_m2:focus,#id_distancia_vehiculo:focus,#id_pisos_ascensor_servicio:focus,#id_pisos_ascensor:focus,#id_pisos_escalera:focus,#id_pisos:focus,#id_lista_tipoinmueble:focus,#id_direccion:focus,.campo>label>input:focus,.campo>label>textarea:focus{
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+.campo>label{display:block;font-family: inherit;font: inherit;}
+.campo{display:inline-block;margin-bottom: 15px;text-align: left;}
+.campo label ul{list-style: none;}
+.campo label ul li label{font: inherit;font-family: inherit;}
+h2 input{border: none;box-shadow: none;pointer-events:none;width: 110px;}
+.control-campos>.presupuesto,.control-campos>.tipo_direccion,.control-campos>.valor_ambiente_complejidad,.control-campos>.factor_complejidad,.control-campos>.valor_metrocubico_complejiadad,.control-campos>.complejidad,.control-campos>.valor_ocupacidad,.control-campos>.ocupacidad_inmueble,.control-campos>.tipo_inmueble{display:none;}
+.control-campos>.direccion,#s_direccion{width: 99.50%!important;text-align: left;}
+.control-campos>.lista_tipoinmueble,.control-campos>.lista_ocupacion{width: 33%;text-align: left;}
+#s_rampa,#s_ascensor,#s_ascensor_servicio{width: 20%; margin-bottom: 0px;margin-left: 80px;margin-top: 20px;}
+#s_ascensor{margin-left: 60px;}
+#s_ascensor_servicio{margin-left: 143px;}
+#s_rampa:before {
+  content: "Servicios del inmueble:";
+  position: absolute;
+  top: -20px;
+  left: -80px;
+  font-size: 14px;
+}
+.control-campos>.distancia_vehiculo,.control-campos>.total_m2,.control-campos>.pisos,.control-campos>.pisos_escalera{width: 33%!important;}
+.control-campos>.pisos_ascensor,.control-campos>.pisos_ascensor_servicio{width: 33%;}
+.control-campos>.pisos_ascensor{margin-left:33%;}
+.alerta{position: absolute;top:-15px;}
+#s_rampa{}
+.checkbox{}
+#s_rampa>label,#s_ascensor>label,#s_ascensor_servicio>label{font: inherit;font-family: inherit;}
+#s_rampa input,#s_ascensor input,#s_ascensor_servicio input {position: absolute;bottom: 8px;}
+@media (max-width:1200px) {
+  .control-campos>.distancia_vehiculo,.control-campos>.total_m2,.control-campos>.pisos,.control-campos>.pisos_escalera,.control-campos>.pisos_ascensor,.control-campos>.pisos_ascensor_servicio{width: 49.59%!important;}
+  #s_rampa,#s_ascensor,#s_ascensor_servicio{width: 30%;margin-bottom:0px;margin-left: 10px;}
+  #s_rampa:before {
+    content: "Servicio del inmueble:";
+    position: absolute;
+    top: -30px;
+    left: -10px;
+    font-size: 15px;
+    cursor:auto!important;
+  }
+  .control-campos>.lista_tipoinmueble,.control-campos>.lista_ocupacion{width: 49.50%;text-align: left;}
+  .control-campos>.pisos_ascensor,.control-campos>.pisos_ascensor_servicio{width: 30%!important;}
+  .control-campos>.pisos_ascensor{margin-left:30%;}
+  #s_ascensor{margin-left: -13px!important;}
+#s_ascensor_servicio{margin-left: 1px!important;}
+}
+@media (max-width:600px) {
+  .control-campos>.distancia_vehiculo,.control-campos>.total_m2,.control-campos>.pisos,.control-campos>.pisos_escalera,.control-campos>.pisos_ascensor,.control-campos>.pisos_ascensor_servicio{width: 49.59%!important;}
+  #s_rampa,#s_ascensor,#s_ascensor_servicio{width: 100%;margin-bottom: 0px;margin-left: 10px;}
+  #s_rampa:before {
+    content: "Servicios del inmueble:";
+    position: absolute;
+    top: -30px;
+    left: -10px;
+    font-size: 15px;
+    cursor:auto!important;
+  }
+  .control-campos>.lista_tipoinmueble,.control-campos>.lista_ocupacion{width: 100%;text-align: left;}
+  .control-campos>.distancia_vehiculo,.control-campos>.total_m2,.control-campos>.pisos,.control-campos>.pisos_escalera{width: 100%!important;}
+  .control-campos>.pisos_ascensor,.control-campos>.pisos_ascensor_servicio{width: 100%!important;}
+  .control-campos>.pisos_ascensor{margin-left:0%;}
+  #s_ascensor{margin-left: 10px!important;}
+  #s_ascensor_servicio{margin-left: 10px!important;}
+}
+
+</style>
+
+<div class="form-group control-campos">
+
+  {% if form.errors %}
+
+  <p class="alert-danger alerta">Complete todos los campos y luego clic en registrar.</p>
+
+  {% endif %}
+
+  {% if form %}
+
+  {% for i in form %}
+
+  <div class="campo form-group {{i.name}}" id="s_{{i.name}}">
+    <label for="{{ i.id_for_label }}">{{ i.label }} {{ i }}</label>
+  </div>
+
+  {% endfor %}
+
+{% endif %}
 
 </div>
+<script type="text/javascript">
+function showContent() {
+  element = document.getElementById("s_pisos_ascensor");
+  check = document.getElementById("id_ascensor");
+  if (check.checked) {
+    $('#s_pisos_ascensor').css('visibility','visible');
+    element.style.display='';
+    document.getElementById("id_pisos_ascensor").value = "1";
+  }
+  else {
+    element.style.display='non';
+    $('#s_pisos_ascensor').css('visibility','hidden');
+    document.getElementById("id_pisos_ascensor").value = "0";
+  }
+}
+function showContent2() {
+  element2 = document.getElementById("s_pisos_ascensor_servicio");
+  check2 = document.getElementById("id_ascensor_servicio");
+  if (check2.checked) {
+    $('#s_pisos_ascensor_servicio').css('visibility','visible');
+    element2.style.display='';
+    document.getElementById("id_pisos_ascensor_servicio").value = "1";
+  }
+  else {
+    element2.style.display='non';
+    $('#s_pisos_ascensor_servicio').css('visibility','hidden');
+    document.getElementById("id_pisos_ascensor_servicio").value = "0";
+  }
+}
+/*function showContent() {
+element = document.getElementById("content");
+if (check.checked) {
+element.style.display='block';
+} else {
+element.style.display='none';
+}
+}*/
+</script>
+<script type="text/javascript">
+document.getElementById('id_direccion').focus();
+
+document.getElementById('s_rampa').setAttribute('class','checkbox-inline')
+document.getElementById('id_ascensor').setAttribute('onchange','javascript:showContent()')
+document.getElementById('id_ascensor_servicio').setAttribute('onchange','javascript:showContent2()')
+document.getElementById('s_ascensor').setAttribute('class','checkbox-inline')
+document.getElementById('s_ascensor_servicio').setAttribute('class','checkbox-inline')
+$( "l" ).addClass( "radio radio-primary" );
+$('#s_pisos_ascensor').css('visibility','hidden');
+$('#s_pisos_ascensor_servicio').css('visibility','hidden');
+ check = document.getElementById("id_ascensor");
+  if (check.checked) {
+    $('#s_pisos_ascensor').css('visibility','visible');
+    document.getElementById("id_pisos_ascensor").value = "1";
+  }
+  else {
+    $('#s_pisos_ascensor').css('visibility','hidden');
+    document.getElementById("id_pisos_ascensor").value = "0";
+  }
+    element2 = document.getElementById("s_pisos_ascensor_servicio");
+  check2 = document.getElementById("id_ascensor_servicio");
+  if (check2.checked) {
+    $('#s_pisos_ascensor_servicio').css('visibility','visible');
+    document.getElementById("id_pisos_ascensor_servicio").value = "1";
+  }
+  else {
+    $('#s_pisos_ascensor_servicio').css('visibility','hidden');
+    document.getElementById("id_pisos_ascensor_servicio").value = "0";
+  }
+$(document).ready(function() {
+  setTimeout(function() {
+    $(".alerta").fadeOut(1500);
+  },3000);
+});
+</script>
 
 {% endblock cuerpo_form %}
 
