@@ -1,5 +1,21 @@
 {% extends 'inicio/base_lista.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'udirecciones:lista_provincia' %}" style="color:#777;">Provincias</a></li>
+<li class="linknav"><a href="{% url 'udirecciones:lista_ciudad' %}" style="color:#777;">Ciudades</a></li>
+<li class="linknav"><a href="{% url 'udirecciones:lista_zona' %}" style="color:#777;">Zonas</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'udirecciones:lista_provincia' %}">Provincias</a></li>
+<li><a href="{% url 'udirecciones:lista_ciudad' %}">Ciudades</a></li>
+<li><a href="{% url 'udirecciones:lista_zona' %}">Zonas</a></li>
+
+{% endblock footerLink %}
+
 {% block titulo %}
 
 <title>País</title>
@@ -58,39 +74,39 @@ Eliminar país
 
 {% if paises.has_previous %}
 
-    <li>
-      <a href="?page={{ paises.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
+<li>
+  <a href="?page={{ paises.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
 
-    {% endif %}
+{% endif %}
 
-    <li class="current">
-      <a style="color:#000;"> Página
+<li class="current">
+  <a style="color:#000;"> Página
 
-        {{ paises.number }}
+    {{ paises.number }}
 
-        de
+    de
 
-        {{ paises.paginator.num_pages }}
+    {{ paises.paginator.num_pages }}
 
-        Desde el pais
+    Desde el pais
 
-        {{ paises.start_index }}
+    {{ paises.start_index }}
 
-        hasta el pais
+    hasta el pais
 
-        {{ paises.end_index }}
+    {{ paises.end_index }}
 
-      </a>
-    </li>
+  </a>
+</li>
 
-    {% if paises.has_next %}
+{% if paises.has_next %}
 
-    <li>
-      <a href="?page={{ paises.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
+<li>
+  <a href="?page={{ paises.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
 
-    {% endif %}
+{% endif %}
 
 {% endblock pagination %}
 
@@ -125,8 +141,8 @@ Eliminar país
 {% block ayuda %}
 
 <div class="">
-    <p>En esta sección se registran los <strong>Países</strong>, utilizando para ello su nombre completo en español.</p>
-    <p>La información pre-cargada contiene un listado de todos los <strong>Países</strong> existentes al momento de implementación del sistema. Es posible que existan cambios en los nombres de algunos, e incluso la necesidad de incluir otros. Por lo que se recomienda, antes de incluir un nuevo <strong>País</strong>, revisar con detenimiento dicha lista para evitar duplicados.</p>
-  </div>
+  <p>En esta sección se registran los <strong>Países</strong>, utilizando para ello su nombre completo en español.</p>
+  <p>La información pre-cargada contiene un listado de todos los <strong>Países</strong> existentes al momento de implementación del sistema. Es posible que existan cambios en los nombres de algunos, e incluso la necesidad de incluir otros. Por lo que se recomienda, antes de incluir un nuevo <strong>País</strong>, revisar con detenimiento dicha lista para evitar duplicados.</p>
+</div>
 
 {% endblock %}

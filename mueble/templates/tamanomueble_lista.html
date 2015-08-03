@@ -1,5 +1,27 @@
 {% extends 'inicio/base_ficha.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'umuebles:lista_mueble' %}" style="color:#777;">Muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_tipo_mueble' %}" style="color:#777;">Tipo de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_forma_mueble' %}" style="color:#777;">Formas de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_tamano' %}" style="color:#777;">Tipos de tamaños</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_densidad' %}" style="color:#777;">Niveles de densidad</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_ocupacion' %}" style="color:#777;">Niveles de ocupación</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'umuebles:lista_mueble' %}">Muebles</a></li>
+<li><a href="{% url 'umuebles:lista_tipo_mueble' %}">Tipo de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_forma_mueble' %}">Formas de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_tamano' %}">Tipos de tamaños</a></li>
+<li><a href="{% url 'umuebles:lista_densidad' %}">Niveles de densidad</a></li>
+<li><a href="{% url 'umuebles:lista_ocupacion' %}">Niveles de ocupación</a></li>
+
+{% endblock footerLink %}
+
 {% block acceso_ %}
 
 <a id="addClass" style="cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
@@ -9,7 +31,7 @@
 
 {% block titulo %}
 
-<title>Muebles por ambiente</title>
+<title>Tamaños de muebles</title>
 
 {% endblock titulo %}
 
@@ -24,25 +46,6 @@ Eliminar tamaño del mueble
 <p>¿Desea eliminar <span id="modal_name"></span>?</p>
 
 {% endblock validacion_modal %}
-
-{% block link %}
-
-<ul class="nav navbar-nav">
-  <li>
-    <a href="/mueble/tamano_mueble/nuevo" class="btn btn-default">Nuevo</a>
-  </li>
-  <li>
-    <a href="/mueble/tamano_mueble/0/" class="btn">Ver todos</a>
-  </li>
-  <li>
-    <a href="/mueble/" class="btn">Muebles</a>
-  </li>
-  <li>
-    <a href="/mueble/tamano/" class="btn">Tamaños</a>
-  </li>
-</ul>
-
-{% endblock link %}
 
 {% block pagination %}
 
@@ -114,38 +117,9 @@ class="col-md-7"
   {% for im in lista_muebles %}
 
   <div class="panel panel-default">
-    <table class="table table-hover" style="text-align: center;">
-      <tr class="active">
-        <th>Mueble</th>
-        <th>Tamaño</th>
-        <th>Densidad (Kgs/m3)</th>
-        <th>Ancho (cms)</th>
-        <th>Largo (cms)</th>
-        <th>Alto (cms)</th>
-        <th>Peso (Kgs)</th>
-        <th>Predefinido</th>
-        <th width="3">Editar</th>
-        <th width="3">Eliminar</th>
-      </tr>
-
-      {% for i in buscar_tamanomueble %}
-
-      <tr id="tr{{i.id}}">
-        <td>{{ i.mueble }}</td>
-        <td>{{ i.tamano }}</td>
-        <td>{{ i.densidad }}</td>
-        <td>{{ i.ancho }}</td>
-        <td>{{ i.largo }}</td>
-        <td>{{ i.alto }}</td>
-        <td>{{ i.peso }}</td>
-        <td>{{i.predefinido|yesno:"Si,No" }}</td>
-        <td width="3">
-          <a title="Editar" data-toggle="tooltip" data-placement="right" href="../editar/{{i.id}}" class="glyphicon glyphicon-edit" ></a>
-        </td>
-        <td width="3">
-          <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="Mueble: {{i.mueble}} Tamaño: {{ i.tamano }}"></a>
-        </td>
-      </tr>
+    <div style="cursor:pointer;" class="panel-heading" role="tab" id="heading{{im.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
 
           {{ im.mueble }}
 

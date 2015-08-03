@@ -3,24 +3,22 @@
 {% block link_navegacion %}
 
 <li class="linknav"><a href="{% url 'umuebles:lista_mueble' %}" style="color:#777;">Muebles</a></li>
-<li class="linknav"><a href="{% url 'umuebles:lista_forma_mueble' %}" style="color:#777;">Formas</a></li>
-<li class="linknav"><a href="{% url 'umuebles:lista_tamano' %}" style="color:#777;">Tamaños</a></li>
-<li class="linknav"><a href="{% url 'umuebles:lista_densidad' %}" style="color:#777;">Densidad</a></li>
-<li class="linknav"><a href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}" style="color:#777;">Muebles por ambientes</a></li>
-<li class="linknav"><a href="{% url 'umuebles:buscar_tamano_mueble' 0 %}" style="color:#777;">Tamaños de muebles</a></li>
 <li class="linknav"><a href="{% url 'umuebles:lista_tipo_mueble' %}" style="color:#777;">Tipo de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_forma_mueble' %}" style="color:#777;">Formas de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_tamano' %}" style="color:#777;">Tipos de tamaños</a></li>
+<li class="linknav"><a href="../tamano_mueble/0/" style="color:#777;">Tamaños de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_densidad' %}" style="color:#777;">Niveles de densidad</a></li>
 
 {% endblock link_navegacion %}
 
 {% block footerLink %}
 
-<li><a href="{% url 'umuebles:lista_mueble' %}" style="color:#777;">Muebles</a></li>
-<li><a href="{% url 'umuebles:lista_forma_mueble' %}" style="color:#777;">Formas</a></li>
-<li><a href="{% url 'umuebles:lista_tamano' %}" style="color:#777;">Tamaños</a></li>
-<li><a href="{% url 'umuebles:lista_densidad' %}" style="color:#777;">Densidad</a></li>
-<li><a href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}" style="color:#777;">Muebles por ambientes</a></li>
-<li><a href="{% url 'umuebles:buscar_tamano_mueble' 0 %}" style="color:#777;">Tamaños de muebles</a></li>
-<li><a href="{% url 'umuebles:lista_tipo_mueble' %}" style="color:#777;">Tipo de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_mueble' %}">Muebles</a></li>
+<li><a href="{% url 'umuebles:lista_tipo_mueble' %}">Tipo de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_forma_mueble' %}">Formas de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_tamano' %}">Tipos de tamaños</a></li>
+<li><a href="../tamano_mueble/0/">Tamaños de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_densidad' %}">Niveles de densidad</a></li>
 
 {% endblock footerLink %}
 

@@ -2,9 +2,29 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="{% url 'uambientes:lista_ambiente' %}" style="color:#777;">Ambiente</a></li>
+<li class="linknav"><a href="{% url 'uambientes:lista_ambiente' %}" style="color:#777;">Ambientes</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_mueble' %}" style="color:#777;">Muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_tipo_mueble' %}" style="color:#777;">Tipo de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_forma_mueble' %}" style="color:#777;">Formas de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_tamano' %}" style="color:#777;">Tipos de tamaños</a></li>
+<li class="linknav"><a href="../tamano_mueble/0/" style="color:#777;">Tamaños de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_densidad' %}" style="color:#777;">Niveles de densidad</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_ocupacion' %}" style="color:#777;">Niveles de ocupación</a></li>
 
 {% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'uambientes:lista_ambiente' %}">Ambientes</a></li>
+<li><a href="{% url 'umuebles:lista_mueble' %}">Muebles</a></li>
+<li><a href="{% url 'umuebles:lista_tipo_mueble' %}">Tipo de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_forma_mueble' %}">Formas de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_tamano' %}">Tipos de tamaños</a></li>
+<li><a href="../tamano_mueble/0/">Tamaños de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_densidad' %}">Niveles de densidad</a></li>
+<li><a href="{% url 'umuebles:lista_ocupacion' %}">Niveles de ocupación</a></li>
+
+{% endblock footerLink %}
 
 {% block acceso_ %}
 
@@ -31,22 +51,6 @@ Eliminar mueble por ambiente
 
 {% endblock validacion_modal %}
 
-{% block link %}
-
-<ul class="nav navbar-nav">
-  <li>
-    <a href="/mueble/mueble_ambiente/nuevo/0/" class="btn btn-default">Nuevo</a>
-  </li>
-  <li>
-    <a href="/mueble/mueble_ambiente/0/" class="btn">Ver todos</a>
-  </li>
-  <li>
-    <a href="/mueble/" class="btn">Muebles</a>
-  </li>
-</ul>
-
-{% endblock link %}
-
 {% block col1 %}
 
 class="col-md-6"
@@ -72,11 +76,11 @@ class="col-md-6"
 
     {{ muebleambientes.paginator.num_pages }}
 
-    Desde el mueble
+    Desde el ambiente
 
     {{ muebleambientes.start_index }}
 
-    hasta el mueble
+    hasta al ambiente
 
     {{ muebleambientes.end_index }}
 

@@ -3,8 +3,16 @@
 {% block link_navegacion %}
 
 <li class="linknav"><a href="{% url 'ucontenidos:lista_contenido' %}" style="color:#777;">Contenidos</a></li>
+<li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}" style="color:#777;">Servicios</a></li>
 
 {% endblock link_navegacion %}
+
+{% block footerlink %}
+
+<li><a href="{% url 'ucontenidos:lista_contenido' %}">Contenidos</a></li>
+<li><a href="{% url 'uservicios:lista_servicio' %}">Servicios</a></li>
+
+{% endblock footerlink %}
 
 {% block acceso_ %}
 
@@ -30,25 +38,6 @@ Eliminar servicio típico para contenido
 <p>¿Desea eliminar el registro: <span id="modal_name"></span>?</p>
 
 {% endblock validacion_modal %}
-
-{% block link %}
-
-<ul class="nav navbar-nav">
-  <li>
-    <a href="/contenido/contenido_servicio/nuevo" class="btn">Nuevo</a>
-  </li>
-  <li>
-    <a href="/contenido/contenido_servicio/0/" class="btn">Ver todos</a>
-  </li>
-  <li>
-    <a href="/contenido/" class="btn">Contenidos</a>
-  </li>
-  <li>
-    <a href="/servicio/" class="btn">Servicios</a>
-  </li>
-</ul>
-
-{% endblock link %}
 
 {% block col1 %}
 

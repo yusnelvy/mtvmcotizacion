@@ -1,14 +1,36 @@
 {% extends 'inicio/base_lista.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'umuebles:lista_mueble' %}" style="color:#777;">Muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_tipo_mueble' %}" style="color:#777;">Tipo de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_forma_mueble' %}" style="color:#777;">Formas de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_tamano' %}" style="color:#777;">Tipos de tamaños</a></li>
+<li class="linknav"><a href="../tamano_mueble/0/" style="color:#777;">Tamaños de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_ocupacion' %}" style="color:#777;">Niveles de ocupación</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'umuebles:lista_mueble' %}">Muebles</a></li>
+<li><a href="{% url 'umuebles:lista_tipo_mueble' %}">Tipo de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_forma_mueble' %}">Formas de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_tamano' %}">Tipos de tamaños</a></li>
+<li><a href="../tamano_mueble/0/">Tamaños de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_ocupacion' %}">Niveles de ocupación</a></li>
+
+{% endblock footerLink %}
+
 {% block titulo %}
 
-<title>Densidad de muebles</title>
+<title>Nivel de densidad de muebles</title>
 
 {% endblock titulo %}
 
 {% block titulo_modal %}
 
-Eliminar densidad de muebles
+Eliminar nivel de densidad de muebles
 
 {% endblock titulo_modal %}
 
@@ -20,7 +42,7 @@ Eliminar densidad de muebles
 
 {% block titulo_tabla %}
 
-<h2>Densidad de muebles</h2>
+<h2>Niveles de densidad de muebles</h2>
 
 {% endblock titulo_tabla %}
 
@@ -28,7 +50,7 @@ Eliminar densidad de muebles
 
 {% block cantidad_tabla %}
 
-<h6>Densidades de muebles registradas:
+<h6>Niveles de densidad de muebles registrados:
   <span class="badge" id="count_reg">
 
     {{ lista_densidad.count }}
@@ -57,11 +79,11 @@ Eliminar densidad de muebles
 
     {{ densidades.paginator.num_pages }}
 
-    Desde la densidad
+    Desde el nivel de densidad
 
     {{ densidades.start_index }}
 
-    hasta la densidad
+    hasta el nivel de densidad
 
     {{ densidades.end_index }}
 
@@ -81,7 +103,7 @@ Eliminar densidad de muebles
 {% block cuerpo_tabla %}
 
 <tr class="active">
-  <th>Densidad</th>
+  <th>Nivel de densidad</th>
   <th width="3">Editar</th>
   <th width="3">Eliminar</th>
 </tr>
@@ -108,8 +130,8 @@ Eliminar densidad de muebles
 {% block ayuda %}
 
 <div class="">
-  <p>El <strong>Densidad de mueble</strong> es una referencia que permite rápidamente asignar dimensiones a los <strong>Muebles</strong> de forma genérica, de forma que no se depende de la medición exacta de todos los <strong>Muebles</strong> encontrados.</p>
-  <p>La experiencia convertida en estadística es la fuente principal para la asignación de dimensiones a los <strong>Densidades</strong> típicos de cada <strong>Mueble</strong>, de este modo se facilita el trabajo del cotizador al momento de describir sus detalles a medida que se encuentran en un <strong>Ambiente</strong>.</p>
+  <p>El <strong>Nivel de densidad de mueble</strong> es una referencia que permite rápidamente asignar dimensiones a los <strong>Muebles</strong> de forma genérica, de forma que no se depende de la medición exacta de todos los <strong>Muebles</strong> encontrados.</p>
+  <p>La experiencia convertida en estadística es la fuente principal para la asignación de dimensiones a los <strong>Niveles de densidad</strong> típicos de cada <strong>Mueble</strong>, de este modo se facilita el trabajo del cotizador al momento de describir sus detalles a medida que se encuentran en un <strong>Ambiente</strong>.</p>
   <p>También incidirá significativamente sobre el rendimiento del cotizador, debido a que podrá hacer más rápido el trabajo de levantamiento de información en campo.</p>
 </div>
 

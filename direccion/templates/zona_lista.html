@@ -1,5 +1,21 @@
 {% extends 'inicio/base_lista.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'udirecciones:lista_pais' %}" style="color:#777;">Países</a></li>
+<li class="linknav"><a href="{% url 'udirecciones:lista_provincia' %}" style="color:#777;">Provincias</a></li>
+<li class="linknav"><a href="{% url 'udirecciones:lista_ciudad' %}" style="color:#777;">Ciudades</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'udirecciones:lista_pais' %}">Países</a></li>
+<li><a href="{% url 'udirecciones:lista_provincia' %}">Provincias</a></li>
+<li><a href="{% url 'udirecciones:lista_ciudad' %}">Ciudades</a></li>
+
+{% endblock footerLink %}
+
 {% block titulo %}
 
 <title>Zona</title>
