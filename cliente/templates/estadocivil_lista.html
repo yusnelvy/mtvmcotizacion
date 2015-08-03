@@ -2,21 +2,19 @@
 
 {% block link_navegacion %}
 
-{% for i, j in estadocivil_links %}
-
-<li class="linknav"><a href="{% url j %}" style="color:#777;">{{ i }}</a></li>
-
-{% endfor %}
+<li class="linknav"><a href="{% url 'uclientes:lista_cliente' %}" style="color:#777;">Clientes</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_sexo' %}" style="color:#777;">Sexo</a></li>
+<li class="linknav"><a href="{% url 'udirecciones:lista_tipo_direccion' %}" style="color:#777;">Tipos de dirección</a></li>
+<li class="linknav"><a href="{% url 'utelefonos:lista_tipotelefono' %}" style="color:#777;">Tipos de teléfono</a></li>
 
 {% endblock link_navegacion %}
 
 {% block footerLink %}
 
-{% for i, j in estadocivil_links %}
-
-<li class="linknav"><a href="{% url j %}" style="color:#777;">{{ i }}</a></li>
-
-{% endfor %}
+<li><a href="{% url 'uclientes:lista_cliente' %}">Clientes</a></li>
+<li><a href="{% url 'uclientes:lista_sexo' %}">Sexo</a></li>
+<li><a href="{% url 'udirecciones:lista_tipo_direccion' %}">Tipos de dirección</a></li>
+<li><a href="{% url 'utelefonos:lista_tipotelefono' %}">Tipos de teléfono</a></li>
 
 {% endblock footerLink %}
 
@@ -28,7 +26,7 @@
 
 {% block titulo_modal %}
 
-Eliminar Estado civil
+Eliminar estado civil
 
 {% endblock titulo_modal %}
 
@@ -40,7 +38,7 @@ Eliminar Estado civil
 
 {% block titulo_tabla %}
 
-<h2>Listado de estados civil </h2>
+<h2>Listado de estados civiles</h2>
 
 {% endblock titulo_tabla %}
 
@@ -48,7 +46,7 @@ Eliminar Estado civil
 
 {% block cantidad_tabla %}
 
-<h6>Cantidad de estados civil encontrados:
+<h6>Cantidad de estados civiles encontrados:
   <span class="badge" id="count_reg">
 
     {{ lista_estadocivil.count }}
@@ -62,10 +60,10 @@ Eliminar Estado civil
 {% block cuerpo_tabla %}
 
 <tr class="active">
-      <th>Estado civil</th>
-      <th width="3">Editar</th>
-      <th width="3">Eliminar</th>
-    </tr>
+  <th>Estado civil</th>
+  <th width="3">Editar</th>
+  <th width="3">Eliminar</th>
+</tr>
 
 {% for i in lista_estadocivil %}
 
@@ -89,7 +87,7 @@ Eliminar Estado civil
 
 <div class="">
   <p>El <strong>Estado civil</strong> es la situación de las personas físicas determinada por sus relaciones de familia, provenientes del matrimonio o del parentesco, que establece ciertos derechos y deberes.</p>
-  <p>Puede agregar más estados civil presionando el botón ( nuevo ).</p>
+  <p>Puede agregar más estados civil presionando el botón <i>+</i>.</p>
 </div>
 
 {% endblock ayuda %}

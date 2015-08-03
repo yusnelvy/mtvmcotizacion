@@ -1,20 +1,42 @@
 {% extends 'inicio/base_lista.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'uservicios:lista_material' %}" style="color:#777;">Materiales</a></li>
+<li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}" style="color:#777;">Servicios</a></li>
+<li class="linknav"><a href="{% url 'uservicios:lista_complejidad' %}" style="color:#777;">Niveles de complejidad</a></li>
+<li class="linknav"><a href="{% url 'uservicios:buscar_complejidad_servicio' 0 0 %}" style="color:#777;">Niveles de complejidad para el servicio
+</a></li>
+<li class="linknav"><a href="{% url 'uservicios:buscar_servicio_material' 0 0 %}" style="color:#777;">Servicios con sus materiales relacionados</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'uservicios:lista_material' %}">Materiales</a></li>
+<li><a href="{% url 'uservicios:lista_servicio' %}">Servicios</a></li>
+<li><a href="{% url 'uservicios:lista_complejidad' %}">Niveles de complejidad</a></li>
+<li><a href="{% url 'uservicios:buscar_complejidad_servicio' 0 0 %}">Niveles de complejidad para el servicio
+</a></li>
+<li><a href="{% url 'uservicios:buscar_servicio_material' 0 0 %}">Servicios con sus materiales relacionados</a></li>
+
+{% endblock footerLink %}
+
 {% block titulo %}
 
-<title>unidades</title>
+<title>Unidades de medida</title>
 
 {% endblock titulo %}
 
 {% block titulo_modal %}
 
-Eliminar unidad
+Eliminar unidad de medida
 
 {% endblock titulo_modal %}
 
 {% block validacion_modal %}
 
-<p>¿Realmente desea eliminar el unidad <span id="modal_name"></span>?</p>
+<p>¿Realmente desea eliminar el registro <span id="modal_name"></span>?</p>
 
 {% endblock validacion_modal %}
 
@@ -22,13 +44,13 @@ Eliminar unidad
 
 {% block titulo_tabla %}
 
-<h2>unidades</h2>
+<h2>Unidades de medida</h2>
 
 {% endblock titulo_tabla %}
 
 {% block cantidad_tabla %}
 
-<h6>Cantidad de unidads registrados:
+<h6>Cantidad de unidades de medida registradas:
   <span class="badge" id="count_reg">
 
     {{ lista_unidad.count }}
@@ -57,11 +79,11 @@ Eliminar unidad
 
     {{ unidades.paginator.num_pages }}
 
-    Desde la unidad
+    Desde la unidad de medida
 
     {{ unidades.start_index }}
 
-    hasta la unidad
+    hasta la unidad de medida
 
     {{ unidades.end_index }}
 
@@ -107,10 +129,8 @@ Eliminar unidad
 {% block ayuda %}
 
 <div class="">
-  <p>Los <strong>unidades</strong> comprenden aquellas actividades que se realizan sobre un <strong>Mueble</strong> para lograr su traslado en las mejores condiciones posibles.</p>
-  <p>Los <strong>unidades</strong> pueden sevir para proteger, modificar o brindar un tratamiento específico a cada <strong>Mueble</strong>.</p>
-  <p>Al momento de evaluar o realizar una mudanza, los <strong>unidades</strong> serán una parte importante de la calidad percibida por el cliente, al igual que un componente que incide sobre el precio final de la misma.</p>
-  <p>La apropiada identificación de <strong>unidades</strong> y su relación con los <strong>Materiales</strong> que involucran, serán claves para orientar la ejecución del trabajo de campo una vez contratada la mudanza.</p>
+  <p>Las <strong>Unidades de medida</strong> representan la referencia de la magnitud física de un material.</p>
+  <p>Las <strong>Unidades de medida</strong> se aplican a distancias y tamaños en metros o centímetros, áreas en metros cuadrados, volúmenes en metros cúbicos y pesos en kilogramos.</p>
 </div>
 
 {% endblock ayuda %}

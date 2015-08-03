@@ -1,5 +1,19 @@
 {% extends 'inicio/base_ficha.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'uservicios:lista_material' %}" style="color:#777;">Materiales</a></li>
+<li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}" style="color:#777;">Servicios</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'uservicios:lista_material' %}">Materiales</a></li>
+<li><a href="{% url 'uservicios:lista_servicio' %}">Servicios</a></li>
+
+{% endblock footerLink %}
+
 {% block acceso_ %}
 
 <a id="addClass" style="cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>

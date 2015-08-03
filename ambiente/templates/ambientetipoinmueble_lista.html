@@ -3,12 +3,14 @@
 {% block link_navegacion %}
 
 <li class="linknav"><a href="{% url 'uambientes:lista_ambiente' %}" style="color:#777;">Ambientes</a></li>
+<li class="linknav"><a href="{% url 'udirecciones:lista_tipo_inmueble' %}" style="color:#777;">Tipos de Inmueble</a></li>
 
 {% endblock link_navegacion %}
 
 {% block footerLink %}
 
-<li><a href="{% url 'uambientes:lista_ambiente' %}" style="color:#777;">Ambientes</a></li>
+<li><a href="{% url 'uambientes:lista_ambiente' %}">Ambientes</a></li>
+<li><a href="{% url 'udirecciones:lista_tipo_inmueble' %}">Tipos de Inmueble</a></li>
 
 {% endblock footerLink %}
 
