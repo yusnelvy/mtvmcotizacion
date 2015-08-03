@@ -2,17 +2,15 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a class="linknav" href="{% url 'ucontenidos:buscar_contenidoservicio' 0 %}" style="color:#777; text-decoration: none;">Servicios típicos para contenidos
-</a></li>
-<li class="linknav"><a class="linknav" href="{% url 'ucontenidos:buscar_contenidotipico' 0 %}" style="color:#777; text-decoration: none;">Contenidos típicos por mueble
-</a></li>
+<li class="linknav"><a href="{% url 'ucontenidos:buscar_contenidoservicio' 0 %}" style="color:#777; text-decoration: none;">Servicios típicos para contenidos</a></li>
+<li class="linknav"><a href="{% url 'ucontenidos:buscar_contenidotipico' 0 %}" style="color:#777; text-decoration: none;">Contenidos típicos por mueble</a></li>
 
 {% endblock link_navegacion %}
 
 {% block footerLink %}
 
-<li><a href="{% url 'ucontenidos:buscar_contenidoservicio' 0 %}">Contenido de Servicios</a></li>
-<li><a href="{% url 'ucontenidos:buscar_contenidotipico' 0 %}">Contenido Típico</a></li>
+<li><a href="{% url 'ucontenidos:buscar_contenidoservicio' 0 %}">Servicios típicos para contenidos</a></li>
+<li><a href="{% url 'ucontenidos:buscar_contenidotipico' 0 %}">Contenidos típicos por mueble</a></li>
 
 {% endblock footerLink %}
 
