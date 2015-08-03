@@ -429,7 +429,6 @@ def buscar_tamano_mueble(request, idmueble=0):
         listar_tamano = Tamano_Mueble.objects.values('tamano', 'tamano__descripcion', 'mueble').annotate(tcount=Count('tamano')).order_by('tamano')
 
         mensaje = ""
-        buscar_ta2 = Tamano_Mueble.objects.values('tamano', 'tamano__descripcion', 'mueble').annotate(tcount=Count('tamano')).order_by('tamano')
 
     paginator = Paginator(lista_mueble, 25)
     # Show 25 contacts per page
