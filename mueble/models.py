@@ -119,7 +119,7 @@ class Tamano_Mueble(models.Model):
     ancho = models.DecimalField(max_digits=5, decimal_places=2)
     largo = models.DecimalField(max_digits=5, decimal_places=2)
     alto = models.DecimalField(max_digits=5, decimal_places=2)
-    peso = models.DecimalField(max_digits=5, decimal_places=2)
+    peso = models.DecimalField(max_digits=8, decimal_places=3)
     predefinido = models.BooleanField(default=None)
 
     def __str__(self):

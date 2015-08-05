@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 
 PISOS_CHOICES = (
     (1, '1'),
@@ -61,23 +60,32 @@ class Presupuesto(models.Model):
     cantidad_ambientes = models.IntegerField(blank=True, default=0)
     cantidad_muebles = models.IntegerField(blank=True, default=0)
     cantidad_contenedores = models.IntegerField(blank=True, default=0)
-    total_peso_contenedores = models.DecimalField(max_digits=7, decimal_places=2,
-                                                  blank=True, default=0.00)
-    total_peso_muebles = models.DecimalField(max_digits=5, decimal_places=2,
-                                             blank=True, default=0.00)
-    total_peso_contenidos = models.DecimalField(max_digits=7, decimal_places=2,
-                                                blank=True, default=0.00)
-    total_volumen_muebles = models.DecimalField(max_digits=5, decimal_places=2,
-                                                blank=True, default=0.00)
-    total_volumen_contenedores = models.DecimalField(max_digits=7, decimal_places=2,
-                                                     blank=True, default=0.00)
-    total_volumen_contenidos = models.DecimalField(max_digits=7, decimal_places=2,
+    total_capacidad_vehiculo = models.DecimalField(max_digits=8, decimal_places=3,
                                                    blank=True, default=0.00)
-    total_m3 = models.DecimalField(max_digits=7, decimal_places=2,
+    total_peso_contenedores = models.DecimalField(max_digits=8, decimal_places=3,
+                                                  blank=True, default=0.00)
+    total_peso_muebles = models.DecimalField(max_digits=8, decimal_places=3,
+                                             blank=True, default=0.00)
+    total_peso_contenidos = models.DecimalField(max_digits=8, decimal_places=3,
+                                                blank=True, default=0.00)
+    total_peso_materiales = models.DecimalField(max_digits=8, decimal_places=3,
+                                                blank=True, default=0.00)
+    total_peso_mudanza = models.DecimalField(max_digits=8, decimal_places=3,
+                                             blank=True, default=0.00)
+    total_volumen_muebles = models.DecimalField(max_digits=8, decimal_places=3,
+                                                blank=True, default=0.00)
+    total_volumen_contenedores = models.DecimalField(max_digits=8, decimal_places=3,
+                                                     blank=True, default=0.00)
+    total_volumen_contenidos = models.DecimalField(max_digits=8, decimal_places=3,
+                                                   blank=True, default=0.00)
+    total_volumen_materiales = models.DecimalField(max_digits=8, decimal_places=3,
+                                                   blank=True, default=0.00)
+    total_m3 = models.DecimalField(max_digits=8, decimal_places=3,
                                    blank=True, default=0.00)
     recorrido_km = models.DecimalField(max_digits=7, decimal_places=2,
                                        blank=True, default=0.00)
     tiempo_recorrido = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
+    tiempo_servicios = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
     tiempo_carga = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
     tiempo_total = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
     monto_vehiculo_hora = models.DecimalField(max_digits=7, decimal_places=2,
@@ -86,12 +94,18 @@ class Presupuesto(models.Model):
                                                    blank=True, default=0.00)
     monto_persona = models.DecimalField(max_digits=7, decimal_places=2,
                                         blank=True, default=0.00)
+    monto_materiales = models.DecimalField(max_digits=7, decimal_places=2,
+                                           blank=True, default=0.00)
+    monto_servicios = models.DecimalField(max_digits=7, decimal_places=2,
+                                          blank=True, default=0.00)
     monto_sin_impuesto = models.DecimalField(max_digits=7, decimal_places=2,
                                              blank=True, default=0.00)
     monto_impuesto = models.DecimalField(max_digits=7, decimal_places=2,
                                          blank=True, default=0.00)
     monto_con_impuesto = models.DecimalField(max_digits=7, decimal_places=2,
                                              blank=True, default=0.00)
+    estado = models.CharField(max_length=20, default='Iniciado')
+    activo = models.CharField(max_length=20, default='Activado')
 
     def __str__(self):
         return self.dni
@@ -108,7 +122,8 @@ class Presupuesto_direccion(models.Model):
     tipo_direccion = models.CharField(max_length=100)
     tipo_inmueble = models.CharField(max_length=100)
     ocupacidad_inmueble = models.CharField(max_length=100)
-    valor_ocupacidad = models.DecimalField(max_digits=3, decimal_places=2)
+    valor_ocupacidad = models.DecimalField(max_digits=5, decimal_places=2,
+                                           blank=True, default=0.00)
     pisos = models.IntegerField(choices=PISOS_CHOICES, default=0)
     pisos_escalera = models.IntegerField(choices=PISOS_RECORRER_CHOICES, default=0)
     rampa = models.BooleanField()
@@ -117,9 +132,12 @@ class Presupuesto_direccion(models.Model):
     pisos_ascensor_servicio = models.IntegerField(choices=PISOS_CHOICES, default=0)
     pisos_ascensor = models.IntegerField(choices=PISOS_CHOICES, default=0)
     complejidad = models.CharField(max_length=100)
-    factor_complejidad = models.DecimalField(max_digits=4, decimal_places=2)
-    valor_ambiente_complejidad = models.DecimalField(max_digits=13, decimal_places=2)
-    valor_metrocubico_complejiadad = models.DecimalField(max_digits=13, decimal_places=2)
+    factor_complejidad = models.DecimalField(max_digits=4, decimal_places=2,
+                                             blank=True, default=0.00)
+    valor_ambiente_complejidad = models.DecimalField(max_digits=13, decimal_places=2,
+                                                     blank=True, default=0.00)
+    valor_metrocubico_complejiadad = models.DecimalField(max_digits=13, decimal_places=2,
+                                                         blank=True, default=0.00)
     distancia_vehiculo = models.IntegerField(choices=DISTANCIA_VEHICULO_INMUEBLE, default=0)
     total_m2 = models.DecimalField(choices=METROSCUADRADO_INMUEBLE, default=0, max_digits=5, decimal_places=2)
 
@@ -142,17 +160,17 @@ class Presupuesto_Detalle(models.Model):
     alto = models.DecimalField(max_digits=5, decimal_places=2)
     densidad = models.CharField(max_length=100)
     valor_densidad = models.DecimalField(max_digits=5, decimal_places=2)
-    peso = models.DecimalField(max_digits=5, decimal_places=2)
+    peso = models.DecimalField(max_digits=8, decimal_places=3)
     ocupacidad = models.CharField(max_length=100)
-    valor_ocupacidad = models.DecimalField(max_digits=3, decimal_places=2)
+    valor_ocupacidad = models.DecimalField(max_digits=5, decimal_places=2)
     cantidad_contenedor = models.IntegerField()
-    volumen_contenido = models.DecimalField(max_digits=7, decimal_places=2)
-    volumen_contenedor = models.DecimalField(max_digits=7, decimal_places=2)
-    volumen_mueble = models.DecimalField(max_digits=7, decimal_places=2)
-    capacidad_peso_contenedor = models.DecimalField(max_digits=5, decimal_places=2)
-    capacidad_volumen_contenedor = models.DecimalField(max_digits=5, decimal_places=2)
-    peso_contenido = models.DecimalField(max_digits=7, decimal_places=2)
-    peso_contenedor = models.DecimalField(max_digits=7, decimal_places=2)
+    volumen_contenido = models.DecimalField(max_digits=8, decimal_places=3)
+    volumen_contenedor = models.DecimalField(max_digits=8, decimal_places=3)
+    volumen_mueble = models.DecimalField(max_digits=8, decimal_places=3)
+    capacidad_peso_contenedor = models.DecimalField(max_digits=8, decimal_places=3)
+    capacidad_volumen_contenedor = models.DecimalField(max_digits=8, decimal_places=3)
+    peso_contenido = models.DecimalField(max_digits=8, decimal_places=3)
+    peso_contenedor = models.DecimalField(max_digits=8, decimal_places=3)
     descripcion_contenedor = models.CharField(max_length=100)
 
     def __str__(self):
@@ -167,11 +185,13 @@ class Presupuesto_Detalle(models.Model):
 class Presupuesto_servicio(models.Model):
     detalle_presupuesto = models.ForeignKey(Presupuesto_Detalle)
     servicio = models.CharField(max_length=100)
-    tarifa = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
+    monto_servicio = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
     material = models.TextField()
+    cantidad_material = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
+    precio_material = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
     monto_material = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
-    volumen_material = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
-    peso_material = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
+    volumen_material = models.DecimalField(max_digits=8, decimal_places=3, blank=True, default='0.00')
+    peso_material = models.DecimalField(max_digits=8, decimal_places=3, blank=True, default='0.00')
     tiempo_aplicado = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
 
     def __str__(self):

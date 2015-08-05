@@ -1,6 +1,6 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponseRedirect, JsonResponse
-from django.views.generic import ListView, DetailView, View, UpdateView
+from django.views.generic import ListView, DetailView, View, UpdateView, DeleteView
 from presupuesto.models import Presupuesto, Presupuesto_Detalle, \
     Presupuesto_direccion, Presupuesto_servicio
 from presupuesto.forms import PresupuestoForm, \
@@ -184,6 +184,17 @@ class PresupuestoDireccionView(View):
             formResult.ocupacidad_inmueble = ocupacidad_inmueble.descripcion
             formResult.valor_ocupacidad = ocupacidad_inmueble.valor
             formResult.save()
+
+            presu = Presupuesto_direccion.objects.filter(presupuesto=request.POST['presupuesto']).values('tipo_direccion').annotate(total=Count('tipo_direccion')).order_by('total')
+            if presu.tipo_direccion == 'Origen':
+                cantOrig = presu[0].total
+            else:
+                cantDest = presu[0].total
+
+            if cantOrig > 0 and cantDest > 0:
+                updatepresu = Presupuesto.objects.filter(pk=request.POST['presupuesto'])
+                updatepresu.update(estado='Preparado')
+
             # <process form cleaned data>
             redirect_to = request.GET['next']
 
@@ -287,9 +298,10 @@ class PresupuestoDetalleView(View):
             presu = Presupuesto_Detalle.objects.filter(presupuesto=self.request.POST.get('presupuesto'))
             cant_ambiente = presu.annotate(acount=Count('ambiente')).order_by('ambiente')
             cant_mueble = presu.count()
-            reporter = Presupuesto.objects.filter(pk=self.request.POST.get('presupuesto'))
-            reporter.update(cantidad_ambientes=cant_ambiente[0].acount)
-            reporter.update(cantidad_muebles=cant_mueble)
+            updatepresu = Presupuesto.objects.filter(pk=self.request.POST.get('presupuesto'))
+            updatepresu.update(cantidad_ambientes=cant_ambiente[0].acount)
+            updatepresu.update(cantidad_muebles=cant_mueble)
+            updatepresu.update(estado='Muebles cargados')
 
             # <process form cleaned data>
             redirect_to = request.GET['next']
@@ -362,6 +374,9 @@ class PresupuestoServicioView(View):
                                                               detalle_presupuesto_id=self.request.POST.get('detalle_presupuesto'),
                                                               tiempo_aplicado=tiempoaplicado)
                 agregar.save()
+
+                updatepresu = Presupuesto.objects.filter(presupuesto_detalle__id=request.POST['detalle_presupuesto'])
+                updatepresu.update(estado='Servicios cargados')
 
             # <process form cleaned data>
             redirect_to = request.GET['next']
@@ -508,6 +523,113 @@ class PresupuestoServicioUpdate(UpdateView):
             return render_to_response(self.template_name, self.get_context_data())
 
 
+class PresupuestoDetailResumen(DetailView):
+
+    model = Presupuesto
+    context_object_name = "presupuesto"
+    template_name = 'presupuesto/presupuesto_resumen.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(PresupuestoDetailResumen, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        presupuesto = update_presupuesto(self.request, self.object.pk)
+        context['presupuesto'] = presupuesto
+        context['detalle_list'] = Presupuesto_Detalle.objects.filter(presupuesto=self.object.pk)
+        context['direccion_origen'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk, tipo_direccion="Origen")
+        context['direccion_destino'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk, tipo_direccion="Destino")
+        context['now'] = timezone.now()
+        return context
+
+
+class PresupuestoDelete(DeleteView):
+    model = Presupuesto
+    form_class = PresupuestoForm
+    template_name = 'inicio/server_confirm_delete.html'
+
+    def delete(self, request, *args, **kwargs):
+        self.obj = self.get_object()
+        self.obj.activo = 'Anulado'
+        self.obj.save()
+
+        redirect_to = self.request.GET['next']
+        if redirect_to:
+            return HttpResponseRedirect(redirect_to)
+        else:
+            return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+
+
+class PresupuestoDireccionDelete(DeleteView):
+    model = Presupuesto_direccion
+    template_name = 'inicio/server_confirm_delete.html'
+    #success_url = reverse_lazy('upresupuesto:PresupuestoList')
+
+    def delete(self, request, *args, **kwargs):
+        self.obj = self.get_object()
+        presu = self.obj.presupuesto
+        self.obj.delete()
+
+        presu = Presupuesto_direccion.objects.filter(presupuesto=presu).values('tipo_direccion').annotate(total=Count('tipo_direccion')).order_by('total')
+        if presu[0].tipo_direccion == 'Origen':
+            cantOrig = presu[0].total
+        else:
+            cantDest = presu[0].total
+
+        if cantOrig <= 0 or cantDest <= 0:
+            updatepresu = Presupuesto.objects.filter(pk=presu)
+            updatepresu.update(estado='Iniciado')
+
+        redirect_to = self.request.GET['next']
+        if redirect_to:
+            return HttpResponseRedirect(redirect_to)
+        else:
+            return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+
+
+class PresupuestoDetalleDelete(DeleteView):
+    model = Presupuesto_Detalle
+    template_name = 'inicio/server_confirm_delete.html'
+    #success_url = reverse_lazy('upresupuesto:PresupuestoList')
+
+    def delete(self, request, *args, **kwargs):
+        self.obj = self.get_object()
+        presu = self.obj.presupuesto
+        self.obj.delete()
+
+        cant_item = Presupuesto_Detalle.objects.filter(presupuesto=presu).count()
+        if cant_item <= 0:
+            updatepresu = Presupuesto.objects.filter(pk=presu)
+            updatepresu.update(estado='Preparado')
+
+        redirect_to = self.request.GET['next']
+        if redirect_to:
+            return HttpResponseRedirect(redirect_to)
+        else:
+            return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+
+
+class PresupuestoServicioDelete(DeleteView):
+    model = Presupuesto_servicio
+    template_name = 'inicio/server_confirm_delete.html'
+    #success_url = reverse_lazy('upresupuesto:PresupuestoList')
+
+    def delete(self, request, *args, **kwargs):
+        self.obj = self.get_object()
+        presu = self.obj.detalle_presupuesto.id
+        Presupuesto_servicio.objects.filter(servicio=self.obj.servicio).delete()
+
+        cant_item = Presupuesto_servicio.objects.filter(detalle_presupuesto=presu).count()
+        if cant_item <= 0:
+            updatepresu = Presupuesto.objects.filter(presupuesto_detalle__id=presu)
+            updatepresu.update(estado='Muebles cargados')
+
+        redirect_to = self.request.GET['next']
+        if redirect_to:
+            return HttpResponseRedirect(redirect_to)
+        else:
+            return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+
+
 def ajax_tamano_request(request):
     # Expect an auto 'type' to be passed in via Ajax and POST
     if request.is_ajax() and request.method == 'POST':
@@ -522,6 +644,8 @@ def update_presupuesto(request, pk):
 
     #actualizar valore de canti_ambiente y cant_mueble en presupuesto
     presu = Presupuesto_Detalle.objects.filter(presupuesto=pk)
+    materiales = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto_id=pk)
+
     cant_ambiente = presu.annotate(acount=Count('ambiente')).order_by('ambiente')
     cant_mueble = presu.count()
     cant_contenedor = presu.aggregate(cant_contenedor=Sum('cantidad_contenedor'))
@@ -531,8 +655,12 @@ def update_presupuesto(request, pk):
     volumen_muebles = presu.aggregate(vol_mueble=Sum('volumen_mueble'))
     volumen_contenedores = presu.aggregate(vol_contenedor=Sum('volumen_contenedor'))
     volumen_contenidos = presu.aggregate(vol_contenido=Sum('volumen_contenido'))
+    peso_materiales = materiales.aggregate(pes_material=Sum('peso_material'))
+    volumen_materiales = materiales.aggregate(vol_material=Sum('volumen_material'))
+    #monto_materiales = materiales.aggregate(mont_material=Sum('monto_material'))
 
-    total_m3 = volumen_muebles['vol_mueble'] + volumen_contenedores['vol_contenedor']
+    total_m3 = volumen_muebles['vol_mueble'] + volumen_contenedores['vol_contenedor'] + volumen_materiales['vol_material']
+    totalpeso = peso_muebles['pes_mueble'] + peso_contenidos['pes_contenido'] + peso_contenedores['pes_contenedor'] + peso_materiales['pes_material']
 
     updatepresu = Presupuesto.objects.filter(pk=pk)
     updatepresu.update(cantidad_ambientes=cant_ambiente[0].acount)
@@ -544,6 +672,9 @@ def update_presupuesto(request, pk):
     updatepresu.update(total_volumen_muebles=volumen_muebles['vol_mueble'])
     updatepresu.update(total_volumen_contenedores=volumen_contenedores['vol_contenedor'])
     updatepresu.update(total_volumen_contenidos=volumen_contenidos['vol_contenido'])
+    updatepresu.update(total_peso_materiales=peso_materiales['pes_material'])
+    updatepresu.update(total_volumen_materiales=volumen_materiales['vol_material'])
+    updatepresu.update(total_peso_mudanza=totalpeso)
     updatepresu.update(total_m3=total_m3)
 
     presupuesto = Presupuesto.objects.get(pk=pk)
@@ -566,22 +697,19 @@ def update_presupuesto(request, pk):
     array_capacidadpeso = []
 
     j = -1
-    Vrestopeso = presupuesto.total_peso_contenedores + presupuesto.total_peso_muebles
-    Vrestom3 = presupuesto.total_m3
-
-    for i in range(len(vehiculos)):
-        array_capacidadpeso.append([0]*6)
-        array_capacidadm3.append([0]*6)
+    vrestopeso = presupuesto.total_peso_contenedores + presupuesto.total_peso_muebles
+    vrestom3 = presupuesto.total_m3
 
     for i in range(len(vehiculos)):
         sw = 0
 
-        Entero = int(Vrestopeso / vehiculos[i].capacidad_peso)
-        Vrestopeso = Vrestopeso - Entero * vehiculos[i].capacidad_peso
-        if Entero > 0:
+        entero = int(vrestopeso / vehiculos[i].capacidad_peso)
+        vrestopeso = vrestopeso - entero * vehiculos[i].capacidad_peso
+        if entero > 0:
             j += 1
             sw = 1
-            array_capacidadpeso[j][0] = Entero
+            array_capacidadpeso.append([j]*6)
+            array_capacidadpeso[j][0] = entero
             array_capacidadpeso[j][1] = vehiculos[i].capacidad_peso * array_capacidadpeso[j][0]
             array_capacidadpeso[j][2] = vehiculos[i].tarifa_hora * array_capacidadpeso[j][0]
             array_capacidadpeso[j][3] = vehiculos[i].tarifa_recorrido * array_capacidadpeso[j][0]
@@ -594,9 +722,10 @@ def update_presupuesto(request, pk):
                                         ' - Volumen Total: ' + array_capacidadpeso[j][1] + \
                                         ' - Total Tarifa $/h: ' + array_capacidadpeso[j][2] + \
                                         ' - Total Tarifa $/Km: ' + array_capacidadpeso[j][3]
-        if Vrestopeso > 0:
+        if vrestopeso > 0:
             if i == len(vehiculos)-1:
                 j += 1
+                array_capacidadpeso.append([j]*6)
                 array_capacidadpeso[j][0] = 1
                 array_capacidadpeso[j][1] = vehiculos[i].capacidad_peso * array_capacidadpeso[j][0]
                 array_capacidadpeso[j][2] = vehiculos[i].tarifa_hora * array_capacidadpeso[j][0]
@@ -610,12 +739,14 @@ def update_presupuesto(request, pk):
                                             ' - Volumen Total: ' + str(array_capacidadpeso[j][1]) + \
                                             ' - Total Tarifa $/h: ' + str(array_capacidadpeso[j][2]) + \
                                             ' - Total Tarifa $/Km: ' + str(array_capacidadpeso[j][3])
-                Vrestopeso = Vrestopeso - array_capacidadpeso[j][1]
+                vrestopeso = vrestopeso - array_capacidadpeso[j][1]
 
-            elif (Vrestopeso > vehiculos[i+1].capacidad_peso):
+            elif (vrestopeso > vehiculos[i+1].capacidad_peso):
                 if sw == 0:
                     j += 1
                     sw = 1
+                    array_capacidadpeso.append([j]*6)
+
                 array_capacidadpeso[j][0] = array_capacidadpeso[j][0] + 1
                 array_capacidadpeso[j][1] = vehiculos[i].capacidad_peso * array_capacidadpeso[j][0]
                 array_capacidadpeso[j][2] = vehiculos[i].tarifa_hora * array_capacidadpeso[j][0]
@@ -629,11 +760,11 @@ def update_presupuesto(request, pk):
                                             ' - Volumen Total: ' + array_capacidadpeso[j][1] + \
                                             ' - Total Tarifa $/h: ' + array_capacidadpeso[j][2] + \
                                             ' - Total Tarifa $/Km: ' + array_capacidadpeso[j][3]
-                Vrestopeso = Vrestopeso - array_capacidadpeso[j][1]
-        if Vrestopeso <= 0:
+                vrestopeso = vrestopeso - array_capacidadpeso[j][1]
+        if vrestopeso <= 0:
             break
 
-    for i in range(j+1):
+    for i in range(len(array_capacidadpeso)):
 
         cant_vehiculokg = cant_vehiculokg + array_capacidadpeso[i][0]
         cap_vehiculovolkg = cap_vehiculovolkg + array_capacidadpeso[i][1]
@@ -650,12 +781,13 @@ def update_presupuesto(request, pk):
     for i in range(len(vehiculos)):
         sw = 0
 
-        Entero = int(Vrestom3 / vehiculos[i].capacidad_volumen)
-        Vrestom3 = Vrestom3 - Entero * vehiculos[i].capacidad_volumen
-        if Entero > 0:
+        entero = int(vrestom3 / vehiculos[i].capacidad_volumen)
+        vrestom3 = vrestom3 - entero * vehiculos[i].capacidad_volumen
+        if entero > 0:
             j += 1
             sw = 1
-            array_capacidadm3[j][0] = Entero
+            array_capacidadm3.append([j]*6)
+            array_capacidadm3[j][0] = entero
             array_capacidadm3[j][1] = vehiculos[i].capacidad_volumen * array_capacidadm3[j][0]
             array_capacidadm3[j][2] = vehiculos[i].tarifa_hora * array_capacidadm3[j][0]
             array_capacidadm3[j][3] = vehiculos[i].tarifa_recorrido * array_capacidadm3[j][0]
@@ -668,9 +800,10 @@ def update_presupuesto(request, pk):
                                       ' - Volumen Total: ' + array_capacidadm3[j][1] + \
                                       ' - Total Tarifa $/h: ' + array_capacidadm3[j][2] + \
                                       ' - Total Tarifa $/Km: ' + array_capacidadm3[j][3]
-        if Vrestom3 > 0:
+        if vrestom3 > 0:
             if i == len(vehiculos)-1:
                 j += 1
+                array_capacidadm3.append([j]*6)
                 array_capacidadm3[j][0] = 1
                 array_capacidadm3[j][1] = vehiculos[i].capacidad_volumen * array_capacidadm3[j][0]
                 array_capacidadm3[j][2] = vehiculos[i].tarifa_hora * array_capacidadm3[j][0]
@@ -684,12 +817,13 @@ def update_presupuesto(request, pk):
                                           ' - Volumen Total: ' + str(array_capacidadm3[j][1]) + \
                                           ' - Total Tarifa $/h: ' + str(array_capacidadm3[j][2]) + \
                                           ' - Total Tarifa $/Km: ' + str(array_capacidadm3[j][3])
-                Vrestom3 = Vrestom3 - array_capacidadm3[j][1]
+                vrestom3 = vrestom3 - array_capacidadm3[j][1]
 
-            elif (Vrestom3 > vehiculos[i+1].capacidad_volumen):
+            elif (vrestom3 > vehiculos[i+1].capacidad_volumen):
                 if sw == 0:
                     j += 1
                     sw = 1
+                    array_capacidadm3.append([j]*6)
                 array_capacidadm3[j][0] = array_capacidadm3[j][0] + 1
                 array_capacidadm3[j][1] = vehiculos[i].capacidad_volumen * array_capacidadm3[j][0]
                 array_capacidadm3[j][2] = vehiculos[i].tarifa_hora * array_capacidadm3[j][0]
@@ -703,11 +837,11 @@ def update_presupuesto(request, pk):
                                           ' - Volumen Total: ' + array_capacidadm3[j][1] + \
                                           ' - Total Tarifa $/h: ' + array_capacidadm3[j][2] + \
                                           ' - Total Tarifa $/Km: ' + array_capacidadm3[j][3]
-                Vrestom3 = Vrestom3 - array_capacidadm3[j][1]
-        if Vrestom3 <= 0:
+                vrestom3 = vrestom3 - array_capacidadm3[j][1]
+        if vrestom3 <= 0:
             break
 
-    for i in range(j+1):
+    for i in range(len(array_capacidadm3)):
 
         cant_vehiculovol = cant_vehiculovol + array_capacidadm3[i][0]
         cap_vehiculovol2 = cap_vehiculovol2 + array_capacidadm3[i][1]
@@ -734,25 +868,4 @@ def update_presupuesto(request, pk):
 
     presupuesto = Presupuesto.objects.get(pk=pk)
 
-    #context = {'presupuesto': presupuesto}
-   # return render(request, 'presupuesto/presupuesto_resumen.html', context)
     return(presupuesto)
-
-
-class PresupuestoDetailResumen(DetailView):
-
-    model = Presupuesto
-    context_object_name = "presupuesto"
-    template_name = 'presupuesto/presupuesto_resumen.html'
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(PresupuestoDetailResumen, self).get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
-        presupuesto = update_presupuesto(self.request, self.object.pk)
-        context['presupuesto'] = presupuesto
-        context['detalle_list'] = Presupuesto_Detalle.objects.filter(presupuesto=self.object.pk)
-        context['direccion_origen'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk, tipo_direccion="Origen")
-        context['direccion_destino'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk, tipo_direccion="Destino")
-        context['now'] = timezone.now()
-        return context

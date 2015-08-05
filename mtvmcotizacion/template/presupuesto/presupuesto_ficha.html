@@ -12,9 +12,14 @@
 
 <div class="panel panel-default">
   <p>Hoy es: {{ now|date }}</p>
-  {% url 'upresupuestos:update_presupuesto' presupuesto.id %}
-  <p><a data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a></p>
+  <p>
+    {% if direccion_origen and direccion_destino and detalle_list %}
+
+    <a data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}" style="float:right;" class="">ver resumen</a></p>
+
+    {% endif %}
   <table class="table table-hover">
+
     <tr>
       <td>
         <strong>Nro presupuesto: </strong>
@@ -89,7 +94,7 @@
 
     <small>
       <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_origen.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-      <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('direccion/delete/?codigo={{direc_origen.id}}','{{direc_origen.id}}'); return false" class="glyphicon glyphicon-remove"></a>
+      <a style="padding:0px 0px 8px 8px;" href="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_origen.id %}?next={{request.get_full_path}}" onclick="" class="glyphicon glyphicon-remove"></a>
     </small>
   </p>
   {% endfor %}
@@ -132,7 +137,7 @@
     </p>
     <small>
       <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_destino.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-      <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('direccion/delete/?codigo={{i.id}}','{{i.id}}'); return false" class="glyphicon glyphicon-remove"></a>
+      <a style="padding:0px 0px 8px 8px;" href="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_destino.id %}?next={{request.get_full_path}}"  class="glyphicon glyphicon-remove"></a>
     </small>
     <a href="{{ direc_destino.get_absolute_url }}">editar</a>
   </p>
@@ -203,7 +208,7 @@
     <p>
       <small>
         <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoServicioUpdate' det_servivio.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-        <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('direccion/delete/?codigo={{i.id}}','{{i.id}}'); return false" class="glyphicon glyphicon-remove"></a>
+        <a style="padding:0px 0px 8px 8px;" href="{% url 'upresupuestos:PresupuestoServicioDelete' det_servivio.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-remove"></a>
 
       </small>
     </p>
