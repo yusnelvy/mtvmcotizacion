@@ -1,5 +1,21 @@
 {% extends 'inicio/base_ficha.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}" style="color:#777;">Servicios
+</a></li>
+
+<li class="linknav"><a href="{% url 'uservicios:lista_complejidad' %}" style="color:#777;">Niveles de complejidad</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'uservicios:lista_servicio' %}">Servicios</a></li>
+<li><a href="{% url 'uservicios:lista_complejidad' %}">Niveles de complejidad</a></li>
+
+{% endblock footerLink %}
+
 {% block acceso_ %}
 
 <a id="addClass" style="cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>

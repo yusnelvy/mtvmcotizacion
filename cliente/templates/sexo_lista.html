@@ -2,21 +2,19 @@
 
 {% block link_navegacion %}
 
-{% for i, j in sexo_links %}
-
-<li class="linknav"><a href="{% url j %}" style="color:#777;">{{ i }}</a></li>
-
-{% endfor %}
+<li class="linknav"><a href="{% url 'uclientes:lista_cliente' %}" style="color:#777;">Clientes</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_estadocivil' %}" style="color:#777;">Estado civil</a></li>
+<li class="linknav"><a href="{% url 'udirecciones:lista_tipo_direccion' %}" style="color:#777;">Tipos de dirección</a></li>
+<li class="linknav"><a href="{% url 'utelefonos:lista_tipotelefono' %}" style="color:#777;">Tipos de teléfono</a></li>
 
 {% endblock link_navegacion %}
 
 {% block footerLink %}
 
-{% for i, j in cliente_links %}
-
-<li><a href="{% url j %}">{{ i }}</a></li>
-
-{% endfor %}
+<li><a href="{% url 'uclientes:lista_cliente' %}">Clientes</a></li>
+<li><a href="{% url 'uclientes:lista_estadocivil' %}">Estado civil</a></li>
+<li><a href="{% url 'udirecciones:lista_tipo_direccion' %}">Tipos de dirección</a></li>
+<li><a href="{% url 'utelefonos:lista_tipotelefono' %}">Tipos de teléfono</a></li>
 
 {% endblock footerLink %}
 
@@ -28,7 +26,7 @@
 
 {% block titulo_modal %}
 
-Eliminar Sexo
+Eliminar sexo
 
 {% endblock titulo_modal %}
 
@@ -40,7 +38,7 @@ Eliminar Sexo
 
 {% block titulo_tabla %}
 
-<h2>Listado de sexos </h2>
+<h2>Listado de sexos</h2>
 
 {% endblock titulo_tabla %}
 
@@ -88,9 +86,8 @@ Eliminar Sexo
 {% block ayuda %}
 
 <div class="">
-  <p>El <strong>Sexo</strong> define a la persona como varón y mujer. </p>
-  <p>El <strong>cliente</strong> tiene un sexo que lo caracteriza si es varón o mujer.</p>
-  <p>Puede agregar más sexo presionando el botón ( nuevo ).</p>
+  <p>El <strong>Sexo</strong> define a la persona como hombre, mujer o de la forma que cada quien lo desee.</p>
+  <p>Nuestra sociedad acepta la diversidad sexual por lo que puede agregar más sexos presionando el botón <i>+</i>.</p>
 </div>
 
 {% endblock ayuda %}

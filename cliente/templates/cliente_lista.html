@@ -1,24 +1,20 @@
 {% extends 'inicio/base_lista.html' %}
 
-</div>
-
 {% block link_navegacion %}
 
-{% for i, j in cliente_links %}
-
-<li class="linknav"><a href="{% url j %}" style="color:#777;">{{ i }}</a></li>
-
-{% endfor %}
+<li class="linknav"><a href="{% url 'uclientes:lista_estadocivil' %}" style="color:#777;">Estado civil</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_sexo' %}" style="color:#777;">Sexo</a></li>
+<li class="linknav"><a href="{% url 'udirecciones:lista_tipo_direccion' %}" style="color:#777;">Tipos de dirección</a></li>
+<li class="linknav"><a href="{% url 'utelefonos:lista_tipotelefono' %}" style="color:#777;">Tipos de teléfono</a></li>
 
 {% endblock link_navegacion %}
 
 {% block footerLink %}
 
-{% for i, j in cliente_links %}
-
-<li><a href="{% url j %}">{{ i }}</a></li>
-
-{% endfor %}
+<li><a href="{% url 'uclientes:lista_estadocivil' %}">Estado civil</a></li>
+<li><a href="{% url 'uclientes:lista_sexo' %}">Sexo</a></li>
+<li><a href="{% url 'udirecciones:lista_tipo_direccion' %}">Tipos de dirección</a></li>
+<li><a href="{% url 'utelefonos:lista_tipotelefono' %}">Tipos de teléfono</a></li>
 
 {% endblock footerLink %}
 
@@ -62,28 +58,28 @@ Eliminar Cliente
 {% block cuerpo_tabla %}
 
 <tr class="active">
-      <th>Nombre</th>
-      <th>Estado</th>
-      <th width="3">Ficha</th>
-      <th width="3">Editar</th>
-      <th width="3">Eliminar</th>
-    </tr>
+  <th>Nombre</th>
+  <th>Estado</th>
+  <th width="3">Ficha</th>
+  <th width="3">Editar</th>
+  <th width="3">Eliminar</th>
+</tr>
 
 {% for i in lista_cliente %}
 
 <tr id="tr{{i.id}}">
-      <td>{{ i.nombre_principal }}</td>
-      <td>{{ i.activo|yesno:"Activo,Inactivo" }}</td>
-       <td>
-        <a href="cliente_ficha/{{i.id}}/" class="glyphicon glyphicon-file"></a>
-      </td>
-      <td>
-        <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uclientes:edit_cliente' i.id %}?next={% url 'uclientes:lista_cliente' %}" class="glyphicon glyphicon-edit"></a>
-      </td>
-      <td>
-        <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.nombre_principal}}"></a>
-      </td>
-    </tr>
+  <td>{{ i.nombre_principal }}</td>
+  <td>{{ i.activo|yesno:"Activo,Inactivo" }}</td>
+  <td>
+    <a href="cliente_ficha/{{i.id}}/" class="glyphicon glyphicon-file"></a>
+  </td>
+  <td>
+    <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uclientes:edit_cliente' i.id %}?next={% url 'uclientes:lista_cliente' %}" class="glyphicon glyphicon-edit"></a>
+  </td>
+  <td>
+    <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.nombre_principal}}"></a>
+  </td>
+</tr>
 
 {% endfor %}
 

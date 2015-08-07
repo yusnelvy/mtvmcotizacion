@@ -1,0 +1,138 @@
+{% extends 'inicio/base_lista.html' %}
+
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'umuebles:lista_mueble' %}" style="color:#777;">Muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_tipo_mueble' %}" style="color:#777;">Tipo de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_forma_mueble' %}" style="color:#777;">Formas de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_tamano' %}" style="color:#777;">Tipos de tamaños</a></li>
+<li class="linknav"><a href="../tamano_mueble/0/" style="color:#777;">Tamaños de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_ocupacion' %}" style="color:#777;">Niveles de ocupación</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'umuebles:lista_mueble' %}">Muebles</a></li>
+<li><a href="{% url 'umuebles:lista_tipo_mueble' %}">Tipo de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_forma_mueble' %}">Formas de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_tamano' %}">Tipos de tamaños</a></li>
+<li><a href="../tamano_mueble/0/">Tamaños de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_ocupacion' %}">Niveles de ocupación</a></li>
+
+{% endblock footerLink %}
+
+{% block titulo %}
+
+<title>Nivel de densidad de muebles</title>
+
+{% endblock titulo %}
+
+{% block titulo_modal %}
+
+Eliminar nivel de densidad de muebles
+
+{% endblock titulo_modal %}
+
+{% block validacion_modal %}
+
+<p>¿Realmente desea eliminar el registro: <strong id="modal_name"></strong>?</p>
+
+{% endblock validacion_modal %}
+
+{% block titulo_tabla %}
+
+<h2>Niveles de densidad de muebles</h2>
+
+{% endblock titulo_tabla %}
+
+{% if lista_densidad %}
+
+{% block cantidad_tabla %}
+
+<h6>Niveles de densidad de muebles registrados:
+  <span class="badge" id="count_reg">
+
+    {{ lista_densidad.count }}
+
+  </span>
+</h6>
+
+{% endblock cantidad_tabla %}
+
+{% block pagination %}
+
+{% if densidades.has_previous %}
+
+<li>
+  <a href="?page={{ densidades.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ densidades.number }}
+
+    de
+
+    {{ densidades.paginator.num_pages }}
+
+    Desde el nivel de densidad
+
+    {{ densidades.start_index }}
+
+    hasta el nivel de densidad
+
+    {{ densidades.end_index }}
+
+  </a>
+</li>
+
+{% if densidades.has_next %}
+
+<li>
+  <a href="?page={{ densidades.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
+{% block cuerpo_tabla %}
+
+<tr class="active">
+  <th>Nivel de densidad</th>
+  <th width="3">Editar</th>
+  <th width="3">Eliminar</th>
+</tr>
+
+{% for i in densidades %}
+
+<tr id="tr{{i.id}}">
+  <td>{{ i.descripcion }}</td>
+  <td>
+    <a href="{% url 'umuebles:edit_densidad' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
+  </td>
+  <td>
+    <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.descripcion}}"></a>
+  </td>
+  <input type="hidden" value="{{i.id}}" id="idtele">
+</tr>
+
+{% endfor %}
+
+{% endblock cuerpo_tabla %}
+
+{% endif %}
+
+{% block ayuda %}
+
+<div class="">
+  <p>El <strong>Nivel de densidad de mueble</strong> es una referencia que permite rápidamente asignar dimensiones a los <strong>Muebles</strong> de forma genérica, de forma que no se depende de la medición exacta de todos los <strong>Muebles</strong> encontrados.</p>
+  <p>La experiencia convertida en estadística es la fuente principal para la asignación de dimensiones a los <strong>Niveles de densidad</strong> típicos de cada <strong>Mueble</strong>, de este modo se facilita el trabajo del cotizador al momento de describir sus detalles a medida que se encuentran en un <strong>Ambiente</strong>.</p>
+  <p>También incidirá significativamente sobre el rendimiento del cotizador, debido a que podrá hacer más rápido el trabajo de levantamiento de información en campo.</p>
+</div>
+
+{% endblock ayuda %}

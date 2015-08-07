@@ -1,5 +1,22 @@
 {% extends 'inicio/base_lista.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'udirecciones:lista_pais' %}" style="color:#777;">Países</a></li>
+<li class="linknav"><a href="{% url 'udirecciones:lista_provincia' %}" style="color:#777;">Provincias</a></li>
+<li class="linknav"><a href="{% url 'udirecciones:lista_zona' %}" style="color:#777;">Zonas</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'udirecciones:lista_pais' %}">Países</a></li>
+<li><a href="{% url 'udirecciones:lista_provincia' %}">Provincias</a></li>
+<li><a href="{% url 'udirecciones:lista_zona' %}">Zonas</a></li>
+
+{% endblock footerLink %}
+
+
 {% block titulo %}
 
 <title>Ciudad</title>
@@ -18,21 +35,6 @@ Eliminar Ciudad
 
 {% endblock validacion_modal %}
 
-{% block link %}
-
-<ul class="nav navbar-nav">
-  <li>
-    <a href="/direccion/pais/" class="btn">Países</a>
-  </li>
-  <li>
-    <a href="/direccion/provincia/" class="btn">Provincias</a>
-  </li>
-  <li>
-    <a href="/direccion/zona/" class="btn">Zonas</a>
-  </li>
-</ul>
-
-{% endblock link %}
 
 {% block titulo_tabla %}
 

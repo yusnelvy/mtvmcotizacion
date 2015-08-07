@@ -155,7 +155,7 @@ body{
     border-bottom: 1px solid #e7e7e7;
   }
   .linknav{padding:0px!important;display:inline-block!important;border-right:0px solid #e7e7e7;}
-  .nav_l{padding:0px!important;background:#f5f5f5;list-style:none;max-width:1000px;}
+  .nav_l{padding:0px!important;background:#f5f5f5;list-style:none;padding:5px;max-width:1000px;}
   .divider-vertical{display: none;}
   .ayuda{top:120px;overflow-y: scroll;max-height: 80%;width: 60%;}
   body{margin-top:27px!important;}

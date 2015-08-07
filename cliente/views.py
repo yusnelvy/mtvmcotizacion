@@ -41,16 +41,7 @@ def lista_sexo(request):
 
     lista_sexo = Sexo.objects.all()
 
-    sexo_links = zip([
-        'Clientes',
-        'Estado civil',
-    ],
-    [
-        'uclientes:lista_cliente',
-        'uclientes:lista_estadocivil',
-    ])
-
-    context = {'lista_sexo': lista_sexo, 'sexo_links': sexo_links}
+    context = {'lista_sexo': lista_sexo}
 
     return render(request, 'sexo_lista.html', context)
 
@@ -80,16 +71,7 @@ def lista_estadocivil(request):
 
     lista_estadocivil = Estado_civil.objects.all()
 
-    estadocivil_links = zip([
-        'Clientes',
-        'Sexo',
-    ],
-    [
-        'uclientes:lista_cliente',
-        'uclientes:lista_sexo',
-    ])
-
-    context = {'lista_estadocivil': lista_estadocivil, 'estadocivil_links': estadocivil_links}
+    context = {'lista_estadocivil': lista_estadocivil}
 
     return render(request, 'estadocivil_lista.html', context)
 
@@ -119,21 +101,8 @@ def lista_cliente(request):
 
     lista_cliente = Cliente.objects.all()
 
-    cliente_links = zip([
-        'Estado civil',
-        'Sexo',
-        'Tipos de dirección',
-        'Tipos de teléfono',
-    ],
-    [
-        'uclientes:lista_estadocivil',
-        'uclientes:lista_sexo',
-        'udirecciones:lista_tipo_direccion',
-        'utelefonos:lista_tipotelefono',
-    ])
     context = {
-        'lista_cliente': lista_cliente,
-        'cliente_links': cliente_links
+        'lista_cliente': lista_cliente
     }
     return render(request, 'cliente_lista.html', context)
 
