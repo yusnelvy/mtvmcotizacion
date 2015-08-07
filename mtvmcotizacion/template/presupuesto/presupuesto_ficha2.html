@@ -1,0 +1,515 @@
+{% extends 'inicio/base_ficha.html' %}
+
+{% block titulo %}
+
+<title>Presupuesto</title>
+
+{% endblock titulo %}
+
+{% block col1 %}
+
+class="col-md-10"
+
+{% endblock col1 %}
+
+{% block content1 %}
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="row">
+        <div class="col-md-5">
+            <h2>{{ presupuesto.nombre_cliente }}</h2>
+        </div>
+        <div class="col-md-3">
+        <h4>
+            <p><small>DNI: </small>{{ presupuesto.dni }}</p>
+            <p><small>Teléfono: </small>{{ presupuesto.telefono }}</p>
+            <p><small>Email: </small>{{ presupuesto.email }}</p>
+        </h4>
+        </div>
+        <div class="col-md-4">
+        <h4>
+            <p><small>N° presupuesto: </small>{{ presupuesto.id }}</p>
+            <p><small>Fecha presupuesto: </small>{{ presupuesto.fecha_creacion|date:"d/m/Y" }}</p>
+            <p><small>Fecha estimada de la mudanza: </small>{{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}</p>
+        </h4>
+        </div>
+    </div>
+  </div>
+</div><!--fin panel default datos basicos-->
+<div class="row">
+    <div class="col-md-6">
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h4>Dirección de origen
+
+        {% if direccion_origen %}
+
+        {% else %}
+
+            <a data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Origen&pre={{presupuesto.id}}" title="Agregar direccion origen" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="#" style="float:right;" class="botonmodal">Agregar</a>
+
+        {% endif %}
+
+    </h4>
+ </div>
+
+{% for direc_origen in direccion_origen %}
+
+    <p style="padding:0px 5px;">{{ direc_origen.direccion }}</p>
+    <table class="table table-condensed">
+        <tr>
+            <td><strong>Tipo de direccion del inmueble: </strong></td>
+            <td>{{ direc_origen.tipo_inmueble }}</td>
+        </tr>
+        <tr>
+            <td><strong>Metros cuadrados del inmueble: </strong></td>
+            <td>{{ direc_origen.total_m2 }} m2</td>
+        </tr>
+        <tr>
+            <td><strong>Ocupación del inmueble: </strong> </td>
+            <td>{{ direc_origen.ocupacidad_inmueble }}</td>
+        </tr>
+        <tr>
+            <td><strong>Distancia del vehículo al inmueble: </strong></td>
+            <td>{{ direc_origen.distancia_vehiculo }} m.</td>
+        </tr>
+        <tr>
+            <td><strong>Cantidad de
+
+                {% if direc_origen.pisos > 1 %}
+
+                    pisos
+
+                    {% else %}
+
+                    piso
+
+                {% endif %}
+
+                del inmueble:
+            </strong></td>
+            <td>{{ direc_origen.pisos }} Und</td>
+        </tr>
+
+        {% if direc_origen.pisos_escalera = 0 %}
+
+        {% else %}
+
+        <tr>
+            <td><strong>Cantidad de
+
+                {% if direc_origen.pisos_escalera > 1 %}
+
+                    Pisos
+
+                    {% else %}
+
+                    Piso
+
+                {% endif %}
+
+                a recorrer por escalera: </strong></td>
+            <td>{{ direc_origen.pisos_escalera }} Und</td>
+        </tr>
+
+        {% endif %}
+
+        <tr>
+            <td><strong>Rampa del inmueble: </strong></td>
+            <td>{{ direc_origen.rampa|yesno:"Si,No" }}</td>
+        </tr>
+        <tr>
+            <td><strong>Ascensor del inmueble : </strong></td>
+            <td>{{ direc_origen.ascensor|yesno:"Si,No" }}</td>
+        </tr>
+
+        {% if direc_origen.pisos_ascensor = 0 %}
+
+        {% else %}
+
+        <tr>
+            <td><strong>Cantidad de pisos a recorrer por ascensor: </strong></td>
+            <td>{{ direc_origen.pisos_ascensor }} Und</td>
+        </tr>
+
+        {% endif %}
+
+        <tr>
+            <td><strong>Ascensor de servicio del inmueble: </strong></td>
+            <td>{{ direc_origen.ascensor_servicio|yesno:"Si,No" }}</td>
+        </tr>
+
+        {% if direc_origen.pisos_ascensor_servicio = 0 %}
+
+        {% else %}
+
+        <tr>
+            <td><strong>Cantidad de pisos a recorrer por ascensor de servicio: </strong></td>
+            <td>{{ direc_origen.pisos_ascensor_servicio }} Und</td>
+        </tr>
+
+        {% endif %}
+
+        <tr>
+            <td></td>
+            <td>
+        <small style="float:right;">
+        <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_origen.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+      <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('direccion/delete/?codigo={{direc_origen.id}}','{{direc_origen.id}}'); return false" class="glyphicon glyphicon-remove"></a>
+        </small>
+            </td>
+        </tr>
+
+    </table>
+
+  {% endfor %}
+
+</div><!--fin panel default direccion origen-->
+</div>
+    <div class="col-md-6">
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h4>Dirección de destino
+
+        {% if direccion_origen %}
+
+
+        {% else %}
+
+            <a data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Destino&pre={{presupuesto.id}}" title="Agregar direccion destino" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="#" style="float:right;" class="botonmodal">Agregar</a>
+
+        {% endif %}
+
+    </h4>
+</div>
+
+{% for direc_destino in direccion_destino %}
+
+    <p style="padding:0px 5px;">{{ direc_destino.direccion }}</p>
+
+    <table class="table table-condensed">
+        <tr>
+            <td><strong>Tipo de direccion del inmueble: </strong></td>
+            <td>{{ direc_destino.tipo_inmueble }}</td>
+        </tr>
+        <tr>
+            <td><strong>Metros cuadrados del inmueble: </strong></td>
+            <td>{{ direc_destino.total_m2 }} m2</td>
+        </tr>
+        <tr>
+            <td><strong>Ocupación del inmueble: </strong> </td>
+            <td>{{ direc_destino.ocupacidad_inmueble }}</td>
+        </tr>
+        <tr>
+            <td><strong>Distancia del vehículo al inmueble: </strong></td>
+            <td>{{ direc_destino.distancia_vehiculo }} m.</td>
+        </tr>
+        <tr>
+            <td><strong>Cantidad
+
+                {% if direc_destino.pisos > 1 %}
+
+                    Pisos
+
+                    {% else %}
+
+                    Piso
+
+                {% endif %}
+
+                del inmueble:
+            </strong></td>
+            <td>{{ direc_destino.pisos }} Und</td>
+        </tr>
+
+        {% if direc_destino.pisos_escalera = 0 %}
+
+        {% else %}
+
+        <tr>
+            <td><strong>Cantidad de
+
+                {% if direc_destino.pisos_escalera > 1 %}
+
+                    pisos
+
+                    {% else %}
+
+                    piso
+
+                {% endif %}
+
+                a recorrer por escalera: </strong></td>
+            <td>{{ direc_destino.pisos_escalera }} Und</td>
+        </tr>
+
+        {% endif %}
+
+        <tr>
+            <td><strong>Rampa del inmueble: </strong></td>
+            <td>{{ direc_destino.rampa|yesno:"Si,No" }}</td>
+        </tr>
+        <tr>
+            <td><strong>Ascensor del inmueble: </strong></td>
+            <td>{{ direc_destino.ascensor|yesno:"Si,No" }}</td>
+        </tr>
+
+        {% if direc_destino.pisos_ascensor = 0 %}
+
+        {% else %}
+
+        <tr>
+            <td><strong>Cantidad de pisos a recorrer por ascensor: </strong></td>
+            <td>{{ direc_destino.pisos_ascensor }} Und</td>
+        </tr>
+
+        {% endif %}
+
+        <tr>
+            <td><strong>Ascensor de servicio del inmueble: </strong></td>
+            <td>{{ direc_destino.ascensor_servicio|yesno:"Si,No" }}</td>
+        </tr>
+
+        {% if direc_destino.pisos_ascensor_servicio = 0 %}
+
+        {% else %}
+
+        <tr>
+            <td><strong>Cantidad de pisos a recorrer por ascensor de servicio: </strong></td>
+            <td>{{ direc_destino.pisos_ascensor_servicio }} Und</td>
+        </tr>
+
+        {% endif %}
+
+        <tr>
+            <td></td>
+            <td>
+        <small style="float:right;">
+        <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_destino.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+      <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('direccion/delete/?codigo={{direc_destino.id}}','{{direc_destino.id}}'); return false" class="glyphicon glyphicon-remove"></a>
+        </small>
+            </td>
+        </tr>
+    </table>
+
+  {% endfor %}
+
+</div><!--fin panel default direccion destino-->
+</div>
+</div><!--fin row de direcciones-->
+<h3>Ambientes
+    <a data-toggle="modal" data-target="#myModalSinAmbiente" title="Agregar ambiente" data-toggle="tooltip" data-placement="right" title="Tooltip on top"  style="float:right;cursor:pointer;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+</h3>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+    {% if lista_ambiente %}
+
+    {% for ambiente in lista_ambiente %}
+
+
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne{{forloop.counter}}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{forloop.counter}}" aria-expanded="true" aria-controls="collapseOne{{forloop.counter}}" style="cursor:pointer;">
+      <h3 class="panel-title" style="font-size: 20px;">
+
+          {{ambiente.ambiente|upper}}
+
+      </h3>
+    </div>
+    <div id="collapseOne{{forloop.counter}}" class="panel-collapse collapse {% if forloop.first %} in {% endif %}" role="tabpanel" aria-labelledby="headingOne{{forloop.counter}}">
+<div class="panel-body">
+    <p style="padding-left:15px;font-size: 18px;">Muebles
+
+    <a data-toggle="modal" data-target="#myModalAmbiente" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}" title="Agregar mueble al ambiente {{ambiente.ambiente|upper}} " data-toggle="tooltip" data-placement="right" title="Tooltip on top" style="float:right;cursor:pointer;" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal"></a>
+    </p>
+</div>
+<ul class="list-group">
+
+ {% for mueble in detalle_list %}
+
+     {% if ambiente.ambiente = mueble.ambiente %}
+
+    <li class="list-group-item" style="padding-left:40px;">
+        <div class="row">
+            <div class="col-md-2">
+                <p style="font-size: 16px;">{{mueble.mueble}}</p>
+            </div>
+            <div class="col-md-1">
+                <p style="color:#777;">{{ mueble.tamano }}</p>
+            </div>
+            <div class="col-md-3">
+                <p style="color:#777;">ocupación: {{ mueble.ocupacidad }}</p>
+            </div>
+            <div class="col-md-1">
+                <p style="color:#777;">{{ mueble.ancho|floatformat:"0" }}x{{ mueble.largo|floatformat:"0" }}x{{ mueble.alto|floatformat:"0" }}</p>
+            </div>
+            <div class="col-md-5">
+            <p style="color:#777;">
+
+                {% if servicio %}
+
+                Servicio:
+
+                {% for det_servivio in servicio %}
+
+                {% if det_servivio.detalle_presupuesto = mueble.id %}
+
+                {{ det_servivio.servicio }}
+
+                {% if forloop.last %}
+
+                {% else %} -
+
+                {% endif %}
+
+                {% endif %}
+
+                {% endfor %}
+
+                {% else %}
+
+                {% endif %}
+
+                <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:right;" data-toggle="modal" data-target="#myModalServicio" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ mueble.id }}" href="#" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal"></a>
+                </p>
+            </div>
+        </div>
+
+    </li>
+
+   {% endif %}
+
+    {% endfor %}
+
+</ul>
+    </div>
+  </div>
+
+   {% endfor %}
+
+{% endif %}
+
+</div><!--fin acordion-->
+<!-- Modal agregar direccion-->
+<div class="modal fade bs-example-modal-lg" id="myModalDireccion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel5"></h4>
+      </div>
+      <div class="modal-body">
+ <iframe class="id_orden" src=""
+      width="100%" height="540" scrolling="auto" frameborder="0" seamless>
+      <p>Texto alternativo para navegadores que no aceptan iframes.</p>
+    </iframe>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal agregar servicio-->
+<div class="modal fade" id="myModalServicio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel4">Agregar servicio</h4>
+      </div>
+      <div class="modal-body">
+ <iframe class="id_orden" src="{% url 'upresupuestos:PresupuestoServicioView' %}"
+      width="100%" height="200" scrolling="no" frameborder="0" seamless>
+      <p>Texto alternativo para navegadores que no aceptan iframes.</p>
+    </iframe>
+<button type="button" class="btn btn-default">Registrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+       <!-- Modal agregar mueble-->
+<div class="modal fade bs-example-modal-lg" id="myModalAmbiente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel2">Agregar detalle del presupuesto</h4>
+      </div>
+      <div class="modal-body">
+<span ></span>
+ <iframe class="id_orden" src="{% url 'upresupuestos:PresupuestoDetalleView' %}"
+      width="100%" height="300" scrolling="no" frameborder="0" seamless>
+      <p>Texto alternativo para navegadores que no aceptan iframes.</p>
+    </iframe>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- Modal agregar ambiente-->
+<div class="modal fade bs-example-modal-lg" id="myModalSinAmbiente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel3">Agregar detalle del presupuesto</h4>
+      </div>
+      <div class="modal-body">
+ <iframe src="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}"
+      width="100%" height="300" scrolling="auto" frameborder="0" seamless>
+      <p>Texto alternativo para navegadores que no aceptan iframes.</p>
+    </iframe>
+<button type="button" class="btn btn-default">Registrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    // Autor: @jqcaper
+// Configuraciones Generales
+var nombre_tabla = "#acordion"; // id
+var nombre_boton_eliminar = ".botonmodal"; // Clase
+var nombre_formulario_modal = "#myModalSinAmbiente"; //id
+
+// Fin de configuraciones
+    $(document).on('ready',function(){
+
+        $(".botonmodal").on('click',function(e){
+            e.preventDefault();
+            var Pid = $(this).attr('id');
+            var name = $(this).data('name');
+            var opcion = $(this).data('opcion');
+            $('#modal_idModulo').val(Pid);
+            $('#modal_name2').text(name);
+            $('#id_modulo').val(name);
+            $('.id_orden').attr('src', opcion);
+        });
+
+        var options = {
+            success:function(response){
+
+                if(response.form=="botonmodal"){
+                    if(response.status=="True"){
+                        alert("registrado exitosamente!");
+
+                        location.reload();
+                    }else{
+                        alert("Hubo un error al edit!");
+                        $("#myModal2").modal('hide');
+                    }
+                }
+
+            }
+        };
+
+        $(nombre_formulario_modal).ajaxForm(options);
+    });
+</script>
+
+{% endblock content1 %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>La <strong>Cotizacion</strong>  es la acción y efecto de cotizar, poner precio a algo, estimar a alguien o algo en relación con un fin. el documento informa y establece el valor del servicios.</p>
+</div>
+
+{% endblock ayuda %}
+
