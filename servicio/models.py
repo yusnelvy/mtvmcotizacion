@@ -41,16 +41,15 @@ class Material(models.Model):
 
     material = models.CharField(max_length=100, unique=True)
     precio = models.DecimalField(max_digits=7, decimal_places=2)
-    peso = models.DecimalField(max_digits=5, decimal_places=2)
+    peso = models.DecimalField(max_digits=8, decimal_places=3)
     recuperable = models.BooleanField(default=False)
     ancho = models.DecimalField(max_digits=5, decimal_places=2)
     largo = models.DecimalField(max_digits=5, decimal_places=2)
     alto = models.DecimalField(max_digits=5, decimal_places=2)
-    capacidad_peso = models.DecimalField(max_digits=5, decimal_places=2)
-    capacidad_volumen = models.DecimalField(max_digits=5, decimal_places=2)
+    capacidad_peso = models.DecimalField(max_digits=8, decimal_places=3)
+    capacidad_volumen = models.DecimalField(max_digits=8, decimal_places=3)
     contenedor = models.BooleanField(default=False)
     unidad = models.ForeignKey(Unidad)
-    #volumen = models.DecimalField(max_digits=5, decimal_places=2) se quito este campo para ser calculado
 
     def __str__(self):
         return self.material

@@ -22,7 +22,13 @@
 
 {% block content %}
 
-<div class="col-md-5">
+<div {% block col_edit %}
+
+    class="col-md-5"
+
+{% endblock col_edit %}
+
+>
     <div class="">
 
         {% block titulo_form %}{% endblock titulo_form %}

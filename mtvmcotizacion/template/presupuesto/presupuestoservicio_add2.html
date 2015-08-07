@@ -8,7 +8,7 @@
 
 {% block titulo_form %}
 
-  <h2>Agregar servicio</h2>
+  <h2>Agregar servicio 2</h2>
 
 {% endblock titulo_form %}
 
@@ -17,40 +17,86 @@
 <div class="form-group">
 
 
+  {{formset.managament_form}}
+  {% for form in formset %}
     {{ form.as_p }}
-
+  {% endfor %}
 
 </div>
-
+{{form_data}}
 
 {% endblock cuerpo_form %}
 
 {% block js_sup %}
 <script>
 $(document).ready(function(){
-  $("#id_lista_servicio").on("change", function(){
-    id_lista_servicio = $("#id_lista_servicio").val();
-    $.get('/presupuesto/servicio/nuevo'+id_lista_servicio,
-      {id_lista_servicio: id_lista_servicio},
+  $("#id_lista_ambiente").on("change", function(){
+    id_lista_ambiente = $("#id_lista_ambiente").val();
+    $.get('/presupuesto/detalle/nuevo',
+      {id_lista_ambiente: id_lista_ambiente},
           function(data){
-            $("#id_servicio").val(data[0].servicio);
-            $("#id_tarifa").val(data[0].tarifa);
+            $("#id_ambiente").val(data[0].ambiente);
       });
     });
 
-  $("#id_lista_material").on("change", function(){
-      id_lista_material = $("#id_lista_material").val();
-      $.get('/presupuesto/servicio/nuevo'+id_lista_servicio,
-        {id_lista_material: id_lista_material},
-            function(data){
-              $("#id_material").val(data[0].material);
-              $("#id_volumen_material").val(data[0].volumen);
-              $("#id_peso_material").val(data[0].peso);
-              $("#id_monto_material").val(data[0].precio);
-        });
+  $("#id_lista_mueble").on("change", function(){
+      id_lista_mueble = $("#id_lista_mueble").val();
+        $.get('/presupuesto/detalle/nuevo',
+          {id_lista_mueble: id_lista_mueble},
+              function(data){
+                $("#id_mueble").val(data[0].mueble);
+                $("#id_ocupacidad").val(data[0].descripocupacion);
+                $("#id_valor_ocupacidad").val(data[0].valorocupacion);
+                $("#id_lista_ocupacion").val(data[0].ocupacion);
+                $("#capacidadmueble").val(data[0].capacidadmueble);
+                lista_ocupacion = $("input[name=lista_ocupacion]");
+                for(var i=0; i<lista_ocupacion.length; i++){
+                  if (data[0].ocupacion==lista_ocupacion[i].value){
+                    $(lista_ocupacion[i]).attr("checked","checked");
+                  }
+                }
+          });
+  });
+
+  $("#id_lista_tamano").on("change", function(){
+  id_lista_tamano = $("#id_lista_tamano").val();
+  id_lista_mueble = $("#id_lista_mueble").val();
+  $.get('/presupuesto/detalle/nuevo',
+    {id_lista_tamano: id_lista_tamano, id_lista_mueble: id_lista_mueble},
+        function(data){
+          $("#id_tamano").val(data[0].tamano);
+          $("#id_ancho").val(data[0].ancho);
+          $("#id_largo").val(data[0].largo);
+          $("#id_alto").val(data[0].alto);
+          $("#id_densidad").val(data[0].densidad);
+          $("#id_peso").val(data[0].peso);
+          valor_densidad= calcular_densidad($("#id_peso").val(),$("#id_ancho").val(),$("#id_largo").val(),$("#id_alto").val())
+          $("#id_valor_densidad").val(valor_densidad);
+    });
+  });
+
+  $("input[name=lista_ocupacion]").click(function () {
+    id_ocupacion = $('input[name=lista_ocupacion]:checked').val();
+    $.get('/presupuesto/detalle/nuevo',
+      {id_ocupacion: id_ocupacion},
+          function(data){
+            $("#id_ocupacidad").val(data[0].ocupacion);
+            $("#id_valor_ocupacidad").val(data[0].valorocupacion);
+             vol_contenido = $("#id_valor_ocupacidad").val()*$("#capacidadmueble").val();
+            $("#id_volumen_contenido").val(vol_contenido.toFixed(2))
+      });
   });
 
 });
+</script>
+
+<script>
+function calcular_densidad(peso,ancho,largo,alto){
+    var resultado;
+    resultado= (peso/(ancho*largo*alto));
+
+  return resultado.toFixed(2);
+}
 </script>
 
 {% endblock js_sup %}

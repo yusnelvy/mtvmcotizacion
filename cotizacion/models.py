@@ -41,8 +41,8 @@ class Tiempo_Carga(models.Model):
     nro_objeto_min = models.PositiveIntegerField(validators=[MaxValueValidator(100),
                                                              MinValueValidator(1)])
     nro_objeto_max = models.PositiveIntegerField(validators=[MaxValueValidator(100), MinValueValidator(1)])
-    peso_min = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00)
-    peso_max = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00)
+    peso_min = models.DecimalField(max_digits=8, decimal_places=3, blank=True, default=0.00)
+    peso_max = models.DecimalField(max_digits=8, decimal_places=3, blank=True, default=0.00)
     cantidad_trabajador = models.PositiveIntegerField(validators=[MaxValueValidator(20), MinValueValidator(1)])
 
     def __str__(self):
@@ -127,8 +127,8 @@ class Vehiculo(models.Model):
     modelo = models.CharField(max_length=100, unique=True)
     tarifa_hora = models.DecimalField(max_digits=7, decimal_places=2)
     tarifa_recorrido = models.DecimalField(max_digits=7, decimal_places=2)
-    capacidad_volumen = models.DecimalField(max_digits=7, decimal_places=2)
-    capacidad_peso = models.DecimalField(max_digits=7, decimal_places=2)
+    capacidad_volumen = models.DecimalField(max_digits=8, decimal_places=3)
+    capacidad_peso = models.DecimalField(max_digits=8, decimal_places=3)
     cargo = models.ForeignKey(Cargo_trabajador)
     cantidad_total = models.PositiveIntegerField(default=0)
     cantidad_disponible = models.PositiveIntegerField(default=0)
