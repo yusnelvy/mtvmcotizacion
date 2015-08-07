@@ -201,3 +201,40 @@ class Presupuesto_servicio(models.Model):
         verbose_name = "Servicio"
         verbose_name_plural = "Servicios"
         ordering = ['detalle_presupuesto', 'servicio']
+
+
+class DatosPrecargado(models.Model):
+    complejidadinmueble = models.CharField(max_length=100)
+    factorcomplejidadinmueble = models.DecimalField(max_digits=4, decimal_places=2)
+    valorambcompleinmueble = models.DecimalField(max_digits=13, decimal_places=2)
+    valorm3compleinmueble = models.DecimalField(max_digits=13, decimal_places=2)
+    ocupacioninmueble = models.CharField(max_length=100)
+    valorocupacioninmueble = models.DecimalField(max_digits=3, decimal_places=2)
+    densidadcontenidomueble = models.DecimalField(max_digits=5, decimal_places=2)
+    volcontenedormueble = models.DecimalField(max_digits=8, decimal_places=3)
+    peso_contenedormueble = models.DecimalField(max_digits=8, decimal_places=3)
+    capvolcontenedormueble = models.DecimalField(max_digits=8, decimal_places=3)
+    cappesocontenedormueble = models.DecimalField(max_digits=8, decimal_places=3)
+    tamanomueble = models.CharField(max_length=100)
+    densidadmueble = models.CharField(max_length=100)
+    anchomueble = models.DecimalField(max_digits=5, decimal_places=2)
+    largomueble = models.DecimalField(max_digits=5, decimal_places=2)
+    altomueble = models.DecimalField(max_digits=5, decimal_places=2)
+    pesomueble = models.DecimalField(max_digits=8, decimal_places=3)
+    valordensidadmueble = models.DecimalField(max_digits=5, decimal_places=2)
+    volumenmueble = models.DecimalField(max_digits=8, decimal_places=3)
+    tarifacomplejidadservicio = models.DecimalField(max_digits=13, decimal_places=2)
+    factortiempocompservicio = models.DecimalField(max_digits=7, decimal_places=5)
+    materialservicio = models.CharField(max_length=100)
+    cantidadmaterial = models.DecimalField(max_digits=7, decimal_places=2)
+    preciomaterial = models.DecimalField(max_digits=7, decimal_places=2)
+    montomaterial = models.DecimalField(max_digits=7, decimal_places=2)
+    volmaterial = models.DecimalField(max_digits=8, decimal_places=3)
+    pesomaterial = models.DecimalField(max_digits=8, decimal_places=3)
+
+    def __str__(self):
+        return u' %s' % (self.pk)
+
+    class Meta:
+        verbose_name = "Dato Precargado"
+        verbose_name_plural = "Datos Precargados"

@@ -167,10 +167,10 @@
         alto: {{ det_mueble.alto }}<br>
         densidad: {{ det_mueble.densidad }}<br>
         valor densidad: {{ det_mueble.valor_densidad }}<br>
-        peso: {{ det_mueble.tamano }}<br>
+        peso: {{ det_mueble.peso }}<br>
         ocupacidad: {{ det_mueble.ocupacidad }}<br>
         valor ocupacidad: {{ det_mueble.valor_ocupacidad }}<br>
-        cantidad_contenedo: {{ det_mueble.cantidad_contenedo }}<br>
+        cantidad_contenedor: {{ det_mueble.cantidad_contenedor }}<br>
         volumen contenido: {{ det_mueble.volumen_contenido }}<br>
         volumen contenedor: {{ det_mueble.volumen_contenedor }}<br>
         volumen_mueble: {{ det_mueble.volumen_mueble }}<br>
@@ -184,9 +184,7 @@
     <p>
       <small>
         <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDetalleUpdate' det_mueble.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-        <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('direccion/delete/?codigo={{i.id}}','{{i.id}}','{{ i.zona.ciudad.provincia.pais }}. {{ i.zona.ciudad.provincia }}, {{ i.zona.ciudad }} Zona {{ i.zona }} calle {{ i.calle }} numero {{ i.numero }} Punto de referencia {{ i.punto_referencia }}'); return false" class="glyphicon glyphicon-remove"></a>
-
-
+        <a style="padding:0px 0px 8px 8px;" href="{% url 'upresupuestos:PresupuestoDetalleDelete' det_mueble.id %}?next={{request.get_full_path}}"  class="glyphicon glyphicon-remove"></a>
       </small>
     </p>
     <strong>Descripcion servicios y materiales </strong>
@@ -194,7 +192,7 @@
     <br>
     {% for det_servivio in det_mueble.presupuesto_servicio_set.all %}
     servicio: {{ det_servivio.servicio }}<br>
-    tarifa: {{ det_servivio.tarifa }}
+    tarifa: {{ det_servivio.monto_servicio }}
     <p>
       <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&serv={{ det_servivio.servicio }}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
       <span style="">
