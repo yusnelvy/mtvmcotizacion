@@ -415,7 +415,7 @@ def ficha_cliente(request, pk):
 
 
 # eliminar un registro
-def delete_email2(request, id_cli, pk, template_name='inicio/server_confirm_delete.html'):
+def delete_email2(request, id_cli, pk, template_name='tipo_clienteserver_confirm_delete.html'):
     email = get_object_or_404(Email, pk=pk)
     if request.method == 'POST':
         email.delete()

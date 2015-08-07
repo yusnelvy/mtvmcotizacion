@@ -1,0 +1,388 @@
+{% extends 'base_ficha.html' %}
+
+{% block titulo %}
+
+<title>Presupuesto</title>
+
+{% endblock titulo %}
+
+{% block content1 %}
+<div class="panel panel-default">
+  <p>Hoy es: {{ now|date }}</p>
+  <table class="table table-hover">
+    <tr>
+      <td>
+        <strong>Nro presupuesto: </strong>
+        {{ presupuesto.id }}
+        <strong>DNI: </strong>
+
+        {{ presupuesto.dni }}
+
+        <strong> Nombre: </strong>
+
+        {{ presupuesto.nombre_cliente }}
+
+        <p>
+          <span style="">
+            <strong>Teléfonos: </strong>
+
+            {{ presupuesto.telefono }}
+          </span>
+        </p>
+        <p>
+        </span>
+        <strong>Email: </strong>
+
+        {{ presupuesto.email }}
+      </span>
+
+    </p>
+    <p>
+    </span>
+    <strong>Fecha estimada de la mudanza: </strong>
+
+    {{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>Descripción vehiculo: </strong>
+
+    {{ presupuesto.descripcion_vehiculo}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>cantidad vehiculo: </strong>
+
+    {{ presupuesto.cantidad_vehiculo}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>cantidad_ambientes: </strong>
+
+    {{ presupuesto.cantidad_ambientes}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>cantidad_muebles:  </strong>
+
+    {{ presupuesto.cantidad_muebles}}
+
+  </span>
+</p>
+
+<p>
+    </span>
+    <strong>cantidad_contenedores:  </strong>
+
+    {{ presupuesto.cantidad_contenedores}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>descripcion_persona:  </strong>
+
+    {{ presupuesto.descripcion_persona}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>cantidad_persona:  </strong>
+
+    {{ presupuesto.cantidad_persona}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>total_peso_contenedores:  </strong>
+
+    {{ presupuesto.total_peso_contenedores}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>total_peso_muebles:  </strong>
+
+    {{ presupuesto.total_peso_muebles}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>total_peso_contenidos:  </strong>
+
+    {{ presupuesto.total_peso_contenidos}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>total_volumen_muebles:  </strong>
+
+    {{ presupuesto.total_volumen_muebles}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>total_volumen_contenedores:  </strong>
+
+    {{ presupuesto.total_volumen_contenedores}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>total_volumen_contenidos:  </strong>
+
+    {{ presupuesto.total_volumen_contenidos}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>total_m3:  </strong>
+
+    {{ presupuesto.total_m3}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>tiempo_recorrido:  </strong>
+
+    {{ presupuesto.tiempo_recorrido}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>recorrido_km:  </strong>
+
+    {{ presupuesto.recorrido_km}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>tiempo_carga:  </strong>
+
+    {{ presupuesto.tiempo_carga}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>tiempo_total: </strong>
+
+    {{ presupuesto.tiempo_total}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>monto_vehiculo_hora: </strong>
+
+    {{ presupuesto.monto_vehiculo_hora}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>monto_vehiculo_recorrido: </strong>
+
+    {{ presupuesto.monto_vehiculo_recorrido}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>monto_persona: </strong>
+
+    {{ presupuesto.monto_persona}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>monto_sin_impuesto: </strong>
+
+    {{ presupuesto.monto_sin_impuesto}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>monto_impuesto: </strong>
+
+    {{ presupuesto.monto_impuesto}}
+
+  </span>
+</p>
+<p>
+    </span>
+    <strong>monto_con_impuesto: </strong>
+
+    {{ presupuesto.monto_con_impuesto}}
+
+  </span>
+</p>
+
+</td>
+<td colspan="2">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+  <td class="">
+    <strong>Dirección de Origen: </strong><br>
+
+    {% for direc_origen in direccion_origen %}
+    {{ direc_origen.direccion }}
+    <p>
+      <span style="">
+        <strong>Descripción del inmueble: </strong>
+
+        {{ direc_origen.tipo_inmueble }}
+        <br>
+        m2 del inmueble: {{ direc_origen.total_m2 }}<br>
+        distancia entre el vehiculo y el inmueble:{{ direc_origen.distancia_vehiculo }}<br>
+        ocupacidad: {{ direc_origen.ocupacidad_inmueble }}<br>
+        valor de la ocupacidad: {{ direc_origen.valor_ocupacidad }}<br>
+        pisos del inmueble: {{ direc_origen.pisos }}<br>
+        pisos por escalera: {{ direc_origen.pisos_escalera }}<br>
+        Tiene rampa: {{ direc_origen.rampa|yesno:"Si,No" }}<br>
+        Tiene ascensor: {{ direc_origen.ascensor|yesno:"Si,No" }} -
+        pisos por ascensor:{{ direc_origen.pisos_ascensor }}<br>
+        Tiene ascensor de servicio: {{ direc_origen.ascensor_servicio|yesno:"Si,No" }} -
+        pisos por ascensor de servicio:{{ direc_origen.pisos_ascensor_servicio }}<br>
+        Complejidad: {{ direc_origen.complejidad }}<br>
+        factor de complejidad: {{ direc_origen.factor_complejidad }}<br>
+        valor de complejidad por ambiente: {{ direc_origen.valor_ambiente_complejidad }}<br>
+        valor de complejidad por m3:{{ direc_origen.valor_metrocubico_complejiadad }}<br>
+      </span>
+    </p>
+  {% endfor %}
+
+</td>
+<td width="3"></td>
+<td width="3"></td>
+<td width="3">
+</td>
+</tr>
+<tr>
+  <td class="">
+    <strong>Dirección de Destino: </strong><br>
+
+    {% for direc_destino in direccion_destino %}
+    {{ direc_destino.direccion }}
+    <p>
+      <span style="">
+        <strong>Descripción del inmueble: </strong>
+
+        {{ direc_destino.tipo_inmueble }}
+        <br>
+        m2 del inmueble: {{ direc_destino.total_m2 }}<br>
+        distancia entre el vehiculo y el inmueble:{{ direc_destino.distancia_vehiculo }}<br>
+        ocupacidad: {{ direc_destino.ocupacidad_inmueble }}<br>
+        valor de la ocupacidad: {{ direc_destino.valor_ocupacidad }}<br>
+        pisos del inmueble: {{ direc_destino.pisos }}<br>
+        pisos por escalera: {{ direc_destino.pisos_escalera }}<br>
+        Tiene rampa: {{ direc_destino.rampa|yesno:"Si,No" }}<br>
+        Tiene ascensor: {{ direc_destino.ascensor|yesno:"Si,No" }} -
+        pisos por ascensor:{{ direc_destino.pisos_ascensor }}<br>
+        Tiene ascensor de servicio: {{ direc_destino.ascensor_servicio|yesno:"Si,No" }} -
+        pisos por ascensor de servicio:{{ direc_destino.pisos_ascensor_servicio }}<br>
+        Complejidad: {{ direc_destino.complejidad }}<br>
+        factor de complejidad: {{ direc_destino.factor_complejidad }}<br>
+        valor de complejidad por ambiente: {{ direc_destino.valor_ambiente_complejidad }}<br>
+        valor de complejidad por m3:{{ direc_destino.valor_metrocubico_complejiadad }}<br>
+      </span>
+  </p>
+  {% endfor %}
+
+</td>
+<td width="3"></td>
+<td width="3"></td>
+<td width="3">
+</td>
+</tr>
+<tr>
+  <td class="">
+    <strong>Descripcion objetos a mudar </strong><br>
+
+    {% for det_mueble in detalle_list %}
+    ambiente: {{ det_mueble.ambiente }}<br>
+    <p>
+      <span style="">
+        <strong>mueble: </strong>
+        {{ det_mueble.mueble }}<br>
+        tamaño: {{ det_mueble.tamano }}<br>
+        ancho: {{ det_mueble.ancho }}<br>
+        largo: {{ det_mueble.largo }}<br>
+        alto: {{ det_mueble.alto }}<br>
+        densidad: {{ det_mueble.densidad }}<br>
+        valor densidad: {{ det_mueble.valor_densidad }}<br>
+        peso: {{ det_mueble.tamano }}<br>
+        ocupacidad: {{ det_mueble.ocupacidad }}<br>
+        valor ocupacidad: {{ det_mueble.valor_ocupacidad }}<br>
+        cantidad_contenedo: {{ det_mueble.cantidad_contenedo }}<br>
+        volumen contenido: {{ det_mueble.volumen_contenido }}<br>
+        volumen contenedor: {{ det_mueble.volumen_contenedor }}<br>
+        volumen_mueble: {{ det_mueble.volumen_mueble }}<br>
+        capacidad_peso_contenedor: {{ det_mueble.capacidad_peso_contenedor }}<br>
+        capacidad_volumen_contenedor: {{ det_mueble.capacidad_volumen_contenedor }}<br>
+        peso_contenido: {{ det_mueble.peso_contenido }}<br>
+        peso_contenedor: {{ det_mueble.peso_contenedor }}<br>
+
+      </span>
+    </p>
+    <strong>Descripcion servicios y materiales </strong>
+    {% for det_servivio in det_mueble.presupuesto_servicio_set.all %}
+    servicio: {{ det_servivio.servicio }}<br>
+    tarifa: {{ det_servivio.tarifa }}
+    <p>
+      <span style="">
+        <strong>material: </strong>
+        {{ det_servivio.material }}<br>
+        monto: {{ det_servivio.monto_material }}<br>
+        volumen: {{ det_servivio.volumen_material }}<br>
+        peso: {{ det_servivio.peso_material }}<br>
+      </span>
+    </p>
+
+    {% endfor %}
+    {% endfor %}
+
+  </td>
+  <td width="3"></td>
+  <td width="3"></td>
+  <td width="3">
+  </td>
+</tr>
+
+</table>
+</div>
+
+{% endblock content1 %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>el <strong>presupuesto</strong>  es la acción y efecto de cotizar, poner precio a algo, estimar a alguien o algo en relación con un fin. el documento informa y establece el valor del servicios.</p>
+</div>
+
+{% endblock ayuda %}
+

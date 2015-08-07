@@ -1,0 +1,446 @@
+{% extends "base_edit.html" %}
+
+{% block titulo %}
+
+<title>Presupuesto</title>
+
+{% endblock titulo %}
+
+{% block col_edit %}
+
+class="col-md-7"
+
+{% endblock col_edit %}
+
+{% block titulo_form %}
+
+  <h2>Agregar detalle</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<style>
+.campo>label,li label{font-family: inherit;font: inherit;}
+.campo4,.campo5,.campo6,.campo7,.campo11,.campo12,.campo13,.campo14,.campo15,.campo16,.campo17,.campo18,.campo19,.campo20,.campo21,.campo22,.campo23,.campo24,#capacidadmueble,#densidadcontenido,#volmaterial,#pesomaterial{display: none;}
+.custom-combobox-input,.campo0>select,.campo1>select,input[type=number],.campo2>select{
+  box-sizing: border-box;
+  border-radius: 6px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
+  font-size: 18px;
+  height: 46px;
+  line-height: 1.33333;
+  padding: 10px 16px;
+  display:block;
+  background-color: #FFF;
+  background-image: none;
+  border: 1px solid #CCC;
+  color: #555;
+  font-family: inherit;
+  font: inherit;
+  margin: 0px;
+  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  width: 100%;
+}
+.custom-combobox-input:focus,.campo0>select:focus,.campo1>select:focus,input[type=number]:focus,.campo2>select:focus{
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+.campo0,.campo1,.campo2{width: 32%;}
+.campo8,.campo9,.campo10{width: 32%;}
+.campo3{width: 100%;margin-top: 20px;}
+.ul-list{list-style: none;}
+#id_lista_ocupacion li{display: inline-table;margin-left: 30px;}
+.custom-combobox {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+  }
+  .custom-combobox-input {
+    margin: 0;
+    padding: 5px 10px;
+    width: 100%;
+    max-width: 100%;
+  }
+  .ui-autocomplete{
+    background: #fff;
+    border:1px solid rgba(102, 175, 233, .6);
+    border-top: none;
+  }
+</style>
+<script>
+  (function( $ ) {
+    $.widget( "custom.combobox", {
+      _create: function() {
+        this.wrapper = $( "<span>" )
+          .addClass( "custom-combobox" )
+          .insertAfter( this.element );
+
+        this.element.hide();
+        this._createAutocomplete();
+        this._createShowAllButton();
+      },
+
+      _createAutocomplete: function() {
+        var selected = this.element.children( ":selected" ),
+          value = selected.val() ? selected.text() : "";
+
+        this.input = $( "<input>" )
+          .appendTo( this.wrapper )
+          .val( value )
+          .attr( "title", "" )
+          .attr( "id", "input-focus" )
+          .addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
+          .autocomplete({
+            delay: 0,
+            minLength: 0,
+            source: $.proxy( this, "_source" )
+          })
+          .tooltip({
+            tooltipClass: "ui-state-highlight"
+          });
+
+        this._on( this.input, {
+          autocompleteselect: function( event, ui ) {
+            ui.item.option.selected = true;
+            this._trigger( "select", event, {
+              item: ui.item.option
+            });
+          },
+
+          autocompletechange: "_removeIfInvalid"
+        });
+      },
+
+      _createShowAllButton: function() {
+        var input = this.input,
+          wasOpen = false;
+
+        $( "<a>" )
+          .attr( "tabIndex", -1 )
+          .attr( "title", "Show All Items" )
+          .tooltip()
+          .appendTo( this.wrapper )
+          .button({
+            icons: {
+              primary: "ui-icon-triangle-1-s"
+            },
+            text: false
+          })
+          .removeClass( "ui-corner-all" )
+          .addClass( "custom-combobox-toggle ui-corner-right" )
+          .mousedown(function() {
+            wasOpen = input.autocomplete( "widget" ).is( ":visible" );
+          })
+          .click(function() {
+            input.focus();
+
+            // Close if already visible
+            if ( wasOpen ) {
+              return;
+            }
+
+            // Pass empty string as value to search for, displaying all results
+            input.autocomplete( "search", "" );
+          });
+      },
+
+      _source: function( request, response ) {
+        var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+        response( this.element.children( "option" ).map(function() {
+          var text = $( this ).text();
+          if ( this.value && ( !request.term || matcher.test(text) ) )
+            return {
+              label: text,
+              value: text,
+              option: this
+            };
+        }) );
+      },
+
+      _removeIfInvalid: function( event, ui ) {
+
+        // Selected an item, nothing to do
+        if ( ui.item ) {
+          return;
+        }
+
+        // Search for a match (case-insensitive)
+        var value = this.input.val(),
+          valueLowerCase = value.toLowerCase(),
+          valid = false;
+        this.element.children( "option" ).each(function() {
+          if ( $( this ).text().toLowerCase() === valueLowerCase ) {
+            this.selected = valid = true;
+            return false;
+          }
+        });
+
+        // Found a match, nothing to do
+        if ( valid ) {
+          return;
+        }
+
+        // Remove invalid value
+        this.input
+          .val( "" )
+          .attr( "title", value + " didn't match any item" )
+          .tooltip( "open" );
+        this.element.val( "" );
+        this._delay(function() {
+          this.input.tooltip( "close" ).attr( "title", "" );
+        }, 2500 );
+        this.input.autocomplete( "instance" ).term = "";
+      },
+
+      _destroy: function() {
+        this.wrapper.remove();
+        this.element.show();
+      }
+    });
+  })( jQuery );
+
+  $(function() {
+    $( "#id_lista_ambiente2" ).combobox();
+    $( "#toggle" ).click(function() {
+      $( "#id_lista_ambiente2" ).toggle();
+    });
+  });
+  </script>
+
+
+
+<div class="form-group campo">
+
+  {% for i in form %}
+
+    <label for="{{ i.id_for_label }}" class="campo{{forloop.counter0}}">{{i.label}} {{i}}</label>
+
+  {% endfor %}
+
+
+<input type="text" id="capacidadmueble">
+<input type="text" id="densidadcontenido">
+<input type="text" id="volmaterial">
+<input type="text" id="pesomaterial">
+
+</div>
+{{form_data}}
+
+<script>
+document.getElementById('input-focus').focus();
+$( "#id_lista_ocupacion" ).addClass( "ul-list" );
+  </script>
+{% endblock cuerpo_form %}
+
+{% block js_sup %}
+<script>
+$(document).ready(function(){
+  $("#id_lista_ambiente").on("change", function(){
+    id_lista_ambiente = $("#id_lista_ambiente").val();
+    $("#id_ambiente").val(id_lista_ambiente);
+    $.get('/presupuesto/detalle/nuevo',
+      {id_lista_ambiente: id_lista_ambiente},
+      function(data){
+        $("#id_ambiente").val(data[0].ambiente);
+      });
+  });
+
+  $("#id_lista_mueble").on("change", function(){
+    id_lista_mueble = $("#id_lista_mueble").val();
+    $.get('/presupuesto/detalle/nuevo',
+      {id_lista_mueble: id_lista_mueble},
+      function(data){
+        $("#id_mueble").val(data[0].mueble);
+        $("#id_ocupacidad").val(data[0].descripocupacion);
+        $("#id_valor_ocupacidad").val(data[0].valorocupacion);
+        $("#id_lista_ocupacion").val(data[0].ocupacion);
+        $("#capacidadmueble").val(data[0].capacidadmueble);
+        $("#densidadcontenido").val(data[0].densidadcontenido);
+        $("#volmaterial").val(data[0].vol_contenedor);
+        $("#id_capacidad_volumen_contenedor").val(data[0].capacidadvolcontenedor);
+        $("#id_capacidad_peso_contenedor").val(data[0].capacidadpesocontenedor);
+        $("#id_descripcion_contenedor").val(data[0].descripcioncontenedor);
+        $("#pesomaterial").val(data[0].peso_contenedor);
+
+        lista_ocupacion = $("input[name=lista_ocupacion]");
+        for(var i=0; i<lista_ocupacion.length; i++){
+          if (data[0].ocupacion==lista_ocupacion[i].value){
+            $(lista_ocupacion[i]).attr("checked","checked");
+          }
+        }
+      });
+});
+
+$("#id_lista_tamano").on("change", function(){
+  id_lista_tamano = $("#id_lista_tamano").val();
+  id_lista_mueble = $("#id_lista_mueble").val();
+  $.get('/presupuesto/detalle/nuevo',
+    {id_lista_tamano: id_lista_tamano, id_lista_mueble: id_lista_mueble},
+    function(data){
+      $("#id_tamano").val(data[0].tamano);
+      $("#id_ancho").val(data[0].ancho);
+      $("#id_largo").val(data[0].largo);
+      $("#id_alto").val(data[0].alto);
+      $("#id_densidad").val(data[0].densidad);
+      $("#id_peso").val(data[0].peso);
+      $("#id_valor_densidad").val(data[0].valor_densidad);
+      $("#id_volumen_mueble").val(data[0].volumen_mueble);
+
+      volcontenido = calcular_volcontenido($("#capacidadmueble").val(),$("#id_volumen_mueble").val(),$("#id_valor_ocupacidad").val());
+
+      $("#id_volumen_contenido").val(volcontenido);
+
+      peso_contenido = calcular_pesocontenido($("#id_volumen_contenido").val(),$("#densidadcontenido").val());
+      $("#id_peso_contenido").val(peso_contenido);
+
+      cant_contenedor = calcular_cantidadcontenedor($("#id_volumen_contenido").val(),$("#id_capacidad_volumen_contenedor").val(),$("#id_peso_contenido").val(),$("#id_capacidad_peso_contenedor").val());
+
+      $("#id_cantidad_contenedor").val(cant_contenedor);
+
+      volcontenedor = calcular_volcontenedor($("#id_cantidad_contenedor").val(),$("#volmaterial").val());
+      $("#id_volumen_contenedor").val(volcontenedor);
+
+      pesocontenedor = calcular_pesocontenedor($("#id_cantidad_contenedor").val(),$("#pesomaterial").val());
+      $("#id_peso_contenedor").val(pesocontenedor);
+    });
+});
+
+$("input[name=lista_ocupacion]").click(function () {
+  id_ocupacion = $('input[name=lista_ocupacion]:checked').val();
+  $.get('/presupuesto/detalle/nuevo',
+    {id_ocupacion: id_ocupacion},
+    function(data){
+      $("#id_ocupacidad").val(data[0].ocupacion);
+      $("#id_valor_ocupacidad").val(data[0].valorocupacion);
+      volcontenido = calcular_volcontenido($("#capacidadmueble").val(),$("#id_volumen_mueble").val(),$("#id_valor_ocupacidad").val());
+
+      $("#id_volumen_contenido").val(volcontenido);
+
+      peso_contenido = calcular_pesocontenido($("#id_volumen_contenido").val(),$("#densidadcontenido").val());
+      $("#id_peso_contenido").val(peso_contenido);
+
+      cant_contenedor = calcular_cantidadcontenedor($("#id_volumen_contenido").val(),$("#id_capacidad_volumen_contenedor").val(),$("#id_peso_contenido").val(),$("#id_capacidad_peso_contenedor").val());
+
+      $("#id_cantidad_contenedor").val(cant_contenedor);
+
+      volcontenedor = calcular_volcontenedor($("#id_cantidad_contenedor").val(),$("#volmaterial").val());
+      $("#id_volumen_contenedor").val(volcontenedor);
+
+      pesocontenedor = calcular_pesocontenedor($("#id_cantidad_contenedor").val(),$("#pesomaterial").val());
+      $("#id_peso_contenedor").val(pesocontenedor);
+    });
+});
+
+$('#id_ancho').on('change', function(){
+  densidad = calcular_densidad($("#id_peso").val(),$(this).val(),$("#id_largo").val(),$("#id_alto").val());
+  volumen = calcular_volumen($(this).val(),$("#id_largo").val(),$("#id_alto").val());
+  $("#id_valor_densidad").val(densidad);
+  $("#id_volumen_mueble").val(volumen);
+
+});
+
+$('#id_largo').on('change', function(){
+  densidad = calcular_densidad($("#id_peso").val(),$("#id_ancho").val(),$(this).val(),$("#id_alto").val());
+  volumen = calcular_volumen($("#id_ancho").val(),$(this).val(),$("#id_alto").val());
+  $("#id_valor_densidad").val(densidad);
+  $("#id_volumen_mueble").val(volumen);
+});
+
+$('#id_alto').on('change', function(){
+  densidad = calcular_densidad($("#id_peso").val(),$("#id_ancho").val(),$("#id_largo").val(),$(this).val());
+  volumen = calcular_volumen($("#id_ancho").val(),$("#id_largo").val(),$(this).val());
+  $("#id_valor_densidad").val(densidad);
+  $("#id_volumen_mueble").val(volumen);
+});
+
+});
+</script>
+
+<script>
+function calcular_densidad(peso,ancho,largo,alto){
+  var resultado = 0;
+  resultado= (peso/((ancho*largo*alto)/1000000));
+
+  return resultado.toFixed(2);
+}
+
+function calcular_volumen(ancho,largo,alto){
+  var resultado = 0;
+  resultado= (ancho*largo*alto)/1000000;
+
+  return resultado.toFixed(2);
+}
+
+function calcular_volcontenido(cap_mueble,vol_mueble,ocupacidad){
+  var resultado = 0;
+  resultado= (cap_mueble*vol_mueble*ocupacidad);
+
+  return resultado.toFixed(2);
+
+}
+
+function calcular_pesocontenido(vol_contenido,densidadcontenido){
+  var resultado = 0;
+  resultado= (vol_contenido*densidadcontenido)
+
+  return resultado.toFixed(2);
+
+}
+
+function calcular_cantidadcontenedor(vol_contenido,cap_volcontenedor,peso_contenido,cap_pesocontenedor){
+  var resultado = 0;
+  var cant_volumen = 0;
+  var cant_peso = 0;
+
+  cant_volumen = (volcontenido/cap_volcontenedor);
+  cant_volumen = Math.ceil(cant_volumen);
+  cant_peso = (peso_contenido/ cap_pesocontenedor);
+  cant_peso = Math.ceil(cant_peso);
+
+
+  if (cant_volumen > cant_peso) {
+    resultado = cant_volumen;
+  }else{
+    resultado = cant_peso;
+  }
+
+  return resultado;
+
+}
+
+function calcular_volcontenedor(cant_contenedor,vol_material){
+  var resultado = 0;
+  resultado= (cant_contenedor*vol_material);
+
+  return resultado.toFixed(2);
+
+}
+
+function calcular_pesocontenedor(cant_contenedor,peso_material){
+  var resultado = 0;
+  resultado= (cant_contenedor*peso_material)
+
+  return resultado.toFixed(2);
+
+}
+
+</script>
+
+{% endblock js_sup %}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>La <strong>Presupuesto</strong>  es la acción y efecto de cotizar, poner precio a algo, estimar a alguien o algo en relación con un fin. el documento informa y establece el valor del servicios.</p>
+</div>
+
+{% endblock ayuda %}

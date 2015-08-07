@@ -18,7 +18,7 @@ def pantalla_inicial(request):
     # Funcion para levantar la pantalla inicial del sistema
     #
 
-    return render(request, 'inicio/base_menu.html')
+    return render(request, 'base_menu.html')
 
 
 def signup(request):
@@ -50,9 +50,9 @@ def signup(request):
     data = {
         'form': form,
     }
-    return render_to_response('inicio/signup.html', data, context_instance=RequestContext(request))
+    return render_to_response('signup.html', data, context_instance=RequestContext(request))
 
 
 @login_required()
 def home(request):
-    return render_to_response('inicio/home.html', {'user': request.user}, context_instance=RequestContext(request))
+    return render_to_response('home.html', {'user': request.user}, context_instance=RequestContext(request))

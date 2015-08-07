@@ -35,7 +35,7 @@ class ContactWizard(SessionWizardView):
         return form
 
     def done(self, form_list, **kwargs):
-        return render_to_response('presupuesto/presupuestodetalle_add.html', {
+        return render_to_response('presupuestodetalle_add.html', {
             'form_data': [form.cleaned_data for form in form_list],
         })
 
@@ -45,7 +45,7 @@ class PresupuestoList(ListView):
     model = Presupuesto
     paginate_by = 10
     context_object_name = 'presupuestos'
-    template_name = 'presupuesto/presupuesto_lista.html'
+    template_name = 'presupuesto_lista.html'
 
     def get_queryset(self):
         queryset = super(PresupuestoList, self).get_queryset()
@@ -56,7 +56,7 @@ class PresupuestoDetail(DetailView):
 
     model = Presupuesto
     context_object_name = "presupuesto"
-    template_name = 'presupuesto/presupuesto_ficha2.html'
+    template_name = 'presupuesto_ficha2.html'
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -76,7 +76,7 @@ class PresupuestoDetail(DetailView):
 class PresupuestoDetalleList(ListView):
     model = Presupuesto_Detalle
     paginate_by = 25
-    template_name = 'presupuesto/presupuestodetalle_lista.html'
+    template_name = 'presupuestodetalle_lista.html'
 
     def get_queryset(self):
         queryset = super(PresupuestoDetalleList, self).get_queryset()
@@ -86,7 +86,7 @@ class PresupuestoDetalleList(ListView):
 class PresupuestoDetalleDetail(DetailView):
 
     model = Presupuesto_Detalle
-    template_name = 'presupuesto/presupuestodetalle_ficha.html'
+    template_name = 'presupuestodetalle_ficha.html'
     context_object_name = "detallepresupuesto"
 
     def get_context_data(self, **kwargs):
@@ -101,7 +101,7 @@ class PresupuestoDetalleDetail(DetailView):
 class PresupuestoDireccionList(ListView):
     model = Presupuesto_direccion
     paginate_by = 25
-    template_name = 'presupuesto/presupuestodireccion_lista.html'
+    template_name = 'presupuestodireccion_lista.html'
 
     def get_queryset(self):
         queryset = super(PresupuestoDireccionList, self).get_queryset()
@@ -110,7 +110,7 @@ class PresupuestoDireccionList(ListView):
 
 class PresupuestoView(View):
     form_class = PresupuestoForm
-    template_name = 'presupuesto/presupuesto_add.html'
+    template_name = 'presupuesto_add.html'
 
     def get(self, request, *args, **kwargs):
 
@@ -126,14 +126,14 @@ class PresupuestoView(View):
         if form.is_valid():
             form.save()
             # <process form cleaned data>
-            return HttpResponseRedirect('/presupuesto/')
+            return HttpResponseRedirect('/')
 
         return render(request, self.template_name, {'form': form})
 
 
 class PresupuestoDireccionView(View):
     form_class = PresupuestoDireccionForm
-    template_name = 'presupuesto/presupuestodireccion_add2.html'
+    template_name = 'presupuestodireccion_add2.html'
 
     def get(self, request, *args, **kwargs):
 
@@ -233,7 +233,7 @@ class PresupuestoDireccionView(View):
 
 class PresupuestoDetalleView(View):
     form_class = PresupuestoDetalleForm
-    template_name = 'presupuesto/presupuestodetalle_add2.html'
+    template_name = 'presupuestodetalle_add2.html'
 
     def get(self, request, *args, **kwargs):
 
@@ -379,7 +379,7 @@ class PresupuestoDetalleView(View):
 
 class PresupuestoServicioView(View):
     form_class = PresupuestoServicioForm
-    template_name = 'presupuesto/presupuestoservicio_add3.html'
+    template_name = 'presupuestoservicio_add3.html'
 
     def get(self, request, *args, **kwargs):
 
@@ -480,7 +480,7 @@ class PresupuestoServicioView(View):
 
 class PresupuestoServicioViewFomset(View):
     form_class_formset = formset_factory(PresupuestoServicioForm, extra=5)
-    template_name = 'presupuesto/presupuestoservicio_add2.html'
+    template_name = 'presupuestoservicio_add2.html'
 
     def get(self, request, *args, **kwargs):
 
@@ -497,13 +497,13 @@ class PresupuestoServicioViewFomset(View):
             for form in formset:
                 formset.save()
             # <process formset cleaned data>
-            return HttpResponseRedirect('/presupuesto/')
+            return HttpResponseRedirect('/')
 
         return render(request, self.template_name, {'formset': formset})
 
 
 class PresupuestoUpdate(UpdateView):
-    template_name = 'presupuesto/presupuesto_edit.html'
+    template_name = 'presupuesto_edit.html'
     form_class = PresupuestoForm
     model = Presupuesto
 
@@ -519,7 +519,7 @@ class PresupuestoUpdate(UpdateView):
 
 
 class PresupuestoDireccionUpdate(UpdateView):
-    template_name = 'presupuesto/presupuestodireccion_edit.html'
+    template_name = 'presupuestodireccion_edit.html'
     form_class = PresupuestoDireccionForm
     model = Presupuesto_direccion
 
@@ -549,7 +549,7 @@ class PresupuestoDireccionUpdate(UpdateView):
 
 
 class PresupuestoDetalleUpdate(UpdateView):
-    template_name = 'presupuesto/presupuestodetalle_edit.html'
+    template_name = 'presupuestodetalle_edit.html'
     form_class = PresupuestoDetalleForm
     model = Presupuesto_Detalle
 
@@ -587,7 +587,7 @@ class PresupuestoDetalleUpdate(UpdateView):
 
 
 class PresupuestoServicioUpdate(UpdateView):
-    template_name = 'presupuesto/presupuestoservivio_edit.html'
+    template_name = 'presupuestoservivio_edit.html'
     form_class = PresupuestoServicioForm
     model = Presupuesto_servicio
 
@@ -616,7 +616,7 @@ class PresupuestoDetailResumen(DetailView):
 
     model = Presupuesto
     context_object_name = "presupuesto"
-    template_name = 'presupuesto/presupuesto_resumen.html'
+    template_name = 'presupuesto_resumen.html'
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -634,7 +634,7 @@ class PresupuestoDetailResumen(DetailView):
 class PresupuestoDelete(DeleteView):
     model = Presupuesto
     form_class = PresupuestoForm
-    template_name = 'inicio/server_confirm_delete.html'
+    template_name = 'server_confirm_delete.html'
 
     def delete(self, request, *args, **kwargs):
         self.obj = self.get_object()
@@ -650,7 +650,7 @@ class PresupuestoDelete(DeleteView):
 
 class PresupuestoDireccionDelete(DeleteView):
     model = Presupuesto_direccion
-    template_name = 'inicio/server_confirm_delete.html'
+    template_name = 'server_confirm_delete.html'
     #success_url = reverse_lazy('upresupuesto:PresupuestoList')
 
     def delete(self, request, *args, **kwargs):
@@ -674,7 +674,7 @@ class PresupuestoDireccionDelete(DeleteView):
 
 class PresupuestoDetalleDelete(DeleteView):
     model = Presupuesto_Detalle
-    template_name = 'inicio/server_confirm_delete.html'
+    template_name = 'server_confirm_delete.html'
     #success_url = reverse_lazy('upresupuesto:PresupuestoList')
 
     def delete(self, request, *args, **kwargs):
@@ -696,7 +696,7 @@ class PresupuestoDetalleDelete(DeleteView):
 
 class PresupuestoServicioDelete(DeleteView):
     model = Presupuesto_servicio
-    template_name = 'inicio/server_confirm_delete.html'
+    template_name = 'server_confirm_delete.html'
     #success_url = reverse_lazy('upresupuesto:PresupuestoList')
 
     def delete(self, request, *args, **kwargs):

@@ -46,13 +46,13 @@ class EstadoCotizacionList(ListView):
     """docstring"""
     model = Estado_Cotizacion
     context_object_name = 'estadoscotizacion'
-    template_name = 'cotizacion/estadocotizacion_lista.html'
+    template_name = 'estadocotizacion_lista.html'
 
 
 class EstadoCreate(View):
     """docstring"""
     form_estadocotizacion = EstadoCotizacionForm
-    template_name = 'cotizacion/estadocotizacion_add.html'
+    template_name = 'estadocotizacion_add.html'
 
     raise_exception = True
 
@@ -68,7 +68,7 @@ class EstadoCreate(View):
 
     def get(self, request, *args, **kwargs):
         form_estadocotizacion = self.form_estadocotizacion()
-        return render_to_response('cotizacion/estadocotizacion_add.html',
+        return render_to_response('estadocotizacion_add.html',
                                   {'form_estadocotizacion': form_estadocotizacion, 'create': True},
                                   context_instance=RequestContext(request))
 
@@ -78,7 +78,7 @@ class EstadoCreate(View):
             form_estadocotizacion.save()
             return HttpResponseRedirect(reverse('ucotizaciones:lista_estado_cotizacion'))
 
-        return render_to_response('cotizacion/estadocotizacion_add.html',
+        return render_to_response('estadocotizacion_add.html',
                                   {'form_estadocotizacion': form_estadocotizacion, 'create': True},
                                   context_instance=RequestContext(request))
 
@@ -121,7 +121,7 @@ def lista_estado_cotizacion(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         estadoscotizacion = paginator.page(paginator.num_pages)
     context = {'lista_estadocotizacion': lista_estadocotizacion, 'estadoscotizacion': estadoscotizacion}
-    return render(request, 'cotizacion/estadocotizacion_lista.html', context)
+    return render(request, 'estadocotizacion_lista.html', context)
 
 
 def lista_piso(request):
@@ -150,7 +150,7 @@ def lista_piso(request):
 
     lista_piso = Piso.objects.all()
     context = {'lista_piso': lista_piso}
-    return render(request, 'cotizacion/piso_lista.html', context)
+    return render(request, 'piso_lista.html', context)
 
 
 def lista_tiempocarga(request):
@@ -262,7 +262,7 @@ def lista_vehiculo(request):
         vehiculos = paginator.page(paginator.num_pages)
 
     context = {'lista_vehiculo': lista_vehiculo, 'vehiculos': vehiculos}
-    return render(request, 'cotizacion/vehiculo_lista.html', context)
+    return render(request, 'vehiculo_lista.html', context)
 
 
 def buscar_vehiculocotizacion(request, idcotizacion):
@@ -292,7 +292,7 @@ def buscar_vehiculocotizacion(request, idcotizacion):
     id_cotizacion = Cotizacion.objects.get(id=idcotizacion)
     buscar_vehiculocotizacion = Vehiculo_Cotizacion.objects.filter(cotizacion_id=id_cotizacion)
     context = {'buscar_vehiculocotizacion': buscar_vehiculocotizacion}
-    return render(request, 'cotizacion/vehiculocotizacion_lista.html', context)
+    return render(request, 'vehiculocotizacion_lista.html', context)
 
 
 def buscar_direccioncotizacion(request, idcotizacion):
@@ -322,7 +322,7 @@ def buscar_direccioncotizacion(request, idcotizacion):
     id_cotizacion = Cotizacion.objects.get(id=idcotizacion)
     buscar_direccioncotizacion = Cotizacion_direccion.objects.filter(cotizacion_id=id_cotizacion)
     context = {'buscar_direccioncotizacion': buscar_direccioncotizacion}
-    return render(request, 'cotizacion/direccioncotizacion_lista.html', context)
+    return render(request, 'direccioncotizacion_lista.html', context)
 
 
 def buscar_cotizaciontrabajador(request, idcotizacion):
@@ -352,7 +352,7 @@ def buscar_cotizaciontrabajador(request, idcotizacion):
     id_cotizacion = Cotizacion.objects.get(id=idcotizacion)
     buscar_cotizaciontrabajador = Cotizacion_trabajador.objects.filter(cotizacion_id=id_cotizacion)
     context = {'buscar_cotizaciontrabajador': buscar_cotizaciontrabajador}
-    return render(request, 'cotizacion/cotizaciontrabajador_lista.html', context)
+    return render(request, 'cotizaciontrabajador_lista.html', context)
 
 
 def buscar_cotizacionambiente(request, idcotizacion):
@@ -382,7 +382,7 @@ def buscar_cotizacionambiente(request, idcotizacion):
     id_cotizacion = Cotizacion.objects.get(id=idcotizacion)
     buscar_cotizacionambiente = Cotizacion_Ambiente.objects.filter(cotizacion_id=id_cotizacion)
     context = {'buscar_cotizacionambiente': buscar_cotizacionambiente}
-    return render(request, 'cotizacion/cotizacionambiente_lista.html', context)
+    return render(request, 'cotizacionambiente_lista.html', context)
 
 
 def buscar_cotizacionmueble(request, idcotizacionambiente):
@@ -412,7 +412,7 @@ def buscar_cotizacionmueble(request, idcotizacionambiente):
     id_cotizacionambiente = Cotizacion_Ambiente.objects.get(id=idcotizacionambiente)
     buscar_cotizacionmueble = Cotizacion_Mueble.objects.filter(cotizacion_ambiente_id=id_cotizacionambiente)
     context = {'buscar_cotizacionmueble': buscar_cotizacionmueble}
-    return render(request, 'cotizacion/cotizacionmueble_lista.html', context)
+    return render(request, 'cotizacionmueble_lista.html', context)
 
 
 def buscar_cotizacionservicio(request, idcotizacionmueble):
@@ -442,7 +442,7 @@ def buscar_cotizacionservicio(request, idcotizacionmueble):
     id_cotizacionmueble = Cotizacion_Mueble.objects.get(id=idcotizacionmueble)
     buscar_cotizacionservicio = Cotizacion_Servicio.objects.filter(cotizacion_mueble_id=id_cotizacionmueble)
     context = {'buscar_cotizacionservicio': buscar_cotizacionservicio}
-    return render(request, 'cotizacion/cotizacionservicio_lista.html', context)
+    return render(request, 'cotizacionservicio_lista.html', context)
 
 
 def buscar_cotizacionmaterial(request, idcotizacionservicio):
@@ -472,7 +472,7 @@ def buscar_cotizacionmaterial(request, idcotizacionservicio):
     id_cotizacionservicio = Cotizacion_Servicio.objects.get(id=idcotizacionservicio)
     buscar_cotizacionmaterial = Cotizacion_Material.objects.filter(cotizacion_servicio_id=id_cotizacionservicio)
     context = {'buscar_cotizacionmaterial': buscar_cotizacionmaterial}
-    return render(request, 'cotizacion/cotizacionmaterial_lista.html', context)
+    return render(request, 'cotizacionmaterial_lista.html', context)
 
 
 def buscar_cotizacioncontenido(request, idcotizacionmueble):
@@ -502,7 +502,7 @@ def buscar_cotizacioncontenido(request, idcotizacionmueble):
     id_cotizacionmueble = Cotizacion_Mueble.objects.get(id=idcotizacionmueble)
     buscar_cotizacioncontenido = Cotizacion_Contenido.objects.filter(cotizacion_mueble_id=id_cotizacionmueble)
     context = {'buscar_cotizacioncontenido': buscar_cotizacioncontenido}
-    return render(request, 'cotizacion/cotizacioncontenido_lista.html', context)
+    return render(request, 'cotizacioncontenido_lista.html', context)
 
 
 def buscar_cotizacion(request, pk):
@@ -537,7 +537,7 @@ def buscar_cotizacion(request, pk):
         'det_servicio_contenido': det_servicio_contenido,
         'det_complejidad': det_complejidad
     }
-    return render(request, 'cotizacion/cotizacion_buscar2.html', context)
+    return render(request, 'cotizacion_buscar2.html', context)
 
 
 # agregar nuevo
@@ -552,7 +552,7 @@ def add_estadocotizacion(request):
 
     else:
         form_estadocotizacion = EstadoCotizacionForm()
-    return render_to_response('cotizacion/estadocotizacion_add.html',
+    return render_to_response('estadocotizacion_add.html',
                               {'form_estadocotizacion': form_estadocotizacion, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -568,7 +568,7 @@ def add_piso(request):
 
     else:
         form_piso = PisoForm()
-    return render_to_response('cotizacion/piso_add.html',
+    return render_to_response('piso_add.html',
                               {'form_piso': form_piso, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -584,7 +584,7 @@ def add_tiempocarga(request):
 
     else:
         form_tiempocarga = TiempoCargaForm()
-    return render_to_response('cotizacion/tiempocarga_add.html',
+    return render_to_response('tiempocarga_add.html',
                               {'form_tiempocarga': form_tiempocarga, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -600,7 +600,7 @@ def add_cotizacion(request):
 
     else:
         form_cotizacion = CotizacionForm()
-    return render_to_response('cotizacion/cotizacion_add.html',
+    return render_to_response('cotizacion_add.html',
                               {'form_cotizacion': form_cotizacion, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -616,7 +616,7 @@ def add_vehiculo(request):
 
     else:
         form_vehiculo = VehiculoForm()
-    return render_to_response('cotizacion/vehiculo_add.html',
+    return render_to_response('vehiculo_add.html',
                               {'form_vehiculo': form_vehiculo, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -634,7 +634,7 @@ def add_vehiculocotizacion(request):
 
     else:
         form_vehiculocotizacion = VehiculoCotizacionForm()
-    return render_to_response('cotizacion/vehiculocotizacion_add.html',
+    return render_to_response('vehiculocotizacion_add.html',
                               {'form_vehiculocotizacion': form_vehiculocotizacion, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -651,7 +651,7 @@ def add_cotizaciondireccion(request, idcotizacion):
 
     else:
         form_cotizaciondireccion = CotizaciondireccionForm(initial={'cotizacion': idcotizacion})
-    return render_to_response('cotizacion/direccioncotizacion_add.html',
+    return render_to_response('direccioncotizacion_add.html',
                               {'form_cotizaciondireccion': form_cotizaciondireccion, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -668,7 +668,7 @@ def add_cotizaciontrabajador(request, idcotizacion):
 
     else:
         form_cotizaciontrabajador = CotizaciontrabajadorForm(initial={'cotizacion': idcotizacion})
-    return render_to_response('cotizacion/cotizaciontrabajador_add.html',
+    return render_to_response('cotizaciontrabajador_add.html',
                               {'form_cotizaciontrabajador': form_cotizaciontrabajador, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -694,7 +694,7 @@ def add_cotizacionambiente(request, idcotizacion):
 
     else:
         form_cotizacionambiente = CotizacionAmbienteForm(initial={'cotizacion': idcotizacion})
-    return render_to_response('cotizacion/cotizacionambiente_add.html',
+    return render_to_response('cotizacionambiente_add.html',
                               {'form_cotizacionambiente': form_cotizacionambiente, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -726,7 +726,7 @@ def add_cotizacionmueble(request, idcotizacionambiente):
 
     else:
         form_cotizacionmueble = CotizacionMuebleForm(initial={'cotizacion_ambiente': idcotizacionambiente})
-    return render_to_response('cotizacion/cotizacionmueble_add.html',
+    return render_to_response('cotizacionmueble_add.html',
                               {'form_cotizacionmueble': form_cotizacionmueble, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -753,7 +753,7 @@ def add_cotizacionservicio(request, idcotizacionmueble, idcotizacioncontenido=No
                 }
 
         form_cotizacionservicio = CotizacionServicioForm(initial=data)
-    return render_to_response('cotizacion/cotizacionservicio_add.html',
+    return render_to_response('cotizacionservicio_add.html',
                               {'form_cotizacionservicio': form_cotizacionservicio, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -775,7 +775,7 @@ def add_cotizacionmaterial(request, idcotizacionservicio):
 
     det_material = Cotizacion_Material.objects.filter(cotizacion_servicio_id=idcotizacionservicio)
 
-    return render_to_response('cotizacion/cotizacionmaterial_add.html',
+    return render_to_response('cotizacionmaterial_add.html',
                               {'form_cotizacionmaterial': form_cotizacionmaterial, 'det_material': det_material, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -792,7 +792,7 @@ def add_cotizacioncontenido(request, idcotizacionmueble):
 
     else:
         form_cotizacioncontenido = CotizacionContenidoForm(initial={'cotizacion_mueble': idcotizacionmueble})
-    return render_to_response('cotizacion/cotizacioncontenido_add.html',
+    return render_to_response('cotizacioncontenido_add.html',
                               {'form_cotizacioncontenido': form_cotizacioncontenido, 'create': True},
                               context_instance=RequestContext(request))
 
@@ -826,7 +826,7 @@ def edit_estadocotizacion(request, pk):
         # formulario inicial
         editar_estadocotizacion = EstadoCotizacionForm(instance=id_estadocotizacion)
         mensaje = ""
-    return render_to_response('cotizacion/estadocotizacion_edit.html',
+    return render_to_response('estadocotizacion_edit.html',
                               {'editar_estadocotizacion': editar_estadocotizacion, 'id_estadocotizacion': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
@@ -854,7 +854,7 @@ def edit_piso(request, pk):
         # formulario inicial
         editar_piso = PisoForm(instance=id_piso)
         mensaje = ""
-    return render_to_response('cotizacion/piso_edit.html',
+    return render_to_response('piso_edit.html',
                               {'editar_piso': editar_piso, 'id_piso': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
@@ -882,7 +882,7 @@ def edit_tiempocarga(request, pk):
         # formulario inicial
         editar_tiempocarga = TiempoCargaForm(instance=id_tiempocarga)
         mensaje = ""
-    return render_to_response('cotizacion/tiempocarga_edit.html',
+    return render_to_response('tiempocarga_edit.html',
                               {'editar_tiempocarga': editar_tiempocarga, 'id_tiempocarga': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
@@ -921,7 +921,7 @@ def edit_cotizacion(request, pk):
         # formulario inicial
         editar_cotizacion = CotizacionForm(instance=id_cotizacion)
         mensaje = ""
-    return render_to_response('cotizacion/cotizacion_edit.html',
+    return render_to_response('cotizacion_edit.html',
                               {'editar_cotizacion': editar_cotizacion, 'id_cotizacion': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
@@ -954,7 +954,7 @@ def edit_vehiculo(request, pk):
         # formulario inicial
         editar_vehiculo = VehiculoForm(instance=id_vehiculo)
         mensaje = ""
-    return render_to_response('cotizacion/vehiculo_edit.html',
+    return render_to_response('vehiculo_edit.html',
                               {'editar_vehiculo': editar_vehiculo, 'id_vehiculo': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
@@ -982,7 +982,7 @@ def edit_vehiculocotizacion(request, pk):
         # formulario inicial
         editar_vehiculocotizacion = VehiculoCotizacionForm(instance=id_vehiculocotizacion)
         mensaje = ""
-    return render_to_response('cotizacion/vehiculocotizacion_edit.html',
+    return render_to_response('vehiculocotizacion_edit.html',
                               {'editar_vehiculocotizacion': editar_vehiculocotizacion, 'id_vehiculocotizacion': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
@@ -1010,7 +1010,7 @@ def edit_cotizaciondireccion(request, pk):
         # formulario inicial
         editar_cotizaciondireccion = CotizaciondireccionForm(instance=id_cotizaciondireccion)
         mensaje = ""
-    return render_to_response('cotizacion/direccioncotizacion_edit.html',
+    return render_to_response('direccioncotizacion_edit.html',
                               {'editar_cotizaciondireccion': editar_cotizaciondireccion, 'id_cotizaciondireccion': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
@@ -1038,7 +1038,7 @@ def edit_cotizaciontrabajador(request, pk):
         # formulario inicial
         editar_cotizaciontrabajador = CotizaciontrabajadorForm(instance=id_cotizaciontrabajador)
         mensaje = ""
-    return render_to_response('cotizacion/cotizaciontrabajador_edit.html',
+    return render_to_response('cotizaciontrabajador_edit.html',
                               {'editar_cotizaciontrabajador': editar_cotizaciontrabajador, 'id_cotizaciontrabajador': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
@@ -1066,7 +1066,7 @@ def edit_cotizacionambiente(request, pk):
         # formulario inicial
         editar_cotizacionambiente = CotizacionAmbienteForm(instance=id_cotizacionambiente)
         mensaje = ""
-    return render_to_response('cotizacion/cotizacionambiente_edit.html',
+    return render_to_response('cotizacionambiente_edit.html',
                               {'editar_cotizacionambiente': editar_cotizacionambiente, 'id_cotizacionambiente': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
@@ -1094,7 +1094,7 @@ def edit_cotizacionmueble(request, pk):
         # formulario inicial
         editar_cotizacionmueble = CotizacionMuebleForm(instance=id_cotizacionmueble)
         mensaje = ""
-    return render_to_response('cotizacion/cotizacionmueble_edit.html',
+    return render_to_response('cotizacionmueble_edit.html',
                               {'editar_cotizacionmueble': editar_cotizacionmueble, 'id_cotizacionmueble': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
@@ -1122,7 +1122,7 @@ def edit_cotizacionservicio(request, pk):
         # formulario inicial
         editar_cotizacionservicio = CotizacionServicioForm(instance=id_cotizacionservicio)
         mensaje = ""
-    return render_to_response('cotizacion/cotizacionservicio_edit.html',
+    return render_to_response('cotizacionservicio_edit.html',
                               {'editar_cotizacionservicio': editar_cotizacionservicio, 'id_cotizacionservicio': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
@@ -1150,7 +1150,7 @@ def edit_cotizacionmaterial(request, pk):
         # formulario inicial
         editar_cotizacionmaterial = CotizacionMaterialForm(instance=id_cotizacionmaterial)
         mensaje = ""
-    return render_to_response('cotizacion/cotizacionmaterial_edit.html',
+    return render_to_response('cotizacionmaterial_edit.html',
                               {'editar_cotizacionmaterial': editar_cotizacionmaterial, 'id_cotizacionmaterial': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
@@ -1178,7 +1178,7 @@ def edit_cotizacioncontenido(request, pk):
         # formulario inicial
         editar_cotizacioncontenido = CotizacionContenidoForm(instance=id_cotizacioncontenido)
         mensaje = ""
-    return render_to_response('cotizacion/cotizacioncontenido_edit.html',
+    return render_to_response('cotizacioncontenido_edit.html',
                               {'editar_cotizacioncontenido': editar_cotizacioncontenido, 'id_cotizacioncontenido': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 

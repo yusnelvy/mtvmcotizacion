@@ -1,0 +1,115 @@
+{% extends 'base3.html' %}
+
+{% block acceso_rapido %}
+
+        <a title="Volver" class="navbar-brand" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
+
+{% endblock acceso_rapido %}
+
+{% block navegacion %}
+
+        <div class="col-md-2">
+            <div class="barra-vertical hidden-print" style="">
+            <ul class="nav_l">
+
+                {% block link_navegacion %}{% endblock link_navegacion %}
+
+            </ul>
+            </div>
+            <br>
+            <br>
+        </div>
+
+{% endblock navegacion %}
+
+{% block titulo %}
+
+<title>Crear usuario</title>
+
+{% endblock titulo %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 animated fadeIn">
+            <h2>Crear usuario</h2>
+
+            {% if form.errors %}
+
+            <p>
+
+                {{ form.errors }}
+
+            </p>
+
+            {% endif %}
+
+            <form method="post" action="{% url 'uinicio:signup' %}">
+
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <p>
+
+                        {{ form.username.label_tag }}
+
+                    </p>
+                    <p>
+
+                        {{ form.username }}
+
+                    </p>
+                    <p>
+
+                        {{ form.password.label_tag }}
+
+                    </p>
+                    <p>
+
+                        {{ form.password }}
+
+                    </p>
+                    <p>
+
+                        {{ form.email.label_tag }}
+
+                    </p>
+                    <p>
+
+                        {{ form.email }}
+
+                    </p>
+                    <p>
+
+                        {{ form.first_name.label_tag }}
+
+                    </p>
+                    <p>
+
+                        {{ form.first_name }}
+
+                    </p>
+                    <p>
+
+                        {{ form.last_name.label_tag }}
+
+                    </p>
+                    <p>
+
+                        {{ form.last_name }}
+
+                    </p>
+                    <script type="text/javascript">
+                    document.getElementById('id_username').focus()
+                    </script>
+                </div>
+                <input type="submit" class="btn btn-default" value="registrar"/>
+                <a href="javascript:history.back();" class="btn btn-default">Cancelar</a>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,177 @@
+{% extends "base3.html" %}
+
+{% block content %}
+
+<div class="col-md-12">
+    <h2>Menú general</h2>
+    <div class="">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Presupuestos</h4>
+                        <p>Ver y crear presupuestos.</p>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/presupuesto/">Presupuestos</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/presupuesto/" target="_blank"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Cotizaciones</h4>
+                        <p>Ver, agregar y editar costizaciones.</p>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/cotizacion/">Cotizaciones</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/cotizacion/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/cotizacion/">Cotizaciones abiertas</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/cotizacion/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/cotizacion/tiempo_carga/">Tiempo de carga</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/cotizacion/tiempo_carga/" target="_blank"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Clientes</h4>
+                        <p>Ver, agregar y editar clientes.</p>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/cliente/">Clientes activos</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/cliente/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/cliente/">Todos los clientes</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/cliente/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/telefono/tipo_telefono/">Tipos de teléfonos</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/telefono/tipo_telefono/" target="_blank"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Inmuebles</h4>
+                        <p>Ver, agregar y editar inmuebles. Crear datos básicos para la gestión de inmuebles</p>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/direccion/tipo_inmueble/">Tipos de inmuebles</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/direccion/tipo_inmueble/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/direccion/complejidad_inmueble/">Complejidad de inmuebles</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/direccion/complejidad_inmueble/" target="_blank"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Ambientes</h4>
+                        <p>Ver, agregar y editar ambientes y tipos de ambientes. Asignar ambientes comunes por tipo de inmueble.</p>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/ambiente/">Ambientes</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/ambiente/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/ambiente/ambiente_tipo_inmueble/">Ambientes comunes por tipo de inmueble</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/ambiente/tipo_ambientetipoinmueble/" target="_blank"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Vehículos y trabajadores</h4>
+                        <p>Ver, agregar y editar vehículos, y roles de trabajadores. Asignar tarifas y recargos por tiempo y tiempo extra. Listar cotizaciones abiertas asociadas a vehículos y a roles de trabajadores</p>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/cotizacion/vehiculo/">Vehículos</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/cotizacion/vehiculo/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/trabajador/">Roles de trabajador</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/trabajador/" target="_blank"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Muebles</h4>
+                        <p>Ver, agregar y editar muebles, tipos, formas, tamaños y niveles de ocupación de muebles. Asignar muebles comunes por ambiente.</p>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/mueble/">Muebles</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/mueble/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/mueble/tipo_mueble/">Tipos de muebles</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/mueble/tipo_mueble/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/mueble/forma_mueble/">Formas de muebles</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/mueble/forma_mueble/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/mueble/tamano/">Tamaños de muebles</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/mueble/tamano/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/mueble/densidad/">Densidad de muebles</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/mueble/densidad/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/mueble/ocupacion/">Niveles de ocupación de muebles</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/mueble/ocupacion/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/mueble/mueble_ambiente/0/">Muebles comunes por ambiente</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/mueble/mueble_ambiente/0/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/mueble/tamano_mueble/0/">Medidas básicas por tamaño de mueble</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/mueble/tamano_mueble/0/" target="_blank"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Contenidos</h4>
+                        <p>Ver, agregar y editar tipos de contenidos y contenedores.</p>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/contenido/">Tipos de contenidos</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/contenido/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/contenido/contenido_servicio/0/">Servicios típicos para contenidos</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/contenido/contenido_servicio/0/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/contenido/contenido_tipico/0/">Contenidos típicos por muebles</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/contenido/contenido_tipico/0/" target="_blank"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Servicios y materiales</h4>
+                        <p>Ver, agregar y editar servicios y materiales. Asignar materiales asociados a los servicios, e indicar su nivel de complejidad.</p>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/servicio/">Servicios</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/servicio/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/servicio/complejidad/">Niveles de complejidad de servicios</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/servicio/complejidad/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/servicio/complejidad_servicio/0/0/">Complejidad por servicios</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/servicio/complejidad_servicio/0/0/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/servicio/material/">Materiales</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/servicio/material/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/servicio/servicio_material/0/0/">Materiales de servicios</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/servicio/servicio_material/0/0/" target="_blank"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Tablas de dirección</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>Ver, crear o editar los componentes que conforman una dirección.</p>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/direccion/pais/">Países</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/direccion/pais/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/direccion/provincia/">Provincias</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/direccion/provincia/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/direccion/ciudad/">Ciudades</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/direccion/ciudad/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/direccion/zona/">Zonas</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/direccion/zona/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="/direccion/tipo_direccion/">Tipos de dirección</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/direccion/tipo_direccion/" target="_blank"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Tablas de Inteligencia de Negocio</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>Ver listados de todas las tablas de inteligencia de neogocio disponibles.</p>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/cotizacion/estado_cotizacion/">Estado de cotización</a><a style="float:Right;" class="glyphicon glyphicon-new-window" href="/cotizacion/estado_cotizacion/" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="#">Ambientes comunes por tipo de inmueble</a></li>
+                        <li class="list-group-item"><a href="#">Muebles comunes por ambiente</a></li>
+                        <li class="list-group-item"><a href="#">Contenido típico por mueble</a></li>
+                        <li class="list-group-item"><a href="#">Niveles de complejidad por servicio</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% block contenido_adicional %}{% endblock contenido_adicional %}
+
+{% endblock content %}
+
+{% block ayuda %}{% endblock ayuda %}
