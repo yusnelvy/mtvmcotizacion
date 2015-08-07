@@ -21,6 +21,7 @@ from django.forms.formsets import formset_factory
 from django.db.models import Count, Sum
 from django.forms import ModelChoiceField
 
+
 class ContactWizard(SessionWizardView):
     def get_form(self, step=None, data=None, files=None):
         form = super(ContactWizard, self).get_form(step, data, files)
@@ -55,16 +56,20 @@ class PresupuestoDetail(DetailView):
 
     model = Presupuesto
     context_object_name = "presupuesto"
-    template_name = 'presupuesto/presupuesto_ficha.html'
+    template_name = 'presupuesto/presupuesto_ficha2.html'
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(PresupuestoDetail, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the books
+        #context['listar_ambiente'] = Presupuesto_Detalle.objects.values('ambiente', 'ambiente__ambiente', 'mueble').annotate(tcount=Count('ambiente')).order_by('ambiente')
         context['detalle_list'] = Presupuesto_Detalle.objects.filter(presupuesto=self.object.pk)
+        context['lista_ambiente'] = Presupuesto_Detalle.objects.filter(presupuesto=self.object.pk).values('ambiente').distinct()
         context['direccion_origen'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk, tipo_direccion="Origen")
         context['direccion_destino'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk, tipo_direccion="Destino")
         context['now'] = timezone.now()
+        context['servicio'] = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto=self.object.pk).values('servicio', 'detalle_presupuesto', 'tarifa').annotate(tcount=Count('servicio')).order_by('servicio')
+
         return context
 
 
@@ -128,7 +133,7 @@ class PresupuestoView(View):
 
 class PresupuestoDireccionView(View):
     form_class = PresupuestoDireccionForm
-    template_name = 'presupuesto/presupuestodireccion_add.html'
+    template_name = 'presupuesto/presupuestodireccion_add2.html'
 
     def get(self, request, *args, **kwargs):
 
@@ -228,7 +233,7 @@ class PresupuestoDireccionView(View):
 
 class PresupuestoDetalleView(View):
     form_class = PresupuestoDetalleForm
-    template_name = 'presupuesto/presupuestodetalle_add.html'
+    template_name = 'presupuesto/presupuestodetalle_add2.html'
 
     def get(self, request, *args, **kwargs):
 
@@ -374,7 +379,7 @@ class PresupuestoDetalleView(View):
 
 class PresupuestoServicioView(View):
     form_class = PresupuestoServicioForm
-    template_name = 'presupuesto/presupuestoservicio_add.html'
+    template_name = 'presupuesto/presupuestoservicio_add3.html'
 
     def get(self, request, *args, **kwargs):
 

@@ -33,8 +33,13 @@ class PresupuestoForm(ModelForm):
         model = Presupuesto
         fields = '__all__'
         labels = {
-            'nombre_cliente': ('Cliente'),
-            'fecha_estimadamudanza': ('Fecha estimada de la mudanza')
+            'nombre_cliente': ('Nombre del cliente:'),
+            'dni': ('DNI del cliente:'),
+            'recorrido_km': ('Recorrido en kilómetros de la mudanza:'),
+            'tiempo_recorrido': ('Tiempo recorrido de la mudanza:'),
+            'fecha_estimadamudanza': ('Fecha estimada de la mudanza:'),
+            'telefono': ('Teléfono del cliente:'),
+            'email': ('Email del cliente:')
         }
         error_messages = {
             NON_FIELD_ERRORS: {

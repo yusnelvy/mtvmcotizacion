@@ -17,6 +17,7 @@ PISOS_RECORRER_CHOICES = (
     (0, '0'),
     (1, '1'),
     (2, '2'),
+    (3, '3'),
     (4, '4'),
     (5, '5'),
     (6, '6'),
@@ -41,6 +42,30 @@ METROSCUADRADO_INMUEBLE = (
     (160, 'Entre 121 a 160 metros cuadrado'),
     (200, 'Entre 161 a 200 metros cuadrado'),
     (200, 'Mas de 200 metros cuadrado'),
+    )
+RECORRIDO_KM = (
+    (20.00, 'Entre 1 KM a 20 KM'),
+    (40.00, 'Entre 21 KM a 40 KM'),
+    (60.00, 'Entre 41 KM a 60 KM'),
+    (80.00, 'Entre 61 KM a 80 KM'),
+    (100.00, 'Entre 81 KM a 100 KM'),
+    (120.00, 'Entre 101 KM a 120 KM'),
+    (140.00, 'Entre 121 KM a 140 KM'),
+    (160.00, 'Entre 141 KM a 160 KM'),
+    (180.00, 'Entre 161 KM a 180 KM'),
+    (200.00, 'Más de 200 KM')
+    )
+TIEMPO_RECORRIDO = (
+    (1.00, 'Entre 30 minuto a 1 hora'),
+    (2.00, 'Entre 1 hora a 2 horas'),
+    (3.00, 'Entre 2 horas a 3 horas'),
+    (4.00, 'Entre 3 horas a 4 horas'),
+    (5.00, 'Entre 4 horas a 5 horas'),
+    (6.00, 'Entre 5 horas a 6 horas'),
+    (7.00, 'Entre 6 horas a 7 horas'),
+    (8.00, 'Entre 7 horas a 8 horas'),
+    (9.00, 'Entre 8 horas a 9 horas'),
+    (10.00, 'Más de 10 horas')
     )
 
 
@@ -82,9 +107,9 @@ class Presupuesto(models.Model):
                                                    blank=True, default=0.00)
     total_m3 = models.DecimalField(max_digits=8, decimal_places=3,
                                    blank=True, default=0.00)
-    recorrido_km = models.DecimalField(max_digits=7, decimal_places=2,
-                                       blank=True, default=0.00)
-    tiempo_recorrido = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
+    recorrido_km = models.DecimalField(choices=RECORRIDO_KM, max_digits=7, decimal_places=2,
+                                       blank=False, default=5.00)
+    tiempo_recorrido = models.DecimalField(choices=TIEMPO_RECORRIDO, max_digits=5, decimal_places=2, blank=False, default=1.00)
     tiempo_servicios = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
     tiempo_carga = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
     tiempo_total = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default='0.00')
@@ -129,8 +154,8 @@ class Presupuesto_direccion(models.Model):
     rampa = models.BooleanField()
     ascensor = models.BooleanField()
     ascensor_servicio = models.BooleanField()
-    pisos_ascensor_servicio = models.IntegerField(choices=PISOS_CHOICES, default=0)
-    pisos_ascensor = models.IntegerField(choices=PISOS_CHOICES, default=0)
+    pisos_ascensor_servicio = models.IntegerField(choices=PISOS_RECORRER_CHOICES, default=0)
+    pisos_ascensor = models.IntegerField(choices=PISOS_RECORRER_CHOICES, default=0)
     complejidad = models.CharField(max_length=100)
     factor_complejidad = models.DecimalField(max_digits=4, decimal_places=2,
                                              blank=True, default=0.00)

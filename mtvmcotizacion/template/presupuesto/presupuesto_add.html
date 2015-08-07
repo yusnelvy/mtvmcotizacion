@@ -2,39 +2,60 @@
 
 {% block titulo %}
 
-<title>Cotizacion</title>
+<title>Presupuesto</title>
 
 {% endblock titulo %}
 
+{% block col_edit %}
+
+class="col-md-10"
+
+{% endblock col_edit %}
+
 {% block titulo_form %}
 
-  <h2>Agregar cotizacion</h2>
+  <h2>Nuevo presupuesto</h2>
 
 {% endblock titulo_form %}
 
 {% block cuerpo_form %}
 
 <style>
-    .filtra-campos>p>#id_descripcion_vehiculo,.filtra-campos>p>#id_tiempo_recorrido,.filtra-campos>p>#id_tiempo_carga,.filtra-campos>p>#id_tiempo_total,.filtra-campos>p>label[for=id_descripcion_vehiculo],.filtra-campos>p>label[for=id_descripcion_persona],.filtra-campos>p>#id_descripcion_persona,.filtra-campos>p>input[type=number],.filtra-campos>p>label[for=id_cantidad_vehiculo],.filtra-campos>p>label[for=id_cantidad_persona],.filtra-campos>p>label[for=id_cantidad_ambientes],.filtra-campos>p>label[for=id_cantidad_muebles],.filtra-campos>p>label[for=id_cantidad_contenedores],.filtra-campos>p>label[for=id_total_peso_contenedores],.filtra-campos>p>label[for=id_total_peso_muebles],.filtra-campos>p>label[for=id_total_peso_contenidos],.filtra-campos>p>label[for=id_total_volumen_muebles],.filtra-campos>p>label[for=id_total_volumen_contenedores],.filtra-campos>p>label[for=id_total_volumen_contenidos],.filtra-campos>p>label[for=id_total_m3],.filtra-campos>p>label[for=id_recorrido_km],.filtra-campos>p>label[for=id_tiempo_recorrido],.filtra-campos>p>label[for=id_tiempo_carga],.filtra-campos>p>label[for=id_tiempo_total],.filtra-campos>p>label[for=id_monto_vehiculo_hora],.filtra-campos>p>label[for=id_monto_vehiculo_recorrido],.filtra-campos>p>label[for=id_monto_persona],.filtra-campos>p>label[for=id_monto_sin_impuesto],.filtra-campos>p>label[for=id_monto_impuesto],.filtra-campos>p>label[for=id_monto_con_impuesto]{display: none;}
+    .filtra-campos>p>#id_descripcion_vehiculo,.filtra-campos>p>#id_tiempo_carga,.filtra-campos>p>#id_tiempo_total,.filtra-campos>p>label[for=id_descripcion_vehiculo],.filtra-campos>p>label[for=id_descripcion_persona],.filtra-campos>p>#id_descripcion_persona,.filtra-campos>p>input[type=number],.filtra-campos>p>label[for=id_cantidad_vehiculo],.filtra-campos>p>label[for=id_cantidad_persona],.filtra-campos>p>label[for=id_cantidad_ambientes],.filtra-campos>p>label[for=id_cantidad_muebles],.filtra-campos>p>label[for=id_cantidad_contenedores],.filtra-campos>p>label[for=id_total_peso_contenedores],.filtra-campos>p>label[for=id_total_peso_muebles],.filtra-campos>p>label[for=id_total_peso_contenidos],.filtra-campos>p>label[for=id_total_volumen_muebles],.filtra-campos>p>label[for=id_total_volumen_contenedores],.filtra-campos>p>label[for=id_total_volumen_contenidos],.filtra-campos>p>label[for=id_total_m3],.filtra-campos>p>label[for=id_tiempo_carga],.filtra-campos>p>label[for=id_tiempo_total],.filtra-campos>p>label[for=id_monto_vehiculo_hora],.filtra-campos>p>label[for=id_monto_vehiculo_recorrido],.filtra-campos>p>label[for=id_monto_persona],.filtra-campos>p>label[for=id_monto_sin_impuesto],.filtra-campos>p>label[for=id_monto_impuesto],.filtra-campos>p>label[for=id_monto_con_impuesto]{display: none;}
+    .campo{width: 49.50%;display: inline-table;}
+    #descripcion_vehiculo,#descripcion_persona,#cantidad_vehiculo,#cantidad_persona,#cantidad_ambientes,#cantidad_muebles,#cantidad_contenedores,#total_peso_contenedores,#total_peso_muebles,#total_peso_contenidos,#total_volumen_muebles,#total_volumen_contenedores,#total_volumen_contenidos,#total_m3,#tiempo_carga,#tiempo_total,#monto_vehiculo_hora,#monto_vehiculo_recorrido,#monto_persona,#monto_sin_impuesto,#monto_impuesto,#monto_con_impuesto,#cotizador{display: none;}
+    #recorrido_km,#tiempo_recorrido,#fecha_estimadamudanza{width: 33%;display: inline-table;}
+    @media (max-width:991px) {
+        .campo{width: 49.50%;display: inline-table;}
+        #recorrido_km,#tiempo_recorrido,#fecha_estimadamudanza{width: 32.50%;display: inline-table;}
+    }
 </style>
 <div class="form-group filtra-campos">
 
-  {{ form.as_p }}
+{% for campo in form %}
+
+    <p id="{{campo.name}}">
+        <label for="{{campo.id_for_label}}">{{ campo.label }}</label>
+        {{ campo }}
+    </p>
+
+{% endfor %}
 
 </div>
 <script type="text/javascript">
 document.getElementById('id_dni').focus()
 document.getElementById('id_fecha_estimadamudanza').setAttribute('type','date')
+$('p').attr('class','campo')
 </script>
-
-
 
 {% endblock cuerpo_form %}
 
 {% block ayuda %}
 
 <div class="">
-  <p>La <strong>Cotizacion</strong>  es la acción y efecto de cotizar, poner precio a algo, estimar a alguien o algo en relación con un fin. el documento informa y establece el valor del servicios.</p>
+    <p>
+        Se llama <strong>presupuesto</strong> al cálculo y negociación anticipado de los ingresos y egresos de una actividad económica.  Es un plan de acción dirigido a cumplir una meta prevista, expresada en valores y términos financieros que debe cumplirse en determinado tiempo y bajo ciertas condiciones previstas.
+    </p>
 </div>
 
 {% endblock ayuda %}
