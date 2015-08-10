@@ -25,8 +25,8 @@ class Ambiente_Tipo_inmueble(models.Model):
     def __init__(self, *args, **kwargs):
         super(Ambiente_Tipo_inmueble, self).__init__(*args, **kwargs)
 
-    ambiente = models.ForeignKey(Ambiente)
-    tipo_inmueble = models.ForeignKey(Tipo_Inmueble)
+    ambiente = models.ForeignKey(Ambiente, on_delete=models.PROTECT)
+    tipo_inmueble = models.ForeignKey(Tipo_Inmueble, on_delete=models.PROTECT)
 
     def __str__(self):
         return u' %s - %s' % (self.ambiente, self.tipo_inmueble)

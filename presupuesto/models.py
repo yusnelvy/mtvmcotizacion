@@ -142,7 +142,7 @@ class Presupuesto(models.Model):
 
 class Presupuesto_direccion(models.Model):
     """docstring"""
-    presupuesto = models.ForeignKey(Presupuesto)
+    presupuesto = models.ForeignKey(Presupuesto, on_delete=models.PROTECT)
     direccion = models.TextField()
     tipo_direccion = models.CharField(max_length=100)
     tipo_inmueble = models.CharField(max_length=100)
@@ -176,7 +176,7 @@ class Presupuesto_direccion(models.Model):
 
 
 class Presupuesto_Detalle(models.Model):
-    presupuesto = models.ForeignKey(Presupuesto)
+    presupuesto = models.ForeignKey(Presupuesto, on_delete=models.PROTECT)
     ambiente = models.CharField(max_length=100)
     mueble = models.CharField(max_length=100)
     tamano = models.CharField(max_length=100)
@@ -208,7 +208,7 @@ class Presupuesto_Detalle(models.Model):
 
 
 class Presupuesto_servicio(models.Model):
-    detalle_presupuesto = models.ForeignKey(Presupuesto_Detalle)
+    detalle_presupuesto = models.ForeignKey(Presupuesto_Detalle, on_delete=models.PROTECT)
     servicio = models.CharField(max_length=100)
     monto_servicio = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
     material = models.TextField()

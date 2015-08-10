@@ -147,8 +147,8 @@ class Vehiculo_Cotizacion(models.Model):
     def __init__(self, *args, **kwargs):
         super(Vehiculo_Cotizacion, self).__init__(*args, **kwargs)
 
-    vehiculo = models.ForeignKey(Vehiculo)
-    cotizacion = models.ForeignKey(Cotizacion)
+    vehiculo = models.ForeignKey(Vehiculo, on_delete=models.PROTECT)
+    cotizacion = models.ForeignKey(Cotizacion, on_delete=models.PROTECT)
     cantidad = models.PositiveIntegerField()
     cantidad_hora = models.TimeField()
     tarifa_hora = models.DecimalField(max_digits=7, decimal_places=2)
@@ -171,7 +171,7 @@ class Cotizacion_direccion(models.Model):
     def __init__(self, *args, **kwargs):
         super(Cotizacion_direccion, self).__init__(*args, **kwargs)
 
-    cotizacion = models.ForeignKey(Cotizacion)
+    cotizacion = models.ForeignKey(Cotizacion, on_delete=models.PROTECT)
     direccion = models.CharField(max_length=550)
     tipo_direccion = models.CharField(max_length=100)
     inmueble = models.CharField(max_length=100)
@@ -201,8 +201,8 @@ class Cotizacion_trabajador(models.Model):
     def __init__(self, *args, **kwargs):
         super(Cotizacion_trabajador, self).__init__(*args, **kwargs)
 
-    cargo = models.ForeignKey(Cargo_trabajador)
-    cotizacion = models.ForeignKey(Cotizacion)
+    cargo = models.ForeignKey(Cargo_trabajador, on_delete=models.PROTECT)
+    cotizacion = models.ForeignKey(Cotizacion, on_delete=models.PROTECT)
     tarifa = models.DecimalField(max_digits=7, decimal_places=2)
     cantidad = models.PositiveIntegerField()
     total_sin_recargo = models.DecimalField(max_digits=7, decimal_places=2)
@@ -226,9 +226,9 @@ class Cotizacion_Ambiente(models.Model):
     def __init__(self, *args, **kwargs):
         super(Cotizacion_Ambiente, self).__init__(*args, **kwargs)
 
-    cotizacion = models.ForeignKey(Cotizacion)
-    ambiente = models.ForeignKey(Ambiente)
-    piso = models.ForeignKey(Piso)
+    cotizacion = models.ForeignKey(Cotizacion, on_delete=models.PROTECT)
+    ambiente = models.ForeignKey(Ambiente, on_delete=models.PROTECT)
+    piso = models.ForeignKey(Piso, on_delete=models.PROTECT)
     cantidad_muebles = models.DecimalField(max_digits=5, decimal_places=2)
     volumen_muebles = models.DecimalField(max_digits=7, decimal_places=2)
     peso_muebles = models.DecimalField(max_digits=7, decimal_places=2)
@@ -258,8 +258,8 @@ class Cotizacion_Mueble(models.Model):
     def __init__(self, *args, **kwargs):
         super(Cotizacion_Mueble, self).__init__(*args, **kwargs)
 
-    cotizacion_ambiente = models.ForeignKey(Cotizacion_Ambiente)
-    mueble = models.ForeignKey(Mueble)
+    cotizacion_ambiente = models.ForeignKey(Cotizacion_Ambiente, on_delete=models.PROTECT)
+    mueble = models.ForeignKey(Mueble, on_delete=models.PROTECT)
     tamano = models.CharField(max_length=100)
     ancho = models.DecimalField(max_digits=5, decimal_places=2)
     alto = models.DecimalField(max_digits=5, decimal_places=2)
@@ -290,8 +290,8 @@ class Cotizacion_Contenido(models.Model):
     def __init__(self, *args, **kwargs):
         super(Cotizacion_Contenido, self).__init__(*args, **kwargs)
 
-    cotizacion_mueble = models.ForeignKey(Cotizacion_Mueble)
-    contenido = models.ForeignKey(Contenido)
+    cotizacion_mueble = models.ForeignKey(Cotizacion_Mueble, on_delete=models.PROTECT)
+    contenido = models.ForeignKey(Contenido, on_delete=models.PROTECT)
     densidad = models.DecimalField(max_digits=5, decimal_places=2)
     volumen_contenido = models.DecimalField(max_digits=5, decimal_places=2)
     peso_contenido = models.DecimalField(max_digits=5, decimal_places=2)
@@ -311,8 +311,8 @@ class Cotizacion_Servicio(models.Model):
     def __init__(self, *args, **kwargs):
         super(Cotizacion_Servicio, self).__init__(*args, **kwargs)
 
-    cotizacion_mueble = models.ForeignKey(Cotizacion_Mueble)
-    servicio = models.ForeignKey(Servicio)
+    cotizacion_mueble = models.ForeignKey(Cotizacion_Mueble, on_delete=models.PROTECT)
+    servicio = models.ForeignKey(Servicio, on_delete=models.PROTECT)
     cotizacion_contenido = models.ForeignKey(Cotizacion_Contenido, null=True, blank=True)
     complejidad = models.CharField(max_length=100)
     tarifa = models.DecimalField(max_digits=13, decimal_places=2)
@@ -331,8 +331,8 @@ class Cotizacion_Material(models.Model):
     def __init__(self, *args, **kwargs):
         super(Cotizacion_Material, self).__init__(*args, **kwargs)
 
-    cotizacion_servicio = models.ForeignKey(Cotizacion_Servicio)
-    material = models.ForeignKey(Material)
+    cotizacion_servicio = models.ForeignKey(Cotizacion_Servicio, on_delete=models.PROTECT)
+    material = models.ForeignKey(Material, on_delete=models.PROTECT)
     cantidad = models.DecimalField(max_digits=5, decimal_places=2)
     precio_unitario = models.DecimalField(max_digits=7, decimal_places=2)
     precio_total = models.DecimalField(max_digits=7, decimal_places=2)
