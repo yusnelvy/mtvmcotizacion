@@ -29,8 +29,8 @@ class Contenido_Tipico(models.Model):
     def __init__(self, *args, **kwargs):
         super(Contenido_Tipico, self).__init__(*args, **kwargs)
 
-    contenido = models.ForeignKey(Contenido)
-    mueble = models.ForeignKey(Mueble)
+    contenido = models.ForeignKey(Contenido, on_delete=models.PROTECT)
+    mueble = models.ForeignKey(Mueble, on_delete=models.PROTECT)
     cantidad = models.DecimalField(max_digits=5, decimal_places=2)
     predefinido = models.BooleanField(default=False)
 
@@ -49,8 +49,8 @@ class Contenido_Servicio(models.Model):
     def __init__(self, *args, **kwargs):
         super(Contenido_Servicio, self).__init__(*args, **kwargs)
 
-    contenido = models.ForeignKey(Contenido)
-    servicio = models.ForeignKey(Servicio)
+    contenido = models.ForeignKey(Contenido, on_delete=models.PROTECT)
+    servicio = models.ForeignKey(Servicio, on_delete=models.PROTECT)
     predefinido = models.BooleanField(default=False)
 
     def __str__(self):
