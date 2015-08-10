@@ -371,6 +371,7 @@ class="col-md-10"
                 {% endif %}
 
                 <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:right;" data-toggle="modal" data-target="#myModalServicio" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ mueble.id }}" href="#" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal"></a>
+                <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:right;" data-toggle="modal" data-target="#myModalprueba" data-opcion="" href="#" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal">2</a>
                 </p>
             </div>
         </div>
@@ -390,6 +391,7 @@ class="col-md-10"
 {% endif %}
 
 </div><!--fin acordion-->
+
 <!-- Modal agregar direccion-->
 <div class="modal fade bs-example-modal-lg" id="myModalDireccion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5">
   <div class="modal-dialog modal-lg" role="document">
@@ -407,6 +409,24 @@ class="col-md-10"
     </div>
   </div>
 </div>
+<!-- Modal agregar prueba-->
+<div class="modal fade bs-example-modal-lg" id="myModalprueba" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel5"></h4>
+      </div>
+      <div class="modal-body">
+
+            <form ng-controller="MyFormCtrl" name="contact_form">
+    {{formserv}}
+
+</form>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Modal agregar servicio-->
 <div class="modal fade" id="myModalServicio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4">
   <div class="modal-dialog" role="document">
@@ -420,7 +440,7 @@ class="col-md-10"
       width="100%" height="200" scrolling="no" frameborder="0" seamless>
       <p>Texto alternativo para navegadores que no aceptan iframes.</p>
     </iframe>
-<button type="button" class="btn btn-default">Registrar</button>
+<button type="button" class="btn btn-default btn-submit">Registrar</button>
       </div>
     </div>
   </div>
@@ -461,6 +481,18 @@ class="col-md-10"
     </div>
   </div>
 </div>
+
+<button type='button' id='edit_foo' class='buttons'>push me</button>
+
+<div class="modal fade" id="foo_modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">Server Side Modal Popup Demo</div>
+            <div class="modal-body"></div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
 <script>
     // Autor: @jqcaper
 // Configuraciones Generales
@@ -469,38 +501,40 @@ var nombre_boton_eliminar = ".botonmodal"; // Clase
 var nombre_formulario_modal = "#myModalSinAmbiente"; //id
 
 // Fin de configuraciones
-    $(document).on('ready',function(){
+$(document).ready(function(){
 
-        $(".botonmodal").on('click',function(e){
-            e.preventDefault();
-            var Pid = $(this).attr('id');
-            var name = $(this).data('name');
-            var opcion = $(this).data('opcion');
-            $('#modal_idModulo').val(Pid);
-            $('#modal_name2').text(name);
-            $('#id_modulo').val(name);
-            $('.id_orden').attr('src', opcion);
-        });
-
-        var options = {
-            success:function(response){
-
-                if(response.form=="botonmodal"){
-                    if(response.status=="True"){
-                        alert("registrado exitosamente!");
-
-                        location.reload();
-                    }else{
-                        alert("Hubo un error al edit!");
-                        $("#myModal2").modal('hide');
-                    }
-                }
-
-            }
-        };
-
-        $(nombre_formulario_modal).ajaxForm(options);
+    $(".botonmodal").on('click',function(e){
+        e.preventDefault();
+        var Pid = $(this).attr('id');
+        var name = $(this).data('name');
+        var opcion = $(this).data('opcion');
+        $('#modal_idModulo').val(Pid);
+        $('#modal_name2').text(name);
+        $('#id_modulo').val(name);
+        $('.id_orden').attr('src', opcion);
     });
+
+    var options = {
+        success:function(response){
+
+            if(response.form=="botonmodal"){
+                if(response.status=="True"){
+                    alert("registrado exitosamente!");
+
+                    location.reload();
+                }else{
+                    alert("Hubo un error al edit!");
+                    $("#myModal2").modal('hide');
+                }
+            }
+
+        }
+    };
+
+    $(nombre_formulario_modal).ajaxForm(options);
+
+    });
+});
 </script>
 
 {% endblock content1 %}

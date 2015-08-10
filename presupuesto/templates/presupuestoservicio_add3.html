@@ -5,7 +5,7 @@
 body{padding: 0px;}
 #id_servicio,p label[for=id_servicio],#id_detalle_presupuesto,p label[for=id_detalle_presupuesto]{display: none;}
 </style>
-<form action="" method="post">
+<form action="" method="post" id="myform">
 
   {% csrf_token %}
 
@@ -14,19 +14,43 @@ body{padding: 0px;}
     {{ form.as_p }}
 
   </div>
-  <button type="submit" class="btn btn-default">Registrar</button>
+  <button type="button" class="btn btn-default btn-registrar">Registrar</button>
 </form>
 <script>
 $(document).ready(function() {
   document.getElementById('id_lista_servicio').focus();
-});
-$("#id_lista_servicio").on("change", function(){
-  id_lista_servicio = $("#id_lista_servicio").val();
-  $.get('/presupuesto/servicio/nuevo'+id_lista_servicio,
-    {id_lista_servicio: id_lista_servicio},
-    function(data){
-      $("#id_servicio").val(data[0].servicio);
+
+  $("#id_lista_servicio").on("change", function(){
+    id_lista_servicio = $("#id_lista_servicio").val();
+    $.get('/presupuesto/servicio/nuevo'+id_lista_servicio,
+      {id_lista_servicio: id_lista_servicio},
+      function(data){
+        $("#id_servicio").val(data[0].servicio);
+      });
+  });
+
+  $(".btn-registrar").on("click", function(){
+    var formulario = document.getElementById("myform");
+    $.ajax({
+      type: "POST",
+      url: "{% url 'upresupuestos:PresupuestoServicioView' %}",
+      success: function(data) {
+        alert(data.status);
+      }
     });
+    alert("guarda");
+  });
+  $('.btn-registrar').on('click', function () {
+    $.ajax({
+        type: 'POST',
+        url: '{% url upresupuestos:PresupuestoServicioView" %}',
+        },
+        success: function (data, textStatus, jqXHR) {
+            $('#foo_modal').find('.modal-body').html(data);
+            $('#foo_modal').modal('show');
+        },
+    });
+});
 });
 </script>
 <script src="/static/js/jquery.form.min.js"></script>

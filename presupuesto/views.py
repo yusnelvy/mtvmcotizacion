@@ -69,6 +69,7 @@ class PresupuestoDetail(DetailView):
         context['direccion_destino'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk, tipo_direccion="Destino")
         context['now'] = timezone.now()
         context['servicio'] = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto=self.object.pk).values('servicio', 'detalle_presupuesto', 'monto_servicio').annotate(tcount=Count('servicio')).order_by('servicio')
+        context['formserv'] = PresupuestoServicioForm()
 
         return context
 
@@ -467,13 +468,15 @@ class PresupuestoServicioView(View):
             updatepresu = Presupuesto.objects.filter(presupuesto_detalle__id=request.POST['detalle_presupuesto'])
             updatepresu.update(estado='Servicios cargados')
 
-            # <process form cleaned data>
-            redirect_to = request.GET['next']
+            # # <process form cleaned data>
+            # redirect_to = request.GET['next']
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
-            else:
-                return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+            # if redirect_to:
+            #     return HttpResponseRedirect(redirect_to)
+            # else:
+            #     return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+            mensaje = {'status': True, 'msj': 'Registro guardado'}
+            return JsonResponse(mensaje, safe=False)
 
         return render(request, self.template_name, {'form': form})
 

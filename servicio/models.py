@@ -49,7 +49,7 @@ class Material(models.Model):
     capacidad_peso = models.DecimalField(max_digits=8, decimal_places=3)
     capacidad_volumen = models.DecimalField(max_digits=8, decimal_places=3)
     contenedor = models.BooleanField(default=False)
-    unidad = models.ForeignKey(Unidad)
+    unidad = models.ForeignKey(Unidad, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.material
@@ -69,8 +69,8 @@ class Servicio_Material(models.Model):
     def __init__(self, *args, **kwargs):
         super(Servicio_Material, self).__init__(*args, **kwargs)
 
-    servicio = models.ForeignKey(Servicio)
-    material = models.ForeignKey(Material)
+    servicio = models.ForeignKey(Servicio, on_delete=models.PROTECT)
+    material = models.ForeignKey(Material, on_delete=models.PROTECT)
     cantidad = models.DecimalField(max_digits=5, decimal_places=2)
     Calculo = models.TextField(max_length=200)
 
@@ -105,9 +105,9 @@ class Complejidad_Servicio(models.Model):
     def __init__(self, *args, **kwargs):
         super(Complejidad_Servicio, self).__init__(*args, **kwargs)
 
-    complejidad = models.ForeignKey(Complejidad)
+    complejidad = models.ForeignKey(Complejidad, on_delete=models.PROTECT)
     tarifa = models.DecimalField(max_digits=13, decimal_places=2)
-    servicio = models.ForeignKey(Servicio)
+    servicio = models.ForeignKey(Servicio, on_delete=models.PROTECT)
     factor_tiempo = models.DecimalField(max_digits=7, decimal_places=2)
 
     def __str__(self):

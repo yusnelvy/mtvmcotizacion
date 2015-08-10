@@ -110,7 +110,7 @@ class Direccion(models.Model):
     piso = models.CharField(max_length=100)
     adicional = models.CharField(max_length=250, blank=True)
     tipo_direccion = models.ForeignKey(Tipo_direccion, on_delete=models.PROTECT)
-    pais = models.ForeignKey(Pais)
+    pais = models.ForeignKey(Pais, on_delete=models.PROTECT)
     provincia = ChainedForeignKey(Provincia, chained_field='pais', chained_model_field='pais')
     ciudad = ChainedForeignKey(Ciudad, chained_field='provincia', chained_model_field='provincia')
     zona = ChainedForeignKey(Zona, chained_field='ciudad', chained_model_field='ciudad')
