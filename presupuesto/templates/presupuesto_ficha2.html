@@ -13,7 +13,6 @@ class="col-md-10"
 {% endblock col1 %}
 
 {% block content1 %}
-
 <div class="panel panel-default">
   <div class="panel-body">
     <div class="row">
@@ -39,7 +38,7 @@ class="col-md-10"
 </div><!--fin panel default datos basicos-->
 <div class="row">
     <div class="col-md-6">
-<div class="panel panel-default">
+<div class="panel panel-default" id="direccion-origen">
   <div class="panel-body">
     <h4>Dirección de origen
 
@@ -168,11 +167,11 @@ class="col-md-10"
 </div><!--fin panel default direccion origen-->
 </div>
     <div class="col-md-6">
-<div class="panel panel-default">
+<div class="panel panel-default" id="direccion-destino">
   <div class="panel-body">
     <h4>Dirección de destino
 
-        {% if direccion_origen %}
+        {% if direccion_destino %}
 
 
         {% else %}
@@ -308,87 +307,86 @@ class="col-md-10"
     {% for ambiente in lista_ambiente %}
 
 
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingOne{{forloop.counter}}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{forloop.counter}}" aria-expanded="true" aria-controls="collapseOne{{forloop.counter}}" style="cursor:pointer;">
-      <h3 class="panel-title" style="font-size: 20px;">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne{{forloop.counter}}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{forloop.counter}}" aria-expanded="true" aria-controls="collapseOne{{forloop.counter}}" style="cursor:pointer;">
+            <h3 class="panel-title" style="font-size: 20px;">
 
-          {{ambiente.ambiente|upper}}
+                {{ambiente.ambiente|upper}}
 
-      </h3>
-    </div>
-    <div id="collapseOne{{forloop.counter}}" class="panel-collapse collapse {% if forloop.first %} in {% endif %}" role="tabpanel" aria-labelledby="headingOne{{forloop.counter}}">
-<div class="panel-body">
-    <p style="padding-left:15px;font-size: 18px;">Muebles
+            </h3>
+        </div>
+        <div id="collapseOne{{forloop.counter}}" class="panel-collapse collapse {% if forloop.first %} in {% endif %}" role="tabpanel" aria-labelledby="headingOne{{forloop.counter}}">
+            <div class="panel-body">
+                <p style="padding-left:15px;font-size: 18px;">Muebles
 
-    <a data-toggle="modal" data-target="#myModalAmbiente" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}" title="Agregar mueble al ambiente {{ambiente.ambiente|upper}} " data-toggle="tooltip" data-placement="right" title="Tooltip on top" style="float:right;cursor:pointer;" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal"></a>
-    </p>
-</div>
-<ul class="list-group">
-
- {% for mueble in detalle_list %}
-
-     {% if ambiente.ambiente = mueble.ambiente %}
-
-    <li class="list-group-item" style="padding-left:40px;">
-        <div class="row">
-            <div class="col-md-2">
-                <p style="font-size: 16px;">{{mueble.mueble}}</p>
+                    <a data-toggle="modal" data-target="#myModalAmbiente" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}" title="Agregar mueble al ambiente {{ambiente.ambiente|upper}} " data-toggle="tooltip" data-placement="right" title="Tooltip on top" style="float:right;cursor:pointer;" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal"></a>
+                </p>
             </div>
-            <div class="col-md-1">
-                <p style="color:#777;">{{ mueble.tamano }}</p>
-            </div>
-            <div class="col-md-3">
-                <p style="color:#777;">ocupación: {{ mueble.ocupacidad }}</p>
-            </div>
-            <div class="col-md-1">
-                <p style="color:#777;">{{ mueble.ancho|floatformat:"0" }}x{{ mueble.largo|floatformat:"0" }}x{{ mueble.alto|floatformat:"0" }}</p>
-            </div>
-            <div class="col-md-5">
-            <p style="color:#777;">
+            <ul class="list-group">
 
-                {% if servicio %}
+                {% for mueble in detalle_list %}
 
-                Servicio:
+                {% if ambiente.ambiente = mueble.ambiente %}
 
-                {% for det_servivio in servicio %}
+                <li class="list-group-item" style="padding-left:40px;">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p style="font-size: 16px;">{{mueble.mueble}}</p>
+                        </div>
+                        <div class="col-md-1">
+                            <p style="color:#777;">{{ mueble.tamano }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <p style="color:#777;">ocupación: {{ mueble.ocupacidad }}</p>
+                        </div>
+                        <div class="col-md-1">
+                            <p style="color:#777;">{{ mueble.ancho|floatformat:"0" }}x{{ mueble.largo|floatformat:"0" }}x{{ mueble.alto|floatformat:"0" }}</p>
+                        </div>
+                        <div class="col-md-5">
+                            <span style="color:#777;" id="listservi{{mueble.id}}">
 
-                {% if det_servivio.detalle_presupuesto = mueble.id %}
+                                {% if servicio %}
 
-                {{ det_servivio.servicio }}
+                                Servicio:
 
-                {% if forloop.last %}
+                                {% for det_servivio in servicio %}
 
-                {% else %} -
+                                {% if det_servivio.detalle_presupuesto = mueble.id %}
 
-                {% endif %}
+                                {{ det_servivio.servicio }}
+
+                                {% if forloop.last %}
+
+                                {% else %} -
+
+                                {% endif %}
+
+                                {% endif %}
+
+                                {% endfor %}
+
+                                {% else %}
+
+                                {% endif %}
+                            </span>
+                            <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:right;" data-toggle="modal" data-target="#myModalServicio" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ mueble.id }}" href="#" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal"></a>
+                        </div>
+
+                    </div>
+
+                </li>
 
                 {% endif %}
 
                 {% endfor %}
 
-                {% else %}
-
-                {% endif %}
-
-                <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:right;" data-toggle="modal" data-target="#myModalServicio" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ mueble.id }}" href="#" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal"></a>
-                <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:right;" data-toggle="modal" data-target="#myModalprueba" data-opcion="" href="#" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal">2</a>
-                </p>
-            </div>
+            </ul>
         </div>
-
-    </li>
-
-   {% endif %}
+    </div>
 
     {% endfor %}
 
-</ul>
-    </div>
-  </div>
-
-   {% endfor %}
-
-{% endif %}
+    {% endif %}
 
 </div><!--fin acordion-->
 
@@ -397,7 +395,7 @@ class="col-md-10"
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn-cerrardir"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel5"></h4>
       </div>
       <div class="modal-body">
@@ -409,30 +407,12 @@ class="col-md-10"
     </div>
   </div>
 </div>
-<!-- Modal agregar prueba-->
-<div class="modal fade bs-example-modal-lg" id="myModalprueba" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel5"></h4>
-      </div>
-      <div class="modal-body">
-
-            <form ng-controller="MyFormCtrl" name="contact_form">
-    {{formserv}}
-
-</form>
-      </div>
-    </div>
-  </div>
-</div>
 <!-- Modal agregar servicio-->
 <div class="modal fade" id="myModalServicio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn-cerrar"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel4">Agregar servicio</h4>
       </div>
       <div class="modal-body">
@@ -440,7 +420,6 @@ class="col-md-10"
       width="100%" height="200" scrolling="no" frameborder="0" seamless>
       <p>Texto alternativo para navegadores que no aceptan iframes.</p>
     </iframe>
-<button type="button" class="btn btn-default btn-submit">Registrar</button>
       </div>
     </div>
   </div>
@@ -450,7 +429,7 @@ class="col-md-10"
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn-cerrarmueble"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel2">Agregar detalle del presupuesto</h4>
       </div>
       <div class="modal-body">
@@ -468,7 +447,7 @@ class="col-md-10"
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn-cerraramb"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel3">Agregar detalle del presupuesto</h4>
       </div>
       <div class="modal-body">
@@ -482,17 +461,6 @@ class="col-md-10"
   </div>
 </div>
 
-<button type='button' id='edit_foo' class='buttons'>push me</button>
-
-<div class="modal fade" id="foo_modal" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">Server Side Modal Popup Demo</div>
-            <div class="modal-body"></div>
-            <div class="modal-footer"></div>
-        </div>
-    </div>
-</div>
 <script>
     // Autor: @jqcaper
 // Configuraciones Generales
@@ -502,6 +470,7 @@ var nombre_formulario_modal = "#myModalSinAmbiente"; //id
 
 // Fin de configuraciones
 $(document).ready(function(){
+
 
     $(".botonmodal").on('click',function(e){
         e.preventDefault();
@@ -534,7 +503,7 @@ $(document).ready(function(){
     $(nombre_formulario_modal).ajaxForm(options);
 
     });
-});
+
 </script>
 
 {% endblock content1 %}

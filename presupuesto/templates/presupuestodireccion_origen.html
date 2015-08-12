@@ -1,0 +1,124 @@
+<div class="panel-body">
+    <h4>Dirección de origen
+
+        {% if direccion_origen %}
+
+        {% else %}
+
+        <a data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Origen&pre={{presupuesto.id}}" title="Agregar direccion origen" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="#" style="float:right;" class="botonmodal">Agregar</a>
+
+        {% endif %}
+
+    </h4>
+</div>
+
+{% for direc_origen in direccion_origen %}
+
+<p style="padding:0px 5px;">{{ direc_origen.direccion }}</p>
+<table class="table table-condensed">
+    <tr>
+        <td><strong>Tipo de direccion del inmueble: </strong></td>
+        <td>{{ direc_origen.tipo_inmueble }}</td>
+    </tr>
+    <tr>
+        <td><strong>Metros cuadrados del inmueble: </strong></td>
+        <td>{{ direc_origen.total_m2 }} m2</td>
+    </tr>
+    <tr>
+        <td><strong>Ocupación del inmueble: </strong> </td>
+        <td>{{ direc_origen.ocupacidad_inmueble }}</td>
+    </tr>
+    <tr>
+        <td><strong>Distancia del vehículo al inmueble: </strong></td>
+        <td>{{ direc_origen.distancia_vehiculo }} m.</td>
+    </tr>
+    <tr>
+        <td><strong>Cantidad de
+
+            {% if direc_origen.pisos > 1 %}
+
+            pisos
+
+            {% else %}
+
+            piso
+
+            {% endif %}
+
+            del inmueble:
+        </strong></td>
+        <td>{{ direc_origen.pisos }} Und</td>
+    </tr>
+
+    {% if direc_origen.pisos_escalera = 0 %}
+
+    {% else %}
+
+    <tr>
+        <td><strong>Cantidad de
+
+            {% if direc_origen.pisos_escalera > 1 %}
+
+            Pisos
+
+            {% else %}
+
+            Piso
+
+            {% endif %}
+
+            a recorrer por escalera: </strong></td>
+            <td>{{ direc_origen.pisos_escalera }} Und</td>
+        </tr>
+
+        {% endif %}
+
+        <tr>
+            <td><strong>Rampa del inmueble: </strong></td>
+            <td>{{ direc_origen.rampa|yesno:"Si,No" }}</td>
+        </tr>
+        <tr>
+            <td><strong>Ascensor del inmueble : </strong></td>
+            <td>{{ direc_origen.ascensor|yesno:"Si,No" }}</td>
+        </tr>
+
+        {% if direc_origen.pisos_ascensor = 0 %}
+
+        {% else %}
+
+        <tr>
+            <td><strong>Cantidad de pisos a recorrer por ascensor: </strong></td>
+            <td>{{ direc_origen.pisos_ascensor }} Und</td>
+        </tr>
+
+        {% endif %}
+
+        <tr>
+            <td><strong>Ascensor de servicio del inmueble: </strong></td>
+            <td>{{ direc_origen.ascensor_servicio|yesno:"Si,No" }}</td>
+        </tr>
+
+        {% if direc_origen.pisos_ascensor_servicio = 0 %}
+
+        {% else %}
+
+        <tr>
+            <td><strong>Cantidad de pisos a recorrer por ascensor de servicio: </strong></td>
+            <td>{{ direc_origen.pisos_ascensor_servicio }} Und</td>
+        </tr>
+
+        {% endif %}
+
+        <tr>
+            <td></td>
+            <td>
+                <small style="float:right;">
+                    <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_origen.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+                    <a style="padding:0px 0px 8px 8px;" href=# onclick="eliminar('direccion/delete/?codigo={{direc_origen.id}}','{{direc_origen.id}}'); return false" class="glyphicon glyphicon-remove"></a>
+                </small>
+            </td>
+        </tr>
+
+    </table>
+
+    {% endfor %}

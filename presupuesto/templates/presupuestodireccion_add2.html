@@ -93,7 +93,7 @@ button{position: absolute;bottom:30px;}
 <link href="/static/bootstrap/css/bootstrap3.css" rel="stylesheet">
 <script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
 <h4 style="margin-top:0px;">Agregar dirección de {{ form.tipo_direccion.value|lower }}</h4>
-<form action="" method="post">
+<form action="" method="post" id="myform">
 
   {% csrf_token %}
 
@@ -193,7 +193,58 @@ $(document).ready(function(){
       });
   });
 
+$('#myform').submit(function(){
+    var action = "{% url 'upresupuestos:PresupuestoDireccionView' %}";
+    var that = $(this);
+    $.ajax({
+        url: action,
+        type: 'POST',
+        data: that.serialize()
+        ,success: function(data){
+            var modalp = parent.document.getElementById('myModalDireccion');
+            var divp = parent.document.getElementsByClassName("modal-backdrop");
+            var bodyp = parent.document.getElementById('id_body');
+            var closep = parent.document.getElementById("btn-cerrardir");
+          if (data.estatus=="ok"){
+            $(closep).click();
+            refresh();
+            //parent.location.reload(); //para refrescar la pagina
+            //$(modalp).hide();
+            //$(divp).remove();
+            //$(bodyp).removeClass('modal-open');
+            //$(bodyp).css('padding-right','');
+          }
+
+        }
+    });
+    return false;
 });
+
+});
+</script>
+<script type="text/javascript">
+function refresh() {
+  var tipo_direccion = $("#id_tipo_direccion").val();
+  var id_presupuesto = $("#id_presupuesto").val();
+  var urldir = "";
+  var iddiv = "";
+
+  if (tipo_direccion=="Origen"){
+    urldir = "/presupuesto/ficha/direccionorigen/"+ id_presupuesto;
+    iddiv = 'direccion-origen';
+  }else if(tipo_direccion=="Destino"){
+    urldir = "/presupuesto/ficha/direcciondestino/"+ id_presupuesto;
+    iddiv = 'direccion-destino';
+  }
+
+  $.ajax({
+    url: urldir,
+    success: function(data) {
+      var divs = parent.document.getElementById(iddiv);
+      $(divs).html(data);
+    }
+  });
+}
 </script>
 <script src="/static/js/jquery.form.min.js"></script>
 <script src="/static/js/eliminar.js"></script>
