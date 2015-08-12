@@ -124,9 +124,10 @@ class PresupuestoView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            form.save()
+            id_reg = form.save()
+
             # <process form cleaned data>
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse('upresupuestos:PresupuestoDetail', args=id_reg.id))
 
         return render(request, self.template_name, {'form': form})
 
@@ -260,8 +261,6 @@ class PresupuestoDetalleView(View):
             tamano_id = self.request.GET.get('id_lista_tamano')
             ocupacion_id = self.request.GET.get('id_ocupacion')
 
-            self.form_class.fields['lista_tamano'] = ModelChoiceField(Tamano_Mueble.objects.filter(mueble=mueble_id))
-
             if (mueble_id and tamano_id is None):
                 mueble = Mueble.objects.get(id=mueble_id)
                 contenido = Contenido_Tipico.objects.filter(mueble=mueble_id, predefinido=True)[:1]
@@ -305,16 +304,15 @@ class PresupuestoDetalleView(View):
 
             if tamano_id:
                 tamanomueble = Tamano_Mueble.objects.filter(tamano_id=tamano_id, mueble_id=mueble_id)[:1]
-
                 if tamanomueble:
-                    tamano = tamano[0].tamano.descripcion
-                    densidad = tamano[0].densidad.descripcion
-                    ancho = tamano[0].ancho
-                    largo = tamano[0].largo
-                    alto = tamano[0].alto
-                    peso = tamano[0].peso
-                    valor_densidad = tamano[0].densidad_valor
-                    volumen_mueble = tamano[0].volumenmueble
+                    tamano = tamanomueble[0].tamano.descripcion
+                    densidad = tamanomueble[0].densidad.descripcion
+                    ancho = tamanomueble[0].ancho
+                    largo = tamanomueble[0].largo
+                    alto = tamanomueble[0].alto
+                    peso = tamanomueble[0].peso
+                    valor_densidad = tamanomueble[0].densidad_valor
+                    volumen_mueble = tamanomueble[0].volumenmueble
 
                 tamano = [{
                     'tamano': tamano,
@@ -323,8 +321,8 @@ class PresupuestoDetalleView(View):
                     'largo': largo,
                     'alto': alto,
                     'peso': peso,
-                    'valor_densidad': round(valor_densidad, 2),
-                    'volumen_mueble': round(volumen_mueble, 2),
+                    'valor_densidad': round(valor_densidad, 3),
+                    'volumen_mueble': round(volumen_mueble, 3),
                 }]
                 return JsonResponse(tamano, safe=False)
 
