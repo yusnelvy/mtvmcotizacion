@@ -192,9 +192,10 @@ class PresupuestoView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            form.save()
+            id_reg = form.save()
+
             # <process form cleaned data>
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse('upresupuestos:PresupuestoDetail', args=id_reg.id))
 
         return render(request, self.template_name, {'form': form})
 
@@ -372,7 +373,6 @@ class PresupuestoDetalleView(View):
 
             if tamano_id:
                 tamanomueble = Tamano_Mueble.objects.filter(tamano_id=tamano_id, mueble_id=mueble_id)[:1]
-
                 if tamanomueble:
                     tamano = tamanomueble[0].tamano.descripcion
                     densidad = tamanomueble[0].densidad.descripcion
@@ -390,8 +390,8 @@ class PresupuestoDetalleView(View):
                     'largo': largo,
                     'alto': alto,
                     'peso': peso,
-                    'valor_densidad': round(valor_densidad, 2),
-                    'volumen_mueble': round(volumen_mueble, 2),
+                    'valor_densidad': round(valor_densidad, 3),
+                    'volumen_mueble': round(volumen_mueble, 3),
                 }]
                 return JsonResponse(tamano, safe=False)
 
