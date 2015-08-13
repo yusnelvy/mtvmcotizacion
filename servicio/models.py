@@ -40,13 +40,13 @@ class Material(models.Model):
         super(Material, self).__init__(*args, **kwargs)
 
     material = models.CharField(max_length=100, unique=True)
-    precio = models.DecimalField(max_digits=7, decimal_places=2)
-    peso = models.DecimalField(max_digits=8, decimal_places=3)
+    precio = models.DecimalField(max_digits=9, decimal_places=2)
+    peso = models.DecimalField(max_digits=9, decimal_places=3)
     recuperable = models.BooleanField(default=False)
-    ancho = models.DecimalField(max_digits=5, decimal_places=2)
-    largo = models.DecimalField(max_digits=5, decimal_places=2)
-    alto = models.DecimalField(max_digits=5, decimal_places=2)
-    capacidad_peso = models.DecimalField(max_digits=8, decimal_places=3)
+    ancho = models.DecimalField(max_digits=7, decimal_places=2)
+    largo = models.DecimalField(max_digits=7, decimal_places=2)
+    alto = models.DecimalField(max_digits=7, decimal_places=2)
+    capacidad_peso = models.DecimalField(max_digits=9, decimal_places=3)
     capacidad_volumen = models.DecimalField(max_digits=8, decimal_places=3)
     contenedor = models.BooleanField(default=False)
     unidad = models.ForeignKey(Unidad, on_delete=models.PROTECT)
@@ -71,7 +71,7 @@ class Servicio_Material(models.Model):
 
     servicio = models.ForeignKey(Servicio, on_delete=models.PROTECT)
     material = models.ForeignKey(Material, on_delete=models.PROTECT)
-    cantidad = models.DecimalField(max_digits=5, decimal_places=2)
+    cantidad = models.DecimalField(max_digits=7, decimal_places=2)
     Calculo = models.TextField(max_length=200)
 
     def __str__(self):
@@ -106,9 +106,9 @@ class Complejidad_Servicio(models.Model):
         super(Complejidad_Servicio, self).__init__(*args, **kwargs)
 
     complejidad = models.ForeignKey(Complejidad, on_delete=models.PROTECT)
-    tarifa = models.DecimalField(max_digits=13, decimal_places=2)
+    tarifa = models.DecimalField(max_digits=9, decimal_places=2)
     servicio = models.ForeignKey(Servicio, on_delete=models.PROTECT)
-    factor_tiempo = models.DecimalField(max_digits=7, decimal_places=2)
+    factor_tiempo = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
         return self.complejidad
