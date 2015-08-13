@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic import ListView, DetailView, View, UpdateView, DeleteView
 from presupuesto.models import Presupuesto, Presupuesto_Detalle, \
@@ -19,7 +19,6 @@ from formtools.wizard.views import SessionWizardView
 from django.forms.formsets import formset_factory
 
 from django.db.models import Count, Sum
-from django.forms import ModelChoiceField
 
 
 class ContactWizard(SessionWizardView):
@@ -73,6 +72,51 @@ class PresupuestoDetail(DetailView):
         return context
 
 
+class PresupuestoDireccionOrigenDetail(DetailView):
+
+    model = Presupuesto
+    context_object_name = "presupuesto"
+    template_name = 'presupuestodireccion_origen.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(PresupuestoDireccionOrigenDetail, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['direccion_origen'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk, tipo_direccion="Origen")
+        return context
+
+
+class PresupuestoDireccionDestinoDetail(DetailView):
+
+    model = Presupuesto
+    context_object_name = "presupuesto"
+    template_name = 'presupuestodireccion_destino.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(PresupuestoDireccionDestinoDetail, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['direccion_destino'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk, tipo_direccion="Destino")
+        return context
+
+
+class PresupuestoDetalleDetail2(DetailView):
+
+    model = Presupuesto
+    context_object_name = "presupuesto"
+    template_name = 'presupuestodetalle_det.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(PresupuestoDetalleDetail2, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        #context['listar_ambiente'] = Presupuesto_Detalle.objects.values('ambiente', 'ambiente__ambiente', 'mueble').annotate(tcount=Count('ambiente')).order_by('ambiente')
+        context['detalle_list'] = Presupuesto_Detalle.objects.filter(presupuesto=self.object.pk)
+        context['lista_ambiente'] = Presupuesto_Detalle.objects.filter(presupuesto=self.object.pk).values('ambiente').distinct()
+        context['servicio'] = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto=self.object.pk).values('servicio', 'detalle_presupuesto', 'monto_servicio').annotate(tcount=Count('servicio')).order_by('servicio')
+        return context
+
+
 class PresupuestoDetalleList(ListView):
     model = Presupuesto_Detalle
     paginate_by = 25
@@ -94,7 +138,21 @@ class PresupuestoDetalleDetail(DetailView):
         context = super(PresupuestoDetalleDetail, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the books
         context['servicio_list'] = Presupuesto_servicio.objects.filter(detalle_presupuesto=self.object.pk)
-        context['now'] = timezone.now()
+        context['servicio'] = Presupuesto_servicio.objects.filter(detalle_presupuesto=self.object.pk).values('servicio', 'detalle_presupuesto', 'detalle_presupuesto__mueble', 'monto_servicio').annotate(tcount=Count('servicio')).order_by('servicio')
+        return context
+
+
+class PresupuestoDetalleServicioDetail(DetailView):
+
+    model = Presupuesto_Detalle
+    template_name = 'presupuestoservivio_det.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(PresupuestoDetalleServicioDetail, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['servicio_list'] = Presupuesto_servicio.objects.filter(detalle_presupuesto=self.object.pk)
+        context['servicio'] = Presupuesto_servicio.objects.filter(detalle_presupuesto=self.object.pk).values('servicio', 'detalle_presupuesto', 'detalle_presupuesto__mueble', 'monto_servicio').annotate(tcount=Count('servicio')).order_by('servicio')
         return context
 
 
@@ -106,6 +164,16 @@ class PresupuestoDireccionList(ListView):
     def get_queryset(self):
         queryset = super(PresupuestoDireccionList, self).get_queryset()
         return queryset.filter(presupuesto_id=self.kwargs['presupuesto_id'])
+
+
+class PresupuestoServicioList(ListView):
+
+    template_name = 'presupuestoservicio_lista.html'
+    context_object_name = 'servicio'
+
+    def get_queryset(self):
+        self.detalle_presupuesto = get_object_or_404(Presupuesto_Detalle, pk=self.args[0])
+        return Presupuesto_servicio.objects.filter(detalle_presupuesto=self.detallepresupuesto).values('servicio', 'detalle_presupuesto', 'monto_servicio').annotate(tcount=Count('servicio')).order_by('servicio')
 
 
 class PresupuestoView(View):
@@ -222,12 +290,14 @@ class PresupuestoDireccionView(View):
                 updatepresu.update(estado='Preparado')
 
             # <process form cleaned data>
-            redirect_to = request.GET['next']
+            # redirect_to = request.GET['next']
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
-            else:
-                return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+            # if redirect_to:
+            #     return HttpResponseRedirect(redirect_to)
+            # else:
+            #     return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+            mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+            return JsonResponse(mensaje, safe=False)
 
         return render(request, self.template_name, {'form': form})
 
@@ -266,7 +336,6 @@ class PresupuestoDetalleView(View):
                 contenido = Contenido_Tipico.objects.filter(mueble=mueble_id, predefinido=True)[:1]
                 if contenido:
                     densidadcontenido = contenido[0].contenido.densidad_media
-
                     contenidoservicio = Contenido_Servicio.objects.filter(contenido=contenido[0].contenido_id, predefinido=True)
                     if contenidoservicio:
                         contenedor = Material.objects.filter(servicio_material__servicio_id=contenidoservicio[0].servicio_id, contenedor=True)[:1]
@@ -348,6 +417,7 @@ class PresupuestoDetalleView(View):
                 }
 
         form = self.form_class(initial=data)
+
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
@@ -365,12 +435,14 @@ class PresupuestoDetalleView(View):
             updatepresu.update(estado='Muebles cargados')
 
             # <process form cleaned data>
-            redirect_to = request.GET['next']
+            # redirect_to = request.GET['next']
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
-            else:
-                return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+            # if redirect_to:
+            #     return HttpResponseRedirect(redirect_to)
+            # else:
+            #     return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+            mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+            return JsonResponse(mensaje, safe=False)
 
         return render(request, self.template_name, {'form': form})
 
@@ -465,13 +537,15 @@ class PresupuestoServicioView(View):
             updatepresu = Presupuesto.objects.filter(presupuesto_detalle__id=request.POST['detalle_presupuesto'])
             updatepresu.update(estado='Servicios cargados')
 
-            # <process form cleaned data>
-            redirect_to = request.GET['next']
+            # # <process form cleaned data>
+            # redirect_to = request.GET['next']
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
-            else:
-                return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+            # if redirect_to:
+            #     return HttpResponseRedirect(redirect_to)
+            # else:
+            #     return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+            mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+            return JsonResponse(mensaje, safe=False)
 
         return render(request, self.template_name, {'form': form})
 

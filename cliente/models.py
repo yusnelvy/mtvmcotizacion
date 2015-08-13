@@ -40,8 +40,8 @@ class Cliente(models.Model):
 
     nombre_principal = models.CharField(max_length=250)
     dni = models.CharField(max_length=15, blank=True)
-    sexo = models.ForeignKey(Sexo)
-    estado_civil = models.ForeignKey(Estado_civil)
+    sexo = models.ForeignKey(Sexo, on_delete=models.PROTECT)
+    estado_civil = models.ForeignKey(Estado_civil, on_delete=models.PROTECT)
     fecha_nacimiento = models.DateField(blank=True)
     comentarios = models.TextField(blank=True)
     adicional1 = models.CharField(max_length=50, blank=True)

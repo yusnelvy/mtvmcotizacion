@@ -58,9 +58,9 @@ class Mueble(models.Model):
         super(Mueble, self).__init__(*args, **kwargs)
 
     mueble = models.CharField(max_length=100, unique=True)
-    tipo_mueble = models.ForeignKey(Tipo_Mueble)
-    forma = models.ForeignKey(Forma_Mueble)
-    ocupacion = models.ForeignKey(Ocupacion)
+    tipo_mueble = models.ForeignKey(Tipo_Mueble, on_delete=models.PROTECT)
+    forma = models.ForeignKey(Forma_Mueble, on_delete=models.PROTECT)
+    ocupacion = models.ForeignKey(Ocupacion, on_delete=models.PROTECT)
     capacidad = models.DecimalField(max_digits=5, decimal_places=2)
     trasladable = models.BooleanField(default=None)
     apilable = models.BooleanField(default=None)
@@ -145,8 +145,8 @@ class Mueble_Ambiente(models.Model):
     def __init__(self, *args, **kwargs):
         super(Mueble_Ambiente, self).__init__(*args, **kwargs)
 
-    mueble = models.ForeignKey(Mueble)
-    ambiente = models.ForeignKey(Ambiente)
+    mueble = models.ForeignKey(Mueble, on_delete=models.PROTECT)
+    ambiente = models.ForeignKey(Ambiente, on_delete=models.PROTECT)
     predefinido = models.BooleanField(default=None)
 
     def __str__(self):

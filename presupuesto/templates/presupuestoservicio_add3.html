@@ -5,7 +5,7 @@
 body{padding: 0px;}
 #id_servicio,p label[for=id_servicio],#id_detalle_presupuesto,p label[for=id_detalle_presupuesto]{display: none;}
 </style>
-<form action="" method="post">
+<form action="" method="post" id="myform">
 
   {% csrf_token %}
 
@@ -14,16 +14,60 @@ body{padding: 0px;}
     {{ form.as_p }}
 
   </div>
-  <button type="submit" class="btn btn-default">Registrar</button>
+  <button type="submit" class="btn btn-default btn-registrar">Registrar</button>
 </form>
 <script>
 
-$("#id_lista_servicio").on("change", function(){
-  id_lista_servicio = $("#id_lista_servicio").val();
-  $.get('/presupuesto/servicio/nuevo'+id_lista_servicio,
-    {id_lista_servicio: id_lista_servicio},
-    function(data){
-      $("#id_servicio").val(data[0].servicio);
+$(document).ready(function() {
+
+  $("#id_lista_servicio").on("change", function(){
+    id_lista_servicio = $("#id_lista_servicio").val();
+    $.get('/presupuesto/servicio/nuevo'+id_lista_servicio,
+      {id_lista_servicio: id_lista_servicio},
+      function(data){
+        $("#id_servicio").val(data[0].servicio);
+      });
+  });
+
+$('#myform').submit(function(){
+    var action = "{% url 'upresupuestos:PresupuestoServicioView' %}";
+    var that = $(this);
+    $.ajax({
+        url: action,
+        type: 'POST',
+        data: that.serialize()
+        ,success: function(data){
+            var modalp = parent.document.getElementById('myModalServicio');
+            var divp = parent.document.getElementsByClassName("modal-backdrop");
+            var bodyp = parent.document.getElementById('id_body');
+            var closep = parent.document.getElementById("btn-cerrar");
+          if (data.estatus=="ok"){
+            $(closep).click();
+            refresh();
+            //parent.location.reload(); //para refrescar la pagina
+            //$(modalp).hide();
+            //$(divp).remove();
+            //$(bodyp).removeClass('modal-open');
+            //$(bodyp).css('padding-right','');
+          }
+
+        }
     });
+    return false;
 });
+
+});
+
+</script>
+<script type="text/javascript">
+function refresh() {
+  var id_mueble = $("#id_detalle_presupuesto").val();
+  $.ajax({
+  url: "/presupuesto/detalle/servicio/"+ id_mueble,
+  success: function(data) {
+    var divs = parent.document.getElementById('listservi'+id_mueble);
+    $(divs).html(data);
+  }
+ });
+}
 </script>

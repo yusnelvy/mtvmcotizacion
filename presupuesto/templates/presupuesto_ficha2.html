@@ -7,39 +7,39 @@
 
     {% if presupuesto.dni %}
 
-            <span class="glyphicon glyphicon-ok"></span>
+    <span class="glyphicon glyphicon-ok"></span>
 
-        {% else %}
+    {% else %}
 
-            <span class="glyphicon glyphicon-minus"></span>
+    <span class="glyphicon glyphicon-minus"></span>
 
-        {% endif %}
+    {% endif %}
 
 </a></li>
 <li class="linknav"><a href="#direcciones" style="color:#777;">Paso 2
 
     {% if direccion_origen and direccion_destino %}
 
-            <span class="glyphicon glyphicon-ok"></span>
+    <span class="glyphicon glyphicon-ok"></span>
 
-        {% else %}
+    {% else %}
 
-            <span class="glyphicon glyphicon-minus"></span>
+    <span class="glyphicon glyphicon-minus"></span>
 
-        {% endif %}
+    {% endif %}
 
 </a></li>
 <li class="linknav"><a href="#ambientes" style="color:#777;">Paso 3
 
     {% if lista_ambiente %}
 
-            <span class="glyphicon glyphicon-ok"></span>
+    <span class="glyphicon glyphicon-ok"></span>
 
-        {% else %}
+    {% else %}
 
-            <span class="glyphicon glyphicon-minus"></span>
+    <span class="glyphicon glyphicon-minus"></span>
 
-        {% endif %}
+    {% endif %}
 
 </a></li>
 
@@ -133,344 +133,389 @@ class="col-md-10"
 <br>
 <style>body{position: relative;}.block-pasos{display:block;}.block-pasos-para-completar:hover{background: rgba(0,0,0,.1)!important;}</style>
 <div id="datos-personales" class="panel panel-default">
-  <div class="panel-body">
-    <div class="row">
-        <div class="col-md-5">
-            <h2>{{ presupuesto.nombre_cliente }}</h2>
-        </div>
-        <div class="col-md-3">
-        <h4>
-            <p><small>DNI: </small>{{ presupuesto.dni }}</p>
-            <p><small>Teléfono: </small>{{ presupuesto.telefono }}</p>
-            <p><small>Email: </small>{{ presupuesto.email }}</p>
-        </h4>
-        </div>
-        <div class="col-md-4">
-        <h4>
-            <p><small>N° presupuesto: </small>{{ presupuesto.id }}</p>
-            <p><small>Fecha presupuesto: </small>{{ presupuesto.fecha_creacion|date:"d/m/Y" }}</p>
-            <p><small>Fecha estimada de la mudanza: </small>{{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}</p>
-        </h4>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-5">
+                <h2>{{ presupuesto.nombre_cliente }}</h2>
+            </div>
+            <div class="col-md-3">
+                <h4>
+                    <p><small>DNI: </small>{{ presupuesto.dni }}</p>
+                    <p><small>Teléfono: </small>{{ presupuesto.telefono }}</p>
+                    <p><small>Email: </small>{{ presupuesto.email }}</p>
+                </h4>
+            </div>
+            <div class="col-md-4">
+                <h4>
+                    <p><small>N° presupuesto: </small>{{ presupuesto.id }}</p>
+                    <p><small>Fecha presupuesto: </small>{{ presupuesto.fecha_creacion|date:"d/m/Y" }}</p>
+                    <p><small>Fecha estimada de la mudanza: </small>{{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}</p>
+                </h4>
+            </div>
         </div>
     </div>
-  </div>
 </div><!--fin panel default datos basicos-->
 <div id="direcciones" class="panel panel-default">
-  <div class="panel-body">
-<div class="row">
-    <div class="col-md-6">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6" id="direccion-origen">
 
-    <h4>Dirección de origen
+                <h4>Dirección de origen
 
-        {% if direccion_origen %}
-
-        {% else %}
-
-            <a data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Origen&pre={{presupuesto.id}}" title="Agregar dirección de origen" data-toggletooltip="tooltip" data-placement="left" style="float:right;cursor:pointer;" class="botonmodal glyphicon glyphicon-plus"></a>
-
-        {% endif %}
-
-    </h4>
-
-
-{% for direc_origen in direccion_origen %}
-
-    <p style="padding:0px 5px;">{{ direc_origen.direccion }}</p>
-    <table class="table table-condensed table-hover">
-        <tr>
-            <td><span style="color:#777;">Tipo de direccion del inmueble: </span></td>
-            <td>{{ direc_origen.tipo_inmueble }}</td>
-        </tr>
-        <tr>
-            <td><span style="color:#777;">Metros cuadrados del inmueble: </span></td>
-            <td>{{ direc_origen.total_m2 }} m2</td>
-        </tr>
-        <tr>
-            <td><span style="color:#777;">Ocupación del inmueble: </span> </td>
-            <td>{{ direc_origen.ocupacidad_inmueble }}</td>
-        </tr>
-        <tr>
-            <td><span style="color:#777;">Distancia del vehículo al inmueble: </span></td>
-            <td>{{ direc_origen.distancia_vehiculo }} m.</td>
-        </tr>
-        <tr>
-            <td><span style="color:#777;">Cantidad de
-
-                {% if direc_origen.pisos > 1 %}
-
-                    pisos
+                    {% if direccion_origen %}
 
                     {% else %}
 
-                    piso
+                    <a data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Origen&pre={{presupuesto.id}}" title="Agregar dirección de origen" data-toggletooltip="tooltip" data-placement="left" style="float:right;cursor:pointer;" class="botonmodal glyphicon glyphicon-plus"></a>
 
-                {% endif %}
+                    {% endif %}
 
-                del inmueble:
-            </span></td>
-            <td>{{ direc_origen.pisos }} {% if direc_origen.pisos > 1 %}
+                </h4>
 
-                    pisos
 
-                    {% else %}
+                {% for direc_origen in direccion_origen %}
 
-                    piso
+                <p style="padding:0px 5px;">{{ direc_origen.direccion }}</p>
+                <table class="table table-condensed table-hover">
+                    <tr>
+                        <td><span style="color:#777;">Tipo de direccion del inmueble: </span></td>
+                        <td>{{ direc_origen.tipo_inmueble }}</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:#777;">Metros cuadrados del inmueble: </span></td>
+                        <td>{{ direc_origen.total_m2 }} m2</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:#777;">Ocupación del inmueble: </span> </td>
+                        <td>{{ direc_origen.ocupacidad_inmueble }}</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:#777;">Distancia del vehículo al inmueble: </span></td>
+                        <td>{{ direc_origen.distancia_vehiculo }} m.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Cantidad de
 
-                {% endif %}</td>
-        </tr>
+                                {% if direc_origen.pisos > 1 %}
 
-        {% if direc_origen.pisos_escalera = 0 %}
+                                pisos
 
-        {% else %}
+                                {% else %}
 
-        <tr>
-            <td><span style="color:#777;">Cantidad de
+                                piso
 
-                {% if direc_origen.pisos_escalera > 1 %}
+                                {% endif %}
 
-                    Pisos
+                                del inmueble:
+                            </span>
+                        </td>
+                        <td>{{ direc_origen.pisos }} {% if direc_origen.pisos > 1 %}
 
-                    {% else %}
+                            pisos
 
-                    Piso
+                            {% else %}
 
-                {% endif %}
+                            piso
 
-                a recorrer por escalera: </span></td>
-            <td>{{ direc_origen.pisos_escalera }} {% if direc_origen.pisos_escalera > 1 %}
+                            {% endif %}
+                        </td>
+                    </tr>
 
-                    pisos
-
-                    {% else %}
-
-                    piso
-
-                {% endif %}</td>
-        </tr>
-
-        {% endif %}
-
-        <tr>
-            <td><span style="color:#777;">Rampa del inmueble: </span></td>
-            <td>{{ direc_origen.rampa|yesno:"Si,No" }}</td>
-        </tr>
-        <tr>
-            <td><span style="color:#777;">Ascensor del inmueble : </span></td>
-            <td>{{ direc_origen.ascensor|yesno:"Si,No" }}</td>
-        </tr>
-
-        {% if direc_origen.pisos_ascensor = 0 %}
-
-        {% else %}
-
-        <tr>
-            <td><span style="color:#777;">Cantidad de pisos a recorrer por ascensor: </span></td>
-            <td>{{ direc_origen.pisos_ascensor }} {% if direc_origen.pisos_ascensor > 1 %}
-
-                    pisos
+                    {% if direc_origen.pisos_escalera = 0 %}
 
                     {% else %}
 
-                    piso
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Cantidad de
 
-                {% endif %}</td>
-        </tr>
+                                {% if direc_origen.pisos_escalera > 1 %}
 
-        {% endif %}
+                                Pisos
 
-        <tr>
-            <td><span style="color:#777;" style="color:#777;">Ascensor de servicio del inmueble: </span></td>
-            <td>{{ direc_origen.ascensor_servicio|yesno:"Si,No" }}</td>
-        </tr>
+                                {% else %}
 
-        {% if direc_origen.pisos_ascensor_servicio = 0 %}
+                                Piso
 
-        {% else %}
+                                {% endif %}
 
-        <tr>
-            <td><span style="color:#777;">Cantidad de pisos a recorrer por ascensor de servicio: </span></td>
-            <td>{{ direc_origen.pisos_ascensor_servicio }} {% if direc_origen.pisos_ascensor_servicio > 1 %}
+                                a recorrer por escalera:
+                            </span>
+                        </td>
+                        <td>{{ direc_origen.pisos_escalera }} {% if direc_origen.pisos_escalera > 1 %}
 
-                    pisos
+                            pisos
 
-                    {% else %}
+                            {% else %}
 
-                    piso
+                            piso
 
-                {% endif %}</td>
-        </tr>
+                            {% endif %}
+                        </td>
+                    </tr>
 
-        {% endif %}
+                    {% endif %}
 
-        <tr class="hidden-print">
-            <td></td>
-            <td>
-        <small style="float:right;">
-        <a style="padding:0px 0px 8px 16px;" title="Editar dirección de origen" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_origen.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-      <a style="padding:0px 0px 8px 8px;" title="Eliminar dirección de origen" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_origen.id %}?next={{request.get_full_path}}"  class="glyphicon glyphicon-remove"></a>
-        </small>
-            </td>
-        </tr>
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Rampa del inmueble: </span>
+                        </td>
+                        <td>{{ direc_origen.rampa|yesno:"Si,No" }}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Ascensor del inmueble : </span>
+                        </td>
+                        <td>{{ direc_origen.ascensor|yesno:"Si,No" }}</td>
+                    </tr>
 
-    </table>
-
-  {% endfor %}
- </div>
-
-    <div class="col-md-6">
-    <h4>Dirección de destino
-
-        {% if direccion_destino %}
-
-
-        {% else %}
-
-            <a data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Destino&pre={{presupuesto.id}}" title="Agregar dirección de destino" data-toggletooltip="tooltip" data-placement="left" style="float:right;cursor:pointer;" class="botonmodal glyphicon glyphicon-plus"></a>
-
-        {% endif %}
-
-    </h4>
-
-
-{% for direc_destino in direccion_destino %}
-
-    <p style="padding:0px 5px;">{{ direc_destino.direccion }}</p>
-
-    <table class="table table-condensed table-hover">
-        <tr>
-            <td><span style="color:#777;">Tipo de direccion del inmueble: </span></td>
-            <td>{{ direc_destino.tipo_inmueble }}</td>
-        </tr>
-        <tr>
-            <td><span style="color:#777;">Metros cuadrados del inmueble: </span></td>
-            <td>{{ direc_destino.total_m2 }} m2</td>
-        </tr>
-        <tr>
-            <td><span style="color:#777;">Ocupación del inmueble: </span> </td>
-            <td>{{ direc_destino.ocupacidad_inmueble }}</td>
-        </tr>
-        <tr>
-            <td><span style="color:#777;">Distancia del vehículo al inmueble: </span></td>
-            <td>{{ direc_destino.distancia_vehiculo }} m.</td>
-        </tr>
-        <tr>
-            <td><span style="color:#777;">Cantidad de
-
-                {% if direc_destino.pisos > 1 %}
-
-                    Pisos
+                    {% if direc_origen.pisos_ascensor = 0 %}
 
                     {% else %}
 
-                    Piso
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Cantidad de pisos a recorrer por ascensor: </span>
+                        </td>
+                        <td>{{ direc_origen.pisos_ascensor }} {% if direc_origen.pisos_ascensor > 1 %}
 
-                {% endif %}
+                            pisos
 
-                del inmueble:
-            </span></td>
-            <td>{{ direc_destino.pisos }} {% if direc_destino.pisos > 1 %}
+                            {% else %}
 
-                    Pisos
+                            piso
 
-                    {% else %}
+                            {% endif %}
+                        </td>
+                    </tr>
 
-                    Piso
+                    {% endif %}
 
-                {% endif %}</td>
-        </tr>
+                    <tr>
+                        <td>
+                            <span style="color:#777;" style="color:#777;">Ascensor de servicio del inmueble: </span>
+                        </td>
+                        <td>{{ direc_origen.ascensor_servicio|yesno:"Si,No" }}</td>
+                    </tr>
 
-        {% if direc_destino.pisos_escalera = 0 %}
-
-        {% else %}
-
-        <tr>
-            <td><span style="color:#777;">Cantidad de
-
-                {% if direc_destino.pisos_escalera > 1 %}
-
-                    Pisos
-
-                    {% else %}
-
-                    Piso
-
-                {% endif %}
-
-                a recorrer por escalera: </span></td>
-            <td>{{ direc_destino.pisos_escalera }} {% if direc_destino.pisos_escalera > 1 %}
-
-                    pisos
+                    {% if direc_origen.pisos_ascensor_servicio = 0 %}
 
                     {% else %}
 
-                    piso
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Cantidad de pisos a recorrer por ascensor de servicio: </span>
+                        </td>
+                        <td>{{ direc_origen.pisos_ascensor_servicio }} {% if direc_origen.pisos_ascensor_servicio > 1 %}
 
-                {% endif %}</td>
-        </tr>
+                            pisos
 
-        {% endif %}
+                            {% else %}
 
-        <tr>
-            <td><span style="color:#777;">Rampa del inmueble: </span></td>
-            <td>{{ direc_destino.rampa|yesno:"Si,No" }}</td>
-        </tr>
-        <tr>
-            <td><span style="color:#777;">Ascensor del inmueble: </span></td>
-            <td>{{ direc_destino.ascensor|yesno:"Si,No" }}</td>
-        </tr>
+                            piso
 
-        {% if direc_destino.pisos_ascensor = 0 %}
+                            {% endif %}
+                        </td>
+                    </tr>
 
-        {% else %}
+                    {% endif %}
 
-        <tr>
-            <td><span style="color:#777;">Cantidad de pisos a recorrer por ascensor: </span></td>
-            <td>{{ direc_destino.pisos_ascensor }} {% if direc_destino.pisos_ascensor > 1 %}
-                Pisos
-                {% else %}
-                Piso
-                {% endif %}</td>
-        </tr>
+                    <tr class="hidden-print">
+                        <td></td>
+                        <td>
+                            <small style="float:right;">
+                                <a style="padding:0px 0px 8px 16px;" title="Editar dirección de origen" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_origen.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+                                <a style="padding:0px 0px 8px 8px;" title="Eliminar dirección de origen" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_origen.id %}?next={{request.get_full_path}}"  class="glyphicon glyphicon-remove"></a>
+                            </small>
+                        </td>
+                    </tr>
 
-        {% endif %}
+                </table>
 
-        <tr>
-            <td><span style="color:#777;">Ascensor de servicio del inmueble: </span></td>
-            <td>{{ direc_destino.ascensor_servicio|yesno:"Si,No" }}</td>
-        </tr>
+                {% endfor %}
+            </div>
 
-        {% if direc_destino.pisos_ascensor_servicio = 0 %}
+            <div class="col-md-6" id="direccion-destino">
+                <h4>Dirección de destino
 
-        {% else %}
+                    {% if direccion_destino %}
 
-        <tr>
-            <td><span style="color:#777;">Cantidad de pisos a recorrer por ascensor de servicio: </span></td>
-            <td>{{ direc_destino.pisos_ascensor_servicio }} {% if direc_destino.pisos_ascensor_servicio > 1 %}
-                Pisos
-                {% else %}
-                Piso
-                {% endif %}
-            </td>
-        </tr>
 
-        {% endif %}
+                    {% else %}
 
-        <tr class="hidden-print">
-            <td></td>
-            <td>
-        <small style="float:right;">
-        <a style="padding:0px 0px 8px 16px;" title="Editar dirección de destino" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_destino.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-      <a style="padding:0px 0px 8px 8px;" title="Eliminar dirección de destino" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_destino.id %}?next={{request.get_full_path}}"  class="glyphicon glyphicon-remove"></a>
-        </small>
-            </td>
-        </tr>
-    </table>
+                    <a data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Destino&pre={{presupuesto.id}}" title="Agregar dirección de destino" data-toggletooltip="tooltip" data-placement="left" style="float:right;cursor:pointer;" class="botonmodal glyphicon glyphicon-plus"></a>
 
-  {% endfor %}
+                    {% endif %}
+
+                </h4>
+
+
+                {% for direc_destino in direccion_destino %}
+
+                <p style="padding:0px 5px;">{{ direc_destino.direccion }}</p>
+
+                <table class="table table-condensed table-hover">
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Tipo de direccion del inmueble: </span>
+                        </td>
+                        <td>{{ direc_destino.tipo_inmueble }}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Metros cuadrados del inmueble: </span>
+                        </td>
+                        <td>{{ direc_destino.total_m2 }} m2</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Ocupación del inmueble: </span>
+                        </td>
+                        <td>{{ direc_destino.ocupacidad_inmueble }}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Distancia del vehículo al inmueble: </span>
+                        </td>
+                        <td>{{ direc_destino.distancia_vehiculo }} m.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Cantidad de
+
+                                {% if direc_destino.pisos > 1 %}
+
+                                Pisos
+
+                                {% else %}
+
+                                Piso
+
+                                {% endif %}
+
+                                del inmueble:
+                            </span>
+                        </td>
+                        <td>{{ direc_destino.pisos }} {% if direc_destino.pisos > 1 %}
+
+                            Pisos
+
+                            {% else %}
+
+                            Piso
+
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    {% if direc_destino.pisos_escalera = 0 %}
+
+                    {% else %}
+
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Cantidad de
+
+                                {% if direc_destino.pisos_escalera > 1 %}
+
+                                Pisos
+
+                                {% else %}
+
+                                Piso
+
+                                {% endif %}
+
+                                a recorrer por escalera:
+                            </span>
+                        </td>
+                        <td>{{ direc_destino.pisos_escalera }} {% if direc_destino.pisos_escalera > 1 %}
+
+                            pisos
+
+                            {% else %}
+
+                            piso
+
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    {% endif %}
+
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Rampa del inmueble: </span>
+                        </td>
+                        <td>{{ direc_destino.rampa|yesno:"Si,No" }}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Ascensor del inmueble: </span>
+                        </td>
+                        <td>{{ direc_destino.ascensor|yesno:"Si,No" }}</td>
+                    </tr>
+
+                    {% if direc_destino.pisos_ascensor = 0 %}
+
+                    {% else %}
+
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Cantidad de pisos a recorrer por ascensor: </span>
+                        </td>
+                        <td>{{ direc_destino.pisos_ascensor }} {% if direc_destino.pisos_ascensor > 1 %}
+                            Pisos
+                            {% else %}
+                            Piso
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    {% endif %}
+
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Ascensor de servicio del inmueble: </span>
+                        </td>
+                        <td>{{ direc_destino.ascensor_servicio|yesno:"Si,No" }}</td>
+                    </tr>
+
+                    {% if direc_destino.pisos_ascensor_servicio = 0 %}
+
+                    {% else %}
+
+                    <tr>
+                        <td>
+                            <span style="color:#777;">Cantidad de pisos a recorrer por ascensor de servicio: </span>
+                        </td>
+                        <td>{{ direc_destino.pisos_ascensor_servicio }} {% if direc_destino.pisos_ascensor_servicio > 1 %}
+                            Pisos
+                            {% else %}
+                            Piso
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    {% endif %}
+
+                    <tr class="hidden-print">
+                        <td></td>
+                        <td>
+                            <small style="float:right;">
+                                <a style="padding:0px 0px 8px 16px;" title="Editar dirección de destino" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_destino.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+                                <a style="padding:0px 0px 8px 8px;" title="Eliminar dirección de destino" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_destino.id %}?next={{request.get_full_path}}"  class="glyphicon glyphicon-remove"></a>
+                            </small>
+                        </td>
+                    </tr>
+                </table>
+
+                {% endfor %}
+            </div>
+        </div><!--fin row de direcciones-->
+    </div>
 </div>
-</div><!--fin row de direcciones-->
-</div>
-</div><!--fin panel default direccion destino-->
 <h3 id="ambientes" style="border-bottom:1px solid #e7e7e7;">Ambientes
     <a data-toggle="modal" data-target="#myModalAmbiente" title="Agregar ambiente" style="float:right;cursor:pointer;" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal hidden-print" data-toggletooltip="tooltip" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}"></a>
 </h3>
@@ -481,286 +526,295 @@ class="col-md-10"
     {% for ambiente in lista_ambiente %}
 
 
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingOne{{forloop.counter}}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{forloop.counter}}" aria-expanded="true" aria-controls="collapseOne{{forloop.counter}}" style="cursor:pointer;">
-      <h3 class="panel-title" style="font-size: 20px;">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne{{forloop.counter}}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{forloop.counter}}" aria-expanded="true" aria-controls="collapseOne{{forloop.counter}}" style="cursor:pointer;">
+            <h3 class="panel-title" style="font-size: 20px;">
 
-          {{ambiente.ambiente|upper}}
+                {{ambiente.ambiente|upper}}
 
-      </h3>
-    </div>
-    <div id="collapseOne{{forloop.counter}}" class="panel-collapse collapse {% if forloop.first %} in {% endif %}" role="tabpanel" aria-labelledby="headingOne{{forloop.counter}}">
-<div class="panel-body">
-    <p style="padding-left:15px;font-size: 18px;">Muebles
-
-    <a data-toggle="modal" data-target="#myModalAmbiente" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}" title="Agregar mueble al ambiente {{ambiente.ambiente|upper}}" style="float:right;cursor:pointer;" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal hidden-print" data-toggletooltip="tooltip" data-placement="left"></a>
-    </p>
-</div>
-<ul class="list-group">
-
- {% for mueble in detalle_list %}
-
-     {% if ambiente.ambiente = mueble.ambiente %}
-
-    <li class="list-group-item" style="padding-left:40px;">
-        <div class="row">
-            <div class="col-md-3">
-                <p style="font-size: 16px;">{{mueble.mueble}}</p>
+            </h3>
+        </div>
+        <div id="collapseOne{{forloop.counter}}" class="panel-collapse collapse {% if forloop.first %} in {% endif %}" role="tabpanel" aria-labelledby="headingOne{{forloop.counter}}">
+            <div class="panel-body">
+                <p style="padding-left:15px;font-size: 18px;">Muebles
+                    <a data-toggle="modal" data-target="#myModalAmbiente" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}" title="Agregar mueble al ambiente {{ambiente.ambiente|upper}}" style="float:right;cursor:pointer;" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal hidden-print" data-toggletooltip="tooltip" data-placement="left"></a>
+                </p>
             </div>
-            <div class="col-md-1">
-                <p style="color:#777;">{{ mueble.tamano }}</p>
-            </div>
-            <div class="col-md-3">
-                <p style="color:#777;">ocupación: {{ mueble.ocupacidad }}</p>
-            </div>
-            <div class="col-md-1">
-                <p style="color:#777;">{{ mueble.ancho|floatformat:"0" }}x{{ mueble.largo|floatformat:"0" }}x{{ mueble.alto|floatformat:"0" }}</p>
-            </div>
-            <div class="col-md-4">
-            <p style="color:#777;">
-                Servicio:
+            <ul class="list-group">
 
-                {% if servicio %}
+                {% for mueble in detalle_list %}
 
-                {% for det_servivio in servicio %}
+                {% if ambiente.ambiente = mueble.ambiente %}
 
-                {% if det_servivio.detalle_presupuesto = mueble.id %}
+                <li class="list-group-item" style="padding-left:40px;">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p style="font-size: 16px;">{{mueble.mueble}}</p>
+                        </div>
+                        <div class="col-md-1">
+                            <p style="color:#777;">{{ mueble.tamano }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <p style="color:#777;">ocupación: {{ mueble.ocupacidad }}</p>
+                        </div>
+                        <div class="col-md-1">
+                            <p style="color:#777;">{{ mueble.ancho|floatformat:"0" }}x{{ mueble.largo|floatformat:"0" }}x{{ mueble.alto|floatformat:"0" }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <span style="color:#777;" id="listservi{{mueble.id}}">
 
-                {{ det_servivio.servicio }}
+                                Servicio:
 
-                {% if forloop.last %}
+                                {% if servicio %}
 
-                {% else %} -
+                                {% for det_servivio in servicio %}
 
-                {% endif %}
+
+                                {% if det_servivio.detalle_presupuesto = mueble.id %}
+
+                                {{ det_servivio.servicio }}
+
+                                {% if forloop.last %}
+
+                                {% else %} -
+
+                                {% endif %}
+
+                                {% endif %}
+
+                                {% endfor %}
+
+                                {% else %}
+
+                                {% endif %}
+                            </span>
+                            <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:right;cursor:pointer;" data-toggle="modal" data-target="#myModalServicio" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ mueble.id }}" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal hidden-print" data-toggletooltip="tooltip" data-placement="left"></a>
+                        </div>
+
+
+
+                    </div>
+
+
+                </li>
 
                 {% endif %}
 
                 {% endfor %}
 
-                {% else %}
-
-                {% endif %}
-
-                <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:right;cursor:pointer;" data-toggle="modal" data-target="#myModalServicio" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ mueble.id }}" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal hidden-print" data-toggletooltip="tooltip" data-placement="left"></a>
-                </p>
-            </div>
+            </ul>
         </div>
-
-    </li>
-
-   {% endif %}
+    </div>
 
     {% endfor %}
 
-</ul>
-    </div>
-  </div>
-
-   {% endfor %}
-
-{% endif %}
+    {% endif %}
 
 </div><!--fin acordion-->
 <!-- Modal finalizar presupuesto preguntar si hay servicio-->
 <div class="modal fade fpresupuestoServicio" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel2">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-        <div class="modal-header">Presupuesto
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="mySmallModalLabel2"></h4>
-      </div>
-      <div class="modal-body">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">Presupuesto
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="mySmallModalLabel2"></h4>
+            </div>
+            <div class="modal-body">
 
-      {% if not servicio %}
-            <p>¿Desea agragar servicio a los muebles?</p>
+                {% if not servicio %}
+                <p>¿Desea agragar servicio a los muebles?</p>
 
-            {% else %}
-            <p>¿Enviar presupuesto?</p>
-      {% endif %}
-      </div>
-      <div class="modal-footer">
-        {% if not servicio %}
-            <a href="#ambientes" data-dismiss="modal" class="btn btn-default">Si</a>
-            <button type="button" data-dismiss="modal" data-toggle="modal" data-target=".fpresupuesto" class="btn btn-default">No</button>
-            {% else %}
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-default">Enviar</button>
-      {% endif %}
+                {% else %}
+                <p>¿Enviar presupuesto?</p>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                {% if not servicio %}
+                <a href="#ambientes" data-dismiss="modal" class="btn btn-default">Si</a>
+                <button type="button" data-dismiss="modal" data-toggle="modal" data-target=".fpresupuesto" class="btn btn-default">No</button>
+                {% else %}
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-default">Enviar</button>
+                {% endif %}
 
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 <!-- Modal finalizar presupuesto-->
 <div class="modal fade fpresupuesto" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel3">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-        <div class="modal-header">Resumen del presupuesto
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="mySmallModalLabel3"></h4>
-      </div>
-      <div class="modal-body">
-
-            <p>¿Enviar presupuesto?</p>
-
-      </div>
-      <div class="modal-footer">
-
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-default">Enviar</button>
-      </div>
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">Resumen del presupuesto
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="mySmallModalLabel3"></h4>
+            </div>
+            <div class="modal-body">
+                <p>¿Enviar presupuesto?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-default">Enviar</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 <!-- Modal agregar direccion-->
 <div class="modal fade bs-example-modal-lg" id="myModalDireccion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel5"></h4>
-      </div>
-      <div class="modal-body">
- <iframe class="id_orden" src=""
-      width="100%" height="540" scrolling="auto" frameborder="0" seamless>
-      <p>Texto alternativo para navegadores que no aceptan iframes.</p>
-    </iframe>
-      </div>
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn-cerrardir">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel5"></h4>
+            </div>
+            <div class="modal-body">
+                <iframe class="id_orden" src="" width="100%" height="540" scrolling="auto" frameborder="0" seamless>
+                    <p>Texto alternativo para navegadores que no aceptan iframes.</p>
+                </iframe>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 <!-- Modal agregar servicio-->
 <div class="modal fade" id="myModalServicio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel44">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel44">Agregar servicio</h4>
-      </div>
-      <div class="modal-body">
- <iframe class="id_orden" src="{% url 'upresupuestos:PresupuestoServicioView' %}"
-      width="100%" height="200" scrolling="no" frameborder="0" seamless>
-      <p>Texto alternativo para navegadores que no aceptan iframes.</p>
-    </iframe>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn-cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel4">Agregar servicio</h4>
+            </div>
+            <div class="modal-body">
+                <iframe class="id_orden" src="{% url 'upresupuestos:PresupuestoServicioView' %}" width="100%" height="200" scrolling="no" frameborder="0" seamless>
+                    <p>Texto alternativo para navegadores que no aceptan iframes.</p>
+                </iframe>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-       <!-- Modal agregar mueble-->
+<!-- Modal agregar mueble-->
 <div class="modal fade bs-example-modal-lg" id="myModalAmbiente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel2">Agregar detalle del presupuesto</h4>
-      </div>
-      <div class="modal-body">
- <iframe class="id_orden" src=""
-      width="100%" height="300" scrolling="no" frameborder="0" seamless>
-      <p>Texto alternativo para navegadores que no aceptan iframes.</p>
-    </iframe>
-      </div>
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn-cerrarmueble">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel2">Agregar detalle del presupuesto</h4>
+            </div>
+            <div class="modal-body">
+                <iframe class="id_orden" src="" width="100%" height="300" scrolling="no" frameborder="0" seamless>
+                    <p>Texto alternativo para navegadores que no aceptan iframes.</p>
+                </iframe>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
+
 <script>
-    // Autor: @jqcaper
+// Autor: @jqcaper
 // Configuraciones Generales
 var nombre_tabla = "#acordion"; // id
 var nombre_boton_eliminar = ".botonmodal"; // Clase
 var nombre_formulario_modal = "#myModalServicio"; //id
 
 // Fin de configuraciones
-    $(document).on('ready',function(){
+$(document).on('ready',function(){
 
 
-        $(".botonmodal").on('click',function(e){
-            e.preventDefault();
-            var Pid = $(this).attr('id');
-            var name = $(this).data('name');
-            var opcion = $(this).data('opcion');
-            $('#modal_idModulo').val(Pid);
-            $('#modal_name2').text(name);
-            $('#id_modulo').val(name);
-            $('.id_orden').attr('src', opcion);
-        $('#divF').load(opcion, function() { /* alguna cosa que quieran hacer */ });
-        });
+    $(".botonmodal").on('click',function(e){
+        e.preventDefault();
+        var Pid = $(this).attr('id');
+        var name = $(this).data('name');
+        var opcion = $(this).data('opcion');
+        $('#modal_idModulo').val(Pid);
+        $('#modal_name2').text(name);
+        $('#id_modulo').val(name);
+        $('.id_orden').attr('src', opcion);
+    $('#divF').load(opcion, function() { /* alguna cosa que quieran hacer */ });
+});
 
-        var options = {
-            success:function(response){
+    var options = {
+        success:function(response){
 
-                if(response.form=="botonmodal"){
-                    if(response.status=="True"){
-                        alert("registrado exitosamente!");
+            if(response.form=="botonmodal"){
+                if(response.status=="True"){
+                    alert("registrado exitosamente!");
 
-                        location.reload();
-                    }else{
-                        alert("Hubo un error al edit!");
-                        $("#myModal2").modal('hide');
-                    }
+                    location.reload();
+                }else{
+                    alert("Hubo un error al edit!");
+                    $("#myModal2").modal('hide');
                 }
-
             }
-        };
 
-        $(nombre_formulario_modal).ajaxForm(options);
-    });
+        }
+    };
+
+    $(nombre_formulario_modal).ajaxForm(options);
+
+});
+
 </script>
 <script>
 
 $(document).ready(function() {
     $(function () {
-  $('[data-toggletooltip="tooltip"]').tooltip()
-})
+        $('[data-toggletooltip="tooltip"]').tooltip()
+    })
     document.getElementById('id_body').setAttribute('data-spy','scroll');
     document.getElementById('id_body').setAttribute('data-target','#navbar-example');
     document.getElementById('id_body').setAttribute('data-offset','70');
     $(function(){
-    //clic en un enlace de la lista
-    $('.linknav a').on('click',function(e){
-        //prevenir en comportamiento predeterminado del enlace
-        e.preventDefault();
-        //obtenemos el id del elemento en el que debemos posicionarnos
-        var strAncla=$(this).attr('href');
+//clic en un enlace de la lista
+$('.linknav a').on('click',function(e){
+//prevenir en comportamiento predeterminado del enlace
+e.preventDefault();
+//obtenemos el id del elemento en el que debemos posicionarnos
+var strAncla=$(this).attr('href');
 
-        //utilizamos body y html, ya que dependiendo del navegador uno u otro no funciona
-        $('body,html').stop(true,true).animate({
-            //realizamos la animacion hacia el ancla
-            //-126 indica que baja el scroll 126px que es la altura de la cabecera para que se coloque correctamente
-            scrollTop: $(strAncla).offset().top-70
-        },1000);
-    });
- $('.modal-footer a').on('click',function(e){
-        //prevenir en comportamiento predeterminado del enlace
-        e.preventDefault();
-        //obtenemos el id del elemento en el que debemos posicionarnos
-        var strAncla=$(this).attr('href');
+//utilizamos body y html, ya que dependiendo del navegador uno u otro no funciona
+$('body,html').stop(true,true).animate({
+//realizamos la animacion hacia el ancla
+//-126 indica que baja el scroll 126px que es la altura de la cabecera para que se coloque correctamente
+scrollTop: $(strAncla).offset().top-70
+},1000);
+});
+$('.modal-footer a').on('click',function(e){
+//prevenir en comportamiento predeterminado del enlace
+e.preventDefault();
+//obtenemos el id del elemento en el que debemos posicionarnos
+var strAncla=$(this).attr('href');
 
-        //utilizamos body y html, ya que dependiendo del navegador uno u otro no funciona
-        $('body,html').stop(true,true).animate({
-            //realizamos la animacion hacia el ancla
-            //-126 indica que baja el scroll 126px que es la altura de la cabecera para que se coloque correctamente
-            scrollTop: $(strAncla).offset().top-70
-        },1000);
-    });
-
- $('.block-pasos').on('click',function(e){
-        //prevenir en comportamiento predeterminado del enlace
-        e.preventDefault();
-        //obtenemos el id del elemento en el que debemos posicionarnos
-        var strAncla=$(this).attr('href');
-
-        //utilizamos body y html, ya que dependiendo del navegador uno u otro no funciona
-        $('body,html').stop(true,true).animate({
-            //realizamos la animacion hacia el ancla
-            //-126 indica que baja el scroll 126px que es la altura de la cabecera para que se coloque correctamente
-            scrollTop: $(strAncla).offset().top-70
-        },1000);
-    });
+//utilizamos body y html, ya que dependiendo del navegador uno u otro no funciona
+$('body,html').stop(true,true).animate({
+//realizamos la animacion hacia el ancla
+//-126 indica que baja el scroll 126px que es la altura de la cabecera para que se coloque correctamente
+scrollTop: $(strAncla).offset().top-70
+},1000);
 });
 
-    });
+$('.block-pasos').on('click',function(e){
+//prevenir en comportamiento predeterminado del enlace
+e.preventDefault();
+//obtenemos el id del elemento en el que debemos posicionarnos
+var strAncla=$(this).attr('href');
+
+//utilizamos body y html, ya que dependiendo del navegador uno u otro no funciona
+$('body,html').stop(true,true).animate({
+//realizamos la animacion hacia el ancla
+//-126 indica que baja el scroll 126px que es la altura de la cabecera para que se coloque correctamente
+scrollTop: $(strAncla).offset().top-70
+},1000);
+});
+});
+
+});
 </script>
 
 {% endblock content1 %}
@@ -768,7 +822,7 @@ $(document).ready(function() {
 {% block ayuda %}
 
 <div class="">
-  <p>
+    <p>
         Se llama <strong>presupuesto</strong> al cálculo y negociación anticipado de los ingresos y egresos de una actividad económica.  Es un plan de acción dirigido a cumplir una meta prevista, expresada en valores y términos financieros que debe cumplirse en determinado tiempo y bajo ciertas condiciones previstas.
     </p>
     <p>

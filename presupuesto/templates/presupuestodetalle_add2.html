@@ -233,7 +233,6 @@ function calcular_pesocontenedor(cant_contenedor,peso_material){
   {% csrf_token %}
 
   <div class="form-group campo">
-
     {% for i in form %}
 
     <label for="{{ i.id_for_label }}" class="campo{{forloop.counter0}}">{{i.label}} {{i}}</label>
