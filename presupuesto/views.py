@@ -63,7 +63,7 @@ class PresupuestoDetail(DetailView):
         # Add in a QuerySet of all the books
         #context['listar_ambiente'] = Presupuesto_Detalle.objects.values('ambiente', 'ambiente__ambiente', 'mueble').annotate(tcount=Count('ambiente')).order_by('ambiente')
         context['detalle_list'] = Presupuesto_Detalle.objects.filter(presupuesto=self.object.pk)
-        context['lista_ambiente'] = Presupuesto_Detalle.objects.filter(presupuesto=self.object.pk).values('ambiente').distinct()
+        context['lista_ambiente'] = Presupuesto_Detalle.objects.filter(presupuesto=self.object.pk).values('ambiente').annotate(tcount=Count('ambiente')).order_by('ambiente')
         context['direccion_origen'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk, tipo_direccion="Origen")
         context['direccion_destino'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk, tipo_direccion="Destino")
         context['now'] = timezone.now()
@@ -112,7 +112,7 @@ class PresupuestoDetalleDetail2(DetailView):
         # Add in a QuerySet of all the books
         #context['listar_ambiente'] = Presupuesto_Detalle.objects.values('ambiente', 'ambiente__ambiente', 'mueble').annotate(tcount=Count('ambiente')).order_by('ambiente')
         context['detalle_list'] = Presupuesto_Detalle.objects.filter(presupuesto=self.object.pk)
-        context['lista_ambiente'] = Presupuesto_Detalle.objects.filter(presupuesto=self.object.pk).values('ambiente').distinct()
+        context['lista_ambiente'] = Presupuesto_Detalle.objects.filter(presupuesto=self.object.pk).values('ambiente').annotate(tcount=Count('ambiente')).order_by('ambiente')
         context['servicio'] = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto=self.object.pk).values('servicio', 'detalle_presupuesto', 'monto_servicio').annotate(tcount=Count('servicio')).order_by('servicio')
         return context
 
@@ -390,7 +390,7 @@ class PresupuestoDetalleView(View):
                     'largo': largo,
                     'alto': alto,
                     'peso': peso,
-                    'valor_densidad': round(valor_densidad, 3),
+                    'valor_densidad': round(valor_densidad, 2),
                     'volumen_mueble': round(volumen_mueble, 3),
                 }]
                 return JsonResponse(tamano, safe=False)
@@ -736,7 +736,7 @@ class PresupuestoDireccionDelete(DeleteView):
         cantDest = Presupuesto_direccion.objects.filter(presupuesto=presu, tipo_direccion='Destino').count()
 
         if cantOrig <= 0 or cantDest <= 0:
-            updatepresu = Presupuesto.objects.filter(pk=presu)
+            updatepresu = Presupuesto.objects.filter(pk=presu.id)
             updatepresu.update(estado='Iniciado')
 
         redirect_to = self.request.GET['next']
@@ -826,16 +826,16 @@ def update_presupuesto(request, pk):
     updatepresu.update(cantidad_ambientes=cant_ambiente[0].acount)
     updatepresu.update(cantidad_muebles=cant_mueble)
     updatepresu.update(cantidad_contenedores=cant_contenedor['cant_contenedor'])
-    updatepresu.update(total_peso_contenedores=peso_contenedores['pes_contenedor'])
-    updatepresu.update(total_peso_muebles=peso_muebles['pes_mueble'])
-    updatepresu.update(total_peso_contenidos=peso_contenidos['pes_contenido'])
-    updatepresu.update(total_volumen_muebles=volumen_muebles['vol_mueble'])
-    updatepresu.update(total_volumen_contenedores=volumen_contenedores['vol_contenedor'])
-    updatepresu.update(total_volumen_contenidos=volumen_contenidos['vol_contenido'])
-    updatepresu.update(total_peso_materiales=peso_materiales['pes_material'])
-    updatepresu.update(total_volumen_materiales=volumen_materiales['vol_material'])
-    updatepresu.update(total_peso_mudanza=totalpeso)
-    updatepresu.update(total_m3=total_m3)
+    updatepresu.update(total_peso_contenedores=round(peso_contenedores['pes_contenedor'], 3))
+    updatepresu.update(total_peso_muebles=round(peso_muebles['pes_mueble'], 3))
+    updatepresu.update(total_peso_contenidos=round(peso_contenidos['pes_contenido'], 3))
+    updatepresu.update(total_volumen_muebles=round(volumen_muebles['vol_mueble'], 3))
+    updatepresu.update(total_volumen_contenedores=round(volumen_contenedores['vol_contenedor'], 3))
+    updatepresu.update(total_volumen_contenidos=round(volumen_contenidos['vol_contenido'], 3))
+    updatepresu.update(total_peso_materiales=round(peso_materiales['pes_material'], 3))
+    updatepresu.update(total_volumen_materiales=round(volumen_materiales['vol_material'], 3))
+    updatepresu.update(total_peso_mudanza=round(totalpeso, 3))
+    updatepresu.update(total_m3=round(total_m3, 3))
 
     presupuesto = Presupuesto.objects.get(pk=pk)
 
@@ -870,9 +870,9 @@ def update_presupuesto(request, pk):
             sw = 1
             array_capacidadpeso.append([j]*6)
             array_capacidadpeso[j][0] = entero
-            array_capacidadpeso[j][1] = vehiculos[i].capacidad_peso * array_capacidadpeso[j][0]
-            array_capacidadpeso[j][2] = vehiculos[i].tarifa_hora * array_capacidadpeso[j][0]
-            array_capacidadpeso[j][3] = vehiculos[i].tarifa_recorrido * array_capacidadpeso[j][0]
+            array_capacidadpeso[j][1] = round((vehiculos[i].capacidad_peso * array_capacidadpeso[j][0]), 3)
+            array_capacidadpeso[j][2] = round((vehiculos[i].tarifa_hora * array_capacidadpeso[j][0]), 2)
+            array_capacidadpeso[j][3] = round((vehiculos[i].tarifa_recorrido * array_capacidadpeso[j][0]), 2)
             array_capacidadpeso[j][4] = 'Modelo: ' + vehiculos[i].modelo + \
                                         ' - Tarifa $/h: ' + vehiculos[i].tarifa_hora + \
                                         ' - Tarifa $/Km: ' + vehiculos[i].tarifa_recorrido + \
@@ -887,9 +887,9 @@ def update_presupuesto(request, pk):
                 j += 1
                 array_capacidadpeso.append([j]*6)
                 array_capacidadpeso[j][0] = 1
-                array_capacidadpeso[j][1] = vehiculos[i].capacidad_peso * array_capacidadpeso[j][0]
-                array_capacidadpeso[j][2] = vehiculos[i].tarifa_hora * array_capacidadpeso[j][0]
-                array_capacidadpeso[j][3] = vehiculos[i].tarifa_recorrido * array_capacidadpeso[j][0]
+                array_capacidadpeso[j][1] = round((vehiculos[i].capacidad_peso * array_capacidadpeso[j][0]), 3)
+                array_capacidadpeso[j][2] = round((vehiculos[i].tarifa_hora * array_capacidadpeso[j][0]), 2)
+                array_capacidadpeso[j][3] = round((vehiculos[i].tarifa_recorrido * array_capacidadpeso[j][0]), 2)
                 array_capacidadpeso[j][4] = 'Modelo: ' + vehiculos[i].modelo + \
                                             ' - Tarifa $/h: ' + str(vehiculos[i].tarifa_hora) + \
                                             ' - Tarifa $/Km: ' + str(vehiculos[i].tarifa_recorrido) + \
@@ -908,9 +908,9 @@ def update_presupuesto(request, pk):
                     array_capacidadpeso.append([j]*6)
 
                 array_capacidadpeso[j][0] = array_capacidadpeso[j][0] + 1
-                array_capacidadpeso[j][1] = vehiculos[i].capacidad_peso * array_capacidadpeso[j][0]
-                array_capacidadpeso[j][2] = vehiculos[i].tarifa_hora * array_capacidadpeso[j][0]
-                array_capacidadpeso[j][3] = vehiculos[i].tarifa_recorrido * array_capacidadpeso[j][0]
+                array_capacidadpeso[j][1] = round((vehiculos[i].capacidad_peso * array_capacidadpeso[j][0]), 3)
+                array_capacidadpeso[j][2] = round((vehiculos[i].tarifa_hora * array_capacidadpeso[j][0]), 2)
+                array_capacidadpeso[j][3] = round((vehiculos[i].tarifa_recorrido * array_capacidadpeso[j][0]), 2)
                 array_capacidadpeso[j][4] = 'Modelo: ' + vehiculos[i].modelo + \
                                             ' - Tarifa $/h: ' + vehiculos[i].tarifa_hora + \
                                             ' - Tarifa $/Km: ' + vehiculos[i].tarifa_recorrido + \
@@ -948,9 +948,9 @@ def update_presupuesto(request, pk):
             sw = 1
             array_capacidadm3.append([j]*6)
             array_capacidadm3[j][0] = entero
-            array_capacidadm3[j][1] = vehiculos[i].capacidad_volumen * array_capacidadm3[j][0]
-            array_capacidadm3[j][2] = vehiculos[i].tarifa_hora * array_capacidadm3[j][0]
-            array_capacidadm3[j][3] = vehiculos[i].tarifa_recorrido * array_capacidadm3[j][0]
+            array_capacidadm3[j][1] = round((vehiculos[i].capacidad_volumen * array_capacidadm3[j][0]), 3)
+            array_capacidadm3[j][2] = round((vehiculos[i].tarifa_hora * array_capacidadm3[j][0]), 2)
+            array_capacidadm3[j][3] = round((vehiculos[i].tarifa_recorrido * array_capacidadm3[j][0]), 2)
             array_capacidadm3[j][4] = 'Modelo: ' + vehiculos[i].modelo + \
                                       ' - Tarifa $/h: ' + vehiculos[i].tarifa_hora + \
                                       ' - Tarifa $/Km: ' + vehiculos[i].tarifa_recorrido + \
@@ -965,9 +965,9 @@ def update_presupuesto(request, pk):
                 j += 1
                 array_capacidadm3.append([j]*6)
                 array_capacidadm3[j][0] = 1
-                array_capacidadm3[j][1] = vehiculos[i].capacidad_volumen * array_capacidadm3[j][0]
-                array_capacidadm3[j][2] = vehiculos[i].tarifa_hora * array_capacidadm3[j][0]
-                array_capacidadm3[j][3] = vehiculos[i].tarifa_recorrido * array_capacidadm3[j][0]
+                array_capacidadm3[j][1] = round((vehiculos[i].capacidad_volumen * array_capacidadm3[j][0]), 3)
+                array_capacidadm3[j][2] = round((vehiculos[i].tarifa_hora * array_capacidadm3[j][0]), 2)
+                array_capacidadm3[j][3] = round((vehiculos[i].tarifa_recorrido * array_capacidadm3[j][0]), 2)
                 array_capacidadm3[j][4] = 'Modelo: ' + vehiculos[i].modelo + \
                                           ' - Tarifa $/h: ' + str(vehiculos[i].tarifa_hora) + \
                                           ' - Tarifa $/Km: ' + str(vehiculos[i].tarifa_recorrido) + \
@@ -985,9 +985,9 @@ def update_presupuesto(request, pk):
                     sw = 1
                     array_capacidadm3.append([j]*6)
                 array_capacidadm3[j][0] = array_capacidadm3[j][0] + 1
-                array_capacidadm3[j][1] = vehiculos[i].capacidad_volumen * array_capacidadm3[j][0]
-                array_capacidadm3[j][2] = vehiculos[i].tarifa_hora * array_capacidadm3[j][0]
-                array_capacidadm3[j][3] = vehiculos[i].tarifa_recorrido * array_capacidadm3[j][0]
+                array_capacidadm3[j][1] = round((vehiculos[i].capacidad_volumen * array_capacidadm3[j][0]), 3)
+                array_capacidadm3[j][2] = round((vehiculos[i].tarifa_hora * array_capacidadm3[j][0]), 2)
+                array_capacidadm3[j][3] = round((vehiculos[i].tarifa_recorrido * array_capacidadm3[j][0]), 2)
                 array_capacidadm3[j][4] = 'Modelo: ' + vehiculos[i].modelo + \
                                           ' - Tarifa $/h: ' + vehiculos[i].tarifa_hora + \
                                           ' - Tarifa $/Km: ' + vehiculos[i].tarifa_recorrido + \

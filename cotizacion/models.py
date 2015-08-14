@@ -33,16 +33,18 @@ class Tiempo_Carga(models.Model):
     def __init__(self, *args, **kwargs):
         super(Tiempo_Carga, self).__init__(*args, **kwargs)
 
-    tiempo_carga = models.TimeField()
-    volumen_min = models.DecimalField(max_digits=13, decimal_places=2, blank=True,
-                                      default=0.00, validators=[MinValueValidator(0.01)])
-    volumen_max = models.DecimalField(max_digits=13, decimal_places=2, blank=True, default=0.00,
-                                      validators=[MaxValueValidator(100), MinValueValidator(1)])
+    tiempo_carga = models.DecimalField(max_digits=7, decimal_places=2, blank=True,
+                                       default=0.00, validators=[MinValueValidator(0.01)])
+    volumen_min = models.DecimalField(max_digits=8, decimal_places=3, blank=True,
+                                      default=0.000, validators=[MinValueValidator(0.001)])
+    volumen_max = models.DecimalField(max_digits=8, decimal_places=3, blank=True, default=0.000,
+                                      validators=[MaxValueValidator(100), MinValueValidator(0.001)])
     nro_objeto_min = models.PositiveIntegerField(validators=[MaxValueValidator(100),
                                                              MinValueValidator(1)])
-    nro_objeto_max = models.PositiveIntegerField(validators=[MaxValueValidator(100), MinValueValidator(1)])
-    peso_min = models.DecimalField(max_digits=8, decimal_places=3, blank=True, default=0.00)
-    peso_max = models.DecimalField(max_digits=8, decimal_places=3, blank=True, default=0.00)
+    nro_objeto_max = models.PositiveIntegerField(validators=[MaxValueValidator(100),
+                                                             MinValueValidator(1)])
+    peso_min = models.DecimalField(max_digits=9, decimal_places=3, blank=True, default=0.000)
+    peso_max = models.DecimalField(max_digits=9, decimal_places=3, blank=True, default=0.000)
     cantidad_trabajador = models.PositiveIntegerField(validators=[MaxValueValidator(20), MinValueValidator(1)])
 
     def __str__(self):
@@ -60,7 +62,7 @@ class Piso(models.Model):
         super(Piso, self).__init__(*args, **kwargs)
 
     piso = models.CharField(max_length=100, unique=True)
-    factor = models.DecimalField(max_digits=3, decimal_places=2)
+    factor = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
         return self.piso
@@ -87,27 +89,27 @@ class Cotizacion(models.Model):
     fecha_estimadamudanza = models.DateTimeField()
     cantidad_ambientes = models.PositiveIntegerField(blank=True, default=0)
     cantidad_muebles = models.PositiveIntegerField(blank=True, default=0)
-    volumen_muebles_sugerido = models.DecimalField(max_digits=5, decimal_places=2,
-                                                   blank=True, default=0.00)
-    volumen_muebles_cotizado = models.DecimalField(max_digits=5, decimal_places=2,
-                                                   blank=True, default=0.00)
-    peso_muebles = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default=0.00)
+    volumen_muebles_sugerido = models.DecimalField(max_digits=8, decimal_places=3,
+                                                   blank=True, default=0.000)
+    volumen_muebles_cotizado = models.DecimalField(max_digits=8, decimal_places=3,
+                                                   blank=True, default=0.000)
+    peso_muebles = models.DecimalField(max_digits=9, decimal_places=3, blank=True, default=0.000)
     cantidad_contenedores = models.PositiveIntegerField(blank=True, default=0)
-    peso_contenedores = models.DecimalField(max_digits=7, decimal_places=2,
-                                            blank=True, default=0.00)
-    volumen_contenedores = models.DecimalField(max_digits=7, decimal_places=2,
-                                               blank=True, default=0.00)
-    peso_contenidos = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default=0.00)
-    volumen_contenidos = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default=0.00)
-    peso_materiales = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default=0.00)
-    monto_muebles = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
-    monto_material = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
-    monto_descuento = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
-    total_sin_impuesto = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
-    monto_impuesto = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
-    total_con_impuesto = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
-    tiempo_carga = models.TimeField()
-    total_recorrido_tiempo = models.TimeField()
+    peso_contenedores = models.DecimalField(max_digits=9, decimal_places=3,
+                                            blank=True, default=0.000)
+    volumen_contenedores = models.DecimalField(max_digits=8, decimal_places=3,
+                                               blank=True, default=0.000)
+    peso_contenidos = models.DecimalField(max_digits=9, decimal_places=3, blank=True, default=0.000)
+    volumen_contenidos = models.DecimalField(max_digits=8, decimal_places=3, blank=True, default=0.000)
+    peso_materiales = models.DecimalField(max_digits=9, decimal_places=3, blank=True, default=0.000)
+    monto_muebles = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default=0.000)
+    monto_material = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default=0.000)
+    monto_descuento = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default=0.000)
+    total_sin_impuesto = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default=0.000)
+    monto_impuesto = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default=0.000)
+    total_con_impuesto = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default=0.000)
+    tiempo_carga = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
+    total_recorrido_tiempo = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
     total_recorrido_km = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
 
     def __str__(self):
@@ -125,10 +127,10 @@ class Vehiculo(models.Model):
         super(Vehiculo, self).__init__(*args, **kwargs)
 
     modelo = models.CharField(max_length=100, unique=True)
-    tarifa_hora = models.DecimalField(max_digits=7, decimal_places=2)
-    tarifa_recorrido = models.DecimalField(max_digits=7, decimal_places=2)
+    tarifa_hora = models.DecimalField(max_digits=9, decimal_places=2)
+    tarifa_recorrido = models.DecimalField(max_digits=9, decimal_places=2)
     capacidad_volumen = models.DecimalField(max_digits=8, decimal_places=3)
-    capacidad_peso = models.DecimalField(max_digits=8, decimal_places=3)
+    capacidad_peso = models.DecimalField(max_digits=9, decimal_places=3)
     cargo = models.ForeignKey(Cargo_trabajador)
     cantidad_total = models.PositiveIntegerField(default=0)
     cantidad_disponible = models.PositiveIntegerField(default=0)
@@ -150,12 +152,12 @@ class Vehiculo_Cotizacion(models.Model):
     vehiculo = models.ForeignKey(Vehiculo, on_delete=models.PROTECT)
     cotizacion = models.ForeignKey(Cotizacion, on_delete=models.PROTECT)
     cantidad = models.PositiveIntegerField()
-    cantidad_hora = models.TimeField()
-    tarifa_hora = models.DecimalField(max_digits=7, decimal_places=2)
-    costo_hora = models.DecimalField(max_digits=7, decimal_places=2)
+    cantidad_hora = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default=0.00)
+    tarifa_hora = models.DecimalField(max_digits=9, decimal_places=2)
+    costo_hora = models.DecimalField(max_digits=9, decimal_places=2)
     recorrido = models.DecimalField(max_digits=7, decimal_places=2)
-    tarifa_recorrido = models.DecimalField(max_digits=7, decimal_places=2)
-    costo_recorrido = models.DecimalField(max_digits=7, decimal_places=2)
+    tarifa_recorrido = models.DecimalField(max_digits=9, decimal_places=2)
+    costo_recorrido = models.DecimalField(max_digits=9, decimal_places=2)
 
     def __str__(self):
         return u' %s - %s' % (self.cotizacion, self.vehiculo)
@@ -185,7 +187,7 @@ class Cotizacion_direccion(models.Model):
     pisos_ascensor = models.IntegerField()
     complejidad = models.CharField(max_length=100)
     distancia_vehiculo = models.IntegerField()
-    total_m2 = models.DecimalField(max_digits=5, decimal_places=2)
+    total_m2 = models.DecimalField(max_digits=7, decimal_places=2)
 
     def __str__(self):
         return u' %s - %s' % (self.cotizacion, self.direccion)
@@ -203,14 +205,14 @@ class Cotizacion_trabajador(models.Model):
 
     cargo = models.ForeignKey(Cargo_trabajador, on_delete=models.PROTECT)
     cotizacion = models.ForeignKey(Cotizacion, on_delete=models.PROTECT)
-    tarifa = models.DecimalField(max_digits=7, decimal_places=2)
+    tarifa = models.DecimalField(max_digits=9, decimal_places=2)
     cantidad = models.PositiveIntegerField()
-    total_sin_recargo = models.DecimalField(max_digits=7, decimal_places=2)
+    total_sin_recargo = models.DecimalField(max_digits=9, decimal_places=2)
     nocturno = models.BooleanField(default=None)
     fin_semana = models.BooleanField(default=None)
-    recargo_nocturno = models.DecimalField(max_digits=7, decimal_places=2)
-    recargo_fin_semana = models.DecimalField(max_digits=7, decimal_places=2)
-    total_con_recargo = models.DecimalField(max_digits=7, decimal_places=2)
+    recargo_nocturno = models.DecimalField(max_digits=9, decimal_places=2)
+    recargo_fin_semana = models.DecimalField(max_digits=9, decimal_places=2)
+    total_con_recargo = models.DecimalField(max_digits=9, decimal_places=2)
 
     def __str__(self):
         return u' %s - %s' % (self.cotizacion, self.cargo)
@@ -229,15 +231,15 @@ class Cotizacion_Ambiente(models.Model):
     cotizacion = models.ForeignKey(Cotizacion, on_delete=models.PROTECT)
     ambiente = models.ForeignKey(Ambiente, on_delete=models.PROTECT)
     piso = models.ForeignKey(Piso, on_delete=models.PROTECT)
-    cantidad_muebles = models.DecimalField(max_digits=5, decimal_places=2)
-    volumen_muebles = models.DecimalField(max_digits=7, decimal_places=2)
-    peso_muebles = models.DecimalField(max_digits=7, decimal_places=2)
-    cantidad_contenedores = models.DecimalField(max_digits=5, decimal_places=2)
-    volumen_contenedores = models.DecimalField(max_digits=7, decimal_places=2)
-    peso_contenedores = models.DecimalField(max_digits=7, decimal_places=2)
-    volumen_contenidos = models.DecimalField(max_digits=7, decimal_places=2)
-    peso_contenidos = models.DecimalField(max_digits=7, decimal_places=2)
-    peso_materiales = models.DecimalField(max_digits=7, decimal_places=2)
+    cantidad_muebles = models.DecimalField(max_digits=7, decimal_places=2)
+    volumen_muebles = models.DecimalField(max_digits=8, decimal_places=3)
+    peso_muebles = models.DecimalField(max_digits=9, decimal_places=3)
+    cantidad_contenedores = models.DecimalField(max_digits=7, decimal_places=2)
+    volumen_contenedores = models.DecimalField(max_digits=8, decimal_places=3)
+    peso_contenedores = models.DecimalField(max_digits=9, decimal_places=3)
+    volumen_contenidos = models.DecimalField(max_digits=8, decimal_places=3)
+    peso_contenidos = models.DecimalField(max_digits=9, decimal_places=3)
+    peso_materiales = models.DecimalField(max_digits=9, decimal_places=3)
     observaciones = models.TextField(blank=True)
 
     def __str__(self):
@@ -261,11 +263,11 @@ class Cotizacion_Mueble(models.Model):
     cotizacion_ambiente = models.ForeignKey(Cotizacion_Ambiente, on_delete=models.PROTECT)
     mueble = models.ForeignKey(Mueble, on_delete=models.PROTECT)
     tamano = models.CharField(max_length=100)
-    ancho = models.DecimalField(max_digits=5, decimal_places=2)
-    alto = models.DecimalField(max_digits=5, decimal_places=2)
-    largo = models.DecimalField(max_digits=5, decimal_places=2)
-    volumen = models.DecimalField(max_digits=7, decimal_places=2)
-    capacidad = models.DecimalField(max_digits=5, decimal_places=2)
+    ancho = models.DecimalField(max_digits=7, decimal_places=2)
+    alto = models.DecimalField(max_digits=7, decimal_places=2)
+    largo = models.DecimalField(max_digits=7, decimal_places=2)
+    volumen = models.DecimalField(max_digits=8, decimal_places=3)
+    capacidad = models.DecimalField(max_digits=8, decimal_places=3)
     ocupacion = models.DecimalField(max_digits=5, decimal_places=2)
     forma = models.CharField(max_length=100)
     trasladable = models.BooleanField(default=None)
@@ -274,7 +276,7 @@ class Cotizacion_Mueble(models.Model):
     capacidad_interna = models.BooleanField(default=None)
     observaciones = models.TextField(blank=True)
     densidad = models.CharField(max_length=100)
-    peso = models.DecimalField(max_digits=5, decimal_places=2)
+    peso = models.DecimalField(max_digits=9, decimal_places=3)
 
     def __str__(self):
         return u' %s - %s' % (self.mueble, self.cotizacion_ambiente)
@@ -292,9 +294,9 @@ class Cotizacion_Contenido(models.Model):
 
     cotizacion_mueble = models.ForeignKey(Cotizacion_Mueble, on_delete=models.PROTECT)
     contenido = models.ForeignKey(Contenido, on_delete=models.PROTECT)
-    densidad = models.DecimalField(max_digits=5, decimal_places=2)
-    volumen_contenido = models.DecimalField(max_digits=5, decimal_places=2)
-    peso_contenido = models.DecimalField(max_digits=5, decimal_places=2)
+    densidad = models.DecimalField(max_digits=7, decimal_places=2)
+    volumen_contenido = models.DecimalField(max_digits=8, decimal_places=3)
+    peso_contenido = models.DecimalField(max_digits=9, decimal_places=3)
     porcentaje = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
@@ -315,7 +317,7 @@ class Cotizacion_Servicio(models.Model):
     servicio = models.ForeignKey(Servicio, on_delete=models.PROTECT)
     cotizacion_contenido = models.ForeignKey(Cotizacion_Contenido, null=True, blank=True)
     complejidad = models.CharField(max_length=100)
-    tarifa = models.DecimalField(max_digits=13, decimal_places=2)
+    tarifa = models.DecimalField(max_digits=9, decimal_places=2)
 
     def __str__(self):
         return u' %s - %s' % (self.cotizacion_mueble, self.servicio)
@@ -333,11 +335,11 @@ class Cotizacion_Material(models.Model):
 
     cotizacion_servicio = models.ForeignKey(Cotizacion_Servicio, on_delete=models.PROTECT)
     material = models.ForeignKey(Material, on_delete=models.PROTECT)
-    cantidad = models.DecimalField(max_digits=5, decimal_places=2)
-    precio_unitario = models.DecimalField(max_digits=7, decimal_places=2)
-    precio_total = models.DecimalField(max_digits=7, decimal_places=2)
-    peso_unitario = models.DecimalField(max_digits=5, decimal_places=2)
-    peso_total = models.DecimalField(max_digits=5, decimal_places=2)
+    cantidad = models.DecimalField(max_digits=7, decimal_places=2)
+    precio_unitario = models.DecimalField(max_digits=9, decimal_places=2)
+    precio_total = models.DecimalField(max_digits=9, decimal_places=2)
+    peso_unitario = models.DecimalField(max_digits=9, decimal_places=3)
+    peso_total = models.DecimalField(max_digits=9, decimal_places=3)
     recuperable = models.BooleanField(default=None)
 
     def __str__(self):
