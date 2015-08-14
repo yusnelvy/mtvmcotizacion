@@ -613,11 +613,13 @@ class PresupuestoDireccionUpdate(UpdateView):
 
         self.object.save()
 
-        redirect_to = self.request.GET['next']
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
-            return render_to_response(self.template_name, self.get_context_data())
+        # redirect_to = self.request.GET['next']
+        # if redirect_to:
+        #     return HttpResponseRedirect(redirect_to)            mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+        # else:
+         #     return render_to_response(self.template_name, self.get_context_data())
+        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+        return JsonResponse(mensaje, safe=False)
 
 
 class PresupuestoDetalleUpdate(UpdateView):

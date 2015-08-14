@@ -1,3 +1,7 @@
+{% extends "base_modal_form.html" %}
+
+{% block style %}
+
 <style>
 #id_divider,#id_lista_ocupacion,#id_total_m2,#id_distancia_vehiculo,#id_pisos_ascensor_servicio,#id_pisos_ascensor,#id_pisos_escalera,#id_pisos,#id_lista_tipoinmueble,#id_direccion,.campo>label>input[type=date],.campo>label>input[type=password],.campo>label>input[type=number],.campo>label>input[type=text],.campo>label>input[type=email],.campo>label>input[type=url]{
   box-sizing: border-box;
@@ -90,8 +94,11 @@ button{position: absolute;bottom:30px;}
   button{position: absolute;bottom:-450px;}
 }
 </style>
-<link href="/static/bootstrap/css/bootstrap3.css" rel="stylesheet">
-<script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
+
+{% endblock style %}
+
+{% block formulario %}
+
 <h4 style="margin-top:0px;">Agregar dirección de {{ form.tipo_direccion.value|lower }}</h4>
 <form action="" method="post" id="myform">
 
@@ -116,6 +123,13 @@ button{position: absolute;bottom:30px;}
   </div>
   <button type="submit" class="btn btn-default">Registrar</button>
 </form>
+
+{% endblock formulario %}
+
+
+{% block js_form %}
+
+
 <script type="text/javascript">
 function showContent() {
   element = document.getElementById("s_pisos_ascensor");
@@ -206,8 +220,9 @@ $('#myform').submit(function(){
             var bodyp = parent.document.getElementById('id_body');
             var closep = parent.document.getElementById("btn-cerrardir");
           if (data.estatus=="ok"){
-            $(closep).click();
-            refresh();
+            parent.location.reload();
+            //$(closep).click();
+            //refresh();
             //parent.location.reload(); //para refrescar la pagina
             //$(modalp).hide();
             //$(divp).remove();
@@ -246,8 +261,5 @@ function refresh() {
   });
 }
 </script>
-<script src="/static/js/jquery.form.min.js"></script>
-<script src="/static/js/eliminar.js"></script>
-<script src="/static/js/script.js"></script>
-<script src="/static/js/bootstrap.js"></script>
-<script src="/static/js/ayuda.js"></script>
+
+{% endblock js_form %}

@@ -172,7 +172,6 @@ class="col-md-10"
 
                 </h4>
 
-
                 {% for direc_origen in direccion_origen %}
 
                 <p style="padding:0px 5px;">{{ direc_origen.direccion }}</p>
@@ -212,7 +211,15 @@ class="col-md-10"
                         </td>
                         <td>{{ direc_origen.pisos }} {% if direc_origen.pisos > 1 %}
 
+                             {% if direc_origen.pisos = 10 %}
+
+                            o más pisos
+
+                            {% else %}
+
                             pisos
+
+                            {% endif %}
 
                             {% else %}
 
@@ -245,7 +252,15 @@ class="col-md-10"
                         </td>
                         <td>{{ direc_origen.pisos_escalera }} {% if direc_origen.pisos_escalera > 1 %}
 
+                            {% if direc_origen.pisos_escalera = 10 %}
+
+                            o más pisos
+
+                            {% else %}
+
                             pisos
+
+                            {% endif %}
 
                             {% else %}
 
@@ -280,7 +295,15 @@ class="col-md-10"
                         </td>
                         <td>{{ direc_origen.pisos_ascensor }} {% if direc_origen.pisos_ascensor > 1 %}
 
+                            {% if direc_origen.pisos_ascensor = 10 %}
+
+                            o más pisos
+
+                            {% else %}
+
                             pisos
+
+                            {% endif %}
 
                             {% else %}
 
@@ -309,7 +332,15 @@ class="col-md-10"
                         </td>
                         <td>{{ direc_origen.pisos_ascensor_servicio }} {% if direc_origen.pisos_ascensor_servicio > 1 %}
 
+                            {% if direc_origen.pisos_ascensor_servicio = 10 %}
+
+                            o más pisos
+
+                            {% else %}
+
                             pisos
+
+                            {% endif %}
 
                             {% else %}
 
@@ -325,8 +356,8 @@ class="col-md-10"
                         <td></td>
                         <td>
                             <small style="float:right;">
-                                <a style="padding:0px 0px 8px 16px;" title="Editar dirección de origen" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_origen.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-                                <a style="padding:0px 0px 8px 8px;" title="Eliminar dirección de origen" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_origen.id %}?next={{request.get_full_path}}"  class="glyphicon glyphicon-remove"></a>
+                                <a data-toggle="modal" data-target="#myModalDireccion" style="padding:0px 0px 8px 16px;cursor:pointer;" title="Editar dirección de origen" data-toggletooltip="tooltip" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_origen.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit botonmodal edit" id="{{direc_origen.id}}"></a>
+                    <a style="padding:0px 0px 8px 8px;" title="Eliminar dirección de origen" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_origen.id %}?next={{request.get_full_path}}"  class="glyphicon glyphicon-remove"></a>
                             </small>
                         </td>
                     </tr>
@@ -334,6 +365,7 @@ class="col-md-10"
                 </table>
 
                 {% endfor %}
+
             </div>
 
             <div class="col-md-6" id="direccion-destino">
@@ -366,7 +398,13 @@ class="col-md-10"
                         <td>
                             <span style="color:#777;">Metros cuadrados del inmueble: </span>
                         </td>
-                        <td>{{ direc_destino.total_m2 }} m2</td>
+                        <td>
+                            {% if direc_destino.total_m2 = 200 %}
+                                Más de
+                            {% endif %}
+
+                            {{ direc_destino.total_m2 }} m2
+                        </td>
                     </tr>
                     <tr>
                         <td>
@@ -399,7 +437,15 @@ class="col-md-10"
                         </td>
                         <td>{{ direc_destino.pisos }} {% if direc_destino.pisos > 1 %}
 
-                            Pisos
+                            {% if direc_destino.pisos = 10 %}
+
+                            o más pisos
+
+                            {% else %}
+
+                            pisos
+
+                            {% endif %}
 
                             {% else %}
 
@@ -432,7 +478,15 @@ class="col-md-10"
                         </td>
                         <td>{{ direc_destino.pisos_escalera }} {% if direc_destino.pisos_escalera > 1 %}
 
+                            {% if direc_destino.pisos_escalera = 10 %}
+
+                            o más pisos
+
+                            {% else %}
+
                             pisos
+
+                            {% endif %}
 
                             {% else %}
 
@@ -466,10 +520,23 @@ class="col-md-10"
                             <span style="color:#777;">Cantidad de pisos a recorrer por ascensor: </span>
                         </td>
                         <td>{{ direc_destino.pisos_ascensor }} {% if direc_destino.pisos_ascensor > 1 %}
-                            Pisos
+
+                            {% if direc_destino.pisos_ascensor = 10 %}
+
+                            o más pisos
+
                             {% else %}
-                            Piso
+
+                            Pisos
+
                             {% endif %}
+
+                            {% else %}
+
+                            Piso
+
+                            {% endif %}
+
                         </td>
                     </tr>
 
@@ -491,7 +558,16 @@ class="col-md-10"
                             <span style="color:#777;">Cantidad de pisos a recorrer por ascensor de servicio: </span>
                         </td>
                         <td>{{ direc_destino.pisos_ascensor_servicio }} {% if direc_destino.pisos_ascensor_servicio > 1 %}
+                            {% if direc_destino.pisos_ascensor_servicio = 10 %}
+
+                            o más pisos
+
+                            {% else %}
+
                             Pisos
+
+                            {% endif %}
+
                             {% else %}
                             Piso
                             {% endif %}
@@ -504,7 +580,7 @@ class="col-md-10"
                         <td></td>
                         <td>
                             <small style="float:right;">
-                                <a style="padding:0px 0px 8px 16px;" title="Editar dirección de destino" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_destino.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+                                <a data-toggle="modal" data-target="#myModalDireccion" style="padding:0px 0px 8px 16px;cursor:pointer;" title="Editar dirección de destino" data-toggletooltip="tooltip" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_destino.id %}?next={{request.get_full_path}}" class="glyphicon-asterisk glyphicon glyphicon-edit botonmodal edit" id="{{direc_destino.id}}"></a>
                                 <a style="padding:0px 0px 8px 8px;" title="Eliminar dirección de destino" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_destino.id %}?next={{request.get_full_path}}"  class="glyphicon glyphicon-remove"></a>
                             </small>
                         </td>
@@ -665,14 +741,11 @@ class="col-md-10"
 <div class="modal fade bs-example-modal-lg" id="myModalDireccion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-body">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn-cerrardir">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel5"></h4>
-            </div>
-            <div class="modal-body">
-                <iframe class="id_orden" src="" width="100%" height="540" scrolling="auto" frameborder="0" seamless>
+                <iframe class="id_orden" src="" width="100%" height="575" scrolling="auto" frameborder="0" seamless>
                     <p>Texto alternativo para navegadores que no aceptan iframes.</p>
                 </iframe>
             </div>
