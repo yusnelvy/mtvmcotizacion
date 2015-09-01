@@ -10,7 +10,7 @@
 
         </h3>
     </div>
-    <div id="collapseOne{{forloop.counter}}" class="panel-collapse collapse {% if forloop.first %} in {% endif %}" role="tabpanel" aria-labelledby="headingOne{{forloop.counter}}">
+    <div id="collapseOne{{forloop.counter}}" class="panel-collapse collapse in{% if forloop.first %}  {% endif %}" role="tabpanel" aria-labelledby="headingOne{{forloop.counter}}">
         <div class="panel-body">
             <p style="padding-left:15px;font-size: 18px;">Muebles
                 <a data-toggle="modal" data-target="#myModalAmbiente" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}" title="Agregar mueble al ambiente {{ambiente.ambiente|upper}}" style="float:right;cursor:pointer;" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal hidden-print" data-toggletooltip="tooltip" data-placement="left"></a>
@@ -63,7 +63,7 @@
 
                             {% endif %}
                         </span>
-                        <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:right;cursor:pointer;" data-toggle="modal" data-target="#myModalServicio" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ mueble.id }}" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal hidden-print" data-toggletooltip="tooltip" data-placement="left"></a>
+                        <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:righ;cursor:pointer;" data-toggle="modal" data-target="#myModalServicio" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ mueble.id }}" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodalServicio hidden-print" data-toggletooltip="tooltip" data-placement="left"></a>
                     </div>
                 </div>
             </li>

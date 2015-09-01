@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from decimal import Decimal
 
 PISOS_CHOICES = (
     (1, '1'),
@@ -27,45 +28,45 @@ PISOS_RECORRER_CHOICES = (
     (10, '10 o más'),
 )
 DISTANCIA_VEHICULO_INMUEBLE = (
-    (10, 'De 1 metro a 10 metros'),
-    (20, 'De 11 metros a 20 metros'),
-    (30, 'De 21 metros a 30 metros'),
-    (40, 'De 31 metros a 40 metros'),
-    (50, 'De 41 metros a 50 metros'),
-    (60, 'De 51 metros a 60 metros'),
-    (60, 'Mas de 60 metros'),
+    (10, 'Menos de 10 metros'),
+    (20, 'De 11 a 20 metros'),
+    (30, 'De 21 a 30 metros'),
+    (40, 'De 31 a 40 metros'),
+    (50, 'De 41 a 50 metros'),
+    (60, 'De 51 a 60 metros'),
+    (70, 'Más de 70 metros'),
     )
 METROSCUADRADO_INMUEBLE = (
-    (40, 'Entre 40 metros cuadrado'),
-    (80, 'Entre 41 a 80 metros cuadrado'),
-    (120, 'Entre 81 a 120 metros cuadrado'),
-    (160, 'Entre 121 a 160 metros cuadrado'),
-    (200, 'Entre 161 a 200 metros cuadrado'),
-    (200, 'Mas de 200 metros cuadrado'),
+    (Decimal('40.00'), 'Entre 40 metros cuadrado'),
+    (Decimal('80.00'), 'Entre 41 a 80 metros cuadrado'),
+    (Decimal('120.00'), 'Entre 81 a 120 metros cuadrado'),
+    (Decimal('160.00'), 'Entre 121 a 160 metros cuadrado'),
+    (Decimal('200.00'), 'Entre 161 a 200 metros cuadrado'),
+    (Decimal('240.00'), 'Más de 240 metros cuadrado'),
     )
 RECORRIDO_KM = (
-    (20.00, 'Entre 1 KM a 20 KM'),
-    (40.00, 'Entre 21 KM a 40 KM'),
-    (60.00, 'Entre 41 KM a 60 KM'),
-    (80.00, 'Entre 61 KM a 80 KM'),
-    (100.00, 'Entre 81 KM a 100 KM'),
-    (120.00, 'Entre 101 KM a 120 KM'),
-    (140.00, 'Entre 121 KM a 140 KM'),
-    (160.00, 'Entre 141 KM a 160 KM'),
-    (180.00, 'Entre 161 KM a 180 KM'),
-    (200.00, 'Más de 200 KM')
+    (Decimal('20.00'), 'Entre 1 KM a 20 KM'),
+    (Decimal('40.00'), 'Entre 21 KM a 40 KM'),
+    (Decimal('60.00'), 'Entre 41 KM a 60 KM'),
+    (Decimal('80.00'), 'Entre 61 KM a 80 KM'),
+    (Decimal('100.00'), 'Entre 81 KM a 100 KM'),
+    (Decimal('120.00'), 'Entre 101 KM a 120 KM'),
+    (Decimal('140.00'), 'Entre 121 KM a 140 KM'),
+    (Decimal('160.00'), 'Entre 141 KM a 160 KM'),
+    (Decimal('180.00'), 'Entre 161 KM a 180 KM'),
+    (Decimal('200.00'), 'Más de 200 KM')
     )
 TIEMPO_RECORRIDO = (
-    (1.00, 'Entre 30 minuto a 1 hora'),
-    (2.00, 'Entre 1 hora a 2 horas'),
-    (3.00, 'Entre 2 horas a 3 horas'),
-    (4.00, 'Entre 3 horas a 4 horas'),
-    (5.00, 'Entre 4 horas a 5 horas'),
-    (6.00, 'Entre 5 horas a 6 horas'),
-    (7.00, 'Entre 6 horas a 7 horas'),
-    (8.00, 'Entre 7 horas a 8 horas'),
-    (9.00, 'Entre 8 horas a 9 horas'),
-    (10.00, 'Más de 10 horas')
+    (Decimal('1.00'), 'Entre 30 minuto a 1 hora'),
+    (Decimal('2.00'), 'Entre 1 hora a 2 horas'),
+    (Decimal('3.00'), 'Entre 2 horas a 3 horas'),
+    (Decimal('4.00'), 'Entre 3 horas a 4 horas'),
+    (Decimal('5.00'), 'Entre 4 horas a 5 horas'),
+    (Decimal('6.00'), 'Entre 5 horas a 6 horas'),
+    (Decimal('7.00'), 'Entre 6 horas a 7 horas'),
+    (Decimal('8.00'), 'Entre 7 horas a 8 horas'),
+    (Decimal('9.00'), 'Entre 8 horas a 9 horas'),
+    (Decimal('10.00'), 'Más de 10 horas')
     )
 
 
@@ -108,8 +109,8 @@ class Presupuesto(models.Model):
     total_m3 = models.DecimalField(max_digits=8, decimal_places=3,
                                    blank=True, default=0.000)
     recorrido_km = models.DecimalField(choices=RECORRIDO_KM, max_digits=7, decimal_places=2,
-                                       blank=False, default=5.00)
-    tiempo_recorrido = models.DecimalField(choices=TIEMPO_RECORRIDO, max_digits=7, decimal_places=2, blank=False, default=1.00)
+                                       blank=False, default='5.00')
+    tiempo_recorrido = models.DecimalField(choices=TIEMPO_RECORRIDO, max_digits=7, decimal_places=2, blank=False, default='1.00')
     tiempo_servicios = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
     tiempo_carga = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
     tiempo_total = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
@@ -164,7 +165,7 @@ class Presupuesto_direccion(models.Model):
     valor_metrocubico_complejiadad = models.DecimalField(max_digits=9, decimal_places=2,
                                                          blank=True, default=0.00)
     distancia_vehiculo = models.IntegerField(choices=DISTANCIA_VEHICULO_INMUEBLE, default=0)
-    total_m2 = models.DecimalField(choices=METROSCUADRADO_INMUEBLE, default=0,
+    total_m2 = models.DecimalField(choices=METROSCUADRADO_INMUEBLE, default=Decimal('0.00'),
                                    max_digits=7, decimal_places=2)
 
     def __str__(self):

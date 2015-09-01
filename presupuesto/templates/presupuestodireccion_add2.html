@@ -58,7 +58,9 @@ body{padding-top: 0px!important;margin-top:0px!important;}
 button{position: absolute;bottom:30px;}
 @media (max-width:1200px) {
   .control-campos>.distancia_vehiculo,.control-campos>.total_m2,.control-campos>.pisos,.control-campos>.pisos_escalera,.control-campos>.pisos_ascensor,.control-campos>.pisos_ascensor_servicio{width: 49.59%!important;}
-  #s_rampa,#s_ascensor,#s_ascensor_servicio{width: 30%;margin-bottom:0px;margin-left: 10px;}
+  #s_rampa{width: 17%;margin-left: 10px;}
+  #s_ascensor{width: 30%;margin-bottom:0px;margin-left: 0px;}
+  #s_ascensor_servicio{width: 40%;padding-left: 70px;}
   #s_rampa:before {
     content: "Servicio del inmueble:";
     position: absolute;
@@ -68,11 +70,12 @@ button{position: absolute;bottom:30px;}
     cursor:auto!important;
   }
   .control-campos>.lista_tipoinmueble,.control-campos>.lista_ocupacion{width: 49.50%;text-align: left;}
-  .control-campos>.pisos_ascensor,.control-campos>.pisos_ascensor_servicio{width: 30%!important;}
-  .control-campos>.pisos_ascensor{margin-left:30%;}
+  .control-campos>.pisos_ascensor_servicio{width: 45%!important;margin-left: 10px;}
+  .control-campos>.pisos_ascensor{width: 35%!important;}
+  #id_pisos_ascensor_servicio{width: 80%!important;}
+  .control-campos>.pisos_ascensor{margin-left:17%;}
   #s_ascensor{margin-left: -13px!important;}
   #s_ascensor_servicio{margin-left: 1px!important;}
-  button{position: absolute;bottom:30px;}
 }
 @media (max-width:600px) {
   .control-campos>.distancia_vehiculo,.control-campos>.total_m2,.control-campos>.pisos,.control-campos>.pisos_escalera,.control-campos>.pisos_ascensor,.control-campos>.pisos_ascensor_servicio{width: 49.59%!important;}
@@ -86,13 +89,26 @@ button{position: absolute;bottom:30px;}
     cursor:auto!important;
   }
   .control-campos>.lista_tipoinmueble,.control-campos>.lista_ocupacion{width: 100%;text-align: left;}
-  .control-campos>.distancia_vehiculo,.control-campos>.total_m2,.control-campos>.pisos,.control-campos>.pisos_escalera{width: 100%!important;}
+  .control-campos>.distancia_vehiculo,.control-campos>.total_m2,.control-campos>.pisos,.control-campos>.pisos_escalera,.control-campos>.pisos_ascensor_servicio{width: 100%!important;}
   .control-campos>.pisos_ascensor,.control-campos>.pisos_ascensor_servicio{width: 100%!important;}
   .control-campos>.pisos_ascensor{margin-left:0%;}
   #s_ascensor{margin-left: 10px!important;}
-  #s_ascensor_servicio{margin-left: 10px!important;}
-  button{position: absolute;bottom:-450px;}
+  #s_ascensor_servicio{padding-left: 30px;}
+  #id_pisos_ascensor_servicio{width: 100%!important;}
+  .control-campos>.pisos_ascensor_servicio{margin-left: 0px;}
+  {% if form.tipo_direccion.value = "Destino" %}
+  button{position: absolute;bottom:-225px;}
+  {% else %}
+  button{position: absolute;bottom:-400px;}
+  {% endif %}
 }
+
+{% if form.tipo_direccion.value = "Destino" %}
+
+#s_lista_ocupacion,#s_total_m2{display: none;}
+
+{% endif %}
+
 </style>
 
 {% endblock style %}
@@ -129,14 +145,33 @@ button{position: absolute;bottom:30px;}
 
 {% block js_form %}
 
+<script type="text/javascript">
+
+setTimeout(function() {
+document.getElementById('id_direccion').focus();
+},500);
+//$('p').attr('class','campo')
+//$(document).ready(function() {
+  setTimeout(function() {
+    $(".alerta").fadeOut(1500);
+  },3000);
+//});
+</script>
 
 <script type="text/javascript">
 function showContent() {
   element = document.getElementById("s_pisos_ascensor");
+  pisos = document.getElementById("id_pisos_escalera").value;
   check = document.getElementById("id_ascensor");
+
   if (check.checked) {
     $('#s_pisos_ascensor').css('visibility','visible');
-    document.getElementById("id_pisos_ascensor").value = "1";
+    if (pisos == "0"){
+      document.getElementById("id_pisos_ascensor").value = "1";
+    }else{
+      document.getElementById("id_pisos_ascensor").value = pisos;
+    }
+
   }
   else {
     element.style.display='non';
@@ -146,10 +181,15 @@ function showContent() {
 }
 function showContent2() {
   element2 = document.getElementById("s_pisos_ascensor_servicio");
+  pisos = document.getElementById("id_pisos_escalera").value;
   check2 = document.getElementById("id_ascensor_servicio");
   if (check2.checked) {
     $('#s_pisos_ascensor_servicio').css('visibility','visible');
-    document.getElementById("id_pisos_ascensor_servicio").value = "1";
+    if (pisos == "0"){
+      document.getElementById("id_pisos_ascensor_servicio").value = "1";
+    }else{
+      document.getElementById("id_pisos_ascensor_servicio").value = pisos;
+    }
   }
   else {
     $('#s_pisos_ascensor_servicio').css('visibility','hidden');
@@ -158,7 +198,7 @@ function showContent2() {
 }
 </script>
 <script type="text/javascript">
-document.getElementById('id_direccion').focus()
+//document.getElementById('id_direccion').focus();
 document.getElementById('s_rampa').setAttribute('class','checkbox-inline')
 document.getElementById('id_ascensor').setAttribute('onchange','javascript:showContent()')
 document.getElementById('id_ascensor_servicio').setAttribute('onchange','javascript:showContent2()')
@@ -169,6 +209,7 @@ check5 = document.getElementById("id_ascensor");
 check6 = document.getElementById("id_ascensor_servicio");
 if (check5.checked){
   $('#s_pisos_ascensor').css('visibility','visible');
+  alert('hi');
 }
 else{
   $('#s_pisos_ascensor').css('visibility','hidden');
@@ -180,11 +221,7 @@ if (check6.checked){
 else{
   $('#s_pisos_ascensor_servicio').css('visibility','hidden');
 }
-$(document).ready(function() {
-  setTimeout(function() {
-    $(".alerta").fadeOut(1500);
-  },3000);
-});
+
 </script>
 <script>
 $(document).ready(function(){
@@ -220,7 +257,10 @@ $('#myform').submit(function(){
             var bodyp = parent.document.getElementById('id_body');
             var closep = parent.document.getElementById("btn-cerrardir");
           if (data.estatus=="ok"){
+            $(closep).click();
+            setTimeout(function() {
             parent.location.reload();
+            },400);
             //$(closep).click();
             //refresh();
             //parent.location.reload(); //para refrescar la pagina
