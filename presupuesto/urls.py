@@ -7,7 +7,7 @@ from presupuesto.views import PresupuestoView, PresupuestoList, PresupuestoDetai
     PresupuestoDelete, PresupuestoDetalleDelete, PresupuestoServicioDelete, \
     PresupuestoServicioList, PresupuestoDetalleServicioDetail, \
     PresupuestoDetalleDetail2, PresupuestoDireccionOrigenDetail, \
-    PresupuestoDireccionDestinoDetail
+    PresupuestoDireccionDestinoDetail, DatosPrecargadoUpdate
 from presupuesto import views
 from presupuesto.forms import PresupuestoDetalleForm1, PresupuestoDetalleForm2, \
     PresupuestoDetalleForm3
@@ -59,4 +59,6 @@ urlpatterns = patterns('',
                            name='PresupuestoServicioDelete'),
                        url(r'^servicio/nuevo2', PresupuestoServicioViewFomset.as_view(),
                            name='PresupuestoServicioViewFomset'),
+                       url(r'^datos_precargados/(?P<pk>\d+)/', DatosPrecargadoUpdate.as_view(),
+                           name='DatosPrecargadoUpdate'),
                        )

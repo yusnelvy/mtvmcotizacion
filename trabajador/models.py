@@ -15,6 +15,10 @@ class Cargo_trabajador(models.Model):
     def __str__(self):
         return self.cargo
 
+    def _get_tarifahora(self):
+        return (self.tarifa_dia/8)
+    tarifahora = property(_get_tarifahora)
+
     class Meta:
         verbose_name = "Cargo de trabajador"
         verbose_name_plural = "Cargos de trabajadores"

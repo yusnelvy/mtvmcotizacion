@@ -70,6 +70,13 @@ $(document).ready(function(){
             $(lista_ocupacion[i]).attr("checked","checked");
           }
         }
+        if (data[0].trasladable == true){
+          document.getElementById("id_trasladable").checked = true;
+        }else{
+          document.getElementById("id_trasladable").checked = false;
+        }
+
+
       });
 });
 
@@ -150,7 +157,7 @@ $('#id_largo').on('change', function(){
 });
 
 $('#id_alto').on('change', function(){
-  densidad = calcular_densidad($("#id_peso").val(),$("#id_ancho").val(),$("#id_largo").val(),$(this).val());
+  densidad = calcular_densidad($("#id_peso").val(), $("#id_ancho").val(), $("#id_largo").val(), $(this).val());
   volumen = calcular_volumen($("#id_ancho").val(),$("#id_largo").val(),$(this).val());
   $("#id_valor_densidad").val(densidad);
   $("#id_volumen_mueble").val(volumen);
@@ -228,7 +235,7 @@ function calcular_pesocontenido(vol_contenido,densidadcontenido){
 
 }
 
-function calcular_cantidadcontenedor(vol_contenido,cap_volcontenedor,peso_contenido,cap_pesocontenedor){
+function calcular_cantidadcontenedor(vol_contenido, cap_volcontenedor, peso_contenido, cap_pesocontenedor){
   var resultado = 0;
   var cant_volumen = 0;
   var cant_peso = 0;

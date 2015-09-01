@@ -21,6 +21,17 @@
 </div>
 <script type="text/javascript">
 document.getElementById('id_servicio').focus()
+
+$(document).ready(function() {
+    $("#id_calculo").on("change", function(){
+        id_calculo = $("#id_calculo").val();
+        if (id_calculo==3){
+            $("#id_cantidad").removeAttr('readonly');
+        }else{
+            $("#id_cantidad").attr("readonly","true");
+        }
+    });
+});
 </script>
 
 {% endblock cuerpo_form %}
@@ -37,7 +48,7 @@ document.getElementById('id_servicio').focus()
         <tr class="">
             <th width="">Material</th>
             <th>Cantidad</th>
-            <th>Cálculo</th>
+            <th>Tipo de cálculo</th>
             <th width="3">Editar</th>
         </tr>
 
@@ -46,7 +57,26 @@ document.getElementById('id_servicio').focus()
         <tr id="tr{{det.id}}">
             <td width="">{{ det.material }}</td>
             <td>{{ det.cantidad }}</td>
-            <td>{{ det.calculo }}</td>
+            <td>
+                {% if det.calculo == "1" %}
+
+                    Laminados inelásticos
+
+                {% elif det.calculo == "2" %}
+
+                    Laminados elásticos
+
+                {% elif det.calculo == "3" %}
+
+                    Complementos
+
+                {% elif det.calculo == "4" %}
+
+                    Contenedor
+
+                {% endif %}
+
+            </td>
             <td width="3">
                 <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_serviciomaterial' det.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
             </td>

@@ -81,12 +81,15 @@ class Presupuesto(models.Model):
     descripcion_vehiculo = models.TextField(blank=True, default=0)
     descripcion_persona = models.TextField(blank=True, default=0)
     cantidad_vehiculo = models.IntegerField(blank=True, default=0)
-    cantidad_persona = models.IntegerField(blank=True, default=0)
+    cantidad_ayudante = models.IntegerField(blank=True, default=0)
+    cantidad_ayudanteadicional = models.IntegerField(blank=True, default=0)
     cantidad_ambientes = models.IntegerField(blank=True, default=0)
     cantidad_muebles = models.IntegerField(blank=True, default=0)
     cantidad_contenedores = models.IntegerField(blank=True, default=0)
-    total_capacidad_vehiculo = models.DecimalField(max_digits=8, decimal_places=3,
-                                                   blank=True, default=0.000)
+    total_capacidad_vehiculokg = models.DecimalField(max_digits=8, decimal_places=3,
+                                                     blank=True, default=0.000)
+    total_capacidad_vehiculovol = models.DecimalField(max_digits=8, decimal_places=3,
+                                                      blank=True, default=0.000)
     total_peso_contenedores = models.DecimalField(max_digits=9, decimal_places=3,
                                                   blank=True, default=0.000)
     total_peso_muebles = models.DecimalField(max_digits=9, decimal_places=3,
@@ -112,28 +115,86 @@ class Presupuesto(models.Model):
     tiempo_recorrido = models.DecimalField(choices=TIEMPO_RECORRIDO, max_digits=7, decimal_places=2, blank=False, default=1.00)
     tiempo_servicios = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
     tiempo_carga = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
+    duracion_teorica = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
+    duracion_optima = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
     tiempo_total = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
     monto_vehiculo_hora = models.DecimalField(max_digits=9, decimal_places=2,
                                               blank=True, default=0.00)
     monto_vehiculo_recorrido = models.DecimalField(max_digits=9, decimal_places=2,
                                                    blank=True, default=0.00)
-    monto_persona = models.DecimalField(max_digits=9, decimal_places=2,
-                                        blank=True, default=0.00)
+    monto_personateorica = models.DecimalField(max_digits=9, decimal_places=2,
+                                               blank=True, default=0.00)
+    monto_personaoptima = models.DecimalField(max_digits=9, decimal_places=2,
+                                              blank=True, default=0.00)
     monto_materiales = models.DecimalField(max_digits=9, decimal_places=2,
                                            blank=True, default=0.00)
     monto_servicios = models.DecimalField(max_digits=9, decimal_places=2,
                                           blank=True, default=0.00)
+    monto_m3_inmueble = models.DecimalField(max_digits=9, decimal_places=2,
+                                            blank=True, default=0.00)
+    monto_amb_inmueble = models.DecimalField(max_digits=9, decimal_places=2,
+                                             blank=True, default=0.00)
+    monto_mudanza_hrsdirectas = models.DecimalField(max_digits=9, decimal_places=2,
+                                                    blank=True, default=0.00)
+    monto_mundanza_hrsoptimas = models.DecimalField(max_digits=9, decimal_places=2,
+                                                    blank=True, default=0.00)
     monto_sin_impuesto = models.DecimalField(max_digits=9, decimal_places=2,
                                              blank=True, default=0.00)
     monto_impuesto = models.DecimalField(max_digits=9, decimal_places=2,
                                          blank=True, default=0.00)
     monto_con_impuesto = models.DecimalField(max_digits=9, decimal_places=2,
                                              blank=True, default=0.00)
+    monto_descuesto_regargo = models.DecimalField(max_digits=9, decimal_places=2,
+                                                  blank=True, default=0.00)
     estado = models.CharField(max_length=20, default='Iniciado')
     activo = models.CharField(max_length=20, default='Activado')
 
     def __str__(self):
         return self.dni
+
+    def _get_cantidadobjmudanza(self):
+        return self.cantidad_muebles+self.cantidad_contenedores
+    cantidadobjmudanza = property(_get_cantidadobjmudanza)
+
+    def _get_cantidadpersonaterica(self):
+        return self.cantidad_vehiculo+self.cantidad_ayudante
+    cantidadpersonaterica = property(_get_cantidadpersonaterica)
+
+    def _get_cantidadpersonaoptima(self):
+        return self.cantidad_vehiculo+self.cantidad_ayudante + self.cantidad_ayudanteadicional
+    cantidadpersonaoptima = property(_get_cantidadpersonaoptima)
+
+    def _get_cantidadtotalayudante(self):
+        return self.cantidad_ayudante + self.cantidad_ayudanteadicional
+    cantidadtotalayudante = property(_get_cantidadtotalayudante)
+
+    def _get_porcentajeocupacionkg(self):
+        return round((self.total_peso_mudanza / self.total_capacidad_vehiculokg)*100, 2)
+    porcentajeocupacionkg = property(_get_porcentajeocupacionkg)
+
+    def _get_porcentajeocupacionvol(self):
+        return round((self.total_m3 / self.total_capacidad_vehiculovol)*100, 2)
+    porcentajeocupacionvol = property(_get_porcentajeocupacionvol)
+
+    def _get_maxrecursoteorico(self):
+        return max(self.monto_m3_inmueble, self.monto_amb_inmueble, self.monto_personateorica)
+    maxrecursoteorico = property(_get_maxrecursoteorico)
+
+    def _get_maxrecursooptimo(self):
+        return max(self.monto_m3_inmueble, self.monto_amb_inmueble, self.monto_personaoptima)
+    maxrecursooptimo = property(_get_maxrecursooptimo)
+
+    def _get_vehiculomontomax(self):
+        return max(self.monto_vehiculo_hora, self.monto_vehiculo_recorrido)
+    vehiculomontomax = property(_get_vehiculomontomax)
+
+    def _get_mudanzamontorevisadotoerico(self):
+        return self.monto_mudanza_hrsdirectas + self.monto_descuesto_regargo
+    mudanzamontorevisadotoerico = property(_get_mudanzamontorevisadotoerico)
+
+    def _get_mudanzamontorevisadooptimo(self):
+        return self.monto_mundanza_hrsoptimas + self.monto_descuesto_regargo
+    mudanzamontorevisadooptimo = property(_get_mudanzamontorevisadooptimo)
 
     class Meta:
         verbose_name = "Presupuesto"
@@ -198,6 +259,7 @@ class Presupuesto_Detalle(models.Model):
     peso_contenido = models.DecimalField(max_digits=9, decimal_places=3)
     peso_contenedor = models.DecimalField(max_digits=9, decimal_places=3)
     descripcion_contenedor = models.CharField(max_length=100)
+    trasladable = models.BooleanField(default=None)
 
     def __str__(self):
         return u' %s - %s - %s' % (self.presupuesto, self.ambiente, self.mueble)
@@ -257,6 +319,10 @@ class DatosPrecargado(models.Model):
     montomaterial = models.DecimalField(max_digits=9, decimal_places=2)
     volmaterial = models.DecimalField(max_digits=8, decimal_places=3)
     pesomaterial = models.DecimalField(max_digits=9, decimal_places=3)
+    rendimiento_peso = models.DecimalField(max_digits=9, decimal_places=3)
+    rendimiento_volumen = models.DecimalField(max_digits=8, decimal_places=3)
+    rendimiento_unidad = models.PositiveIntegerField()
+    duracion_optimamudanza = models.DecimalField(max_digits=7, decimal_places=2)
 
     def __str__(self):
         return u' %s' % (self.pk)

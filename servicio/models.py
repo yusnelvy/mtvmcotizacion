@@ -1,5 +1,12 @@
 from django.db import models
 
+FORMULA_CHOICES = (
+    ('1', 'Laminados inelásticos'),
+    ('2', 'Laminados elásticos'),
+    ('3', 'Complementos'),
+    ('4', 'Contenedor'),
+)
+
 
 # Create your models here.
 class Servicio(models.Model):
@@ -58,6 +65,10 @@ class Material(models.Model):
         return (self.ancho*self.alto*self.largo)/1000000
     volumen = property(_get_volumen)
 
+    def _get_capacidadvolm3(self):
+        return round((self.capacidad_volumen*((self.ancho*self.alto*self.largo)/1000000)), 3)
+    capacidadvolm3 = property(_get_capacidadvolm3)
+
     class Meta:
         verbose_name = "Material"
         verbose_name_plural = "Materiales"
@@ -71,8 +82,8 @@ class Servicio_Material(models.Model):
 
     servicio = models.ForeignKey(Servicio, on_delete=models.PROTECT)
     material = models.ForeignKey(Material, on_delete=models.PROTECT)
-    cantidad = models.DecimalField(max_digits=7, decimal_places=2)
-    Calculo = models.TextField(max_length=200)
+    calculo = models.CharField(choices=FORMULA_CHOICES, max_length=200)
+    cantidad = models.DecimalField(max_digits=7, decimal_places=2, default='1.00')
 
     def __str__(self):
         return u' %s - %s' % (self.servicio, self.material)

@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, TextInput
 from servicio.models import Servicio, Material, \
     Servicio_Material, Complejidad, \
     Complejidad_Servicio, Unidad
@@ -20,6 +20,9 @@ class ServicioMaterialForm(ModelForm):
     class Meta:
         model = Servicio_Material
         fields = '__all__'
+        widgets = {
+            'cantidad': TextInput(attrs={'readonly': 'readonly'})
+        }
 
 
 class ComplejidadForm(ModelForm):

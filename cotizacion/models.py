@@ -132,6 +132,7 @@ class Vehiculo(models.Model):
     capacidad_volumen = models.DecimalField(max_digits=8, decimal_places=3)
     capacidad_peso = models.DecimalField(max_digits=9, decimal_places=3)
     cargo = models.ForeignKey(Cargo_trabajador)
+    cantidad_ayudante = models.PositiveIntegerField(default=0)
     cantidad_total = models.PositiveIntegerField(default=0)
     cantidad_disponible = models.PositiveIntegerField(default=0)
 
@@ -245,10 +246,6 @@ class Cotizacion_Ambiente(models.Model):
     def __str__(self):
         return u' %s - %s' % (self.cotizacion, self.ambiente)
 
-    def _get_cantidad_ambiente(self):
-        return self.cotizacion.cantidad_ambientes+1
-    cantidad_ambiente = property(_get_cantidad_ambiente)
-
     class Meta:
         verbose_name = "Ambiente de la cotizacion"
         verbose_name_plural = "Ambientes de la cotizacion"
@@ -354,7 +351,7 @@ class Cotizacion_Material(models.Model):
 
     def get_precio_total(self):
         precio = Material.objects.values('precio').filter(material=self.material)
-        return precio * self.cantidad
+        return round((precio * self.cantidad), 2)
 
     class Meta:
         verbose_name = "Material del mueble"

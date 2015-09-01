@@ -126,11 +126,11 @@ class Tamano_Mueble(models.Model):
         return u' %s - %s - %s' % (self.mueble, self.tamano, self.densidad)
 
     def _get_densidad_valor(self):
-        return self.peso/((self.ancho*self.alto*self.largo)/1000000)
+        return round(self.peso/((self.ancho*self.alto*self.largo)/1000000), 2)
     densidad_valor = property(_get_densidad_valor)
 
     def _get_volumenmueble(self):
-        return (self.ancho*self.alto*self.largo)/1000000
+        return round((self.ancho*self.alto*self.largo)/1000000, 3)
     volumenmueble = property(_get_volumenmueble)
 
     class Meta:
