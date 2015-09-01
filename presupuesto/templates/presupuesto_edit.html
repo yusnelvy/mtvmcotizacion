@@ -1,34 +1,146 @@
-{% extends "base_edit.html" %}
+{% extends "base_modal_form.html" %}
 
-{% block titulo %}
-
-<title>Cotizacion</title>
-
-{% endblock titulo %}
-
-{% block titulo_form %}
-
-  <h2>Editar Presupuesto</h2>
-
-{% endblock titulo_form %}
-
-{% block cuerpo_form %}
+{% block style %}
 
 <style>
-    .filtra-campos>p>#id_descripcion_vehiculo,.filtra-campos>p>#id_tiempo_recorrido,.filtra-campos>p>#id_tiempo_carga,.filtra-campos>p>#id_tiempo_total,.filtra-campos>p>label[for=id_descripcion_vehiculo],.filtra-campos>p>label[for=id_descripcion_persona],.filtra-campos>p>#id_descripcion_persona,.filtra-campos>p>input[type=number],.filtra-campos>p>label[for=id_cantidad_vehiculo],.filtra-campos>p>label[for=id_cantidad_persona],.filtra-campos>p>label[for=id_cantidad_ambientes],.filtra-campos>p>label[for=id_cantidad_muebles],.filtra-campos>p>label[for=id_cantidad_contenedores],.filtra-campos>p>label[for=id_total_peso_contenedores],.filtra-campos>p>label[for=id_total_peso_muebles],.filtra-campos>p>label[for=id_total_peso_contenidos],.filtra-campos>p>label[for=id_total_volumen_muebles],.filtra-campos>p>label[for=id_total_volumen_contenedores],.filtra-campos>p>label[for=id_total_volumen_contenidos],.filtra-campos>p>label[for=id_total_m3],.filtra-campos>p>label[for=id_recorrido_km],.filtra-campos>p>label[for=id_tiempo_recorrido],.filtra-campos>p>label[for=id_tiempo_carga],.filtra-campos>p>label[for=id_tiempo_total],.filtra-campos>p>label[for=id_monto_vehiculo_hora],.filtra-campos>p>label[for=id_monto_vehiculo_recorrido],.filtra-campos>p>label[for=id_monto_persona],.filtra-campos>p>label[for=id_monto_sin_impuesto],.filtra-campos>p>label[for=id_monto_impuesto],.filtra-campos>p>label[for=id_monto_con_impuesto]{display: none;}
+.form-group>p>label{
+  display:inline-table;
+  font-family: inherit;
+  font: inherit;
+}
+#id_dni,#id_nombre_cliente,#id_telefono,#id_email,#id_fecha_estimadamudanza,#id_recorrido_km,#id_tiempo_recorrido{
+  box-sizing: border-box;
+  border-radius: 6px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
+  font-size: 18px;
+  height: 46px;
+  line-height: 1.33333;
+  padding: 10px 16px;
+  display:block;
+  background-color: #FFF;
+  background-image: none;
+  border: 1px solid #CCC;
+  color: #555;
+  font-family: inherit;
+  font: inherit;
+  margin: 0px;
+  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  width: 100%;
+}
+#id_dni:focus,#id_nombre_cliente:focus,#id_telefono:focus,#id_email:focus,#id_fecha_estimadamudanza:focus,#id_recorrido_km:focus,#id_tiempo_recorrido:focus{
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+    .filtra-campos>p>#id_descripcion_vehiculo,.filtra-campos>p>#id_tiempo_carga,.filtra-campos>p>#id_tiempo_total,.filtra-campos>p>label[for=id_descripcion_vehiculo],.filtra-campos>p>label[for=id_descripcion_persona],.filtra-campos>p>#id_descripcion_persona,.filtra-campos>p>input[type=number],.filtra-campos>p>label[for=id_cantidad_vehiculo],.filtra-campos>p>label[for=id_cantidad_persona],.filtra-campos>p>label[for=id_cantidad_ambientes],.filtra-campos>p>label[for=id_cantidad_muebles],.filtra-campos>p>label[for=id_cantidad_contenedores],.filtra-campos>p>label[for=id_total_peso_contenedores],.filtra-campos>p>label[for=id_total_peso_muebles],.filtra-campos>p>label[for=id_total_peso_contenidos],.filtra-campos>p>label[for=id_total_volumen_muebles],.filtra-campos>p>label[for=id_total_volumen_contenedores],.filtra-campos>p>label[for=id_total_volumen_contenidos],.filtra-campos>p>label[for=id_total_m3],.filtra-campos>p>label[for=id_tiempo_carga],.filtra-campos>p>label[for=id_tiempo_total],.filtra-campos>p>label[for=id_monto_vehiculo_hora],.filtra-campos>p>label[for=id_monto_vehiculo_recorrido],.filtra-campos>p>label[for=id_monto_persona],.filtra-campos>p>label[for=id_monto_sin_impuesto],.filtra-campos>p>label[for=id_monto_impuesto],.filtra-campos>p>label[for=id_monto_con_impuesto]{display: none;}
+    .campo{width: 49.50%;display: inline-table;}
+    #descripcion_vehiculo,#descripcion_persona,#cantidad_vehiculo,#cantidad_persona,#cantidad_ambientes,#cantidad_muebles,#cantidad_contenedores,#total_peso_contenedores,#total_peso_muebles,#total_peso_contenidos,#total_volumen_muebles,#total_volumen_contenedores,#total_volumen_contenidos,#total_m3,#tiempo_carga,#tiempo_total,#monto_vehiculo_hora,#monto_vehiculo_recorrido,#monto_persona,#monto_sin_impuesto,#monto_impuesto,#monto_con_impuesto,#cotizador,#total_capacidad_vehiculo,#total_peso_materiales,#total_peso_mudanza,#total_volumen_materiales,#tiempo_servicios,#monto_materiales,#monto_servicios,#estado,#activo{display: none;}
+    #recorrido_km,#tiempo_recorrido,#fecha_estimadamudanza{width: 33%;display: inline-table;}
+    @media (max-width:991px) {
+        .campo{width: 49%;display: inline-table;}
+        #recorrido_km,#tiempo_recorrido,#fecha_estimadamudanza{width: 31%;display: inline-table;}
+    }
+    @media (max-width:630px) {
+        .campo{width: 48%;display: inline-table;}
+        #recorrido_km,#tiempo_recorrido,#fecha_estimadamudanza{width:100%;display: inline-table;}
+    }
 </style>
+
+{% endblock style %}
+
+{% block formulario %}
+
+<form action="" method="post" id="myform">
+
+  {% csrf_token %}
+
 <div class="form-group filtra-campos">
 
-  {{ form.as_p }}
+  {% for campo in form %}
+
+    <p id="{{campo.name}}">
+        <label for="{{campo.id_for_label}}">{{ campo.label }}</label>
+        {{ campo }}
+    </p>
+
+{% endfor %}
 
 </div>
+<button type="submit" class="btn btn-default" style="float:righ;">Guardar</button>
+</form>
 
-{% endblock cuerpo_form %}
+{% endblock formulario %}
 
-{% block ayuda %}
+{% block js_form %}
 
-<div class="">
-  <p>La <strong>Presupuesto</strong>  es la acción y efecto de cotizar, poner precio a algo, estimar a alguien o algo en relación con un fin. el documento informa y establece el valor del servicios.</p>
-</div>
+<script type="text/javascript">
+setTimeout(function() {
+document.getElementById('id_dni').focus();
+},500);
+$('p').attr('class','campo')
+document.getElementById('id_fecha_estimadamudanza').setAttribute('type','date')
+</script>
+<script type="text/javascript">
 
-{% endblock ayuda %}
+$('#myform').submit(function(){
+    var id = $(parent.document.getElementsByClassName("id_opcionDatosPersonales")).attr('id');
+    var action = "../../editar/"+id+"/";
+    var that = $(this)
+    var closep = parent.document.getElementById("btn-cerrarDatosPersonales");
+    $.ajax({
+        url: action,
+        type: 'POST',
+        data: that.serialize()
+        ,success: function(data){
+          if (data.estatus=="ok"){
+            var closep = parent.document.getElementById("btn-cerrarDatosPersonales");
+            //parent.location.reload();
+            $(closep).click();
+            asyncChange();
+            //setTimeout(function() {
+            //parent.location.reload();
+            //},100);
+            //refresh();
+            //parent.location.reload(); //para refrescar la pagina
+            //$(modalp).hide();
+            //$(divp).remove();
+            //$(bodyp).removeClass('modal-open');
+            //$(bodyp).css('padding-right','');
+          }
+
+        }
+
+    });
+//parent.location.reload();
+ return false;
+});
+
+    function asyncChange()
+{
+    var request;
+    var id3 = $(parent.document.getElementsByClassName("id_opcionDatosPersonales")).attr('id');
+    var url2 = "/presupuesto/ficha/datospersonales/"+id3+"/";
+
+    if (window.XMLHttpRequest) {
+        request = new window.XMLHttpRequest();
+    } else {
+        request = new window.ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    request.open("GET", url2, true);
+    request.send();
+
+    request.onreadystatechange = function()
+    {
+        if (request.readyState == 4 && request.status == 200)
+        {
+            parent.document.getElementById("myLabel").innerHTML = request.responseText;
+        }
+    }
+}
+
+</script>
+
+{% endblock js_form %}
+

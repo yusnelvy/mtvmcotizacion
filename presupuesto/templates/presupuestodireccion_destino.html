@@ -1,22 +1,7 @@
-<h4>Dirección de destino
-
-    {% if direccion_destino %}
-
-
-    {% else %}
-
-    <a data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Destino&pre={{presupuesto.id}}" title="Agregar dirección de destino" data-toggletooltip="tooltip" data-placement="left" style="float:right;cursor:pointer;" class="botonmodal glyphicon glyphicon-plus"></a>
-
-    {% endif %}
-
-</h4>
-
-
 {% for direc_destino in direccion_destino %}
 
-<p style="padding:0px 5px;">{{ direc_destino.direccion }}</p>
-
-<table class="table table-condensed table-hover">
+<p style="padding:5px;">{{ direc_destino.direccion }}</p>
+<table class="table table-condensed table-hover table-bordered" >
     <tr>
         <td>
             <span style="color:#777;">Tipo de direccion del inmueble: </span>
@@ -25,21 +10,17 @@
     </tr>
     <tr>
         <td>
-            <span style="color:#777;">Metros cuadrados del inmueble: </span>
-        </td>
-        <td>{{ direc_destino.total_m2 }} m2</td>
-    </tr>
-    <tr>
-        <td>
-            <span style="color:#777;">Ocupación del inmueble: </span>
-        </td>
-        <td>{{ direc_destino.ocupacidad_inmueble }}</td>
-    </tr>
-    <tr>
-        <td>
             <span style="color:#777;">Distancia del vehículo al inmueble: </span>
         </td>
-        <td>{{ direc_destino.distancia_vehiculo }} m.</td>
+        <td>
+            {% if direc_destino.distancia_vehiculo = 70 %}
+
+            Más de
+
+            {% endif %}
+
+            {{ direc_destino.distancia_vehiculo }} m.
+        </td>
     </tr>
     <tr>
         <td>
@@ -60,7 +41,15 @@
         </td>
         <td>{{ direc_destino.pisos }} {% if direc_destino.pisos > 1 %}
 
-            Pisos
+            {% if direc_destino.pisos = 10 %}
+
+            o más pisos
+
+            {% else %}
+
+            pisos
+
+            {% endif %}
 
             {% else %}
 
@@ -93,7 +82,15 @@
         </td>
         <td>{{ direc_destino.pisos_escalera }} {% if direc_destino.pisos_escalera > 1 %}
 
+            {% if direc_destino.pisos_escalera = 10 %}
+
+            o más pisos
+
+            {% else %}
+
             pisos
+
+            {% endif %}
 
             {% else %}
 
@@ -127,10 +124,23 @@
             <span style="color:#777;">Cantidad de pisos a recorrer por ascensor: </span>
         </td>
         <td>{{ direc_destino.pisos_ascensor }} {% if direc_destino.pisos_ascensor > 1 %}
-            Pisos
+
+            {% if direc_destino.pisos_ascensor = 10 %}
+
+            o más pisos
+
             {% else %}
-            Piso
+
+            Pisos
+
             {% endif %}
+
+            {% else %}
+
+            Piso
+
+            {% endif %}
+
         </td>
     </tr>
 
@@ -152,24 +162,30 @@
             <span style="color:#777;">Cantidad de pisos a recorrer por ascensor de servicio: </span>
         </td>
         <td>{{ direc_destino.pisos_ascensor_servicio }} {% if direc_destino.pisos_ascensor_servicio > 1 %}
-            Pisos
+
+            {% if direc_destino.pisos_ascensor_servicio = 10 %}
+
+            o más pisos
+
             {% else %}
-            Piso
+
+            Pisos
+
             {% endif %}
+
+            {% else %}
+
+            Piso
+
+            {% endif %}
+
         </td>
     </tr>
 
     {% endif %}
 
-    <tr class="hidden-print">
-        <td></td>
-        <td>
-            <small style="float:right;">
-                <a style="padding:0px 0px 8px 16px;" title="Editar dirección de destino" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_destino.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-                <a style="padding:0px 0px 8px 8px;" title="Eliminar dirección de destino" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_destino.id %}?next={{request.get_full_path}}"  class="glyphicon glyphicon-remove"></a>
-            </small>
-        </td>
-    </tr>
 </table>
 
 {% endfor %}
+
+</span>

@@ -1,16 +1,16 @@
-Servicio:
 {% if servicio %}
 
 {% for det_servivio in servicio %}
 
+{% if det_servivio.detalle_presupuesto = mueble.id %}
+<span class="{% if servicio %}servicioStyle{% endif %}" style="margin-left:5px;">
+
 {{ det_servivio.servicio }}
 
-{% if forloop.last %}
-
-{% else %} -
+<a title="Eliminar {{ det_servivio.servicio }}" style="font-size:10px;color:#777;" href="{% url 'upresupuestos:PresupuestoServicioDelete' 1 %}?next={{request.get_full_path}}" class="glyphicon glyphicon-remove" data-toggletooltip="tooltip" data-placement="left"></a>
+</span>
 
 {% endif %}
-
 
 {% endfor %}
 

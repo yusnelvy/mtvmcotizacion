@@ -1,27 +1,25 @@
-<h4>Dirección de origen
-
-    {% if direccion_origen %}
-
-    {% else %}
-
-    <a data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Origen&pre={{presupuesto.id}}" title="Agregar dirección de origen" data-toggletooltip="tooltip" data-placement="left" style="float:right;cursor:pointer;" class="botonmodal glyphicon glyphicon-plus"></a>
-
-    {% endif %}
-
-</h4>
-
-
 {% for direc_origen in direccion_origen %}
 
-<p style="padding:0px 5px;">{{ direc_origen.direccion }}</p>
-<table class="table table-condensed table-hover">
+<p style="padding:5px;">{{ direc_origen.direccion }}</p>
+
+<table class="table table-condensed table-hover table-bordered" >
     <tr>
         <td><span style="color:#777;">Tipo de direccion del inmueble: </span></td>
         <td>{{ direc_origen.tipo_inmueble }}</td>
     </tr>
     <tr>
         <td><span style="color:#777;">Metros cuadrados del inmueble: </span></td>
-        <td>{{ direc_origen.total_m2 }} m2</td>
+        <td>
+
+            {% if direc_origen.total_m2 = 240 %}
+
+            Más de
+
+            {% endif %}
+
+            {{ direc_origen.total_m2|floatformat:"0" }} m2
+
+        </td>
     </tr>
     <tr>
         <td><span style="color:#777;">Ocupación del inmueble: </span> </td>
@@ -29,7 +27,17 @@
     </tr>
     <tr>
         <td><span style="color:#777;">Distancia del vehículo al inmueble: </span></td>
-        <td>{{ direc_origen.distancia_vehiculo }} m.</td>
+        <td>
+
+            {% if direc_origen.distancia_vehiculo = 70 %}
+
+            Más de
+
+            {% endif %}
+
+            {{ direc_origen.distancia_vehiculo }} m.
+
+        </td>
     </tr>
     <tr>
         <td>
@@ -50,7 +58,15 @@
         </td>
         <td>{{ direc_origen.pisos }} {% if direc_origen.pisos > 1 %}
 
+            {% if direc_origen.pisos = 10 %}
+
+            o más pisos
+
+            {% else %}
+
             pisos
+
+            {% endif %}
 
             {% else %}
 
@@ -83,7 +99,15 @@
         </td>
         <td>{{ direc_origen.pisos_escalera }} {% if direc_origen.pisos_escalera > 1 %}
 
+            {% if direc_origen.pisos_escalera = 10 %}
+
+            o más pisos
+
+            {% else %}
+
             pisos
+
+            {% endif %}
 
             {% else %}
 
@@ -118,7 +142,15 @@
         </td>
         <td>{{ direc_origen.pisos_ascensor }} {% if direc_origen.pisos_ascensor > 1 %}
 
+            {% if direc_origen.pisos_ascensor = 10 %}
+
+            o más pisos
+
+            {% else %}
+
             pisos
+
+            {% endif %}
 
             {% else %}
 
@@ -147,7 +179,15 @@
         </td>
         <td>{{ direc_origen.pisos_ascensor_servicio }} {% if direc_origen.pisos_ascensor_servicio > 1 %}
 
+            {% if direc_origen.pisos_ascensor_servicio = 10 %}
+
+            o más pisos
+
+            {% else %}
+
             pisos
+
+            {% endif %}
 
             {% else %}
 
@@ -159,16 +199,8 @@
 
     {% endif %}
 
-    <tr class="hidden-print">
-        <td></td>
-        <td>
-            <small style="float:right;">
-                <a style="padding:0px 0px 8px 16px;" title="Editar dirección de origen" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_origen.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-                <a style="padding:0px 0px 8px 8px;" title="Eliminar dirección de origen" data-toggletooltip="tooltip" data-placement="left" href="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_origen.id %}?next={{request.get_full_path}}"  class="glyphicon glyphicon-remove"></a>
-            </small>
-        </td>
-    </tr>
-
 </table>
 
 {% endfor %}
+
+</span>

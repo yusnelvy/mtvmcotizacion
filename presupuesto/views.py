@@ -88,6 +88,19 @@ class PresupuestoDireccionOrigenDetail(DetailView):
         return context
 
 
+class PresupuestoDatosPersonales(DetailView):
+
+    model = Presupuesto
+    context_object_name = "presupuesto"
+    template_name = 'presupuesto_det.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(PresupuestoDatosPersonales, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        return context
+
+
 class PresupuestoDireccionDestinoDetail(DetailView):
 
     model = Presupuesto
@@ -197,7 +210,7 @@ class PresupuestoView(View):
             id_reg = form.save()
 
             # <process form cleaned data>
-            return HttpResponseRedirect(reverse('upresupuestos:PresupuestoDetail', args=id_reg.id))
+            return HttpResponseRedirect(reverse('upresupuestos:PresupuestoDetail', args=(id_reg.id,)))
 
         return render(request, self.template_name, {'form': form})
 
@@ -610,11 +623,13 @@ class PresupuestoUpdate(UpdateView):
         self.object = form.save(commit=False)
         self.object.save()
 
-        redirect_to = self.request.GET['next']
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
-            return render_to_response(self.template_name, self.get_context_data())
+        #redirect_to = self.request.GET['next']
+        #if redirect_to:
+        #    return HttpResponseRedirect(redirect_to)
+        #else:
+        #    return render_to_response(self.template_name, self.get_context_data())
+        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+        return JsonResponse(mensaje, safe=False)
 
 
 class PresupuestoDireccionUpdate(UpdateView):
@@ -640,11 +655,13 @@ class PresupuestoDireccionUpdate(UpdateView):
 
         self.object.save()
 
-        redirect_to = self.request.GET['next']
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
-            return render_to_response(self.template_name, self.get_context_data())
+        # redirect_to = self.request.GET['next']
+        # if redirect_to:
+        #     return HttpResponseRedirect(redirect_to)            mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+        # else:
+         #     return render_to_response(self.template_name, self.get_context_data())
+        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+        return JsonResponse(mensaje, safe=False)
 
 
 class PresupuestoDetalleUpdate(UpdateView):
@@ -679,11 +696,13 @@ class PresupuestoDetalleUpdate(UpdateView):
         reporter.update(cantidad_ambientes=len(cant_ambiente))
         reporter.update(cantidad_muebles=cant_mueble)
 
-        redirect_to = self.request.GET['next']
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
-            return render_to_response(self.template_name, self.get_context_data())
+        #redirect_to = self.request.GET['next']
+        #if redirect_to:
+        #    return HttpResponseRedirect(redirect_to)
+        #else:
+        #    return render_to_response(self.template_name, self.get_context_data())
+        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+        return JsonResponse(mensaje, safe=False)
 
 
 class PresupuestoServicioUpdate(UpdateView):
@@ -770,11 +789,14 @@ class PresupuestoDireccionDelete(DeleteView):
             updatepresu = Presupuesto.objects.filter(pk=presu.id)
             updatepresu.update(estado='Iniciado')
 
-        redirect_to = self.request.GET['next']
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
-            return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+        return JsonResponse(mensaje, safe=False)
+
+        #redirect_to = self.request.GET['next']
+        #if redirect_to:
+        #    return HttpResponseRedirect(redirect_to)
+        #else:
+        #    return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
 
 
 class PresupuestoDetalleDelete(DeleteView):
@@ -792,11 +814,14 @@ class PresupuestoDetalleDelete(DeleteView):
             updatepresu = Presupuesto.objects.filter(pk=presu)
             updatepresu.update(estado='Preparado')
 
-        redirect_to = self.request.GET['next']
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
-            return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+        return JsonResponse(mensaje, safe=False)
+
+        #redirect_to = self.request.GET['next']
+        #if redirect_to:
+        #    return HttpResponseRedirect(redirect_to)
+        #else:
+        #    return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
 
 
 class PresupuestoServicioDelete(DeleteView):
@@ -807,18 +832,20 @@ class PresupuestoServicioDelete(DeleteView):
     def delete(self, request, *args, **kwargs):
         self.obj = self.get_object()
         presu = self.obj.detalle_presupuesto.id
-        Presupuesto_servicio.objects.filter(servicio=self.obj.servicio).delete()
+        Presupuesto_servicio.objects.filter(servicio=self.obj.servicio, detalle_presupuesto=presu).delete()
 
         updatepresu = Presupuesto.objects.filter(presupuesto_detalle__id=presu)
         cant_item = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto=updatepresu).count()
         if cant_item <= 0:
             updatepresu.update(estado='Muebles cargados')
 
-        redirect_to = self.request.GET['next']
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
-            return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+        #redirect_to = self.request.GET['next']
+        #if redirect_to:
+        #    return HttpResponseRedirect(redirect_to)
+        #else:
+        #    return HttpResponseRedirect(reverse('upresupuesto:PresupuestoList'))
+        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+        return JsonResponse(mensaje, safe=False)
 
 
 def ajax_tamano_request(request):
