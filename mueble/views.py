@@ -17,9 +17,6 @@ from django.views.generic import ListView
 from django.db.models import Count
 
 
-# Create your views here.
-# lista
-
 class Muebleclass():
     def lista_mueble(request):
         """docstring"""
@@ -32,7 +29,7 @@ class Muebleclass():
                     mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                     p.delete()
 
-                     # Elinamos objeto de la base de datos
+                     # Eliminar objeto de la base de datos
                     return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
                 except django.db.IntegrityError:
@@ -592,18 +589,42 @@ def add_tamanomueble(request, id_m):
                               context_instance=RequestContext(request))
 
 
-def add_muebleambiente(request, idambiente):
+def add_muebleambiente(request, id_ti, origen):
     """docstring"""
+    redirect_to = request.REQUEST.get('next', '')
+    if origen == '1':
+        # Aplica cuando se llama desde el mueble
+        data = {'mueble': id_ti}
+        clase_filtro = 'filtra-mueble'
+        nombre = Mueble.objects.filter(id=id_ti)
+        titulo = 'Asociar un ambiente al mueble: ' + nombre[0].mueble
+    else:
+        # Aplica cuando se llama desde el ambiente
+        data = {'ambiente': id_ti}
+        clase_filtro = 'filtra-ambiente'
+        nombre = Ambiente.objects.filter(id=id_ti)
+        titulo = 'Asociar un mueble al ambiente: ' + nombre[0].ambiente
+
     if request.method == 'POST':
         form_muebleambiente = MuebleAmbienteForm(request.POST)
         if form_muebleambiente.is_valid():
             id_reg = form_muebleambiente.save()
             id_am = Mueble_Ambiente.objects.get(id=id_reg.id)
-            return HttpResponseRedirect(reverse('umuebles:buscar_mueble_ambiente', args=(id_am.ambiente.id,)))
+
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('umuebles:buscar_mueble_ambiente',
+                                                    args=(id_am.ambiente.id,)))
     else:
-        form_muebleambiente = MuebleAmbienteForm(initial={'ambiente': idambiente})
+        form_muebleambiente = MuebleAmbienteForm(initial=data)
+
     return render_to_response('muebleambiente_add.html',
-                              {'form_muebleambiente': form_muebleambiente, 'create': True},
+                              {'form_muebleambiente': form_muebleambiente,
+                               'create': True,
+                               'clase_filtro': clase_filtro,
+                               'titulo': titulo,
+                               'id_ti': id_ti},
                               context_instance=RequestContext(request))
 
 

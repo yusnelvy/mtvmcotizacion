@@ -1,3 +1,7 @@
+"""
+Docstring Documentación pendiente
+"""
+
 from django.db import models
 from mueble.models import Mueble
 from servicio.models import Servicio

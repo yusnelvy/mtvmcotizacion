@@ -1,19 +1,5 @@
 {% extends "base_edit.html" %}
 
-{% block link_navegacion %}
-
-<li class="linknav"><a href="{% url 'uambientes:lista_ambiente' %}" style="color:#777;">Ambientes</a></li>
-<li class="linknav"><a href="{% url 'uambientes:lista_ambiente_tipo_inmueble' %}" style="color:#777;">Ambiente tipo inmueble</a></li>
-
-{% endblock link_navegacion %}
-
-{% block footerLink %}
-
-<li><a href="{% url 'uambientes:lista_ambiente' %}" style="color:#777;">Ambientes</a></li>
-<li class="linknav"><a href="{% url 'uambientes:lista_ambiente_tipo_inmueble' %}" style="color:#777;">Ambiente tipo inmueble</a></li>
-
-{% endblock footerLink %}
-
 {% block titulo %}
 
 <title>Ambientes por tipo de inmueble</title>
@@ -22,13 +8,13 @@
 
 {% block titulo_form %}
 
-<h2>Agregar ambientes por tipo de inmueble</h2>
+<h2>{{ titulo }}</h2>
 
 {% endblock titulo_form %}
 
 {% block cuerpo_form %}
 
-<div class="form-group filtra-tipoinmueble">
+<div class="form-group {{ clase_filtro }}">
 
     {{ form_ambtipoinmueble.as_p }}
 

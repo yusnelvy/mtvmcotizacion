@@ -81,9 +81,18 @@ th{text-align: center!important;}
   display: none;
 }
 
+.filtra-ambiente>p>label[for=id_ambiente],.filtra-ambiente>p>select[id=id_ambiente] {
+  display: none;
+}
+
 .filtra-servicio>p>label[for=id_servicio],.filtra-servicio>p>select[id=id_servicio] {
   display: none;
 }
+
+.filtra-mueble>p>label[for=id_mueble],.filtra-mueble>p>select[id=id_mueble] {
+  display: none;
+}
+
 .ayuda {
     width:40%;
     right:-100%;

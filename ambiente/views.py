@@ -1,3 +1,8 @@
+"""
+docstring está pendiente de elaboración
+
+"""
+
 from django.shortcuts import render, render_to_response
 from ambiente.models import Ambiente, Ambiente_Tipo_inmueble
 from ambiente.forms import AmbienteForm, AmbienteTipoInmuebleForm
@@ -9,9 +14,6 @@ import simplejson as json
 import django.db
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-
-# Create your views here.
-# lista
 
 def lista_ambiente(request):
     """docstring"""
@@ -53,7 +55,8 @@ def lista_ambiente(request):
     ambiente_links = zip(['Ambientes por tipo de inmueble', ],
                          ['uambientes:lista_ambiente_tipo_inmueble', ])
 
-    context = {'lista_ambiente': lista_ambiente, 'ambientes': ambientes, 'ambiente_links': ambiente_links}
+    context = {'lista_ambiente': lista_ambiente, 'ambientes': ambientes,
+               'ambiente_links': ambiente_links}
     return render(request, 'ambiente_lista.html', context)
 
 
@@ -92,7 +95,8 @@ def lista_ambiente_tipo_inmueble(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         listas_inmueble = paginator.page(paginator.num_pages)
-    context = {'lista_ambtipoinmueble': lista_ambtipoinmueble, 'lista_inmueble': lista_inmueble, 'listas_inmueble': listas_inmueble}
+    context = {'lista_ambtipoinmueble': lista_ambtipoinmueble,
+               'lista_inmueble': lista_inmueble, 'listas_inmueble': listas_inmueble}
     return render(request, 'ambientetipoinmueble_lista.html', context)
 
 
@@ -105,7 +109,6 @@ def buscar_ambiente(request, id_tipoinmueble):
     return render(request, 'ambiente_lista.html', context)
 
 
-# agregar nuevo
 def add_ambiente(request):
     """docstring"""
     if request.method == 'POST':
@@ -120,17 +123,41 @@ def add_ambiente(request):
                               context_instance=RequestContext(request))
 
 
-def add_ambiente_tipoinmueble(request, id_ti):
+def add_ambiente_tipoinmueble(request, id_ti, origen):
     """docstring"""
+    redirect_to = request.REQUEST.get('next', '')
+    if origen == '1':
+        # Aplica cuando se llama desde el tipo de inmueble
+        data = {'tipo_inmueble': id_ti}
+        clase_filtro = 'filtra-tipoinmueble'
+        nombre = Tipo_Inmueble.objects.filter(id=id_ti)
+        titulo = 'Asociar un ambiente al tipo de inmueble: ' + nombre[0].tipo_inmueble
+    else:
+        # Aplica cuando se llama desde el ambiente
+        data = {'ambiente': id_ti}
+        clase_filtro = 'filtra-ambiente'
+        nombre = Ambiente.objects.filter(id=id_ti)
+        titulo = 'Asociar un tipo de inmueble al ambiente: ' + nombre[0].ambiente
+
     if request.method == 'POST':
         form_ambtipoinmueble = AmbienteTipoInmuebleForm(request.POST)
         if form_ambtipoinmueble.is_valid():
             form_ambtipoinmueble.save()
-            return HttpResponseRedirect(reverse('uambientes:lista_ambiente_tipo_inmueble'))
+
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return HttpResponseRedirect(reverse('uambientes:lista_ambiente_tipo_inmueble'))
+
     else:
-        form_ambtipoinmueble = AmbienteTipoInmuebleForm(initial={'tipo_inmueble': id_ti})
+        form_ambtipoinmueble = AmbienteTipoInmuebleForm(initial=data)
+
     return render_to_response('ambientetipoinmueble_add.html',
-                              {'form_ambtipoinmueble': form_ambtipoinmueble, 'create': True},
+                              {'form_ambtipoinmueble': form_ambtipoinmueble,
+                               'create': True,
+                               'clase_filtro': clase_filtro,
+                               'titulo': titulo,
+                               'id_ti': id_ti},
                               context_instance=RequestContext(request))
 
 
@@ -160,7 +187,8 @@ def edit_ambiente(request, pk):
         form_edit_ambiente = AmbienteForm(instance=id_ambiente)
 
     return render_to_response('ambiente_edit.html',
-                              {'form_edit_ambiente': form_edit_ambiente, 'ambiente': id_ambiente, 'create': False},
+                              {'form_edit_ambiente': form_edit_ambiente,
+                               'ambiente': id_ambiente, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -188,5 +216,6 @@ def edit_ambiente_tipoinmueble(request, pk):
         form_edit_ambtipoinmueble = AmbienteTipoInmuebleForm(instance=ambtipoinmueble)
 
     return render_to_response('ambientetipoinmueble_edit.html',
-                              {'form_edit_ambtipoinmueble': form_edit_ambtipoinmueble, 'create': False},
+                              {'form_edit_ambtipoinmueble': form_edit_ambtipoinmueble,
+                               'create': False},
                               context_instance=RequestContext(request))

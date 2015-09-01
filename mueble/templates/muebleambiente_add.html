@@ -15,7 +15,7 @@
 {% block cuerpo_form %}
 
 <style>.filtra-ambiente>p>label[for=id_ambiente],.filtra-ambiente>p>select[id=id_ambiente]{display:none;}</style>
-<div class="form-group filtra-ambiente">
+<div class="form-group {{clase_filtro}}">
 
     {{ form_muebleambiente.as_p }}
 

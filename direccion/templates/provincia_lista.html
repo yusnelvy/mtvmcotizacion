@@ -115,8 +115,8 @@ Eliminar provincia
 <tr class="active">
   <th>Provincia</th>
   <th>Pais</th>
-  <th width="3">Editar</th>
-  <th width="3">Eliminar</th>
+  <th width="80px">Editar</th>
+  <th width="80px">Eliminar</th>
 </tr>
 
 {% for i in provincias %}
@@ -124,8 +124,8 @@ Eliminar provincia
 <tr id="tr{{i.id}}">
   <td>{{ i.provincia }}</td>
   <td>{{ i.pais }}</td>
-  <td width="3"><a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'udirecciones:edit_provincia' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a></td>
-  <td width="3">
+  <td width="80px"><a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'udirecciones:edit_provincia' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a></td>
+  <td width="80px">
     <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.provincia}}"></a>
   </td>
 </tr>
@@ -141,18 +141,19 @@ Eliminar provincia
 <div class="">
   <p>Comúnmente, una <strong>provincia</strong> es una entidad subnacional al Estado.</p>
   <p>Se recomienda agregar las provincias  correspondientes para cada país.</p>
-  <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
+  <p>Para lograr buena calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
 </div>
 
 {% endblock%}
 
 {% block js_sup %}
+
 <script>
 $(function(){
   $('#search').keyup(function(){
     $.ajax({
       type: "POST",
-      url: "/direccion/provincia/search_provincia/",
+      url: "{% url 'udirecciones:search_provincia' %}",
       data: {
         'search_text': $('#search').val(),
         'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
@@ -160,14 +161,11 @@ $(function(){
       success: searchSuccess,
       dataType: 'Html'
     });
-
   });
 });
 
 function searchSuccess(data, textStatus, jqXHR){
-
   $('#search-results').html(data)
-
 }
 </script>
 
