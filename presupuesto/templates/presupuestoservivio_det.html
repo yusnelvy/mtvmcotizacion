@@ -1,0 +1,19 @@
+Servicio:
+{% if servicio %}
+
+{% for det_servivio in servicio %}
+
+{{ det_servivio.servicio }}
+
+{% if forloop.last %}
+
+{% else %} -
+
+{% endif %}
+
+
+{% endfor %}
+
+{% else %}
+
+{% endif %}

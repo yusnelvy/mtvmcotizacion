@@ -25,7 +25,7 @@ class Ocupacion(models.Model):
         super(Ocupacion, self).__init__(*args, **kwargs)
 
     descripcion = models.CharField(max_length=100, unique=True)
-    valor = models.DecimalField(max_digits=3, decimal_places=2)
+    valor = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
         return self.descripcion
@@ -61,7 +61,7 @@ class Mueble(models.Model):
     tipo_mueble = models.ForeignKey(Tipo_Mueble, on_delete=models.PROTECT)
     forma = models.ForeignKey(Forma_Mueble, on_delete=models.PROTECT)
     ocupacion = models.ForeignKey(Ocupacion, on_delete=models.PROTECT)
-    capacidad = models.DecimalField(max_digits=5, decimal_places=2)
+    capacidad = models.DecimalField(max_digits=8, decimal_places=3)
     trasladable = models.BooleanField(default=None)
     apilable = models.BooleanField(default=None)
     capacidad_carga = models.BooleanField(default=None)
@@ -116,21 +116,21 @@ class Tamano_Mueble(models.Model):
     tamano = models.ForeignKey(Tamano, on_delete=models.PROTECT)
     mueble = models.ForeignKey(Mueble, on_delete=models.PROTECT)
     densidad = models.ForeignKey(Densidad, on_delete=models.PROTECT)
-    ancho = models.DecimalField(max_digits=5, decimal_places=2)
-    largo = models.DecimalField(max_digits=5, decimal_places=2)
-    alto = models.DecimalField(max_digits=5, decimal_places=2)
-    peso = models.DecimalField(max_digits=8, decimal_places=3)
+    ancho = models.DecimalField(max_digits=7, decimal_places=2)
+    largo = models.DecimalField(max_digits=7, decimal_places=2)
+    alto = models.DecimalField(max_digits=7, decimal_places=2)
+    peso = models.DecimalField(max_digits=9, decimal_places=3)
     predefinido = models.BooleanField(default=None)
 
     def __str__(self):
         return u' %s - %s - %s' % (self.mueble, self.tamano, self.densidad)
 
     def _get_densidad_valor(self):
-        return self.peso/((self.ancho*self.alto*self.largo)/1000000)
+        return round(self.peso/((self.ancho*self.alto*self.largo)/1000000), 2)
     densidad_valor = property(_get_densidad_valor)
 
     def _get_volumenmueble(self):
-        return (self.ancho*self.alto*self.largo)/1000000
+        return round((self.ancho*self.alto*self.largo)/1000000, 3)
     volumenmueble = property(_get_volumenmueble)
 
     class Meta:

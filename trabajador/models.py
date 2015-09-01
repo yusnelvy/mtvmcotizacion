@@ -8,12 +8,16 @@ class Cargo_trabajador(models.Model):
         super(Cargo_trabajador, self).__init__(*args, **kwargs)
 
     cargo = models.CharField(max_length=100, unique=True)
-    tarifa_dia = models.DecimalField(max_digits=7, decimal_places=2)
-    recargo_fin_semana = models.DecimalField(max_digits=7, decimal_places=2)
-    recargo_nocturno = models.DecimalField(max_digits=7, decimal_places=2)
+    tarifa_dia = models.DecimalField(max_digits=9, decimal_places=2)
+    recargo_fin_semana = models.DecimalField(max_digits=9, decimal_places=2)
+    recargo_nocturno = models.DecimalField(max_digits=9, decimal_places=2)
 
     def __str__(self):
         return self.cargo
+
+    def _get_tarifahora(self):
+        return (self.tarifa_dia/8)
+    tarifahora = property(_get_tarifahora)
 
     class Meta:
         verbose_name = "Cargo de trabajador"

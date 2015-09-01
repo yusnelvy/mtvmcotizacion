@@ -1,6 +1,5 @@
 """docstring"""
-
-from django.forms import ModelForm
+from django.forms import ModelForm, TextInput
 from servicio.models import Servicio, Material, \
     Servicio_Material, Complejidad, \
     Complejidad_Servicio, Unidad
@@ -57,6 +56,8 @@ class ServicioMaterialForm(ModelForm):
             'material': ('Nombre del material'),
             'cantidad': ('Cantidad de material aplicado al servicio'),
             'Calculo': ('Forma de cálculo del material consumido')
+        widgets = {
+            'cantidad': TextInput(attrs={'readonly': 'readonly'})
         }
 
 

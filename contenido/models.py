@@ -35,7 +35,7 @@ class Contenido_Tipico(models.Model):
 
     contenido = models.ForeignKey(Contenido, on_delete=models.PROTECT)
     mueble = models.ForeignKey(Mueble, on_delete=models.PROTECT)
-    cantidad = models.DecimalField(max_digits=5, decimal_places=2)
+    cantidad = models.DecimalField(max_digits=8, decimal_places=3)
     predefinido = models.BooleanField(default=False)
 
     def __str__(self):

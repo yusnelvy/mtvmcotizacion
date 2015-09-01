@@ -33,8 +33,8 @@
 #id_lista_ocupacion li{display: inline-table;margin-left: 30px;}
 
 </style>
-<link href="/static/bootstrap/css/bootstrap3.css" rel="stylesheet">
-<script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
+<link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
+<script src="/static/jquery/jquery-2.1.4.js"></script>
 <script>
 $(document).ready(function(){
   $("#id_lista_ambiente").on("change", function(){
@@ -70,6 +70,13 @@ $(document).ready(function(){
             $(lista_ocupacion[i]).attr("checked","checked");
           }
         }
+        if (data[0].trasladable == true){
+          document.getElementById("id_trasladable").checked = true;
+        }else{
+          document.getElementById("id_trasladable").checked = false;
+        }
+
+
       });
 });
 
@@ -104,6 +111,7 @@ $("#id_lista_tamano").on("change", function(){
 
       pesocontenedor = calcular_pesocontenedor($("#id_cantidad_contenedor").val(),$("#pesomaterial").val());
       $("#id_peso_contenedor").val(pesocontenedor);
+
     });
 });
 
@@ -149,15 +157,53 @@ $('#id_largo').on('change', function(){
 });
 
 $('#id_alto').on('change', function(){
-  densidad = calcular_densidad($("#id_peso").val(),$("#id_ancho").val(),$("#id_largo").val(),$(this).val());
+  densidad = calcular_densidad($("#id_peso").val(), $("#id_ancho").val(), $("#id_largo").val(), $(this).val());
   volumen = calcular_volumen($("#id_ancho").val(),$("#id_largo").val(),$(this).val());
   $("#id_valor_densidad").val(densidad);
   $("#id_volumen_mueble").val(volumen);
 });
 
+$('#myform').submit(function(){
+    var action = "{% url 'upresupuestos:PresupuestoDetalleView' %}";
+    var that = $(this);
+    $.ajax({
+        url: action,
+        type: 'POST',
+        data: that.serialize()
+        ,success: function(data){
+            var modalp = parent.document.getElementById('myModalAmbiente');
+            var divp = parent.document.getElementsByClassName("modal-backdrop");
+            var bodyp = parent.document.getElementById('id_body');
+            var closep = parent.document.getElementById("btn-cerrarmueble");
+          if (data.estatus=="ok"){
+            $(closep).click();
+            refresh();
+            //parent.location.reload(); //para refrescar la pagina
+            //$(modalp).hide();
+            //$(divp).remove();
+            //$(bodyp).removeClass('modal-open');
+            //$(bodyp).css('padding-right','');
+          }
+
+        }
+    });
+    return false;
+});
+
 });
 </script>
-
+<script type="text/javascript">
+function refresh() {
+  var id_presupuesto = $("#id_presupuesto").val();
+  $.ajax({
+  url: "/presupuesto/ficha/detalle/"+ id_presupuesto,
+  success: function(data) {
+    var divs = parent.document.getElementById('accordion');
+    $(divs).html(data);
+  }
+ });
+}
+</script>
 <script>
 function calcular_densidad(peso,ancho,largo,alto){
   var resultado = 0;
@@ -170,14 +216,14 @@ function calcular_volumen(ancho,largo,alto){
   var resultado = 0;
   resultado= (ancho*largo*alto)/1000000;
 
-  return resultado.toFixed(2);
+  return resultado.toFixed(3);
 }
 
 function calcular_volcontenido(cap_mueble,vol_mueble,ocupacidad){
   var resultado = 0;
   resultado= (cap_mueble*vol_mueble*ocupacidad);
 
-  return resultado.toFixed(2);
+  return resultado.toFixed(3);
 
 }
 
@@ -185,11 +231,11 @@ function calcular_pesocontenido(vol_contenido,densidadcontenido){
   var resultado = 0;
   resultado= (vol_contenido*densidadcontenido)
 
-  return resultado.toFixed(2);
+  return resultado.toFixed(3);
 
 }
 
-function calcular_cantidadcontenedor(vol_contenido,cap_volcontenedor,peso_contenido,cap_pesocontenedor){
+function calcular_cantidadcontenedor(vol_contenido, cap_volcontenedor, peso_contenido, cap_pesocontenedor){
   var resultado = 0;
   var cant_volumen = 0;
   var cant_peso = 0;
@@ -214,7 +260,7 @@ function calcular_volcontenedor(cant_contenedor,vol_material){
   var resultado = 0;
   resultado= (cant_contenedor*vol_material);
 
-  return resultado.toFixed(2);
+  return resultado.toFixed(3);
 
 }
 
@@ -222,16 +268,16 @@ function calcular_pesocontenedor(cant_contenedor,peso_material){
   var resultado = 0;
   resultado= (cant_contenedor*peso_material)
 
-  return resultado.toFixed(2);
+  return resultado.toFixed(3);
 
 }
 </script>
-<form action="" method="post">
+
+<form action="" method="post" id="myform">
 
   {% csrf_token %}
 
   <div class="form-group campo">
-
     {% for i in form %}
 
     <label for="{{ i.id_for_label }}" class="campo{{forloop.counter0}}">{{i.label}} {{i}}</label>
@@ -249,4 +295,5 @@ function calcular_pesocontenedor(cant_contenedor,peso_material){
   <button type="submit" class="btn btn-default">Registrar</button>
   <br>
 </form>
+
 

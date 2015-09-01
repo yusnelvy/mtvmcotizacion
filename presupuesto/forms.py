@@ -4,7 +4,8 @@ Ayuda del mueble/forms.py
 
 """
 from django.forms import ModelForm, ModelChoiceField, RadioSelect, Select
-from presupuesto.models import Presupuesto, Presupuesto_direccion, Presupuesto_Detalle, Presupuesto_servicio
+from presupuesto.models import Presupuesto, Presupuesto_direccion, \
+    Presupuesto_Detalle, Presupuesto_servicio, DatosPrecargado
 from django.core.exceptions import NON_FIELD_ERRORS
 from mueble.models import Ocupacion, Tamano_Mueble, Mueble, Tamano
 from direccion.models import Tipo_Inmueble
@@ -131,7 +132,8 @@ class PresupuestoDetalleForm(ModelForm):
             'capacidad_volumen_contenedor', \
             'peso_contenido', \
             'peso_contenedor', \
-            'descripcion_contenedor'
+            'descripcion_contenedor', \
+            'trasladable'
         labels = {
             'ancho': ('Ancho del mueble:'),
             'largo': ('Largo del mueble:'),
@@ -155,3 +157,9 @@ class PresupuestoServicioForm(ModelForm):
                 'servicio': "%(model_name)s's %(field_labels)s esta vacio.",
             }
         }
+
+
+class DatosPrecargadoForm(ModelForm):
+    class Meta:
+        model = DatosPrecargado
+        fields = '__all__'
