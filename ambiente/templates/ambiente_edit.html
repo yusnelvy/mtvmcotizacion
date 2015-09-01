@@ -1,21 +1,5 @@
 {% extends "base_edit.html" %}
 
-{% block link_navegacion %}
-
-<li class="linknav"><a href="{% url 'uambientes:lista_ambiente_tipo_inmueble' %}" style="color:#777;">Ambiente tipo inmueble</a></li>
-<li class="linknav"><a href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}" style="color:#777;">Muebles x ambiente</a></li>
-<li class="linknav"><a href="{% url 'uambientes:lista_ambiente' %}" style="color:#777;">Ambientes</a></li>
-
-{% endblock link_navegacion %}
-
-{% block footerLink %}
-
-<li><a href="{% url 'uambientes:lista_ambiente_tipo_inmueble' %}">Ambiente tipo inmueble</a></li>
-<li><a href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}">Muebles x ambiente</a></li>
-<li><a href="{% url 'uambientes:lista_ambiente' %}">Ambientes</a></li>
-
-{% endblock footerLink %}
-
 {% block titulo %}
 
 <title>Editar ambiente</title>
@@ -50,19 +34,19 @@ document.getElementById('id_ambiente').focus()
       <th width="300">Tipo de inmuebles</th>
       <th width="1"></th>
       <th width="1">
-        <a href="nuevo/{{im.id}}/" class="glyphicon glyphicon-plus" style="float:righ;"></a>
+        <a href="{% url 'uambientes:add_ambiente_tipoinmueble' ambiente.id 2 %}?next={{request.get_full_path}}" class="glyphicon" style="float:righ;">Asociar nuevo</a>
       </th>
     </tr>
 
     {% for i in ambiente.ambiente_tipo_inmueble_set.all %}
 
     <tr id="tr{{i.id}}">
-      <td width="300">{{ i.tipo_inmueble }}</td>
+      <td>{{ i.tipo_inmueble }}</td>
       <td width="">
         <a style="display:none;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uambientes:edit_ambiente_tipoinmueble' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
       </td>
       <td>
-        <a title="Eliminar" href="#myModal" role="button" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.ambiente}}"></a>
+        <a title="Eliminar" href="#myModal" role="button" href="#myModal" role="button" class="glyphicon delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.ambiente}}">Eliminar relación</a>
       </td>
     </tr>
 
@@ -75,22 +59,18 @@ document.getElementById('id_ambiente').focus()
 <div class="panel panel-default">
   <table class="table" style="text-align: center;">
     <tr class="">
-      <th width="300">Muebles típicos</th>
-      <th width="1"></th>
+      <th width="300">Muebles</th>
       <th width="1">
-        <a href="nuevo/{{im.id}}/" class="glyphicon glyphicon-plus" style="float:righ;"></a>
+        <a href="{% url 'umuebles:add_muebleambiente' ambiente.id 2 %}?next={{request.get_full_path}}" class="glyphicon" style="float:righ;">Asociar nuevo</a>
       </th>
     </tr>
 
     {% for i in ambiente.mueble_ambiente_set.all %}
 
     <tr id="tr{{i.id}}">
-      <td width="300">{{ i.mueble }}</td>
-      <td width="">
-        <a style="display:none;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uambientes:edit_ambiente_tipoinmueble' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
-      </td>
+      <td>{{ i.mueble }}</td>
       <td>
-        <a title="Eliminar" href="#myModal" role="button" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.ambiente}}"></a>
+        <a title="Eliminar" href="#myModal" role="button" href="#myModal" role="button" class="glyphicon delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.ambiente}}">Eliminar relación</a>
       </td>
     </tr>
 
@@ -105,10 +85,8 @@ document.getElementById('id_ambiente').focus()
 
 <div class="">
     <p>Los <strong>Ambientes</strong> son los diversos espacios que se encuentran en un <strong>Inmueble</strong>.</p>
-    <p>Cree <strong>Ambientes</strong> que no generen ambigüedades o confusiones como <i>Living</i> y <i>Living Room</i>.</p>
-    <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
-    <p>Utilice una clasificación apropiada para los <strong>Ambientes</strong> que permita su comprensión y rápida búsqueda.</p>
-    <p>IMPORTANTE: Esta clasificación es solo de uso referencial, y no será determinante al cargar información de los distintos <strong>Tipos de ambientes</strong> en los cuales se puede encontrar el mismo <strong>Ambiente</strong>.</p>
+    <p>Cree nombres de <strong>Ambientes</strong> que no generen ambigüedades o confusiones como pudiera suceder entre <i>Living</i> y <i>Living Room</i>.</p>
+    <p>Para lograr buena calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
 </div>
 
 {% endblock%}

@@ -136,7 +136,7 @@ class="col-md-7"
       <table class="table table-hover" id="tabla" style="text-align: center;">
         <tr class="">
           <th class="hidden-print">Contenido</th>
-          <th width="3" class="hidden-print">
+          <th width="80px" class="hidden-print">
             <a href="{% url 'ucontenidos:add_contenidotipico' im.id %}" class="glyphicon glyphicon-plus" style="float:right;"></a>
           </th>
         </tr>
@@ -147,7 +147,7 @@ class="col-md-7"
 
         <tr id="tr{{i.id}}">
           <td>{{ i.contenido }}</td>
-          <td width="3" class="hidden-print">
+          <td width="80px" class="hidden-print">
             <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="Contenido: {{i.contenido}} Mueble: {{ i.mueble }}"></a>
           </td>
 

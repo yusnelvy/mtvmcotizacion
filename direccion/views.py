@@ -26,7 +26,7 @@ def search_provincia(request):
     lista_provincia = Provincia.objects.filter(Q(provincia__icontains=search_text) | Q(pais__pais__icontains=search_text))
 
     paginator = Paginator(lista_provincia, 25)
-    # Show 25 contacts per page
+
     page = request.GET.get('page')
     try:
         provincias = paginator.page(page)
@@ -37,7 +37,7 @@ def search_provincia(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         provincias = paginator.page(paginator.num_pages)
 
-    return render_to_response('ajax_search.html', {'lista_provincia': lista_provincia, 'provincias': provincias})
+    return render_to_response('provincia_lista_search.html', {'lista_provincia': lista_provincia, 'provincias': provincias})
 
 
 # lista
@@ -718,6 +718,7 @@ def edit_tipo_inmueble(request, pk):
 
     if request.method == 'POST':
         form_edit_tipo_inmueble = TipoInmuebleForm(request.POST, instance=tipo_inmueble)
+
         if form_edit_tipo_inmueble.is_valid():
             form_edit_tipo_inmueble.save()
 

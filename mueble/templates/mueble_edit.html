@@ -32,14 +32,14 @@ document.getElementById('id_mueble').focus()
   <table class="table" style="text-align: center;">
     <tr class="">
       <th width="300">Ambientes</th>
-      <th width="3"></th>
+      <th width="80px"></th>
     </tr>
 
     {% for det in mueble.mueble_ambiente_set.all %}
 
     <tr id="tr{{det.id}}">
       <td width="300">{{ det.ambiente }}</td>
-      <td width="3">
+      <td width="80px">
         <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'umuebles:edit_muebleambiente' det.id %}?next={% url 'umuebles:edit_mueble' mueble.id %}" class="glyphicon glyphicon-edit"></a>
       </td>
     </tr>

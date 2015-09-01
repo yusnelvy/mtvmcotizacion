@@ -51,13 +51,16 @@ class CotizacionForm(ModelForm):
 class VehiculoForm(ModelForm):
     class Meta:
         model = Vehiculo
-        fields = '__all__'
+        fields = ('cantidad_total', 'modelo',
+            'tarifa_hora', 'tarifa_recorrido',
+            'capacidad_volumen', 'capacidad_peso', 'cargo')
         labels = {
+            'cantidad_total': ('Cantidad de vehículos'),
             'modelo': ('Modelo de vehículo'),
             'tarifa_hora': ('Tarifa por tiempo en $/h'),
             'tarifa_recorrido': ('Tarifa por recorrido en $/Km'),
-            'capacidad_volumen': ('Capacidad en m3'),
-            'capacidad_peso': ('Capacidad en Kgs'),
+            'capacidad_volumen': ('Capacidad del vehículo en m3'),
+            'capacidad_peso': ('Capacidad del vehículo en Kgs'),
             'cargo': ('Conductor designado')
         }
 

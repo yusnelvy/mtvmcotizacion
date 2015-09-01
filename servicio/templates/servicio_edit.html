@@ -38,7 +38,7 @@ document.getElementById('id_servicio').focus()
             <th width="">Material</th>
             <th>Cantidad</th>
             <th>Cálculo</th>
-            <th width="3">Editar</th>
+            <th width="80px">Editar</th>
         </tr>
 
         {% for det in servicio.servicio_material_set.all %}
@@ -47,7 +47,7 @@ document.getElementById('id_servicio').focus()
             <td width="">{{ det.material }}</td>
             <td>{{ det.cantidad }}</td>
             <td>{{ det.calculo }}</td>
-            <td width="3">
+            <td width="80px">
                 <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_serviciomaterial' det.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
             </td>
         </tr>
@@ -66,7 +66,7 @@ document.getElementById('id_servicio').focus()
         <tr>
             <th>Complejidad</th>
             <th>Tarifa</th>
-            <th width="3">Editar</th>
+            <th width="80px">Editar</th>
         </tr>
 
         {% for det in servicio.complejidad_servicio_set.all %}
@@ -74,7 +74,7 @@ document.getElementById('id_servicio').focus()
         <tr id="tr{{det.id}}">
             <td>{{ det.complejidad }}</td>
             <td>{{ det.tarifa }}</td>
-            <td width="3">
+            <td width="80px">
                 <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_complejidadservicio' det.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
             </td>
         </tr>
@@ -93,7 +93,7 @@ document.getElementById('id_servicio').focus()
         <p>Los <strong>Servicios</strong> pueden sevir para proteger, modificar o brindar un tratamiento específico a cada <strong>Mueble</strong>.</p>
         <p>Al momento de evaluar o realizar una mudanza, los <strong>Servicios</strong> serán una parte importante de la calidad percibida por el cliente, al igual que un componente que incide sobre el precio final de la misma.</p>
         <p>La apropiada identificación de <strong>Servicios</strong> y su relación con los <strong>Materiales</strong> que involucran, serán claves para orientar la ejecución del trabajo de campo una vez contratada la mudanza.</p>
-        <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
+        <p>Para lograr buena calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
         <p>Un <strong>Servicio</strong> tiene asociados <strong>Materiales</strong> y <strong>Tarifas</strong>, por lo que su modificación tendrá impacto sobre el resultado de su uso en una cotización.</p>
     </div>
 

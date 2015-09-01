@@ -2,13 +2,13 @@
 
 {% block titulo %}
 
-<title>Tipo de inmueble</title>
+<title>Agregar tipo de inmueble</title>
 
 {% endblock titulo %}
 
 {% block titulo_form %}
 
-  <h2>Agregar tipo de inmueble</h2>
+<h2>Agregar tipo de inmueble</h2>
 
 {% endblock titulo_form %}
 
@@ -16,7 +16,7 @@
 
 <div class="form-group">
 
-  {{ form_tipo_inmueble.as_p }}
+    {{ form_tipo_inmueble.as_p }}
 
 </div>
 <script type="text/javascript">
@@ -28,10 +28,9 @@ document.getElementById('id_tipo_inmueble').focus()
 {% block ayuda %}
 
 <div class="">
-      <p>Si contamos con muchos inmuebles, será mucho más fácil su manejo si estos están agrupados de manera lógica.</p>
-      <p>Para ello existen los <strong>Tipos de inmueble</strong>, los cuales clasifican a los <strong>inmuebles</strong> según su congruencia y relación.</p>
-      <p>Cree <strong>Tipos de inmueble</strong> que no generen ambigüedades o confusiones.</p>
-      <p>Para mejorar la calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
-    </div>
+    <p>Los <strong>Tipos de inmueble</strong>, se refieren a las distintas estructuras de edificación que contienen a los muebles como pueden ser <i>Apartamentos</i>, <i>Casas</i> u <i>Oficinas</i>.</p>
+    <p>Cree nombres a los <strong>Tipos de inmueble</strong> que no generen ambigüedades o confusiones en los usuarios o en los clientes.</p>
+    <p>Para lograr buena calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
+</div>
 
 {% endblock%}

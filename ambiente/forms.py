@@ -7,7 +7,7 @@ class AmbienteForm(ModelForm):
         model = Ambiente
         fields = '__all__'
         labels = {
-            'tipo_ambiente': ('Tipo de ambiente'),
+            'ambiente': ('Nombre del ambiente'),
         }
 
 
@@ -15,3 +15,7 @@ class AmbienteTipoInmuebleForm(ModelForm):
     class Meta:
         model = Ambiente_Tipo_inmueble
         fields = '__all__'
+        labels = {
+            'ambiente': ('Nombre del ambiente'),
+            'tipo_inmueble': ('Nombre del tipo de inmueble'),
+        }

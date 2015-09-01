@@ -12,8 +12,8 @@ class CargotrabajadorForm(ModelForm):
         model = Cargo_trabajador
         fields = '__all__'
         labels = {
-            'cargo': ('Rol de trabajador'),
-            'tarifa_dia': ('Tarifa por día'),
-            'recargo_fin_semana': ('Recargo por trabajo de fin de semana'),
-            'recargo_nocturno': ('Recargo por trabajo nocturno')
+            'cargo': ('Nombre del rol o cargo de trabajador'),
+            'tarifa_dia': ('Tarifa ($/día)'),
+            'recargo_fin_semana': ('Porcentaje de recargo por trabajo de fin de semana'),
+            'recargo_nocturno': ('Porcentaje de recargo por trabajo nocturno')
         }

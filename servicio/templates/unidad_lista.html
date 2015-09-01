@@ -104,17 +104,17 @@ Eliminar unidad de medida
 
 <tr class="active">
   <th>Unidad</th>
-  <th width="3">Editar</th>
-  <th width="3">Eliminar</th>
+  <th width="80px">Editar</th>
+  <th width="80px">Eliminar</th>
 </tr>
 
 {% for i in unidades %}
 
 <tr id="tr{{i.id}}">
   <td>{{ i.unidad }}</td>
-  <td width="3">
+  <td width="80px">
     <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'uservicios:edit_unidad' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
-  </td width="3">
+  </td width="80px">
   <td>
     <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.unidad}}"></a>
   </td>

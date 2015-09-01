@@ -114,18 +114,16 @@ Eliminar tipo de contenido
 {% block cuerpo_tabla %}
 
 <tr class="active">
-  <th></th>
+  <th rowspan="2" style="vertical-align: middle;">Contenido</th>
   <th colspan="4">Densidad en Kg/m3</th>
-  <th colspan="2"></th>
+  <th width="80px" rowspan="2" style="vertical-align: middle;">Editar</th>
+  <th width="80px" rowspan="2" style="vertical-align: middle;">Eliminar</th>
 </tr>
 <tr class="active">
-  <th>Contenido</th>
-  <th>Baja</th>
-  <th>Media</th>
-  <th>Alta</th>
-  <th>Super-alta</th>
-  <th width="3">Editar</th>
-  <th width="3">Eliminar</th>
+  <th width="120px">Baja</th>
+  <th width="120px">Media</th>
+  <th width="120px">Alta</th>
+  <th width="120px">Super-alta</th>
 </tr>
 
 {% for i in contenidos %}
