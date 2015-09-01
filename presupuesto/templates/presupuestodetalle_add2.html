@@ -1,7 +1,11 @@
+{% extends "base_modal_form.html" %}
+
+{% block style %}
+
 <style>
-.campo>label,li label{font-family: inherit;font: inherit;}
+.campo>span>label,li label{font-family: inherit;font: inherit;}
 .campo4,.campo5,.campo6,.campo7,.campo11,.campo12,.campo13,.campo14,.campo15,.campo16,.campo17,.campo18,.campo19,.campo20,.campo21,.campo22,.campo23,.campo24,#capacidadmueble,#densidadcontenido,#volmaterial,#pesomaterial{display: none;}
-.custom-combobox-input,.campo0>select,.campo1>select,input[type=number],.campo2>select{
+.zelect,.custom-combobox-input,.campo0>select,.campo1>select,input[type=number],.campo2>select{
   box-sizing: border-box;
   border-radius: 6px;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
@@ -26,17 +30,124 @@
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
 }
-.campo0,.campo1,.campo2{width: 32%;}
-.campo8,.campo9,.campo10{width: 32%;}
-.campo3{width: 100%;margin-top: 20px;}
+.btn-radio:hover{
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), inset 0 0 8px rgba(102, 175, 233, .6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), inset 0 0 8px rgba(102, 175, 233, .6);
+}
+.campo0,.campo1{width: 49%;display: inline-block;}
+.campo8,.campo9,.campo10{width: 32.5%;display: inline-table;}
+.campo3,.campo2{width:49%;margin-top: 20px;margin-bottom: 20px; display: inline-table;text-align: cente;}
 .ul-list{list-style: none;}
-#id_lista_ocupacion li{display: inline-table;margin-left: 30px;}
-
+#id_lista_ocupacion,#id_lista_tamano{list-style: none;margin:0px;padding: 0px;}
+#id_lista_ocupacion li, #id_lista_tamano li {color:#777;margin-bottom:-6px!important;display:block;}
+.btn-radio input{
+    width: 0px;
+    height: 0px;
+}
+.btn-radio{
+  padding: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+}
 </style>
-<link href="/static/bootstrap/css/bootstrap3.css" rel="stylesheet">
-<script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
+
+{% endblock style %}
+
+{% block formulario %}
+
+<form action="" method="post" id="myform" name="myform2">
+
+  {% csrf_token %}
+
+  <div class="form-group campo">
+
+    {% for i in form %}
+
+    <span  class="campo{{forloop.counter0}}"><label for="{{ i.id_for_label }}">{{i.label}}</label> {{i}}</span>
+
+    {% endfor %}
+
+    <input type="text" id="capacidadmueble">
+    <input type="text" id="densidadcontenido">
+    <input type="text" id="volmaterial">
+    <input type="text" id="pesomaterial">
+  </div>
+
+  {{form_data}}
+
+  <button type="submit" class="btn btn-default" style="float:right;">Agregar</button>
+  <br>
+</form>
+
+{% endblock formulario %}
+
+{% block js_form %}
+
+  <script>
+var rad = document.myform2.lista_ocupacion;
+var prev = null;
+var btn = $('.btn-radio');
+for(var i = 0; i < rad.length; i++) {
+    rad[i].onclick = function() {
+        //(prev)? console.log(prev.value):null;
+        if(this !== prev) {
+            prev = this;
+        }
+        console.log(this.value);
+    };
+}
+</script>
+
 <script>
+
+$('#id_lista_ocupacion li label').addClass('btn-radio');
+$('#id_lista_tamano li label').addClass('btn-radio');
+$('input[name=lista_ocupacion]').click(function(){
+  $("label:has(input[name=lista_ocupacion])").css("background-color", "#fff");
+  $("label:has(input[name=lista_ocupacion])").css("color", "#777");
+  $("label:has(input[name=lista_ocupacion]:checked)").css("background-color", "#08c");
+  $("label:has(input[name=lista_ocupacion]:checked)").css("color", "#fff");
+});
+  $("label:has(input[name=lista_ocupacion])").css("background-color", "#fff");
+  $("label:has(input[name=lista_ocupacion])").css("color", "#777");
+  $("label:has(input[name=lista_ocupacion]:checked)").css("background-color", "#08c");
+  $("label:has(input[name=lista_ocupacion]:checked)").css("color", "#fff");
+$('input[name=lista_tamano]').click(function(){
+  $("label:has(input[name=lista_tamano])").css("background-color", "#fff");
+  $("label:has(input[name=lista_tamano])").css("color", "#777");
+  $("label:has(input[name=lista_tamano]:checked)").css("background-color", "#08c");
+  $("label:has(input[name=lista_tamano]:checked)").css("color", "#fff");
+});
+  $("label:has(input[name=lista_tamano])").css("background-color", "#fff");
+  $("label:has(input[name=lista_tamano])").css("color", "#777");
+  $("label:has(input[name=lista_tamano]:checked)").css("background-color", "#08c");
+  $("label:has(input[name=lista_tamano]:checked)").css("color", "#fff");
+
+//$('label[for=id_lista_ocupacion_0]');
+//document.getElementByFor('id_lista_ocupacion_0').setAttribute('id','scroll');
+//document.getElementById('id_body').setAttribute('data-spy','scroll');
+
+setTimeout(function() {
+  var idAmbinete = $(parent.document.getElementsByClassName("id_opcionMueble")).attr('id');
+  if (idAmbinete=="ambienteFocus"){
+    document.getElementById('id_lista_ambiente').focus();
+  }else{
+    document.getElementById('id_lista_mueble').focus();
+    document.getElementById('id_lista_ambiente').disabled = true;
+  }
+},500);
 $(document).ready(function(){
+    $(function() {
+    $( "#radio33" ).buttonset();
+  });
+    $(function() {
+    $( ".cles" ).buttonset();
+  });
+
   $("#id_lista_ambiente").on("change", function(){
     id_lista_ambiente = $("#id_lista_ambiente").val();
     $("#id_ambiente").val(id_lista_ambiente);
@@ -68,13 +179,22 @@ $(document).ready(function(){
         for(var i=0; i<lista_ocupacion.length; i++){
           if (data[0].ocupacion==lista_ocupacion[i].value){
             $(lista_ocupacion[i]).attr("checked","checked");
+            $("label:has(input[name=lista_ocupacion])").css("background-color", "#fff");
+            $("label:has(input[name=lista_ocupacion])").css("color", "#777");
+            $("label:has(input[name=lista_ocupacion]:checked)").css("background-color", "#08c");
+            $("label:has(input[name=lista_ocupacion]:checked)").css("color", "#fff");
           }
         }
+        $('#id_lista_tamano_0').click();
+        $("label:has(input[name=lista_tamano])").css("background-color", "#fff");
+        $("label:has(input[name=lista_tamano])").css("color", "#777");
+        $("label:has(input[name=lista_tamano]:checked)").css("background-color", "#08c");
+        $("label:has(input[name=lista_tamano]:checked)").css("color", "#fff");
       });
 });
 
 $("#id_lista_tamano").on("change", function(){
-  id_lista_tamano = $("#id_lista_tamano").val();
+  id_lista_tamano = $('input[name=lista_tamano]:checked').val();
   id_lista_mueble = $("#id_lista_mueble").val();
   $.get('/presupuesto/detalle/nuevo',
     {id_lista_tamano: id_lista_tamano, id_lista_mueble: id_lista_mueble},
@@ -104,6 +224,7 @@ $("#id_lista_tamano").on("change", function(){
 
       pesocontenedor = calcular_pesocontenedor($("#id_cantidad_contenedor").val(),$("#pesomaterial").val());
       $("#id_peso_contenedor").val(pesocontenedor);
+
     });
 });
 
@@ -155,9 +276,51 @@ $('#id_alto').on('change', function(){
   $("#id_volumen_mueble").val(volumen);
 });
 
+$('#myform').submit(function(){
+    document.getElementById('id_lista_ambiente').disabled = false;
+    var action = "{% url 'upresupuestos:PresupuestoDetalleView' %}";
+    var that = $(this);
+    $.ajax({
+        url: action,
+        type: 'POST',
+        data: that.serialize()
+        ,success: function(data){
+            var modalp = parent.document.getElementById('myModalAmbiente');
+            var divp = parent.document.getElementsByClassName("modal-backdrop");
+            var bodyp = parent.document.getElementById('id_body');
+            var closep = parent.document.getElementById("btn-cerrarmueble");
+          if (data.estatus=="ok"){
+            $(closep).click();
+            setTimeout(function() {
+            parent.location.reload();
+            },100);
+            //refresh();
+            //parent.location.reload(); //para refrescar la pagina
+            //$(modalp).hide();
+            //$(divp).remove();
+            //$(bodyp).removeClass('modal-open');
+            //$(bodyp).css('padding-right','');
+          }
+
+        }
+    });
+    return false;
+});
+
 });
 </script>
-
+<script type="text/javascript">
+function refresh() {
+  var id_presupuesto = $("#id_presupuesto").val();
+  $.ajax({
+  url: "/presupuesto/ficha/detalle/"+ id_presupuesto,
+  success: function(data) {
+    var divs = parent.document.getElementById('accordion');
+    $(divs).html(data);
+  }
+ });
+}
+</script>
 <script>
 function calcular_densidad(peso,ancho,largo,alto){
   var resultado = 0;
@@ -170,14 +333,14 @@ function calcular_volumen(ancho,largo,alto){
   var resultado = 0;
   resultado= (ancho*largo*alto)/1000000;
 
-  return resultado.toFixed(2);
+  return resultado.toFixed(3);
 }
 
 function calcular_volcontenido(cap_mueble,vol_mueble,ocupacidad){
   var resultado = 0;
   resultado= (cap_mueble*vol_mueble*ocupacidad);
 
-  return resultado.toFixed(2);
+  return resultado.toFixed(3);
 
 }
 
@@ -185,7 +348,7 @@ function calcular_pesocontenido(vol_contenido,densidadcontenido){
   var resultado = 0;
   resultado= (vol_contenido*densidadcontenido)
 
-  return resultado.toFixed(2);
+  return resultado.toFixed(3);
 
 }
 
@@ -214,7 +377,7 @@ function calcular_volcontenedor(cant_contenedor,vol_material){
   var resultado = 0;
   resultado= (cant_contenedor*vol_material);
 
-  return resultado.toFixed(2);
+  return resultado.toFixed(3);
 
 }
 
@@ -222,31 +385,9 @@ function calcular_pesocontenedor(cant_contenedor,peso_material){
   var resultado = 0;
   resultado= (cant_contenedor*peso_material)
 
-  return resultado.toFixed(2);
+  return resultado.toFixed(3);
 
 }
 </script>
-<form action="" method="post">
 
-  {% csrf_token %}
-
-  <div class="form-group campo">
-
-    {% for i in form %}
-
-    <label for="{{ i.id_for_label }}" class="campo{{forloop.counter0}}">{{i.label}} {{i}}</label>
-
-    {% endfor %}
-
-    <input type="text" id="capacidadmueble">
-    <input type="text" id="densidadcontenido">
-    <input type="text" id="volmaterial">
-    <input type="text" id="pesomaterial">
-  </div>
-
-  {{form_data}}
-
-  <button type="submit" class="btn btn-default">Registrar</button>
-  <br>
-</form>
-
+{% endblock js_form %}

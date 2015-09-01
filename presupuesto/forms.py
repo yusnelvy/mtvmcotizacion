@@ -3,7 +3,7 @@ Docstring
 Ayuda del mueble/forms.py
 
 """
-from django.forms import ModelForm, ModelChoiceField, RadioSelect, Select
+from django.forms import ModelForm, ModelChoiceField, RadioSelect, Select, SelectMultiple, DateInput
 from presupuesto.models import Presupuesto, Presupuesto_direccion, Presupuesto_Detalle, Presupuesto_servicio
 from django.core.exceptions import NON_FIELD_ERRORS
 from mueble.models import Ocupacion, Tamano_Mueble, Mueble, Tamano
@@ -28,9 +28,11 @@ class PresupuestoDetalleForm3(forms.Form):
 class PresupuestoForm(ModelForm):
 
     """Docstring"""
+    fecha_estimadamudanza = forms.DateField(widget=forms.DateInput(format='%Y-%m-%d'), input_formats=('%Y-%m-%d',))
 
     class Meta:
         model = Presupuesto
+        #widgets = {'fecha_estimadamudanza': DateInput(attrs={'type': 'date'})}
         fields = '__all__'
         labels = {
             'nombre_cliente': ('Nombre del cliente:'),
@@ -56,6 +58,7 @@ class PresupuestoDireccionForm(ModelForm):
 
     class Meta:
         model = Presupuesto_direccion
+        #widgets = {'pisos': forms.RadioSelect}
         fields = 'direccion', \
             'lista_tipoinmueble', \
             'lista_ocupacion', \
@@ -101,8 +104,8 @@ class PresupuestoDetalleForm(ModelForm):
     """Docstring"""
 
     lista_ambiente = ModelChoiceField(Ambiente.objects, widget=Select, empty_label='--seleccione el ambiente--', label='Ambiente del inmueble:')
-    lista_mueble = ModelChoiceField(Mueble.objects, widget=Select, empty_label='--seleccione el mueble--', label='Mueble del ambiente:')
-    lista_tamano = ModelChoiceField(Tamano.objects, widget=Select, empty_label='seleccione el tamaño', label='Tamaño del mueble:')
+    lista_mueble = ModelChoiceField(Mueble.objects, widget=Select, empty_label='seleccione el mueble', label='Mueble del ambiente:')
+    lista_tamano = ModelChoiceField(Tamano.objects, widget=RadioSelect, empty_label=None, label='Tamaño del mueble:')
     lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=RadioSelect, empty_label=None, label='Ocupación del mueble:')
 
     class Meta:
@@ -142,7 +145,7 @@ class PresupuestoDetalleForm(ModelForm):
 class PresupuestoServicioForm(ModelForm):
 
     """Docstring"""
-    lista_servicio = ModelChoiceField(Servicio.objects.exclude(servicio_material__material__contenedor=True).distinct(), widget=Select, empty_label='--seleccione el servicio--', label='Servicios')
+    lista_servicio = ModelChoiceField(Servicio.objects.exclude(servicio_material__material__contenedor=True).distinct(), widget=Select, empty_label=None, label='Servicios')
 
     class Meta:
         model = Presupuesto_servicio

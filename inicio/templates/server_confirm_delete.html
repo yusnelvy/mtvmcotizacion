@@ -1,20 +1,7 @@
-{% extends 'base3.html' %}
+{% extends 'base_modal_form.html' %}
 
-{% block content %}
+{% block formulario %}
 
-<br>
-<div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-3">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">
-
-                    {% block titulo_modal %}Eliminar{% endblock titulo_modal %}
-
-                </h4>
-            </div>
             <div class="modal-body">
 
                 {% block validacion_modal %}<p>¿Realmente desea eliminar el registro: <strong id="">
@@ -25,16 +12,58 @@
 
             </div>
             <div class="modal-footer">
-                <form method="post" id="">
+                <form method="post" id="myform">
 
                     {% csrf_token %}
 
-                    <a href="javascript:history.back()" class="btn btn-default">No</a>
+                    <a onclick="cerrar();" class="btn btn-default">No</a>
                     <input type="submit" class="btn btn-default" value="Si" />
                 </form>
             </div>
-        </div>
-    </div>
-</div>
 
-{% endblock content %}
+{% endblock formulario %}
+
+{% block js_form %}
+
+<script>
+$('#myform').submit(function(){
+    var id = $(parent.document.getElementsByClassName("id_opcionEliminar")).attr('src');
+    var action = id;
+    var that = $(this);
+    $.ajax({
+        url: action,
+        type: 'POST',
+        data: that.serialize()
+        ,success: function(data){
+            var modalp = parent.document.getElementById('myModalAmbiente');
+            var divp = parent.document.getElementsByClassName("modal-backdrop");
+            var bodyp = parent.document.getElementById('id_body');
+            var closep = parent.document.getElementById("cerrarEliminar");
+          if (data.estatus=="ok"){
+            cerrar();
+            setTimeout(function() {
+            parent.location.reload();
+            },100);
+            //refresh();
+            //parent.location.reload(); //para refrescar la pagina
+            //$(modalp).hide();
+            //$(divp).remove();
+            //$(bodyp).removeClass('modal-open');
+            //$(bodyp).css('padding-right','');
+          }else{
+            alert('no se elimino');
+            cerrar();
+          }
+
+        },
+        error: function (ajaxContext) {
+        alert('No se puede eliminar por que tiene servicios asociado.');
+        setTimeout(function() {cerrar();},0);
+    }
+    });
+    return false;
+});
+function cerrar() {var closep = parent.document.getElementById("cerrarEliminar");$(closep).click();};
+</script>
+
+{% endblock js_form %}

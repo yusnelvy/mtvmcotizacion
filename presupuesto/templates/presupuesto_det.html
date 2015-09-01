@@ -1,0 +1,17 @@
+<div class="col-md-5">
+    <h2>{{ presupuesto.nombre_cliente|capfirst }}</h2>
+</div>
+<div class="col-md-3">
+    <h4>
+        <p><small>DNI: </small>{{ presupuesto.dni }}</p>
+        <p><small>Teléfono: </small>{{ presupuesto.telefono }}</p>
+        <p><small>Email: </small>{{ presupuesto.email }}</p>
+    </h4>
+</div>
+<div class="col-md-4">
+    <h4>
+        <p><small>N° presupuesto: </small>{{ presupuesto.id }}</p>
+        <p><small>Fecha presupuesto: </small>{{ presupuesto.fecha_creacion|date:"d/m/Y" }}</p>
+        <p><small>Fecha estimada de la mudanza: </small>{{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}</p>
+    </h4>
+</div>
