@@ -21,7 +21,7 @@ class MaterialForm(ModelForm):
         model = Material
         fields = [
             'material',
-            'und',
+            'unidad',
             'ancho',
             'largo',
             'alto',
@@ -56,6 +56,7 @@ class ServicioMaterialForm(ModelForm):
             'material': ('Nombre del material'),
             'cantidad': ('Cantidad de material aplicado al servicio'),
             'Calculo': ('Forma de cálculo del material consumido')
+            }
         widgets = {
             'cantidad': TextInput(attrs={'readonly': 'readonly'})
         }

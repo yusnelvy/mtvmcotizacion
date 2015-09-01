@@ -38,14 +38,12 @@ class Tiempo_Carga(models.Model):
     volumen_min = models.DecimalField(max_digits=8, decimal_places=3, blank=True,
                                       default=0.000, validators=[MinValueValidator(0.001)])
     volumen_max = models.DecimalField(max_digits=8, decimal_places=3, blank=True, default=0.000,
-                                      validators=[MaxValueValidator(100), MinValueValidator(0.001)])
-    nro_objeto_min = models.PositiveIntegerField(validators=[MaxValueValidator(100),
-                                                             MinValueValidator(1)])
-    nro_objeto_max = models.PositiveIntegerField(validators=[MaxValueValidator(100),
-                                                             MinValueValidator(1)])
+                                      validators=[MinValueValidator(0.001)])
+    nro_objeto_min = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    nro_objeto_max = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     peso_min = models.DecimalField(max_digits=9, decimal_places=3, blank=True, default=0.000)
     peso_max = models.DecimalField(max_digits=9, decimal_places=3, blank=True, default=0.000)
-    cantidad_trabajador = models.PositiveIntegerField(validators=[MaxValueValidator(20), MinValueValidator(1)])
+    cantidad_trabajador = models.PositiveIntegerField(validators=[MinValueValidator(1)])
 
     def __str__(self):
         return str(self.tiempo_carga)
