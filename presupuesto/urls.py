@@ -4,7 +4,10 @@ from presupuesto.views import PresupuestoView, PresupuestoList, PresupuestoDetai
     PresupuestoDetalleUpdate, PresupuestoUpdate, ContactWizard, PresupuestoServicioView, \
     PresupuestoServicioViewFomset, PresupuestoServicioUpdate, PresupuestoDetalleList, \
     PresupuestoDetalleDetail, PresupuestoDetailResumen, PresupuestoDireccionDelete, \
-    PresupuestoDelete, PresupuestoDetalleDelete, PresupuestoServicioDelete
+    PresupuestoDelete, PresupuestoDetalleDelete, PresupuestoServicioDelete, \
+    PresupuestoServicioList, PresupuestoDetalleServicioDetail, \
+    PresupuestoDetalleDetail2, PresupuestoDireccionOrigenDetail, \
+    PresupuestoDireccionDestinoDetail, DatosPrecargadoUpdate, PresupuestoDatosPersonales
 from presupuesto import views
 from presupuesto.forms import PresupuestoDetalleForm1, PresupuestoDetalleForm2, \
     PresupuestoDetalleForm3
@@ -19,6 +22,14 @@ urlpatterns = patterns('',
                            name='PresupuestoDelete'),
                        url(r'^ficha/resumen/(?P<pk>\d+)/$', PresupuestoDetailResumen.as_view(),
                            name='PresupuestoDetailResumen'),
+                       url(r'^ficha/datospersonales/(?P<pk>\d+)/$', PresupuestoDatosPersonales.as_view(),
+                           name='PresupuestoDatosPersonales'),
+                       url(r'^ficha/direccionorigen/(?P<pk>\d+)/$', PresupuestoDireccionOrigenDetail.as_view(),
+                           name='PresupuestoDireccionOrigenDetail'),
+                       url(r'^ficha/direcciondestino/(?P<pk>\d+)/$', PresupuestoDireccionDestinoDetail.as_view(),
+                           name='PresupuestoDireccionDestinoDetail'),
+                       url(r'^ficha/detalle/(?P<pk>\d+)/$', PresupuestoDetalleDetail2.as_view(),
+                           name='PresupuestoDetalleDetail2'),
                        url(r'^direccion/nuevo/', PresupuestoDireccionView.as_view(),
                            name='PresupuestoDireccionView'),
                        url(r'^direccion/(?P<pk>\d+)/$', PresupuestoDireccionUpdate.as_view(),
@@ -35,9 +46,13 @@ urlpatterns = patterns('',
                            name='PresupuestoDetalleUpdate'),
                        url(r'^detalle/(?P<pk>\d+)/delete/$', PresupuestoDetalleDelete.as_view(),
                            name='PresupuestoDetalleDelete'),
+                       url(r'^detalle/servicio/(?P<pk>\d+)/$', PresupuestoDetalleServicioDetail.as_view(),
+                           name='PresupuestoDetalleServicioDetail'),
                        url(r'^ajax_tamano_request/$', views.ajax_tamano_request,
                            name='ajax_tamano_request'),
                        url(r'^detalle/form$', ContactWizard.as_view([PresupuestoDetalleForm1, PresupuestoDetalleForm2, PresupuestoDetalleForm3])),
+                       url(r'^servicio/(?P<pk>\d+)$', PresupuestoServicioList.as_view(),
+                           name='PresupuestoServicioList'),
                        url(r'^servicio/nuevo', PresupuestoServicioView.as_view(),
                            name='PresupuestoServicioView'),
                        url(r'^servicio/(?P<pk>\d+)/$', PresupuestoServicioUpdate.as_view(),
@@ -46,4 +61,6 @@ urlpatterns = patterns('',
                            name='PresupuestoServicioDelete'),
                        url(r'^servicio/nuevo2', PresupuestoServicioViewFomset.as_view(),
                            name='PresupuestoServicioViewFomset'),
+                       url(r'^datos_precargados/(?P<pk>\d+)/', DatosPrecargadoUpdate.as_view(),
+                           name='DatosPrecargadoUpdate'),
                        )

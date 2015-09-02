@@ -1,28 +1,110 @@
-{% extends "base_edit.html" %}
+{% extends "base_modal_form.html" %}
 
-{% block titulo %}
+{% block style %}
 
-<title>Presupuesto</title>
+<style>
+.campo>span>label,li label{font-family: inherit;font: inherit;}
+.campo4,.campo5,.campo6,.campo7,.campo11,.campo12,.campo13,.campo14,.campo15,.campo16,.campo17,.campo18,.campo19,.campo20,.campo21,.campo22,.campo23,.campo24,#capacidadmueble,#densidadcontenido,#volmaterial,#pesomaterial{display: none;}
+.zelect,.custom-combobox-input,.campo0>select,.campo1>select,input[type=number],.campo2>select{
+  box-sizing: border-box;
+  border-radius: 6px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
+  font-size: 18px;
+  height: 46px;
+  line-height: 1.33333;
+  padding: 10px 16px;
+  display:block;
+  background-color: #FFF;
+  background-image: none;
+  border: 1px solid #CCC;
+  color: #555;
+  font-family: inherit;
+  font: inherit;
+  margin: 0px;
+  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  width: 100%;
+}
+.custom-combobox-input:focus,.campo0>select:focus,.campo1>select:focus,input[type=number]:focus,.campo2>select:focus{
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+.btn-radio:hover{
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), inset 0 0 8px rgba(102, 175, 233, .6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), inset 0 0 8px rgba(102, 175, 233, .6);
+}
+.campo0,.campo1{width: 49%;display: inline-block;}
+.campo8,.campo9,.campo10{width: 32.5%;display: inline-table;}
+.campo3,.campo2{width:49%;margin-top: 20px;margin-bottom: 20px; display: inline-table;text-align: cente;}
+.ul-list{list-style: none;}
+#id_lista_ocupacion,#id_lista_tamano{list-style: none;margin:0px;padding: 0px;}
+#id_lista_ocupacion li, #id_lista_tamano li {color:#777;margin-bottom:-6px!important;display:block;}
+.btn-radio input{
+    width: 0px;
+    height: 0px;
+}
+.btn-radio{
+  padding: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+}
+</style>
 
-{% endblock titulo %}
+{% endblock style %}
 
-{% block titulo_form %}
+{% block formulario %}
 
-  <h2>Editar detalle</h2>
+<form action="" method="post" id="myform" name="myform2">
 
-{% endblock titulo_form %}
+  {% csrf_token %}
 
-{% block cuerpo_form %}
+  <div class="form-group campo">
 
-<div class="form-group">
+    {% for i in form %}
 
-  {{ form.as_p }}
+    <span  class="campo{{forloop.counter0}}"><label for="{{ i.id_for_label }}">{{i.label}}</label> {{i}}</span>
 
-</div>
+    {% endfor %}
 
-{% endblock cuerpo_form %}
-{% block js_sup %}
+  </div>
+
+  <button type="submit" class="btn btn-default" style="float:right;">Agregar</button>
+  <br>
+</form>
+
+{% endblock formulario %}
+
+{% block js_form %}
+
 <script>
+
+$('#id_lista_ocupacion li label').addClass('btn-radio');
+$('#id_lista_tamano li label').addClass('btn-radio');
+$('input[name=lista_ocupacion]').click(function(){
+  $("label:has(input[name=lista_ocupacion])").css("background-color", "#fff");
+  $("label:has(input[name=lista_ocupacion])").css("color", "#777");
+  $("label:has(input[name=lista_ocupacion]:checked)").css("background-color", "#08c");
+  $("label:has(input[name=lista_ocupacion]:checked)").css("color", "#fff");
+});
+  $("label:has(input[name=lista_ocupacion])").css("background-color", "#fff");
+  $("label:has(input[name=lista_ocupacion])").css("color", "#777");
+  $("label:has(input[name=lista_ocupacion]:checked)").css("background-color", "#08c");
+  $("label:has(input[name=lista_ocupacion]:checked)").css("color", "#fff");
+$('input[name=lista_tamano]').click(function(){
+  $("label:has(input[name=lista_tamano])").css("background-color", "#fff");
+  $("label:has(input[name=lista_tamano])").css("color", "#777");
+  $("label:has(input[name=lista_tamano]:checked)").css("background-color", "#08c");
+  $("label:has(input[name=lista_tamano]:checked)").css("color", "#fff");
+});
+  $("label:has(input[name=lista_tamano])").css("background-color", "#fff");
+  $("label:has(input[name=lista_tamano])").css("color", "#777");
+  $("label:has(input[name=lista_tamano]:checked)").css("background-color", "#08c");
+  $("label:has(input[name=lista_tamano]:checked)").css("color", "#fff");
 $(document).ready(function(){
   $("#id_lista_ambiente").on("change", function(){
     id_lista_ambiente = $("#id_lista_ambiente").val();
@@ -34,54 +116,151 @@ $(document).ready(function(){
       });
     });
 
-  $("#id_lista_mueble").on("change", function(){
-      id_lista_mueble = $("#id_lista_mueble").val();
-        $.get('/presupuesto/detalle/nuevo',
-          {id_lista_mueble: id_lista_mueble},
-              function(data){
-                $("#id_mueble").val(data[0].mueble);
-                $("#id_ocupacidad").val(data[0].descripocupacion);
-                $("#id_valor_ocupacidad").val(data[0].valorocupacion);
-                $("#id_lista_ocupacion").val(data[0].ocupacion);
-                $("#capacidadmueble").val(data[0].capacidadmueble);
-                lista_ocupacion = $("input[name=lista_ocupacion]");
-                for(var i=0; i<lista_ocupacion.length; i++){
-                  if (data[0].ocupacion==lista_ocupacion[i].value){
-                    $(lista_ocupacion[i]).attr("checked","checked");
-                  }
-                }
-          });
-  });
+ $("#id_lista_mueble").on("change", function(){
+    id_lista_mueble = $("#id_lista_mueble").val();
+    $.get('/presupuesto/detalle/nuevo',
+      {id_lista_mueble: id_lista_mueble},
+      function(data){
+        $("#id_mueble").val(data[0].mueble);
+        $("#id_ocupacidad").val(data[0].descripocupacion);
+        $("#id_valor_ocupacidad").val(data[0].valorocupacion);
+        $("#id_lista_ocupacion").val(data[0].ocupacion);
+        $("#capacidadmueble").val(data[0].capacidadmueble);
+        $("#densidadcontenido").val(data[0].densidadcontenido);
+        $("#volmaterial").val(data[0].vol_contenedor);
+        $("#id_capacidad_volumen_contenedor").val(data[0].capacidadvolcontenedor);
+        $("#id_capacidad_peso_contenedor").val(data[0].capacidadpesocontenedor);
+        $("#id_descripcion_contenedor").val(data[0].descripcioncontenedor);
+        $("#pesomaterial").val(data[0].peso_contenedor);
 
-  $("#id_lista_tamano").on("change", function(){
-  id_lista_tamano = $("#id_lista_tamano").val();
+        lista_ocupacion = $("input[name=lista_ocupacion]");
+        for(var i=0; i<lista_ocupacion.length; i++){
+          if (data[0].ocupacion==lista_ocupacion[i].value){
+            $(lista_ocupacion[i]).attr("checked","checked");
+            $("label:has(input[name=lista_ocupacion])").css("background-color", "#fff");
+            $("label:has(input[name=lista_ocupacion])").css("color", "#777");
+            $("label:has(input[name=lista_ocupacion]:checked)").css("background-color", "#08c");
+            $("label:has(input[name=lista_ocupacion]:checked)").css("color", "#fff");
+          }
+        }
+
+      });
+
+});
+
+$("#id_lista_tamano").on("change", function(){
+  id_lista_tamano = $('input[name=lista_tamano]:checked').val();
   id_lista_mueble = $("#id_lista_mueble").val();
   $.get('/presupuesto/detalle/nuevo',
     {id_lista_tamano: id_lista_tamano, id_lista_mueble: id_lista_mueble},
-        function(data){
-          $("#id_tamano").val(data[0].tamano);
-          $("#id_ancho").val(data[0].ancho);
-          $("#id_largo").val(data[0].largo);
-          $("#id_alto").val(data[0].alto);
-          $("#id_densidad").val(data[0].densidad);
-          $("#id_peso").val(data[0].peso);
-          valor_densidad= calcular_densidad($("#id_peso").val(),$("#id_ancho").val(),$("#id_largo").val(),$("#id_alto").val())
-          $("#id_valor_densidad").val(valor_densidad);
+    function(data){
+      $("#id_tamano").val(data[0].tamano);
+      $("#id_ancho").val(data[0].ancho);
+      $("#id_largo").val(data[0].largo);
+      $("#id_alto").val(data[0].alto);
+      $("#id_densidad").val(data[0].densidad);
+      $("#id_peso").val(data[0].peso);
+      $("#id_valor_densidad").val(data[0].valor_densidad);
+      $("#id_volumen_mueble").val(data[0].volumen_mueble);
+
+      volcontenido = calcular_volcontenido($("#capacidadmueble").val(),$("#id_volumen_mueble").val(),$("#id_valor_ocupacidad").val());
+
+      $("#id_volumen_contenido").val(volcontenido);
+
+      peso_contenido = calcular_pesocontenido($("#id_volumen_contenido").val(),$("#densidadcontenido").val());
+      $("#id_peso_contenido").val(peso_contenido);
+
+      cant_contenedor = calcular_cantidadcontenedor($("#id_volumen_contenido").val(),$("#id_capacidad_volumen_contenedor").val(),$("#id_peso_contenido").val(),$("#id_capacidad_peso_contenedor").val());
+
+      $("#id_cantidad_contenedor").val(cant_contenedor);
+
+      volcontenedor = calcular_volcontenedor($("#id_cantidad_contenedor").val(),$("#volmaterial").val());
+      $("#id_volumen_contenedor").val(volcontenedor);
+
+      pesocontenedor = calcular_pesocontenedor($("#id_cantidad_contenedor").val(),$("#pesomaterial").val());
+      $("#id_peso_contenedor").val(pesocontenedor);
+
     });
-  });
+});
 
-  $("input[name=lista_ocupacion]").click(function () {
-    id_ocupacion = $('input[name=lista_ocupacion]:checked').val();
-    $.get('/presupuesto/detalle/nuevo',
-      {id_ocupacion: id_ocupacion},
-          function(data){
-            $("#id_ocupacidad").val(data[0].ocupacion);
-            $("#id_valor_ocupacidad").val(data[0].valorocupacion);
-             vol_contenido = $("#id_valor_ocupacidad").val()*$("#capacidadmueble").val();
-            $("#id_volumen_contenido").val(vol_contenido.toFixed(2))
-      });
-  });
+$("input[name=lista_ocupacion]").click(function () {
+  id_ocupacion = $('input[name=lista_ocupacion]:checked').val();
+  $.get('/presupuesto/detalle/nuevo',
+    {id_ocupacion: id_ocupacion},
+    function(data){
+      $("#id_ocupacidad").val(data[0].ocupacion);
+      $("#id_valor_ocupacidad").val(data[0].valorocupacion);
+      volcontenido = calcular_volcontenido($("#capacidadmueble").val(),$("#id_volumen_mueble").val(),$("#id_valor_ocupacidad").val());
 
+      $("#id_volumen_contenido").val(volcontenido);
+
+      peso_contenido = calcular_pesocontenido($("#id_volumen_contenido").val(),$("#densidadcontenido").val());
+      $("#id_peso_contenido").val(peso_contenido);
+
+      cant_contenedor = calcular_cantidadcontenedor($("#id_volumen_contenido").val(),$("#id_capacidad_volumen_contenedor").val(),$("#id_peso_contenido").val(),$("#id_capacidad_peso_contenedor").val());
+
+      $("#id_cantidad_contenedor").val(cant_contenedor);
+
+      volcontenedor = calcular_volcontenedor($("#id_cantidad_contenedor").val(),$("#volmaterial").val());
+      $("#id_volumen_contenedor").val(volcontenedor);
+
+      pesocontenedor = calcular_pesocontenedor($("#id_cantidad_contenedor").val(),$("#pesomaterial").val());
+      $("#id_peso_contenedor").val(pesocontenedor);
+    });
+});
+$('#id_ancho').on('change', function(){
+  densidad = calcular_densidad($("#id_peso").val(),$(this).val(),$("#id_largo").val(),$("#id_alto").val());
+  volumen = calcular_volumen($(this).val(),$("#id_largo").val(),$("#id_alto").val());
+  $("#id_valor_densidad").val(densidad);
+  $("#id_volumen_mueble").val(volumen);
+
+});
+
+$('#id_largo').on('change', function(){
+  densidad = calcular_densidad($("#id_peso").val(),$("#id_ancho").val(),$(this).val(),$("#id_alto").val());
+  volumen = calcular_volumen($("#id_ancho").val(),$(this).val(),$("#id_alto").val());
+  $("#id_valor_densidad").val(densidad);
+  $("#id_volumen_mueble").val(volumen);
+});
+
+$('#id_alto').on('change', function(){
+  densidad = calcular_densidad($("#id_peso").val(),$("#id_ancho").val(),$("#id_largo").val(),$(this).val());
+  volumen = calcular_volumen($("#id_ancho").val(),$("#id_largo").val(),$(this).val());
+  $("#id_valor_densidad").val(densidad);
+  $("#id_volumen_mueble").val(volumen);
+});
+
+});
+$('#myform').submit(function(){
+    document.getElementById('id_lista_ambiente').disabled = false;
+    var id = $(parent.document.getElementsByClassName("id_opcionMueble")).attr('src');
+    var action = id;
+    var that = $(this);
+    $.ajax({
+        url: action,
+        type: 'POST',
+        data: that.serialize()
+        ,success: function(data){
+            var modalp = parent.document.getElementById('myModalAmbiente');
+            var divp = parent.document.getElementsByClassName("modal-backdrop");
+            var bodyp = parent.document.getElementById('id_body');
+            var closep = parent.document.getElementById("btn-cerrarmuebleEdit");
+          if (data.estatus=="ok"){
+            $(closep).click();
+            setTimeout(function() {
+            parent.location.reload();
+            },100);
+            //refresh();
+            //parent.location.reload(); //para refrescar la pagina
+            //$(modalp).hide();
+            //$(divp).remove();
+            //$(bodyp).removeClass('modal-open');
+            //$(bodyp).css('padding-right','');
+          }
+
+        }
+    });
+    return false;
 });
 </script>
 
@@ -94,11 +273,4 @@ function calcular_densidad(peso,ancho,largo,alto){
 }
 </script>
 
-{% endblock js_sup %}
-{% block ayuda %}
-
-<div class="well well-lg">
-  <p>La <strong>Presupuesto</strong>  es la acción y efecto de cotizar, poner precio a algo, estimar a alguien o algo en relación con un fin. el documento informa y establece el valor del servicios.</p>
-</div>
-
-{% endblock ayuda %}
+{% endblock js_form %}

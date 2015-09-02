@@ -1,0 +1,191 @@
+{% for direc_destino in direccion_destino %}
+
+<p style="padding:5px;">{{ direc_destino.direccion }}</p>
+<table class="table table-condensed table-hover table-bordered" >
+    <tr>
+        <td>
+            <span style="color:#777;">Tipo de direccion del inmueble: </span>
+        </td>
+        <td>{{ direc_destino.tipo_inmueble }}</td>
+    </tr>
+    <tr>
+        <td>
+            <span style="color:#777;">Distancia del vehículo al inmueble: </span>
+        </td>
+        <td>
+            {% if direc_destino.distancia_vehiculo = 70 %}
+
+            Más de
+
+            {% endif %}
+
+            {{ direc_destino.distancia_vehiculo }} m.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span style="color:#777;">Cantidad de
+
+                {% if direc_destino.pisos > 1 %}
+
+                Pisos
+
+                {% else %}
+
+                Piso
+
+                {% endif %}
+
+                del inmueble:
+            </span>
+        </td>
+        <td>{{ direc_destino.pisos }} {% if direc_destino.pisos > 1 %}
+
+            {% if direc_destino.pisos = 10 %}
+
+            o más pisos
+
+            {% else %}
+
+            pisos
+
+            {% endif %}
+
+            {% else %}
+
+            Piso
+
+            {% endif %}
+        </td>
+    </tr>
+
+    {% if direc_destino.pisos_escalera = 0 %}
+
+    {% else %}
+
+    <tr>
+        <td>
+            <span style="color:#777;">Cantidad de
+
+                {% if direc_destino.pisos_escalera > 1 %}
+
+                Pisos
+
+                {% else %}
+
+                Piso
+
+                {% endif %}
+
+                a recorrer por escalera:
+            </span>
+        </td>
+        <td>{{ direc_destino.pisos_escalera }} {% if direc_destino.pisos_escalera > 1 %}
+
+            {% if direc_destino.pisos_escalera = 10 %}
+
+            o más pisos
+
+            {% else %}
+
+            pisos
+
+            {% endif %}
+
+            {% else %}
+
+            piso
+
+            {% endif %}
+        </td>
+    </tr>
+
+    {% endif %}
+
+    <tr>
+        <td>
+            <span style="color:#777;">Rampa del inmueble: </span>
+        </td>
+        <td>{{ direc_destino.rampa|yesno:"Si,No" }}</td>
+    </tr>
+    <tr>
+        <td>
+            <span style="color:#777;">Ascensor del inmueble: </span>
+        </td>
+        <td>{{ direc_destino.ascensor|yesno:"Si,No" }}</td>
+    </tr>
+
+    {% if direc_destino.pisos_ascensor = 0 %}
+
+    {% else %}
+
+    <tr>
+        <td>
+            <span style="color:#777;">Cantidad de pisos a recorrer por ascensor: </span>
+        </td>
+        <td>{{ direc_destino.pisos_ascensor }} {% if direc_destino.pisos_ascensor > 1 %}
+
+            {% if direc_destino.pisos_ascensor = 10 %}
+
+            o más pisos
+
+            {% else %}
+
+            Pisos
+
+            {% endif %}
+
+            {% else %}
+
+            Piso
+
+            {% endif %}
+
+        </td>
+    </tr>
+
+    {% endif %}
+
+    <tr>
+        <td>
+            <span style="color:#777;">Ascensor de servicio del inmueble: </span>
+        </td>
+        <td>{{ direc_destino.ascensor_servicio|yesno:"Si,No" }}</td>
+    </tr>
+
+    {% if direc_destino.pisos_ascensor_servicio = 0 %}
+
+    {% else %}
+
+    <tr>
+        <td>
+            <span style="color:#777;">Cantidad de pisos a recorrer por ascensor de servicio: </span>
+        </td>
+        <td>{{ direc_destino.pisos_ascensor_servicio }} {% if direc_destino.pisos_ascensor_servicio > 1 %}
+
+            {% if direc_destino.pisos_ascensor_servicio = 10 %}
+
+            o más pisos
+
+            {% else %}
+
+            Pisos
+
+            {% endif %}
+
+            {% else %}
+
+            Piso
+
+            {% endif %}
+
+        </td>
+    </tr>
+
+    {% endif %}
+
+</table>
+
+{% endfor %}
+
+</span>

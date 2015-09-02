@@ -17,6 +17,22 @@
 </div>
 <script type="text/javascript">
 document.getElementById('id_material').focus()
+id_calculo = $("#id_calculo").val();
+if (id_calculo==3){
+    $("#id_cantidad").removeAttr('readonly');
+}
+
+$(document).ready(function() {
+    $("#id_calculo").on("change", function(){
+        id_calculo = $("#id_calculo").val();
+        if (id_calculo==3){
+            $("#id_cantidad").removeAttr('readonly');
+        }else{
+            $("#id_cantidad").attr("readonly","true");
+        }
+    });
+});
+
 </script>
 
 {% endblock cuerpo_form %}

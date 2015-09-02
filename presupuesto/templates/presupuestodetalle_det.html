@@ -1,0 +1,81 @@
+{% if lista_ambiente %}
+{% for ambiente in lista_ambiente %}
+
+
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne{{forloop.counter}}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{forloop.counter}}" aria-expanded="true" aria-controls="collapseOne{{forloop.counter}}" style="cursor:pointer;">
+        <h3 class="panel-title" style="font-size: 20px;">
+
+            {{ambiente.ambiente|upper}}
+
+        </h3>
+    </div>
+    <div id="collapseOne{{forloop.counter}}" class="panel-collapse collapse in{% if forloop.first %}  {% endif %}" role="tabpanel" aria-labelledby="headingOne{{forloop.counter}}">
+        <div class="panel-body">
+            <p style="padding-left:15px;font-size: 18px;">Muebles
+                <a data-toggle="modal" data-target="#myModalAmbiente" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}" title="Agregar mueble al ambiente {{ambiente.ambiente|upper}}" style="float:right;cursor:pointer;" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal hidden-print" data-toggletooltip="tooltip" data-placement="left"></a>
+            </p>
+        </div>
+        <ul class="list-group">
+
+            {% for mueble in detalle_list %}
+
+            {% if ambiente.ambiente = mueble.ambiente %}
+
+            <li class="list-group-item" style="padding-left:40px;">
+                <div class="row">
+                    <div class="col-md-3">
+                        <p style="font-size: 16px;">{{mueble.mueble}}</p>
+                    </div>
+                    <div class="col-md-1">
+                        <p style="color:#777;">{{ mueble.tamano }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <p style="color:#777;">ocupación: {{ mueble.ocupacidad }}</p>
+                    </div>
+                    <div class="col-md-1">
+                        <p style="color:#777;">{{ mueble.ancho|floatformat:"0" }}x{{ mueble.largo|floatformat:"0" }}x{{ mueble.alto|floatformat:"0" }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <span style="color:#777;" id="listservi{{mueble.id}}">
+
+                            Servicio:
+
+                            {% if servicio %}
+
+                            {% for det_servivio in servicio %}
+
+                            {% if det_servivio.detalle_presupuesto = mueble.id %}
+
+                            {{ det_servivio.servicio }}
+
+                            {% if forloop.last %}
+
+                            {% else %} -
+
+                            {% endif %}
+
+                            {% endif %}
+
+                            {% endfor %}
+
+                            {% else %}
+
+                            {% endif %}
+                        </span>
+                        <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:righ;cursor:pointer;" data-toggle="modal" data-target="#myModalServicio" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ mueble.id }}" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodalServicio hidden-print" data-toggletooltip="tooltip" data-placement="left"></a>
+                    </div>
+                </div>
+            </li>
+
+            {% endif %}
+
+            {% endfor %}
+
+        </ul>
+    </div>
+</div>
+
+{% endfor %}
+
+{% endif %}

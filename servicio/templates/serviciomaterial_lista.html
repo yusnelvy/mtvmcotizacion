@@ -14,12 +14,12 @@
 
 {% endblock footerLink %}
 
-{% block acceso_ %}
+{% block acceso_rapido_adicional%}
 
 <a id="addClass" style="cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
 <a id="removeClass" style="display:none;cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
 
-{% endblock acceso_ %}
+{% endblock acceso_rapido_adicional%}
 
 {% block titulo %}
 
@@ -144,7 +144,7 @@ class="col-md-6"
         <tr class="">
           <th width="300" class="hidden-print">Material</th>
           <th width="" class="hidden-print">Cantidad</th>
-          <th width="" class="hidden-print">Calculo</th>
+          <th width="" class="hidden-print">Tipo de cálculo</th>
           <th width="" class="hidden-print">
             <a href="{% url 'uservicios:add_serviciomaterial' im.id %}" class="glyphicon glyphicon-plus" style="float:right;"></a>
           </th>
@@ -157,7 +157,25 @@ class="col-md-6"
         <tr id="tr{{i.id}}">
           <td width="300">{{ i.material }}</td>
           <td width="">{{ i.cantidad}}</td>
-          <td width="">{{ i.Calculo }}</td>
+          <td width="">
+            {% if i.calculo == "1" %}
+
+            Laminados inelásticos
+
+            {% elif i.calculo == "2" %}
+
+            Laminados elásticos
+
+            {% elif i.calculo == "3" %}
+
+            Complementos
+
+            {% elif i.calculo == "4" %}
+
+            Contenedor
+
+            {% endif %}
+          </td>
           <td width="80px" class="hidden-print">
             <a style="float:right;" title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.material}}"></a>
           </td>
