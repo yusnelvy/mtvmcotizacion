@@ -25,7 +25,7 @@ import simplejson as json
 import django.db
 #from django.db.models import F
 
-from servicio.models import Complejidad_Servicio
+from servicio.forms import Complejidad_Servicio
 
 from django.db.models import Sum
 
@@ -875,6 +875,7 @@ def edit_tiempocarga(request, pk):
         if editar_tiempocarga.is_valid():
             # formulario validado correctamente
             editar_tiempocarga.save()
+
             return HttpResponseRedirect(reverse('ucotizaciones:lista_tiempocarga'))
 
     else:

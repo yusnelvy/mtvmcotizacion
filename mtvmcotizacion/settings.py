@@ -48,8 +48,6 @@ INSTALLED_APPS = (
     'telefono',
     'trabajador',
     'formtools',
-    'premisas',
-    'presupuesto.templatetags'
 )
 
 MIDDLEWARE_CLASSES = (

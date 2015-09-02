@@ -7,15 +7,15 @@
 <a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
 <a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
 
-{% block acceso_rapido_adicional%}{% endblock acceso_rapido_adicional%}
+{% block acceso_ %}{% endblock acceso_ %}
 
 {% endblock acceso_rapido %}
 
 {% block navegacion %}
 
 <div class="col-md-2">
-    <div class="barra-vertical hidden-print" id="navbar-example" style="">
-        <ul class="nav_l nav nav-pills nav-stacked" role="tablist">
+    <div class="barra-vertical hidden-print" style="">
+        <ul class="nav_l">
 
             {% block link_navegacion %}{% endblock link_navegacion %}
 

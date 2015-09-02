@@ -26,12 +26,12 @@
 
 {% endblock footerLink %}
 
-{% block acceso_rapido_adicional%}
+{% block acceso_ %}
 
 <a id="addClass" style="cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
 <a id="removeClass" style="display:none;cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
 
-{% endblock acceso_rapido_adicional%}
+{% endblock acceso_ %}
 
 {% block titulo %}
 
@@ -127,6 +127,7 @@ class="col-md-6"
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
 
           {{ im.ambiente }}
+
         </a>
         <span class="caret hidden-print" style="float:right;"></span>
       </h4>
@@ -137,7 +138,7 @@ class="col-md-6"
           <th class="hidden-print">Mueble</th>
           <th class="hidden-print">Predefinido</th>
           <th width="80px" class="hidden-print">
-            <a href="{% url 'umuebles:add_muebleambiente' im.id 1 %}" class="glyphicon glyphicon-plus" style="float:right;"></a>
+            <a href="{% url 'umuebles:add_muebleambiente' im.id %}" class="glyphicon glyphicon-plus" style="float:right;"></a>
           </th>
         </tr>
 

@@ -157,9 +157,9 @@ class Complejidad_Inmueble(models.Model):
         super(Complejidad_Inmueble, self).__init__(*args, **kwargs)
 
     complejidad = models.CharField(max_length=100, unique=True)
-    factor = models.DecimalField(max_digits=5, decimal_places=2)
-    valor_ambiente = models.DecimalField(max_digits=9, decimal_places=2)
-    valor_metrocubico = models.DecimalField(max_digits=9, decimal_places=2)
+    factor = models.DecimalField(max_digits=2, decimal_places=2)
+    valor_ambiente = models.DecimalField(max_digits=13, decimal_places=2)
+    valor_metrocubico = models.DecimalField(max_digits=13, decimal_places=2)
 
     def __str__(self):
         return self.complejidad
@@ -188,7 +188,6 @@ class Inmueble(models.Model):
     pisos_ascensor = models.IntegerField()
     complejidad = models.ForeignKey(Complejidad_Inmueble, on_delete=models.PROTECT)
     distancia_vehiculo = models.IntegerField()
-    total_m2 = models.DecimalField(max_digits=7, decimal_places=2)
 
     def __str__(self):
         return str(self.inmueble)
