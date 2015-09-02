@@ -50,6 +50,7 @@
     {% endif %}
 
 </a></li>
+<a data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}" style="float:right;" class="">ver resumen</a>
 
 {% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente%}
 
