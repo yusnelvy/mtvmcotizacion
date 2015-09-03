@@ -148,7 +148,7 @@ class PresupuestoDetalleForm(ModelForm):
 class PresupuestoServicioForm(ModelForm):
 
     """Docstring"""
-    lista_servicio = ModelChoiceField(Servicio.objects.exclude(servicio_material__material__contenedor=True).distinct(), widget=Select, empty_label=None, label='Servicios')
+    lista_servicio = ModelChoiceField(Servicio.objects.exclude(servicio_material__material__contenedor=True).distinct(), widget=SelectMultiple, empty_label=None, label='Servicios')
 
     class Meta:
         model = Presupuesto_servicio
