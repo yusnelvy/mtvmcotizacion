@@ -1,0 +1,50 @@
+.campo>span>label,li label{font-family: inherit;font: inherit;}
+.campo4,.campo5,.campo6,.campo7,.campo11,.campo12,.campo13,.campo14,.campo15,.campo16,.campo17,.campo18,.campo19,.campo20,.campo21,.campo22,.campo23,.campo24,#capacidadmueble,#densidadcontenido,#volmaterial,#pesomaterial,.campo25{display: none;}
+.zelect,.custom-combobox-input,.campo0>select,.campo1>select,input[type=number],.campo2>select{
+  box-sizing: border-box;
+  border-radius: 6px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
+  font-size: 18px;
+  height: 46px;
+  line-height: 1.33333;
+  padding: 10px 16px;
+  display:block;
+  background-color: #FFF;
+  background-image: none;
+  border: 1px solid #CCC;
+  color: #555;
+  font-family: inherit;
+  font: inherit;
+  margin: 0px;
+  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  width: 100%;
+}
+.custom-combobox-input:focus,.campo0>select:focus,.campo1>select:focus,input[type=number]:focus,.campo2>select:focus{
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+.btn-radio:hover{
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), inset 0 0 8px rgba(102, 175, 233, .6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), inset 0 0 8px rgba(102, 175, 233, .6);
+}
+.campo0,.campo1{width: 49%;display: inline-block;}
+.campo8,.campo9,.campo10{width: 32.5%;display: inline-table;}
+.campo3,.campo2{width:49%;margin-top: 20px;margin-bottom: 20px; display: inline-table;text-align: cente;}
+.ul-list{list-style: none;}
+#id_lista_ocupacion,#id_lista_tamano{list-style: none;margin:0px;padding: 0px;}
+#id_lista_ocupacion li, #id_lista_tamano li {color:#777;margin-bottom:-6px!important;display:block;}
+.btn-radio input{
+    width: 0px;
+    height: 0px;
+}
+.btn-radio{
+  padding: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+}

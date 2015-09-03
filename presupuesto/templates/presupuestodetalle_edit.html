@@ -1,62 +1,5 @@
 {% extends "base_modal_form.html" %}
 
-{% block style %}
-
-<style>
-.campo>span>label,li label{font-family: inherit;font: inherit;}
-.campo4,.campo5,.campo6,.campo7,.campo11,.campo12,.campo13,.campo14,.campo15,.campo16,.campo17,.campo18,.campo19,.campo20,.campo21,.campo22,.campo23,.campo24,#capacidadmueble,#densidadcontenido,#volmaterial,#pesomaterial{display: none;}
-.zelect,.custom-combobox-input,.campo0>select,.campo1>select,input[type=number],.campo2>select{
-  box-sizing: border-box;
-  border-radius: 6px;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
-  font-size: 18px;
-  height: 46px;
-  line-height: 1.33333;
-  padding: 10px 16px;
-  display:block;
-  background-color: #FFF;
-  background-image: none;
-  border: 1px solid #CCC;
-  color: #555;
-  font-family: inherit;
-  font: inherit;
-  margin: 0px;
-  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-  width: 100%;
-}
-.custom-combobox-input:focus,.campo0>select:focus,.campo1>select:focus,input[type=number]:focus,.campo2>select:focus{
-  border-color: #66afe9;
-  outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
-}
-.btn-radio:hover{
-  border-color: #66afe9;
-  outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), inset 0 0 8px rgba(102, 175, 233, .6);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), inset 0 0 8px rgba(102, 175, 233, .6);
-}
-.campo0,.campo1{width: 49%;display: inline-block;}
-.campo8,.campo9,.campo10{width: 32.5%;display: inline-table;}
-.campo3,.campo2{width:49%;margin-top: 20px;margin-bottom: 20px; display: inline-table;text-align: cente;}
-.ul-list{list-style: none;}
-#id_lista_ocupacion,#id_lista_tamano{list-style: none;margin:0px;padding: 0px;}
-#id_lista_ocupacion li, #id_lista_tamano li {color:#777;margin-bottom:-6px!important;display:block;}
-.btn-radio input{
-    width: 0px;
-    height: 0px;
-}
-.btn-radio{
-  padding: 5px;
-  border: 1px solid #ccc;
-  width: 100%;
-  text-align: center;
-  cursor: pointer;
-}
-</style>
-
-{% endblock style %}
-
 {% block formulario %}
 
 <form action="" method="post" id="myform" name="myform2">
@@ -73,38 +16,33 @@
 
   </div>
 
-  <button type="submit" class="btn btn-default" style="float:right;">Agregar</button>
+  <button type="submit" class="btn btn-default" style="float:right;">Guardar</button>
   <br>
 </form>
-
+<div title="Click para Cerrar" id="carga" style="cursor:pointer;border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:10px;box-shadow:inset yellow 0px 0px 14px;background-position:center;background-size:100%;background-color:#111111;width:300px;color:#fff;text-align:center;height:100px;padding:52px 12px 12px 12px;position:fixed;top:30%;left:40%;z-index:6;display:none;">Guardando...</div>
 {% endblock formulario %}
+
+{% block style %}
+
+<link rel="stylesheet" href="/static/css/presupuestoForm/preDetalle.css">
+
+{% endblock style %}
 
 {% block js_form %}
 
+<script src="/static/js/presupuestoForm/preDetalle.js"></script>
 <script>
 
 $('#id_lista_ocupacion li label').addClass('btn-radio');
 $('#id_lista_tamano li label').addClass('btn-radio');
 $('input[name=lista_ocupacion]').click(function(){
-  $("label:has(input[name=lista_ocupacion])").css("background-color", "#fff");
-  $("label:has(input[name=lista_ocupacion])").css("color", "#777");
-  $("label:has(input[name=lista_ocupacion]:checked)").css("background-color", "#08c");
-  $("label:has(input[name=lista_ocupacion]:checked)").css("color", "#fff");
+  radioColorOcupacion()
 });
-  $("label:has(input[name=lista_ocupacion])").css("background-color", "#fff");
-  $("label:has(input[name=lista_ocupacion])").css("color", "#777");
-  $("label:has(input[name=lista_ocupacion]:checked)").css("background-color", "#08c");
-  $("label:has(input[name=lista_ocupacion]:checked)").css("color", "#fff");
+  radioColorOcupacion()
 $('input[name=lista_tamano]').click(function(){
-  $("label:has(input[name=lista_tamano])").css("background-color", "#fff");
-  $("label:has(input[name=lista_tamano])").css("color", "#777");
-  $("label:has(input[name=lista_tamano]:checked)").css("background-color", "#08c");
-  $("label:has(input[name=lista_tamano]:checked)").css("color", "#fff");
+  radioColorTamano()
 });
-  $("label:has(input[name=lista_tamano])").css("background-color", "#fff");
-  $("label:has(input[name=lista_tamano])").css("color", "#777");
-  $("label:has(input[name=lista_tamano]:checked)").css("background-color", "#08c");
-  $("label:has(input[name=lista_tamano]:checked)").css("color", "#fff");
+  radioColorTamano()
 $(document).ready(function(){
   $("#id_lista_ambiente").on("change", function(){
     id_lista_ambiente = $("#id_lista_ambiente").val();
@@ -137,10 +75,7 @@ $(document).ready(function(){
         for(var i=0; i<lista_ocupacion.length; i++){
           if (data[0].ocupacion==lista_ocupacion[i].value){
             $(lista_ocupacion[i]).attr("checked","checked");
-            $("label:has(input[name=lista_ocupacion])").css("background-color", "#fff");
-            $("label:has(input[name=lista_ocupacion])").css("color", "#777");
-            $("label:has(input[name=lista_ocupacion]:checked)").css("background-color", "#08c");
-            $("label:has(input[name=lista_ocupacion]:checked)").css("color", "#fff");
+            radioColorOcupacion()
           }
         }
 
@@ -239,7 +174,10 @@ $('#myform').submit(function(){
     $.ajax({
         url: action,
         type: 'POST',
-        data: that.serialize()
+        data: that.serialize(),
+                      beforeSend: function(data) {
+                    $('#carga').css('display','block');
+                  }
         ,success: function(data){
             var modalp = parent.document.getElementById('myModalAmbiente');
             var divp = parent.document.getElementsByClassName("modal-backdrop");
@@ -250,14 +188,7 @@ $('#myform').submit(function(){
             setTimeout(function() {
             parent.location.reload();
             },100);
-            //refresh();
-            //parent.location.reload(); //para refrescar la pagina
-            //$(modalp).hide();
-            //$(divp).remove();
-            //$(bodyp).removeClass('modal-open');
-            //$(bodyp).css('padding-right','');
           }
-
         }
     });
     return false;

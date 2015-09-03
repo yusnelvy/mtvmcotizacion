@@ -30,7 +30,7 @@ class PresupuestoDetalleForm3(forms.Form):
 class PresupuestoForm(ModelForm):
 
     """Docstring"""
-    fecha_estimadamudanza = forms.DateField(widget=forms.DateInput(format='%Y-%m-%d'), input_formats=('%Y-%m-%d',))
+    fecha_estimadamudanza = forms.DateField(label='Fecha estimada de la mudanza:', widget=forms.DateInput(format='%Y-%m-%d'), input_formats=('%Y-%m-%d',))
 
     class Meta:
         model = Presupuesto
