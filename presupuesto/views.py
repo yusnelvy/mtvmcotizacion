@@ -469,16 +469,15 @@ class PresupuestoServicioView(View):
 
     def get(self, request, *args, **kwargs):
 
-        if self.request.GET.get('serv'):
-            serviciod = self.request.GET.get('serv')
-            servicio = Servicio.objects.get(servicio=serviciod)
+        try:
+            servicios = Servicio.objects.filter(servicio__in=Presupuesto_servicio.objects.values('servicio').filter(detalle_presupuesto=self.request.GET.get('pre')))
 
             data = {
                 'detalle_presupuesto': self.request.GET.get('pre'),
-                'servicio': servicio.servicio,
-                'lista_servicio': servicio.id
+                'lista_servicio': [p.id for p in servicios]
             }
-        else:
+        except Presupuesto_servicio.DoesNotExist:
+
             data = {
                 'detalle_presupuesto': self.request.GET.get('pre'),
             }
@@ -504,6 +503,14 @@ class PresupuestoServicioView(View):
         servicios = request.POST.getlist('lista_servicio')
 
         try:
+
+            try:
+                existeservicio = Presupuesto_servicio.objects.filter(detalle_presupuesto=self.request.POST.get('detalle_presupuesto'))
+            except Presupuesto_servicio.DoesNotExist:
+                existeservicio = None
+
+            if existeservicio:
+                Presupuesto_servicio.objects.filter(detalle_presupuesto=self.request.POST.get('detalle_presupuesto')).delete()
 
             for i in servicios:
                 idservicio = i
