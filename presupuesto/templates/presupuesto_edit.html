@@ -46,13 +46,15 @@ $('#myform').submit(function(){
         ,success: function(data){
           if (data.estatus=="ok"){
             var closep = parent.document.getElementById("btn-cerrarDatosPersonales");
-
+            var msj = parent.document.getElementById('msjGuardado');
             $(closep).click();
+            $(msj).text('Guardado con exito');
+            $(msj).fadeIn();
+            setTimeout(function() {$(msj).fadeOut();}, 3000);
             asyncChange();
           }
         }
     });
-//parent.location.reload();
  return false;
 });
     function asyncChange()
@@ -78,8 +80,6 @@ $('#myform').submit(function(){
         }
     }
 }
-
 </script>
 
 {% endblock js_form %}
-

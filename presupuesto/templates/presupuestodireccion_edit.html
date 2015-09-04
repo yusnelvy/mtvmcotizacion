@@ -7,24 +7,24 @@
 
   {% csrf_token %}
 
-<div class="form-group control-campos">
+  <div class="form-group control-campos">
 
-  {% if form.errors %}
+    {% if form.errors %}
 
-  <p class="alert-danger alerta">Complete todos los campos y luego clic en registrar.</p>
+    <p class="alert-danger alerta">Complete todos los campos y luego clic en registrar.</p>
 
-  {% endif %}
+    {% endif %}
 
-  {% for i in form %}
+    {% for i in form %}
 
-  <div class="campo form-group {{i.name}}" id="s_{{i.name}}">
-    <label for="{{ i.id_for_label }}">{{ i.label }} {{ i }}</label>
+    <div class="campo form-group {{i.name}}" id="s_{{i.name}}">
+      <label for="{{ i.id_for_label }}">{{ i.label }} {{ i }}</label>
+    </div>
+
+    {% endfor %}
+
+    <button type="submit" class="btn btn-default" style="float:right;margin-right:10px;">Registrar</button>
   </div>
-
-  {% endfor %}
-
-<button type="submit" class="btn btn-default" style="float:right;margin-right:10px;">Registrar</button>
-</div>
 
 </form>
 
@@ -77,8 +77,6 @@ if (check6.checked){
 else{
   $('#s_pisos_ascensor_servicio').css('visibility','hidden');
 }
-
-
 </script>
 <script type="text/javascript">
 document.getElementById('s_rampa').setAttribute('class','checkbox-inline')
@@ -98,33 +96,32 @@ $(document).ready(function() {
 </script>
 <script>
 $(document).ready(function(){
-
-
-$('#myform').submit(function(){
+  $('#myform').submit(function(){
     var id = $(parent.document.getElementsByClassName("id_opcionDireccion")).attr('id');
     var action = "/presupuesto/direccion/"+id+"/";
     var that = $(this)
     var closep = parent.document.getElementById("btn-cerrardir");
     $.ajax({
-        url: action,
-        type: 'POST',
-        data: that.serialize()
-        ,success: function(data){
-          if (data.estatus=="ok"){
-            var closep = parent.document.getElementById("btn-cerrardir");
-            var closepd = parent.document.getElementById("btn-cerrardirD");
-            $(closep).click();
-            $(closepd).click();
-            refresh();
-          }
+      url: action,
+      type: 'POST',
+      data: that.serialize()
+      ,success: function(data){
+        if (data.estatus=="ok"){
+          var closep = parent.document.getElementById("btn-cerrardir");
+          var closepd = parent.document.getElementById("btn-cerrardirD");
+          var msj = parent.document.getElementById('msjGuardado');
+          $(closep).click();
+          $(closepd).click();
+          $(msj).text('Guardado con exito');
+          $(msj).fadeIn();
+          setTimeout(function() {$(msj).fadeOut();}, 3000);
+          refresh();
         }
+      }
     });
-//parent.location.reload();
- return false;
+    return false;
+  });
 });
-
-});
-
 function refresh() {
   var tipo_direccion = $("#id_tipo_direccion").val();
   var id_presupuesto = $("#id_presupuesto").val();
@@ -146,40 +143,6 @@ function refresh() {
       $(divs).html(data);
     }
   });
-}
-
-    function asyncChange()
-{
-    var request;
-    var id_presupuesto = $("#id_presupuesto").val();
-    var id = $(parent.document.getElementsByClassName("id_opcionDireccion")).attr('id');
-    var action = "/presupuesto/ficha/direccionorigen/"+ id_presupuesto;;
-
-    if (window.XMLHttpRequest) {
-        request = new window.XMLHttpRequest();
-    } else {
-        request = new window.ActiveXObject("Microsoft.XMLHTTP");
-    }
-
-    request.open("GET", action, true);
-    request.send();
-
-    request.onreadystatechange = function()
-    {
-      var tipo_direccion = $("#id_tipo_direccion").val();
-
-        if (request.readyState == 4 && request.status == 200)
-        {
-            parent.document.getElementById("direccion-origen").innerHTML = request.responseText;
-            if (tipo_direccion=="Origen"){
-              urldir = "/presupuesto/ficha/direccionorigen/"+ id_presupuesto;
-              iddiv = 'direccion-origen';
-            }else if(tipo_direccion=="Destino"){
-              urldir = "/presupuesto/ficha/direcciondestino/"+ id_presupuesto;
-              iddiv = 'direccion-destino';
-            }
-        }
-    }
 }
 </script>
 

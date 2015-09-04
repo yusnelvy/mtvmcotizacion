@@ -1,6 +1,7 @@
 setTimeout(function() {
 document.getElementById('id_direccion').focus();
-},500);
+},100);
+
 function showContent() {
   element = document.getElementById("s_pisos_ascensor");
   pisos = document.getElementById("id_pisos_escalera").value;

@@ -39,11 +39,15 @@ $('#myform').submit(function(){
             var divp = parent.document.getElementsByClassName("modal-backdrop");
             var bodyp = parent.document.getElementById('id_body');
             var closep = parent.document.getElementById("cerrarEliminar");
+            var eliminar = parent.document.getElementById("msjEliminado");
+
           if (data.estatus=="ok"){
             cerrar();
             setTimeout(function() {
             parent.location.reload();
-            },100);
+            },1000);
+            $(eliminar).text('Eliminado');
+            $(eliminar).fadeIn();
           }else{
             alert('no se elimino');
             cerrar();
