@@ -2,8 +2,12 @@
 
 {% block acceso_rapido %}
 
-<a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="../../"><span class="glyphicon glyphicon-chevron-left"></span></a>
-<a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
+<a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="../../">
+    <span class="glyphicon glyphicon-chevron-left"></span>
+</a>
+<a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();">
+    <span class="glyphicon glyphicon-print"></span>
+</a>
 
 {% block acceso_rapido_adicional %}{% endblock acceso_rapido_adicional %}
 
@@ -11,49 +15,55 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="#datos-personales" style="color:#777;">Datos personales
+<li class="linknav">
+    <a href="#datos-personales" style="color:#777;">Datos personales
 
-    {% if presupuesto.dni %}
+        {% if presupuesto.dni %}
 
-    <span style="float:right;" class="glyphicon glyphicon-ok"></span>
+        <span style="float:right;" class="glyphicon glyphicon-ok"></span>
 
-    {% else %}
+        {% else %}
 
-    <span style="float:right;" class="glyphicon glyphicon-minus"></span>
+        <span style="float:right;" class="glyphicon glyphicon-minus"></span>
 
-    {% endif %}
+        {% endif %}
 
-</a></li>
-<li class="linknav"><a href="#direcciones" style="color:#777;">Direcciones y datos del inmueble
+    </a>
+</li>
+<li class="linknav">
+    <a href="#direcciones" style="color:#777;">Direcciones y datos del inmueble
 
-    {% if direccion_origen and direccion_destino %}
+        {% if direccion_origen and direccion_destino %}
 
-    <span style="float:right;" class="glyphicon glyphicon-ok"></span>
+        <span style="float:right;" class="glyphicon glyphicon-ok"></span>
 
-    {% else %}
+        {% else %}
 
-    <span style="float:right;" class="glyphicon glyphicon-minus"></span>
+        <span style="float:right;" class="glyphicon glyphicon-minus"></span>
 
-    {% endif %}
+        {% endif %}
 
-</a></li>
-<li class="linknav"><a href="#ambientes" style="color:#777;">Ambientes y muebles
+    </a>
+</li>
+<li class="linknav">
+    <a href="#ambientes" style="color:#777;">Ambientes y muebles
 
-    {% if lista_ambiente %}
+        {% if lista_ambiente %}
 
-    <span style="float:right;" class="glyphicon glyphicon-ok"></span>
+        <span style="float:right;" class="glyphicon glyphicon-ok"></span>
 
-    {% else %}
+        {% else %}
 
-    <span style="float:right;" class="glyphicon glyphicon-minus"></span>
+        <span style="float:right;" class="glyphicon glyphicon-minus"></span>
 
-    {% endif %}
+        {% endif %}
 
-</a></li>
+    </a>
+</li>
 
 {% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente%}
 
-<li class="linknav">
+<li>
     <a href="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}" class="">ver resumen</a>
 </li>
 
@@ -100,14 +110,12 @@ class="col-md-10"
                 </h4>
             </div>
         </div>
-
     </div>
-</div><!--fin panel default datos basicos-->
+</div><!--fin panel default datos básicos-->
 <div id="direcciones" class="panel panel-default">
     <div class="panel-body">
         <div class="row">
             <div class="col-md-6" >
-
                 <h3>Dirección de origen
 
                     {% if direccion_origen %}
@@ -133,10 +141,9 @@ class="col-md-10"
                     {% for direc_origen in direccion_origen %}
 
                     <p style="padding:5px;">{{ direc_origen.direccion }}</p>
-
                     <table class="table table-condensed table-hover table-bordered" >
                         <tr>
-                            <td><span style="color:#777;">Tipo de direccion del inmueble: </span></td>
+                            <td><span style="color:#777;">Tipo de dirección del inmueble: </span></td>
                             <td>{{ direc_origen.tipo_inmueble }}</td>
                         </tr>
                         <tr>
@@ -188,7 +195,9 @@ class="col-md-10"
                                     del inmueble:
                                 </span>
                             </td>
-                            <td>{{ direc_origen.pisos }} {% if direc_origen.pisos > 1 %}
+                            <td>{{ direc_origen.pisos }}
+
+                                {% if direc_origen.pisos > 1 %}
 
                                 {% if direc_origen.pisos = 10 %}
 
@@ -205,6 +214,7 @@ class="col-md-10"
                                 piso
 
                                 {% endif %}
+
                             </td>
                         </tr>
 
@@ -229,7 +239,9 @@ class="col-md-10"
                                     a recorrer por escalera:
                                 </span>
                             </td>
-                            <td>{{ direc_origen.pisos_escalera }} {% if direc_origen.pisos_escalera > 1 %}
+                            <td>{{ direc_origen.pisos_escalera }}
+
+                                {% if direc_origen.pisos_escalera > 1 %}
 
                                 {% if direc_origen.pisos_escalera = 10 %}
 
@@ -246,6 +258,7 @@ class="col-md-10"
                                 piso
 
                                 {% endif %}
+
                             </td>
                         </tr>
 
@@ -272,7 +285,9 @@ class="col-md-10"
                             <td>
                                 <span style="color:#777;">Cantidad de pisos a recorrer por ascensor: </span>
                             </td>
-                            <td>{{ direc_origen.pisos_ascensor }} {% if direc_origen.pisos_ascensor > 1 %}
+                            <td>{{ direc_origen.pisos_ascensor }}
+
+                                {% if direc_origen.pisos_ascensor > 1 %}
 
                                 {% if direc_origen.pisos_ascensor = 10 %}
 
@@ -289,6 +304,7 @@ class="col-md-10"
                                 piso
 
                                 {% endif %}
+
                             </td>
                         </tr>
 
@@ -309,7 +325,9 @@ class="col-md-10"
                             <td>
                                 <span style="color:#777;">Cantidad de pisos a recorrer por ascensor de servicio: </span>
                             </td>
-                            <td>{{ direc_origen.pisos_ascensor_servicio }} {% if direc_origen.pisos_ascensor_servicio > 1 %}
+                            <td>{{ direc_origen.pisos_ascensor_servicio }}
+
+                                {% if direc_origen.pisos_ascensor_servicio > 1 %}
 
                                 {% if direc_origen.pisos_ascensor_servicio = 10 %}
 
@@ -326,6 +344,7 @@ class="col-md-10"
                                 piso
 
                                 {% endif %}
+
                             </td>
                         </tr>
 
@@ -336,11 +355,7 @@ class="col-md-10"
                     {% endfor %}
 
                 </span>
-
-
-
             </div>
-
             <div class="col-md-6" >
                 <h3>Dirección de destino
 
@@ -370,7 +385,7 @@ class="col-md-10"
                     <table class="table table-condensed table-hover table-bordered" >
                         <tr>
                             <td>
-                                <span style="color:#777;">Tipo de direccion del inmueble: </span>
+                                <span style="color:#777;">Tipo de dirección del inmueble: </span>
                             </td>
                             <td>{{ direc_destino.tipo_inmueble }}</td>
                         </tr>
@@ -379,6 +394,7 @@ class="col-md-10"
                                 <span style="color:#777;">Distancia del vehículo al inmueble: </span>
                             </td>
                             <td>
+
                                 {% if direc_destino.distancia_vehiculo = 70 %}
 
                                 Más de
@@ -386,6 +402,7 @@ class="col-md-10"
                                 {% endif %}
 
                                 {{ direc_destino.distancia_vehiculo }} m.
+
                             </td>
                         </tr>
                         <tr>
@@ -405,7 +422,9 @@ class="col-md-10"
                                     del inmueble:
                                 </span>
                             </td>
-                            <td>{{ direc_destino.pisos }} {% if direc_destino.pisos > 1 %}
+                            <td>{{ direc_destino.pisos }}
+
+                                {% if direc_destino.pisos > 1 %}
 
                                 {% if direc_destino.pisos = 10 %}
 
@@ -422,6 +441,7 @@ class="col-md-10"
                                 Piso
 
                                 {% endif %}
+
                             </td>
                         </tr>
 
@@ -446,7 +466,9 @@ class="col-md-10"
                                     a recorrer por escalera:
                                 </span>
                             </td>
-                            <td>{{ direc_destino.pisos_escalera }} {% if direc_destino.pisos_escalera > 1 %}
+                            <td>{{ direc_destino.pisos_escalera }}
+
+                                {% if direc_destino.pisos_escalera > 1 %}
 
                                 {% if direc_destino.pisos_escalera = 10 %}
 
@@ -463,6 +485,7 @@ class="col-md-10"
                                 piso
 
                                 {% endif %}
+
                             </td>
                         </tr>
 
@@ -489,7 +512,9 @@ class="col-md-10"
                             <td>
                                 <span style="color:#777;">Cantidad de pisos a recorrer por ascensor: </span>
                             </td>
-                            <td>{{ direc_destino.pisos_ascensor }} {% if direc_destino.pisos_ascensor > 1 %}
+                            <td>{{ direc_destino.pisos_ascensor }}
+
+                                {% if direc_destino.pisos_ascensor > 1 %}
 
                                 {% if direc_destino.pisos_ascensor = 10 %}
 
@@ -527,7 +552,10 @@ class="col-md-10"
                             <td>
                                 <span style="color:#777;">Cantidad de pisos a recorrer por ascensor de servicio: </span>
                             </td>
-                            <td>{{ direc_destino.pisos_ascensor_servicio }} {% if direc_destino.pisos_ascensor_servicio > 1 %}
+                            <td>{{ direc_destino.pisos_ascensor_servicio }}
+
+                                {% if direc_destino.pisos_ascensor_servicio > 1 %}
+
                                 {% if direc_destino.pisos_ascensor_servicio = 10 %}
 
                                 o más pisos
@@ -539,14 +567,20 @@ class="col-md-10"
                                 {% endif %}
 
                                 {% else %}
+
                                 Piso
+
                                 {% endif %}
+
                             </td>
                         </tr>
 
                         {% endif %}
+
                     </table>
+
                     {% endfor %}
+
                 </span>
             </div>
         </div><!--fin row de direcciones-->
@@ -571,16 +605,12 @@ class="col-md-10"
 
     {% for ambiente in lista_ambiente %}
 
-
     <div class="panel panel-default">
         <div class="panel-heading" style="padding:0px 5px!important;">
             <h4 class="panel-title" >
-
                 <a role="tab" class="t-ambiente" id="headingOne{{forloop.counter}}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{forloop.counter}}" aria-expanded="true" aria-controls="collapseOne{{forloop.counter}}">{{ambiente.ambiente|upper}}</a>
                 <a data-toggle="modal" data-target="#myModalAmbiente" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}" title="Agregar mueble al ambiente {{ambiente.ambiente|upper}}" class="btn btn-default btn-xs botonmodalMueble hidden-print btn-addmueble" data-numero="{{ ambiente.ambiente }}">Agregar otro mueble</a>
-
             </h4>
-
         </div>
         <div id="collapseOne{{forloop.counter}}" class="panel-collapse collapse btn-colapsable in{% if forloop.first %}  {% endif %}" role="tabpanel" aria-labelledby="headingOne{{forloop.counter}}">
             <table class="table table-hover">
@@ -589,7 +619,7 @@ class="col-md-10"
                         <strong>&nbsp; &nbsp; &nbsp;Mueble</strong>
                     </td>
                     <td width="20%">
-                        <strong>Tamaño/Ocupción</strong>
+                        <strong>Tamaño/Ocupación</strong>
                     </td>
                     <td width="10%">
                         <strong>Dimensiones</strong>
@@ -615,13 +645,21 @@ class="col-md-10"
                             <span style="color:#777;" id="listservi{{mueble.id}}">
 
                                 {% regroup mueble.presupuesto_servicio_set.all by servicio as servicio_list %}
+
                                 {% for det_servivio in servicio_list %}
-                                <span class="{% if servicio %}servicioStyle{% endif %}" style="margin-left:5px;">
+
+                                <span class="{% if servicio %}servicioStyle{% endif %}" style="margin-left:5px;padding-left:5px;">
+
                                     {{ det_servivio.grouper }}
+
                                     {% for item in det_servivio.list %}
+
                                     {% if forloop.first %}
+
                                     <a title="Eliminar {{ det_servivio.grouper }}" style="font-size:10px;color:#777;cursor:pointer;" data-opcion="{% url 'upresupuestos:PresupuestoServicioDelete' item.id %}?next={{request.get_full_path}}" class="hidden-print glyphicon glyphicon-remove botonmodalEliminar" data-toggletooltip="tooltip" data-placement="left" data-toggle="modal" data-target=".eliminar"></a>
+
                                     {% endif %}
+
                                     {% endfor %}
 
                                 </span>
@@ -632,13 +670,14 @@ class="col-md-10"
                         </div>
                     </td>
                     <td>
-                        <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:right;cursor:pointer;padding:0px 0px 8px 8px;" data-toggle="modal" data-target="#myModalServicio" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ mueble.id }}" data-name="{{mueble.mueble|lower}}" class="controles glyphicon-asterisk glyphicon glyphicon-plus botonmodalServicio hidden-print" data-toggletooltip="tooltip" data-placement="left"></a>
+                        <!--<a href="{% url 'upresupuestos:PresupuestoServicioUpdate' mueble.id %}">E</a-->
+                        <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:right;cursor:pointer;padding:0px 0px 8px 8px;" data-toggle="modal" data-target="#myModalServicio" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ mueble.id }}" data-name="{{mueble.mueble|lower}}" class="controles glyphicon glyphicon-plu botonmodalServicio hidden-print" data-toggletooltip="tooltip" data-placement="left">Agregar servicio</a>
                     </td>
                     <td>
-                        <a style="padding:0px 0px 8px 16px;float:right;cursor:pointer;" title="Editar {{mueble.mueble|lower}}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleUpdate' mueble.id %}?next={{request.get_full_path}}" style="float:righ;" class="controles botonmodalMueble glyphicon glyphicon-edit hidden-print" data-toggletooltip="tooltip" data-placement="left" data-toggle="modal" data-target="#myModalAmbienteEditar"></a>
+                        <a style="padding:0px 0px 8px 16px;float:right;cursor:pointer;" title="Editar {{mueble.mueble|lower}}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleUpdate' mueble.id %}?next={{request.get_full_path}}" style="float:righ;" class="controles botonmodalMueble glyphicon glyphicon-edi hidden-print" data-toggletooltip="tooltip" data-placement="left" data-toggle="modal" data-target="#myModalAmbienteEditar">Editar mueble</a>
                     </td>
                     <td width="">
-                        <a title="Eliminar {{mueble.mueble|lower}}" style="padding:0px 0px 8px 8px;float:right;cursor:pointer;" data-opcion="{% url 'upresupuestos:PresupuestoDetalleDelete' mueble.id %}?next={{request.get_full_path}}" data-numero="{{mueble.id}}"  class="controles botonmodalEliminar glyphicon glyphicon-remove hidden-print" data-toggletooltip="tooltip" data-placement="left" data-toggle="modal" data-target=".eliminar"></a>
+                        <a title="Eliminar {{mueble.mueble|lower}}" style="padding:0px 0px 8px 8px;float:right;cursor:pointer;" data-opcion="{% url 'upresupuestos:PresupuestoDetalleDelete' mueble.id %}?next={{request.get_full_path}}" data-numero="{{mueble.id}}"  class="controles botonmodalEliminar glyphicon glyphicon-remov hidden-print" data-toggletooltip="tooltip" data-placement="left" data-toggle="modal" data-target=".eliminar">Eliminar mueble</a>
                     </td>
                 </tr>
 
@@ -663,9 +702,7 @@ class="col-md-10"
             <div class="modal-header">
                 <button type="button" class="close" id="cerrarEliminar" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">
-
                     Eliminar
-
                 </h4>
             </div>
             <iframe class="id_opcionEliminar" id="" src="" width="100%" height="200" scrolling="no" frameborder="0" seamless>
@@ -674,7 +711,7 @@ class="col-md-10"
         </div>
     </div>
 </div>
-<!-- Modal agregar direccion-->
+<!-- Modal agregar dirección-->
 <div class="modal fade" id="myModalDireccion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -776,6 +813,8 @@ class="col-md-10"
         </div>
     </div>
 </div>
+<div class="alert alert-danger" id="msjEliminado" style="display:none;" role="alert">Eliminado</div>
+<div class="alert alert-success" id="msjGuardado" style="display:none;" role="alert">Guardado</div>
 <div title="Click para Cerrar" id="cargar" style="cursor:pointer;border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:10px;box-shadow:inset yellow 0px 0px 14px;background-position:center;background-size:100%;background-color:#111111;width:300px;color:#fff;text-align:center;height:100px;padding:52px 12px 12px 12px;position:fixed;top:30%;left:40%;z-index:6;display:none;">PROCESANDO...</div>
 <script src="/static/js/presupuestoFicha/preFicha.js"></script>
 
@@ -785,7 +824,7 @@ class="col-md-10"
 
 <div class="">
     <p>
-        Se llama <strong>presupuesto</strong> al cálculo y negociación anticipado de los ingresos y egresos de una actividad económica.  Es un plan de acción dirigido a cumplir una meta prevista, expresada en valores y términos financieros que debe cumplirse en determinado tiempo y bajo ciertas condiciones previstas.
+        Se llama <strong>presupuesto</strong> al cálculo y negociación anticipado del ingreso y egreso de una actividad económica.  Es un plan de acción dirigido a cumplir una meta prevista, expresada en valores y términos financieros que debe cumplirse en determinado tiempo y bajo ciertas condiciones previstas.
     </p>
     <p>
         Puede solicitar su presupuesto con 3 simples  pasos.
@@ -799,4 +838,3 @@ class="col-md-10"
 </div>
 
 {% endblock ayuda %}
-

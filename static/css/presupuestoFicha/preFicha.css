@@ -8,3 +8,11 @@
     .t-ambiente{width:70%;}
     .btn-addmueble{width:30%;}
 }
+#msjEliminado,#msjGuardado{
+  position: fixed;
+  width: 180px;
+  top:0px;
+  left: 405px;
+  text-align: center;
+  z-index:2000;
+}

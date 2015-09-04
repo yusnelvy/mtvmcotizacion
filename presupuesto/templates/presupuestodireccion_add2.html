@@ -48,7 +48,6 @@
 
 <script src="/static/js/presupuestoForm/preDireccion.js"></script>
 <script type="text/javascript">
-//document.getElementById('id_direccion').focus();
 document.getElementById('s_rampa').setAttribute('class','checkbox-inline')
 document.getElementById('id_ascensor').setAttribute('onchange','javascript:showContent()')
 document.getElementById('id_ascensor_servicio').setAttribute('onchange','javascript:showContent2()')
@@ -70,7 +69,6 @@ else{
   $('#s_pisos_ascensor_servicio').css('visibility','hidden');
 }
 $(document).ready(function(){
-
 $('#myform').submit(function(){
     var action = "{% url 'upresupuestos:PresupuestoDireccionView' %}";
     var that = $(this);
@@ -84,14 +82,16 @@ $('#myform').submit(function(){
             var bodyp = parent.document.getElementById('id_body');
             var closep = parent.document.getElementById("btn-cerrardir");
             var closepd = parent.document.getElementById("btn-cerrardirD");
+            var msj = parent.document.getElementById('msjGuardado');
           if (data.estatus=="ok"){
             $(closep).click();
             $(closepd).click();
+            $(msj).text('Guardado con exito');
+            $(msj).fadeIn();
             setTimeout(function() {
             parent.location.reload();
             },400);
           }
-
         }
     });
     return false;
