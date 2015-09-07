@@ -108,11 +108,9 @@ $(document).ready(function(){
       ,success: function(data){
         if (data.estatus=="ok"){
           var closep = parent.document.getElementById("btn-cerrardir");
-          var closepd = parent.document.getElementById("btn-cerrardirD");
           var msj = parent.document.getElementById('msjGuardado');
           $(closep).click();
-          $(closepd).click();
-          $(msj).text('Guardado con exito');
+          $(msj).text('Guardado con éxito');
           $(msj).fadeIn();
           setTimeout(function() {$(msj).fadeOut();}, 3000);
           refresh();

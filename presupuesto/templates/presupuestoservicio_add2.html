@@ -1,138 +1,5 @@
 {% extends "base_modal_form.html" %}
 
-{% block style %}
-
-<style>
-.ms-container{
-  background: transparent url('../../static/img/switch.png') no-repeat 50% 50%;
-  width: 100%;
-  height: 300px;
-}
-
-.ms-container:after{
-  content: ".";
-  display: block;
-  height: 0;
-  line-height: 0;
-  font-size: 0;
-  clear: both;
-  min-height: 0;
-  visibility: hidden;
-}
-.ms-container .ms-selection:before{
-  content: "Servicios seleccionado:";
-}
-.ms-container .ms-selectable, .ms-container .ms-selection{
-  background: #fff;
-  color: #555555;
-  float: left;
-  width: 45%;
-}
-.ms-container .ms-selection{
-  float: right;
-}
-
-.ms-container .ms-list{
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
-  -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
-  -ms-transition: border linear 0.2s, box-shadow linear 0.2s;
-  -o-transition: border linear 0.2s, box-shadow linear 0.2s;
-  transition: border linear 0.2s, box-shadow linear 0.2s;
-  border: 0px solid #ccc;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  position: relative;
-  height:;
-  padding: 0;
-  overflow-y: auto;
-}
-
-.ms-container .ms-list.ms-focus{
-
-  outline: 0;
-  outline: thin dotted \9;
-}
-
-.ms-container ul{
-  margin: 0;
-  list-style-type: none;
-  padding: 0;
-}
-
-.ms-container .ms-optgroup-container{
-  width: 100%;
-}
-
-.ms-container .ms-optgroup-label{
-  margin: 0;
-  padding: 5px 0px 0px 5px;
-  cursor: pointer;
-  color: #999;
-}
-
-.ms-container .ms-selectable li.ms-elem-selectable,
-.ms-container .ms-selection li.ms-elem-selection{
-  border-bottom: 1px #eee solid;
-  padding: 2px 10px;
-  color: #555;
-  font-size: 14px;
-}
-
-.ms-container .ms-selectable li.ms-hover,
-.ms-container .ms-selection li.ms-hover{
-  cursor: pointer;
-  color: #fff;
-  text-decoration: none;
-  background-color: #08c;
-}
-
-.ms-container .ms-selectable li.disabled,
-.ms-container .ms-selection li.disabled{
-  background-color: #eee;
-  color: #aaa;
-  cursor: text;
-}
-
-body{padding: 0px;}
-.form-group>p>label{
-  display:block;
-  font-family: inherit;
-  font: inherit;
-}
-#id_servicio,p label[for=id_servicio],#id_detalle_presupuesto,p label[for=id_detalle_presupuesto]{display: none;}
-#id_lista_servicio{
-  box-sizing: border-box;
-  border-radius: 6px;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
-  font-size: 18px;
-  height: 46px;
-  line-height: 1.33333;
-  padding: 10px 16px;
-  display:block;
-  background-color: #FFF;
-  background-image: none;
-  border: 1px solid #CCC;
-  color: #555;
-  font-family: inherit;
-  font: inherit;
-  margin: 0px;
-  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-  width: 100%;
-}
-#id_lista_servicio:focus{
-  border-color: #66afe9;
-  outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
-}
-</style>
-
-{% endblock style %}
-
 {% block formulario %}
 
 <form action="" method="post" id="myform">
@@ -147,83 +14,86 @@ body{padding: 0px;}
   <span id="seleccion"></span>
   <button type="submit" style="float:right;" class="btn btn-default btn-registrar">Agregar</button>
 </form>
+<div class="alert alert-danger" id="seleccionServicio" style="display:none;" role="alert"></div>
 
 {% endblock formulario %}
+
+{% block style %}
+
+<link rel="stylesheet" href="/static/css/presupuestoForm/preServicio.css">
+
+{% endblock style %}
 
 {% block js_form %}
 
 <script>
 setTimeout(function() {
-document.getElementById('id_lista_servicio').focus();
+  document.getElementById('id_lista_servicio').focus();
 },500);
 $('#id_lista_servicio').multiSelect(
-  {
+{
   afterSelect: function(values){
     $("#id_servicio").val(values);
   },
 });
-
 $(document).ready(function() {
-
-$('#myform').submit(function(){
-
-  if ($('#id_lista_servicio').val() == null){
-    alert("seleccion un servicio");
-    return false;
-  }else{
-    var action = "{% url 'upresupuestos:PresupuestoServicioView' %}";
-    var that = $(this);
-    $.ajax({
+  $('#myform').submit(function(){
+    if ($('#id_lista_servicio').val() == null){
+      $("#seleccionServicio").text('Seleccione un servicio');
+      $("#seleccionServicio").fadeIn();
+      setTimeout(function() {
+        $("#seleccionServicio").fadeOut();
+      },3000);
+      return false;
+    }else{
+      var action = "{% url 'upresupuestos:PresupuestoServicioView' %}";
+      var that = $(this);
+      $.ajax({
         url: action,
         type: 'POST',
         data: that.serialize()
         ,success: function(data){
-            var modalp = parent.document.getElementById('myModalServicio');
-            var divp = parent.document.getElementsByClassName("modal-backdrop");
-            var bodyp = parent.document.getElementById('id_body');
-            var closep = parent.document.getElementById("btn-cerrar");
+          var modalp = parent.document.getElementById('myModalServicio');
+          var divp = parent.document.getElementsByClassName("modal-backdrop");
+          var bodyp = parent.document.getElementById('id_body');
+          var closep = parent.document.getElementById("btn-cerrar");
+          var guardar = parent.document.getElementById("msjGuardado");
           if (data.estatus=="ok"){
             $(closep).click();
-            //refresh();
             setTimeout(function() {
-            parent.location.reload();
-            },100);
-            //parent.location.reload(); //para refrescar la pagina
-            //$(modalp).hide();
-            //$(divp).remove();
-            //$(bodyp).removeClass('modal-open');
-            //$(bodyp).css('padding-right','');
+              parent.location.reload();
+            },1000);
+            $(guardar).css('width','300px');
+            $(guardar).text('Servicio guardado con éxito');
+            $(guardar).fadeIn();
           }else{
-            alert("Estatus "+ data.estatus);
+            $("#seleccionServicio").text(data.msj);
+            $("#seleccionServicio").fadeIn();
+            setTimeout(function() {
+              $("#seleccionServicio").fadeOut();
+            },3000);
           }
-
         },
         error: function (ajaxContext) {
-        alert('Ocurrio un error...');
-
+          alert('Ocurrió un error...');
         }
-    });
-
-    return false;
+      });
+return false;
 }
-
 });
-
 });
-
 </script>
 <script type="text/javascript">
 function refresh() {
   var id_mueble = $("#id_detalle_presupuesto").val();
   $.ajax({
-  url: "/presupuesto/detalle/servicio/"+ id_mueble,
-  success: function(data) {
-    var divs = parent.document.getElementById('listservi'+id_mueble);
-    $(divs).html(data);
-  }
- });
+    url: "/presupuesto/detalle/servicio/"+ id_mueble,
+    success: function(data) {
+      var divs = parent.document.getElementById('listservi'+id_mueble);
+      $(divs).html(data);
+    }
+  });
 }
 </script>
-
 
 {% endblock js_form %}

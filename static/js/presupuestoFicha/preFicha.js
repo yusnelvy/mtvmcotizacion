@@ -1,3 +1,4 @@
+
 //Ajusta el tamaño de un iframe al de su contenido interior para evitar scroll
 function autofitIframe(id){
     if (!window.opera && document.all && document.getElementById){
@@ -11,12 +12,25 @@ function cerrar(){
     $("#cargar").animate({"opacity":"0"},1000,function(){$("#cargar").css("display","none");});
 }
 $("#carga").click(function(){cerrar();});
+$(".resumenPresupuesto").on('click',function(evento2){
+    evento2.preventDefault();
+    var opcion = $(this).data('opcion');
+    $('#msjGuardado').css('width','200px');
+    $('#msjGuardado').fadeIn();
+    $('#msjGuardado').text('Calculando presupuesto');
+    setTimeout(function() {
+window.location=opcion;
+},500);
+
+});
 $(".botonmodalEliminar").on('click',function(evento){
     evento.preventDefault();
     var opcion = $(this).data('opcion');
     var numero = $(this).data('numero');
+    var nombre = $(this).data('nombre');
     $('.id_opcionEliminar').attr('src', opcion);
     $('.id_opcionEliminar').attr('id', numero);
+    $('.nombreEliminar').text(nombre);
 });
 $(".botonmodalServicio").on('click',function(evento){
     evento.preventDefault();
