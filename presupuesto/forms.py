@@ -30,7 +30,7 @@ class PresupuestoDetalleForm3(forms.Form):
 class PresupuestoForm(ModelForm):
 
     """Docstring"""
-    fecha_estimadamudanza = forms.DateField(widget=forms.DateInput(format='%Y-%m-%d'), input_formats=('%Y-%m-%d',))
+    fecha_estimadamudanza = forms.DateField(label='Fecha estimada de la mudanza:', widget=forms.DateInput(format='%Y-%m-%d'), input_formats=('%Y-%m-%d',))
 
     class Meta:
         model = Presupuesto
@@ -148,7 +148,7 @@ class PresupuestoDetalleForm(ModelForm):
 class PresupuestoServicioForm(ModelForm):
 
     """Docstring"""
-    lista_servicio = ModelChoiceField(Servicio.objects.exclude(servicio_material__material__contenedor=True).distinct(), widget=Select, empty_label=None, label='Servicios')
+    lista_servicio = ModelChoiceField(Servicio.objects.exclude(servicio_material__material__contenedor=True).distinct(), widget=SelectMultiple, empty_label=None, label='Servicios')
 
     class Meta:
         model = Presupuesto_servicio

@@ -2,8 +2,12 @@
 
 {% block acceso_rapido %}
 
-<a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="../../"><span class="glyphicon glyphicon-chevron-left"></span></a>
-<a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
+<a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="../../">
+    <span class="glyphicon glyphicon-chevron-left"></span>
+</a>
+<a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();">
+    <span class="glyphicon glyphicon-print"></span>
+</a>
 
 {% block acceso_rapido_adicional %}{% endblock acceso_rapido_adicional %}
 
@@ -11,48 +15,57 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="#datos-personales" style="color:#777;">Datos personales
+<li class="linknav">
+    <a href="#datos-personales" style="color:#777;">Datos personales
 
-    {% if presupuesto.dni %}
+        {% if presupuesto.dni %}
 
-    <span style="float:right;" class="glyphicon glyphicon-ok"></span>
+        <span style="float:right;" class="glyphicon glyphicon-ok"></span>
 
-    {% else %}
+        {% else %}
 
-    <span style="float:right;" class="glyphicon glyphicon-minus"></span>
+        <span style="float:right;" class="glyphicon glyphicon-minus"></span>
 
-    {% endif %}
+        {% endif %}
 
-</a></li>
-<li class="linknav"><a href="#direcciones" style="color:#777;">Direcciones y datos del inmueble
+    </a>
+</li>
+<li class="linknav">
+    <a href="#direcciones" style="color:#777;">Direcciones y datos del inmueble
 
-    {% if direccion_origen and direccion_destino %}
+        {% if direccion_origen and direccion_destino %}
 
-    <span style="float:right;" class="glyphicon glyphicon-ok"></span>
+        <span style="float:right;" class="glyphicon glyphicon-ok"></span>
 
-    {% else %}
+        {% else %}
 
-    <span style="float:right;" class="glyphicon glyphicon-minus"></span>
+        <span style="float:right;" class="glyphicon glyphicon-minus"></span>
 
-    {% endif %}
+        {% endif %}
 
-</a></li>
-<li class="linknav"><a href="#ambientes" style="color:#777;">Ambientes y muebles
+    </a>
+</li>
+<li class="linknav">
+    <a href="#ambientes" style="color:#777;">Ambientes y muebles
 
-    {% if lista_ambiente %}
+        {% if lista_ambiente %}
 
-    <span style="float:right;" class="glyphicon glyphicon-ok"></span>
+        <span style="float:right;" class="glyphicon glyphicon-ok"></span>
 
-    {% else %}
+        {% else %}
 
-    <span style="float:right;" class="glyphicon glyphicon-minus"></span>
+        <span style="float:right;" class="glyphicon glyphicon-minus"></span>
 
-    {% endif %}
+        {% endif %}
 
-</a></li>
-<a data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}" style="float:right;" class="">ver resumen</a>
+    </a>
+</li>
 
 {% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente%}
+
+<li class="linknav" id="preResumen" style="cursor:pointer;">
+    <a type="button" data-toggle="modal" data-target=".resumen21"  style="color:#fff;">Resumen del presupuesto</a>
+</li>
 
 {% endif %}
 
@@ -72,14 +85,15 @@ class="col-md-10"
 
 {% block content1 %}
 
+<link rel="stylesheet" href="/static/css/presupuestoFicha/preFicha.css">
 <h3 id="datos-personales" style="border-bottom:1px solid #e7e7e7;">Datos personales
-<a title="Editar datos personales" data-toggle="modal" data-target="#myModalDatosPersonales" data-opcion="../../editar/{{presupuesto.id}}/" data-numero="{{presupuesto.id}}" class="btn btn-default btn-xs botonmodalDatosPersonales hidden-print" data-toggletooltip="tooltip" data-placement="left" style="float:right!important;">Editar</a>
+    <a title="Editar datos personales" data-toggle="modal" data-target="#myModalDatosPersonales" data-opcion="../../editar/{{presupuesto.id}}/" data-numero="{{presupuesto.id}}" class="btn btn-default btn-xs botonmodalDatosPersonales hidden-print" data-toggletooltip="tooltip" data-placement="left" style="float:right!important;">Editar</a>
 </h3>
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="row" id="myLabel">
             <div class="col-md-5">
-                <h2>{{ presupuesto.nombre_cliente|capfirst }}</h2>
+                <h2>{{ presupuesto.nombre_cliente|title }}</h2>
             </div>
             <div class="col-md-3">
                 <h4>
@@ -96,14 +110,12 @@ class="col-md-10"
                 </h4>
             </div>
         </div>
-
     </div>
-</div><!--fin panel default datos basicos-->
+</div><!--fin panel default datos básicos-->
 <div id="direcciones" class="panel panel-default">
     <div class="panel-body">
         <div class="row">
             <div class="col-md-6" >
-
                 <h3>Dirección de origen
 
                     {% if direccion_origen %}
@@ -112,7 +124,7 @@ class="col-md-10"
 
                     <small style="float:right;" class="hidden-print btn-group btn-group-xs" role="group" aria-label="...">
                         <a data-toggle="modal" data-target="#myModalDireccion" title="Editar dirección de origen"  data-opcion="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_origen.id %}?next={{request.get_full_path}}" class="btn btn-default botonmodalDireccion edit" id="{{direc_origen.id}}" data-numero="{{direc_origen.id}}">Editar</a>
-                        <a title="Eliminar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_origen.id %}?next={{request.get_full_path}}"  class="btn btn-default botonmodalEliminar" data-toggle="modal" data-target=".eliminar">Eliminar</a>
+                        <a title="Eliminar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_origen.id %}?next={{request.get_full_path}}"  class="btn btn-default botonmodalEliminar" data-toggle="modal" data-target=".eliminar" data-nombre="Dirección de origen">Eliminar</a>
                     </small>
 
                     {% endfor %}
@@ -128,11 +140,10 @@ class="col-md-10"
 
                     {% for direc_origen in direccion_origen %}
 
-                    <p style="padding:5px;">{{ direc_origen.direccion }}</p>
-
+                    <p style="padding:5px;">{{ direc_origen.direccion|capfirst }}</p>
                     <table class="table table-condensed table-hover table-bordered" >
                         <tr>
-                            <td><span style="color:#777;">Tipo de direccion del inmueble: </span></td>
+                            <td><span style="color:#777;">Tipo de dirección del inmueble: </span></td>
                             <td>{{ direc_origen.tipo_inmueble }}</td>
                         </tr>
                         <tr>
@@ -184,7 +195,9 @@ class="col-md-10"
                                     del inmueble:
                                 </span>
                             </td>
-                            <td>{{ direc_origen.pisos }} {% if direc_origen.pisos > 1 %}
+                            <td>{{ direc_origen.pisos }}
+
+                                {% if direc_origen.pisos > 1 %}
 
                                 {% if direc_origen.pisos = 10 %}
 
@@ -201,6 +214,7 @@ class="col-md-10"
                                 piso
 
                                 {% endif %}
+
                             </td>
                         </tr>
 
@@ -225,7 +239,9 @@ class="col-md-10"
                                     a recorrer por escalera:
                                 </span>
                             </td>
-                            <td>{{ direc_origen.pisos_escalera }} {% if direc_origen.pisos_escalera > 1 %}
+                            <td>{{ direc_origen.pisos_escalera }}
+
+                                {% if direc_origen.pisos_escalera > 1 %}
 
                                 {% if direc_origen.pisos_escalera = 10 %}
 
@@ -242,6 +258,7 @@ class="col-md-10"
                                 piso
 
                                 {% endif %}
+
                             </td>
                         </tr>
 
@@ -268,7 +285,9 @@ class="col-md-10"
                             <td>
                                 <span style="color:#777;">Cantidad de pisos a recorrer por ascensor: </span>
                             </td>
-                            <td>{{ direc_origen.pisos_ascensor }} {% if direc_origen.pisos_ascensor > 1 %}
+                            <td>{{ direc_origen.pisos_ascensor }}
+
+                                {% if direc_origen.pisos_ascensor > 1 %}
 
                                 {% if direc_origen.pisos_ascensor = 10 %}
 
@@ -285,6 +304,7 @@ class="col-md-10"
                                 piso
 
                                 {% endif %}
+
                             </td>
                         </tr>
 
@@ -305,7 +325,9 @@ class="col-md-10"
                             <td>
                                 <span style="color:#777;">Cantidad de pisos a recorrer por ascensor de servicio: </span>
                             </td>
-                            <td>{{ direc_origen.pisos_ascensor_servicio }} {% if direc_origen.pisos_ascensor_servicio > 1 %}
+                            <td>{{ direc_origen.pisos_ascensor_servicio }}
+
+                                {% if direc_origen.pisos_ascensor_servicio > 1 %}
 
                                 {% if direc_origen.pisos_ascensor_servicio = 10 %}
 
@@ -322,6 +344,7 @@ class="col-md-10"
                                 piso
 
                                 {% endif %}
+
                             </td>
                         </tr>
 
@@ -332,11 +355,7 @@ class="col-md-10"
                     {% endfor %}
 
                 </span>
-
-
-
             </div>
-
             <div class="col-md-6" >
                 <h3>Dirección de destino
 
@@ -346,7 +365,7 @@ class="col-md-10"
 
                     <small style="float:right;" class="hidden-print btn-group btn-group-xs">
                         <a data-toggle="modal" data-target="#myModalDireccion" title="Editar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_destino.id %}?next={{request.get_full_path}}" class="btn btn-default botonmodalDireccion edit" id="{{direc_destino.id}}" data-numero="{{direc_destino.id}}">Editar</a>
-                        <a title="Eliminar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_destino.id %}?next={{request.get_full_path}}"  class="btn btn-default botonmodalEliminar" data-toggle="modal" data-target=".eliminar">Eliminar</a>
+                        <a title="Eliminar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_destino.id %}?next={{request.get_full_path}}"  class="btn btn-default botonmodalEliminar" data-toggle="modal" data-target=".eliminar" data-nombre="Dirección de destino">Eliminar</a>
                     </small>
 
                     {% endfor %}
@@ -362,11 +381,11 @@ class="col-md-10"
 
                     {% for direc_destino in direccion_destino %}
 
-                    <p style="padding:5px;">{{ direc_destino.direccion }}</p>
+                    <p style="padding:5px;">{{ direc_destino.direccion|capfirst }}</p>
                     <table class="table table-condensed table-hover table-bordered" >
                         <tr>
                             <td>
-                                <span style="color:#777;">Tipo de direccion del inmueble: </span>
+                                <span style="color:#777;">Tipo de dirección del inmueble: </span>
                             </td>
                             <td>{{ direc_destino.tipo_inmueble }}</td>
                         </tr>
@@ -375,6 +394,7 @@ class="col-md-10"
                                 <span style="color:#777;">Distancia del vehículo al inmueble: </span>
                             </td>
                             <td>
+
                                 {% if direc_destino.distancia_vehiculo = 70 %}
 
                                 Más de
@@ -382,6 +402,7 @@ class="col-md-10"
                                 {% endif %}
 
                                 {{ direc_destino.distancia_vehiculo }} m.
+
                             </td>
                         </tr>
                         <tr>
@@ -401,7 +422,9 @@ class="col-md-10"
                                     del inmueble:
                                 </span>
                             </td>
-                            <td>{{ direc_destino.pisos }} {% if direc_destino.pisos > 1 %}
+                            <td>{{ direc_destino.pisos }}
+
+                                {% if direc_destino.pisos > 1 %}
 
                                 {% if direc_destino.pisos = 10 %}
 
@@ -418,6 +441,7 @@ class="col-md-10"
                                 Piso
 
                                 {% endif %}
+
                             </td>
                         </tr>
 
@@ -442,7 +466,9 @@ class="col-md-10"
                                     a recorrer por escalera:
                                 </span>
                             </td>
-                            <td>{{ direc_destino.pisos_escalera }} {% if direc_destino.pisos_escalera > 1 %}
+                            <td>{{ direc_destino.pisos_escalera }}
+
+                                {% if direc_destino.pisos_escalera > 1 %}
 
                                 {% if direc_destino.pisos_escalera = 10 %}
 
@@ -459,6 +485,7 @@ class="col-md-10"
                                 piso
 
                                 {% endif %}
+
                             </td>
                         </tr>
 
@@ -485,7 +512,9 @@ class="col-md-10"
                             <td>
                                 <span style="color:#777;">Cantidad de pisos a recorrer por ascensor: </span>
                             </td>
-                            <td>{{ direc_destino.pisos_ascensor }} {% if direc_destino.pisos_ascensor > 1 %}
+                            <td>{{ direc_destino.pisos_ascensor }}
+
+                                {% if direc_destino.pisos_ascensor > 1 %}
 
                                 {% if direc_destino.pisos_ascensor = 10 %}
 
@@ -523,7 +552,10 @@ class="col-md-10"
                             <td>
                                 <span style="color:#777;">Cantidad de pisos a recorrer por ascensor de servicio: </span>
                             </td>
-                            <td>{{ direc_destino.pisos_ascensor_servicio }} {% if direc_destino.pisos_ascensor_servicio > 1 %}
+                            <td>{{ direc_destino.pisos_ascensor_servicio }}
+
+                                {% if direc_destino.pisos_ascensor_servicio > 1 %}
+
                                 {% if direc_destino.pisos_ascensor_servicio = 10 %}
 
                                 o más pisos
@@ -535,36 +567,36 @@ class="col-md-10"
                                 {% endif %}
 
                                 {% else %}
+
                                 Piso
+
                                 {% endif %}
+
                             </td>
                         </tr>
 
                         {% endif %}
+
                     </table>
+
                     {% endfor %}
+
                 </span>
             </div>
         </div><!--fin row de direcciones-->
     </div>
 </div>
-<style>
-.controles{visibility: hidden;}
-.tr-mueble:hover .controles{visibility: visible;}
-.tr-mueble:hover .servicioStyle{background: #fff;}
-.t-ambiente{cursor:pointer;font-size: 18px;width:83%;display:inline-block;padding:10px 1px;}
-.btn-addmueble{float:right;cursor:pointer;z-index:1000;width:17%;text-align:center;margin-top: 10px;}
-.servicioStyle{border: 1px solid #e7e7e7;background: #f5f5f5;border-radius: 5px;}
-@media (max-width:992px) {
-    .t-ambiente{width:70%;}
-    .btn-addmueble{width:30%;}
-}
-</style>
 <h3 id="ambientes" style="border-bottom:1px solid #e7e7e7;" >Detalle de muebles a mudar
     <small class="btn-group btn-group-xs" role="group" aria-label="..." style="float:right;">
-    <a data-toggle="modal" data-target="#myModalAmbiente" title="Agregar ambiente" style="float:righ;" class="btn btn-default btn-sm botonmodalMueble hidden-print" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}" data-numero="ambienteFocus">Agregar mueble</a>
-    <a id="addClass" style="cursor:pointer;display:none;" class="btn btn-default btn-sm hidden-print">Expandir</a>
-    <a id="removeClass" style="cursor:pointer;" class="btn btn-default btn-sm hidden-print">Contraer</a>
+        <a data-toggle="modal" data-target="#myModalAmbiente" title="Agregar ambiente" style="float:righ;" class="btn btn-default btn-sm botonmodalMueble hidden-print" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}" data-numero="ambienteFocus">Agregar mueble</a>
+
+        {% if lista_ambiente %}
+
+        <a id="addClass" style="cursor:pointer;display:none;" class="btn btn-default btn-sm hidden-print">Expandir</a>
+        <a id="removeClass" style="cursor:pointer;" class="btn btn-default btn-sm hidden-print">Contraer</a>
+
+        {% endif %}
+
     </small>
 </h3>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -573,16 +605,12 @@ class="col-md-10"
 
     {% for ambiente in lista_ambiente %}
 
-
     <div class="panel panel-default">
         <div class="panel-heading" style="padding:0px 5px!important;">
             <h4 class="panel-title" >
-
                 <a role="tab" class="t-ambiente" id="headingOne{{forloop.counter}}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{forloop.counter}}" aria-expanded="true" aria-controls="collapseOne{{forloop.counter}}">{{ambiente.ambiente|upper}}</a>
                 <a data-toggle="modal" data-target="#myModalAmbiente" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}" title="Agregar mueble al ambiente {{ambiente.ambiente|upper}}" class="btn btn-default btn-xs botonmodalMueble hidden-print btn-addmueble" data-numero="{{ ambiente.ambiente }}">Agregar otro mueble</a>
-
             </h4>
-
         </div>
         <div id="collapseOne{{forloop.counter}}" class="panel-collapse collapse btn-colapsable in{% if forloop.first %}  {% endif %}" role="tabpanel" aria-labelledby="headingOne{{forloop.counter}}">
             <table class="table table-hover">
@@ -591,7 +619,7 @@ class="col-md-10"
                         <strong>&nbsp; &nbsp; &nbsp;Mueble</strong>
                     </td>
                     <td width="20%">
-                        <strong>Tamaño/Ocupción</strong>
+                        <strong>Tamaño/Ocupación</strong>
                     </td>
                     <td width="10%">
                         <strong>Dimensiones</strong>
@@ -617,13 +645,21 @@ class="col-md-10"
                             <span style="color:#777;" id="listservi{{mueble.id}}">
 
                                 {% regroup mueble.presupuesto_servicio_set.all by servicio as servicio_list %}
+
                                 {% for det_servivio in servicio_list %}
-                                <span class="{% if servicio %}servicioStyle{% endif %}" style="margin-left:5px;">
+
+                                <span class="{% if servicio %}servicioStyle{% endif %}" style="margin-left:5px;padding-left:5px;">
+
                                     {{ det_servivio.grouper }}
+
                                     {% for item in det_servivio.list %}
+
                                     {% if forloop.first %}
-                                    <a title="Eliminar {{ det_servivio.grouper }}" style="font-size:10px;color:#777;cursor:pointer;" data-opcion="{% url 'upresupuestos:PresupuestoServicioDelete' item.id %}?next={{request.get_full_path}}" class="hidden-print glyphicon glyphicon-remove botonmodalEliminar" data-toggletooltip="tooltip" data-placement="left" data-toggle="modal" data-target=".eliminar"></a>
+
+                                    <a title="Eliminar {{ det_servivio.grouper }}" style="font-size:10px;color:#777;cursor:pointer;" data-opcion="{% url 'upresupuestos:PresupuestoServicioDelete' item.id %}?next={{request.get_full_path}}" class="hidden-print glyphicon glyphicon-remove botonmodalEliminar" data-toggletooltip="tooltip" data-placement="left" data-toggle="modal" data-target=".eliminar" data-nombre="{{ det_servivio.grouper }}"></a>
+
                                     {% endif %}
+
                                     {% endfor %}
 
                                 </span>
@@ -634,13 +670,13 @@ class="col-md-10"
                         </div>
                     </td>
                     <td>
-                        <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:right;cursor:pointer;padding:0px 0px 8px 8px;" data-toggle="modal" data-target="#myModalServicio" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ mueble.id }}" data-name="{{mueble.mueble|lower}}" class="controles glyphicon-asterisk glyphicon glyphicon-plus botonmodalServicio hidden-print" data-toggletooltip="tooltip" data-placement="left"></a>
+                        <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:right;cursor:pointer;padding:0px 0px 8px 8px;" data-toggle="modal" data-target="#myModalServicio" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ mueble.id }}" data-name="{{mueble.mueble|lower}}" class="controles glyphicon glyphicon-plu botonmodalServicio hidden-print" data-toggletooltip="tooltip" data-placement="left">Agregar servicio</a>
                     </td>
                     <td>
-                        <a style="padding:0px 0px 8px 16px;float:right;cursor:pointer;" title="Editar {{mueble.mueble|lower}}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleUpdate' mueble.id %}?next={{request.get_full_path}}" style="float:righ;" class="controles botonmodalMueble glyphicon glyphicon-edit hidden-print" data-toggletooltip="tooltip" data-placement="left" data-toggle="modal" data-target="#myModalAmbienteEditar"></a>
+                        <a style="padding:0px 0px 8px 16px;float:right;cursor:pointer;" title="Editar {{mueble.mueble|lower}}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleUpdate' mueble.id %}?next={{request.get_full_path}}" style="float:righ;" class="controles botonmodalMueble glyphicon glyphicon-edi hidden-print" data-toggletooltip="tooltip" data-placement="left" data-toggle="modal" data-target="#myModalAmbienteEditar">Editar mueble</a>
                     </td>
                     <td width="">
-                        <a title="Eliminar {{mueble.mueble|lower}}" style="padding:0px 0px 8px 8px;float:right;cursor:pointer;" data-opcion="{% url 'upresupuestos:PresupuestoDetalleDelete' mueble.id %}?next={{request.get_full_path}}" data-numero="{{mueble.id}}"  class="controles botonmodalEliminar glyphicon glyphicon-remove hidden-print" data-toggletooltip="tooltip" data-placement="left" data-toggle="modal" data-target=".eliminar"></a>
+                        <a title="Eliminar {{mueble.mueble|lower}}" style="padding:0px 0px 8px 8px;float:right;cursor:pointer;" data-opcion="{% url 'upresupuestos:PresupuestoDetalleDelete' mueble.id %}?next={{request.get_full_path}}" data-numero="{{mueble.id}}"  class="controles botonmodalEliminar glyphicon glyphicon-remov hidden-print" data-toggletooltip="tooltip" data-placement="left" data-toggle="modal" data-target=".eliminar" data-nombre="{{mueble.mueble|lower}}">Eliminar mueble</a>
                     </td>
                 </tr>
 
@@ -660,81 +696,29 @@ class="col-md-10"
 <div style="display:block;height:600px;width:100%;"></div>
 <!--modal eliminar-->
 <div class="modal fade eliminar" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-        <div class="modal-header">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
                 <button type="button" class="close" id="cerrarEliminar" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">
-
-                    Eliminar
-
+                    Eliminar <span class="nombreEliminar"></span>
                 </h4>
             </div>
-      <iframe class="id_opcionEliminar" id="" src="" width="100%" height="170" scrolling="no" frameborder="0" seamless>
-            <p>Texto alternativo para navegadores que no aceptan iframes.</p>
-      </iframe>
-    </div>
-  </div>
-</div>
-<!-- Modal finalizar presupuesto preguntar si hay servicio-->
-<div class="modal fade fpresupuestoServicio" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel2">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">Presupuesto
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="mySmallModalLabel2"></h4>
-            </div>
-            <div class="modal-body">
-
-                {% if not servicio %}
-                <p>¿Desea agragar servicio a los muebles?</p>
-
-                {% else %}
-                <p>¿Enviar presupuesto?</p>
-                {% endif %}
-            </div>
-            <div class="modal-footer">
-                {% if not servicio %}
-                <a href="#ambientes" data-dismiss="modal" class="btn btn-default">Si</a>
-                <button type="button" data-dismiss="modal" data-toggle="modal" data-target=".fpresupuesto" class="btn btn-default">No</button>
-                {% else %}
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-default">Enviar</button>
-                {% endif %}
-
-            </div>
+            <iframe class="id_opcionEliminar" id="" src="" width="100%" height="200" scrolling="no" frameborder="0" seamless>
+                <p>Texto alternativo para navegadores que no aceptan iframes.</p>
+            </iframe>
         </div>
     </div>
 </div>
-<!-- Modal finalizar presupuesto-->
-<div class="modal fade fpresupuesto" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel3">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">Resumen del presupuesto
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="mySmallModalLabel3"></h4>
-            </div>
-            <div class="modal-body">
-                <p>¿Enviar presupuesto?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-default">Enviar</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal agregar direccion-->
-<div class="modal fade" id="myModalDireccion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5">
+<!-- Modal agregar dirección-->
+<div class="modal fade" id="myModalDireccion" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-body">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn-cerrardir">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <iframe class="id_opcionDireccion" id="" src="" width="100%" height="575" scrolling="auto" frameborder="0" seamless>
+                <iframe class="id_opcionDireccion" id="" src="" width="100%" height="595" frameborder="0" scrolling="auto">
                     <p>Texto alternativo para navegadores que no aceptan iframes.</p>
                 </iframe>
             </div>
@@ -742,17 +726,17 @@ class="col-md-10"
     </div>
 </div>
 <!-- Modal agregar servicio-->
-<div class="modal fade" id="myModalServicio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel44">
+<div class="modal fade" id="myModalServicio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel444">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn-cerrar">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel4">Agregar servicio al mueble <span id="name-mueble"></span></h4>
+                <h4 class="modal-title" id="myModalLabel444">Agregar servicio al mueble <span id="name-mueble"></span></h4>
             </div>
             <div class="modal-body">
-                <iframe class="id_opcionServicio" src="{% url 'upresupuestos:PresupuestoServicioView' %}" width="100%" height="380" scrolling="no" frameborder="0" seamless>
+                <iframe class="id_opcionServicio" onload="autofitIframe(this)" src="{% url 'upresupuestos:PresupuestoServicioView' %}" width="100%" height="1" scrolling="no" frameborder="0" seamless>
                     <p>Texto alternativo para navegadores que no aceptan iframes.</p>
                 </iframe>
             </div>
@@ -770,7 +754,7 @@ class="col-md-10"
                 <h4 class="modal-title" id="myModalLabel2">Agregar detalle del presupuesto</h4>
             </div>
             <div class="modal-body">
-                <iframe class="id_opcionMueble" src="" width="100%" height="390" scrolling="no" frameborder="0" seamless>
+                <iframe class="id_opcionMueble" src="" width="100%" height="400" scrolling="auto" frameborder="0" seamless>
                     <p>Texto alternativo para navegadores que no aceptan iframes.</p>
                 </iframe>
             </div>
@@ -788,7 +772,7 @@ class="col-md-10"
                 <h4 class="modal-title" id="myModalLabel2">Editar detalle del presupuesto</h4>
             </div>
             <div class="modal-body">
-                <iframe class="id_opcionMueble" src="" id="" width="100%" height="390" scrolling="no" frameborder="0" seamless>
+                <iframe class="id_opcionMueble" transparency="transparency" src="" id="" height="400" width="100%" scrolling="no" frameborder="0" seamless>
                     <p>Texto alternativo para navegadores que no aceptan iframes.</p>
                 </iframe>
             </div>
@@ -803,123 +787,59 @@ class="col-md-10"
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn-cerrarDatosPersonales">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel4">Editar datos personales</h4>
+                <h4 class="modal-title" id="myModalLabel44">Editar datos personales</h4>
             </div>
             <div class="modal-body">
-                <iframe class="id_opcionDatosPersonales" id="" src="" width="100%" height="340" scrolling="auto" frameborder="0" seamless>
+                <iframe class="id_opcionDatosPersonales" id="" src="" width="100%" height="310"  scrolling="auto" frameborder="0">
                     <p>Texto alternativo para navegadores que no aceptan iframes.</p>
                 </iframe>
             </div>
         </div>
     </div>
 </div>
-<div title="Click para Cerrar" id="carga" style="cursor:pointer;border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:10px;box-shadow:inset yellow 0px 0px 14px;background-position:center;background-size:100%;background-color:#111111;width:300px;color:#fff;text-align:center;height:100px;padding:52px 12px 12px 12px;position:fixed;top:30%;left:40%;z-index:6;display:none;">PROCESANDO...</div>
+<!-- Modal resumen de presupuesto-->
+<div class="modal fade resumen21" tabindex="-1" role="dialog" aria-labelledby="resumen">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">Resumen del presupuesto</h4>
+      </div>
+      <div class="modal-body">
 
-<script>
-window.onload=cerrar;
-function cerrar(){
-$("#carga").animate({"opacity":"0"},1000,function(){$("#carga").css("display","none");});
-}
-$("#carga").click(function(){cerrar();});
+        {% if servicio %}
 
+            ¿Desea contratar más servicios?
 
-// Autor: @jqcaper
-// Configuraciones Generales
-var nombre_tabla = "#acordion"; // id
-var nombre_boton_eliminar = ".botonmodal"; // Clase
-var nombre_formulario_modal = "#myModalServicio"; //id
+            {% else %}
 
-// Fin de configuraciones
-//
-$(".botonmodalEliminar").on('click',function(evento){
-    evento.preventDefault();
-    var opcion = $(this).data('opcion');
-    var numero = $(this).data('numero');
-    $('.id_opcionEliminar').attr('src', opcion);
-    $('.id_opcionEliminar').attr('id', numero);
-});
-$(".botonmodalServicio").on('click',function(evento){
-    evento.preventDefault();
-    var opcion = $(this).data('opcion');
-    var name = $(this).data('name');
-    $('.id_opcionServicio').attr('src', opcion);
-    $('#name-mueble').text(name);
-});
-$(".botonmodalDireccion").on('click',function(ev){
-    ev.preventDefault();
-    var numero = $(this).data('numero');
-    var opcion = $(this).data('opcion');
-    $('.id_opcionDireccion').attr('src', opcion);
-    $('.id_opcionDireccion').attr('id', numero);
-});
-$(".botonmodalMueble").on('click',function(eve){
-    eve.preventDefault();
-    var numero = $(this).data('numero');
-    var opcion = $(this).data('opcion');
-    $('.id_opcionMueble').attr('src', opcion);
-    $('.id_opcionMueble').attr('id', numero);
-});
-$(".botonmodalDatosPersonales").on('click',function(even){
-    even.preventDefault();
-    var numero = $(this).data('numero');
-    var opcion = $(this).data('opcion');
-    $('.id_opcionDatosPersonales').attr('src', opcion);
-    $('.id_opcionDatosPersonales').attr('id', numero);
-});
-</script>
-<script>
+            ¿Desea contratar servicios?
 
+        {% endif %}
 
-$(document).ready(function() {
-//    setInterval(
-//    function contador(){
-//    var ancho = $(window).width();
- //   $('#ancho').html(ancho + 'px');
-//    if(ancho < 992){
-//        //alert('992')
-//    }
-//}
-//,500);
+      </div>
+      <div class="modal-footer">
 
+        {% if servicio %}
 
-    $(function () {
-        $('[data-toggletooltip="tooltip"]').tooltip()
-    })
-    document.getElementById('id_body').setAttribute('data-spy','scroll');
-    document.getElementById('id_body').setAttribute('data-target','#navbar-example');
-    document.getElementById('id_body').setAttribute('data-offset','70');
-    $(function(){
-//clic en un enlace de la lista
-$('.linknav a').on('click',function(e){
-//prevenir en comportamiento predeterminado del enlace
-e.preventDefault();
-//obtenemos el id del elemento en el que debemos posicionarnos
-var strAncla=$(this).attr('href');
+            <a href="#ambientes" type="button" class="btn btn-default" data-dismiss="modal" >Si</a>
+            <a class="btn btn-primary resumenPresupuesto" data-opcion="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}"  data-dismiss="modal" >No, calcular presupuesto</a>
 
-//utilizamos body y html, ya que dependiendo del navegador uno u otro no funciona
-$('body,html').stop(true,true).animate({
-//realizamos la animacion hacia el ancla
-//-126 indica que baja el scroll 126px que es la altura de la cabecera para que se coloque correctamente
-scrollTop: $(strAncla).offset().top-70
-},1000);
-});
-$('.modal-footer a').on('click',function(e){
-//prevenir en comportamiento predeterminado del enlace
-e.preventDefault();
-//obtenemos el id del elemento en el que debemos posicionarnos
-var strAncla=$(this).attr('href');
+            {% else %}
 
-//utilizamos body y html, ya que dependiendo del navegador uno u otro no funciona
-$('body,html').stop(true,true).animate({
-//realizamos la animacion hacia el ancla
-//-126 indica que baja el scroll 126px que es la altura de la cabecera para que se coloque correctamente
-scrollTop: $(strAncla).offset().top-70
-},1000);
-});
-});
+            <a href="#ambientes" type="button" class="btn btn-default" data-dismiss="modal" >Si</a>
+            <a data-opcion="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}" href="" type="button" class="btn btn-primary resumenPresupuesto" data-dismiss="modal" >No, calcular presupuesto</a>
 
-});
-</script>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="alert alert-danger" id="msjEliminado" style="display:none;" role="alert">Eliminado</div>
+<div class="alert alert-success" id="msjGuardado" style="display:none;" role="alert">Guardado</div>
+<div title="Click para Cerrar" id="cargar" style="cursor:pointer;border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:10px;box-shadow:inset yellow 0px 0px 14px;background-position:center;background-size:100%;background-color:#111111;width:300px;color:#fff;text-align:center;height:100px;padding:52px 12px 12px 12px;position:fixed;top:30%;left:40%;z-index:6;display:none;">PROCESANDO...</div>
+<script src="/static/js/presupuestoFicha/preFicha.js"></script>
 
 {% endblock content1 %}
 
@@ -927,7 +847,7 @@ scrollTop: $(strAncla).offset().top-70
 
 <div class="">
     <p>
-        Se llama <strong>presupuesto</strong> al cálculo y negociación anticipado de los ingresos y egresos de una actividad económica.  Es un plan de acción dirigido a cumplir una meta prevista, expresada en valores y términos financieros que debe cumplirse en determinado tiempo y bajo ciertas condiciones previstas.
+        Se llama <strong>presupuesto</strong> al cálculo y negociación anticipado del ingreso y egreso de una actividad económica.  Es un plan de acción dirigido a cumplir una meta prevista, expresada en valores y términos financieros que debe cumplirse en determinado tiempo y bajo ciertas condiciones previstas.
     </p>
     <p>
         Puede solicitar su presupuesto con 3 simples  pasos.
@@ -941,4 +861,3 @@ scrollTop: $(strAncla).offset().top-70
 </div>
 
 {% endblock ayuda %}
-
