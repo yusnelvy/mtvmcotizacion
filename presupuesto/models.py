@@ -139,6 +139,16 @@ class Presupuesto(models.Model):
                                                     blank=True, default=0.00)
     monto_mundanza_hrsoptimas = models.DecimalField(max_digits=9, decimal_places=2,
                                                     blank=True, default=0.00)
+    monto_recursos_revisado = models.DecimalField(max_digits=9, decimal_places=2,
+                                                  blank=True, default=0.00)
+    monto_servicios_revisado = models.DecimalField(max_digits=9, decimal_places=2,
+                                                   blank=True, default=0.00)
+    monto_vehiculo_revisado = models.DecimalField(max_digits=9, decimal_places=2,
+                                                  blank=True, default=0.00)
+    monto_materiales_revisado = models.DecimalField(max_digits=9, decimal_places=2,
+                                                    blank=True, default="0.00")
+    monto_mundanza_revisada = models.DecimalField(max_digits=9, decimal_places=2,
+                                                  blank=True, default=0.00)
     monto_sin_impuesto = models.DecimalField(max_digits=9, decimal_places=2,
                                              blank=True, default=0.00)
     monto_impuesto = models.DecimalField(max_digits=9, decimal_places=2,
@@ -146,9 +156,10 @@ class Presupuesto(models.Model):
     monto_con_impuesto = models.DecimalField(max_digits=9, decimal_places=2,
                                              blank=True, default=0.00)
     monto_descuesto_regargo = models.DecimalField(max_digits=9, decimal_places=2,
-                                                  blank=True, default=0.00)
+                                                  blank=True, default=Decimal("0.00"))
     estado = models.CharField(max_length=20, default='Iniciado')
     activo = models.CharField(max_length=20, default='Activado')
+    tipo_calculo = models.CharField(max_length=20, default='Optimizado')
 
     def __str__(self):
         return self.dni
@@ -185,9 +196,9 @@ class Presupuesto(models.Model):
         return max(self.monto_m3_inmueble, self.monto_amb_inmueble, self.monto_personaoptima)
     maxrecursooptimo = property(_get_maxrecursooptimo)
 
-    def _get_vehiculomontomax(self):
-        return max(self.monto_vehiculo_hora, self.monto_vehiculo_recorrido)
-    vehiculomontomax = property(_get_vehiculomontomax)
+    def _get_vehiculomonto(self):
+        return self.monto_vehiculo_hora + self.monto_vehiculo_recorrido
+    vehiculomonto = property(_get_vehiculomonto)
 
     def _get_mudanzamontorevisadotoerico(self):
         return self.monto_mudanza_hrsdirectas + self.monto_descuesto_regargo
@@ -196,6 +207,10 @@ class Presupuesto(models.Model):
     def _get_mudanzamontorevisadooptimo(self):
         return self.monto_mundanza_hrsoptimas + self.monto_descuesto_regargo
     mudanzamontorevisadooptimo = property(_get_mudanzamontorevisadooptimo)
+
+    def _get_mudanzamontorevisado(self):
+        return self.monto_mundanza_revisada + self.monto_descuesto_regargo
+    mudanzamontorevisado = property(_get_mudanzamontorevisado)
 
     class Meta:
         verbose_name = "Presupuesto"

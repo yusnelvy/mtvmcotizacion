@@ -183,6 +183,17 @@ DATETIME_INPUT_FORMATS = (
     '%m/%d/%y',              # '10/25/06'
 )
 
+# Configuración de email
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_HOST_USER = 'yusnelvy@gmail.com'
+
+EMAIL_HOST_PASSWORD = 'yuny5832'
+
+EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
