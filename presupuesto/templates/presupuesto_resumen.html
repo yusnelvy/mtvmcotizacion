@@ -4,13 +4,10 @@
 {% block col1 %}class="col-md-10"{% endblock col1 %}
 
 {% block titulo %}
-
 <title>Presupuesto</title>
-
 {% endblock titulo %}
 
 {% block content1 %}
-
 <div class="panel panel-default">
     <table class="table table-hover">
         <tr>
@@ -40,16 +37,16 @@
             </td>
         </tr>
         <tr>
-            <td>
+            <td class="border-none">
                 <strong>DNI: </strong> {{ presupuesto.dni }} <br>
                 <strong>Teléfonos: </strong>{{ presupuesto.telefono }}
             </td>
-            <td width="30%">
+            <td width="30%" class="border-none">
                 <strong> Nombre: </strong>{{ presupuesto.nombre_cliente|title }}<br>
                 <strong>Email: </strong>{{ presupuesto.email }}
             </td>
-            <td></td>
-            <td></td>
+            <td class="border-none"></td>
+            <td class="border-none"></td>
         </tr>
         <tr>
             <td colspan="2">
@@ -168,7 +165,7 @@
         <tr>
             <td colspan="4">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-4 break-inside">
                         <h4>Detalle de la Mudanza</h4>
                         <table class="table table-hover table-condensed table-bordered" align="center">
                             <tr align="center">
@@ -208,7 +205,7 @@
                                 <td>{{ presupuesto.total_volumen_materiales|floatformat:"2"}}</td>
                             </tr>
                         </table>
-                        <table class="table table-hover table-condensed table-bordered" align="center">
+                        <table class="table table-hover table-condensed table-bordered break" align="center">
                             <tr align="center">
                                 <td width="50px">Tiempo de servicios</td>
                                 <td width="50px">Tiempo de recorrido</td>
@@ -225,7 +222,7 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 break-inside">
                         <h4>Detalle de Vehículos</h4>
                         <table class="table table-hover table-condensed table-bordered" align="center" style="display:inline-table">
                             <tr align="center">
@@ -288,234 +285,254 @@
         {% if perms.presupuesto.see_presupuestoitem %}
 
         <tr>
-            <td colspan="4">
-                <h4>Detalle del presupuesto</h4>
-                <table class="table table-hover table-condensed table-bordered" align="center" style="border: 2px solid #ddd;">
-                    <tr align="center">
-                        <td width="200px"></td>
-                        <td width="100px">Cantidad</td>
-                        <td width="100px">Tarifa</td>
-                        <td width="100px">Total recurso</td>
-                        <td width="100px">Básico</td>
-                        <td width="100px">Optimizado</td>
-                    </tr>
-                    <tr align="center">
-                        <td>Tiempo de mudanza </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            {% calular_horas presupuesto.duracion_teorica %}
-                        </td>
-                        <td>
-                            {% calular_horas presupuesto.duracion_optima %}
-                        </td>
-                    </tr>
-                    <tr align="center" style="border-top: 2px solid #ddd;">
-                        <td>Valor por m3 </td>
-                        <td>{{presupuesto.total_m3|floatformat:"2"}}</td>
-                        <td>{{direccion_origen.0.valor_metrocubico_complejiadad}}</td>
-                        <td>{{presupuesto.monto_m3_inmueble}}</td>
-                        <td>
-                            {% if presupuesto.maxrecursoteorico == presupuesto.monto_m3_inmueble %}
-                            {{presupuesto.maxrecursoteorico}}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if presupuesto.maxrecursooptimo == presupuesto.monto_m3_inmueble %}
-                            {{presupuesto.maxrecursooptimo}}
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr align="center">
-                        <td>Valor por ambiente </td>
-                        <td>{{ presupuesto.cantidad_ambientes}}</td>
-                        <td>{{direccion_origen.0.valor_ambiente_complejidad}}</td>
-                        <td>{{presupuesto.monto_amb_inmueble}}</td>
-                        <td>
-                            {% if presupuesto.maxrecursoteorico == presupuesto.monto_amb_inmueble %}
-                            {{presupuesto.maxrecursoteorico}}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if presupuesto.maxrecursooptimo == presupuesto.monto_amb_inmueble %}
-                            {{presupuesto.maxrecursooptimo}}
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr align="center">
-                        <td>Valor por recurso humano</td>
-                        <td>{{ presupuesto.cantidadpersonaterica}}</td>
-                        <td></td>
-                        <td>{{presupuesto.monto_personateorica}}</td>
-                        <td>
-                            {% if presupuesto.maxrecursoteorico == presupuesto.monto_personateorica %}
-                            {{presupuesto.maxrecursoteorico}}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if presupuesto.maxrecursooptimo == presupuesto.monto_personateorica %}
-                            {{presupuesto.maxrecursooptimo}}
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr align="center">
-                        <td>Valor con RRHH adicional</td>
-                        <td>{{ presupuesto.cantidadpersonaoptima}}</td>
-                        <td></td>
-                        <td>{{presupuesto.monto_personaoptima}}</td>
-                        <td>
-                            {% if presupuesto.maxrecursoteorico == presupuesto.monto_personaoptima %}
-                            {{presupuesto.maxrecursoteorico}}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if presupuesto.maxrecursooptimo == presupuesto.monto_personaoptima %}
-                            {{presupuesto.maxrecursooptimo}}
-                            {% endif %}
-                        </td>
-                    </tr>
+            <td colspan="4" class="border-none">
+                <div class="break-inside">
+                    <h4>Detalle del presupuesto</h4>
+                    <table class="table table-hover table-condensed table-bordered" align="center" style="border: 2px solid #ddd;">
+                        <tr align="center">
+                            <td width="200px"></td>
+                            <td width="100px">Cantidad</td>
+                            <td width="100px">Tarifa</td>
+                            <td width="100px">Total recurso</td>
+                            <td width="100px">Básico</td>
+                            <td width="100px">Optimizado</td>
+                            <td width="100px">Revisado</td>
+                        </tr>
+                        <tr align="center">
+                            <td>Tiempo de mudanza </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                {% calular_horas presupuesto.duracion_teorica %}
+                            </td>
+                            <td>
+                                {% calular_horas presupuesto.duracion_optima %}
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr align="center" style="border-top: 2px solid #ddd;">
+                            <td>Valor por m3 </td>
+                            <td>{{presupuesto.total_m3|floatformat:"2"}}</td>
+                            <td>{{direccion_origen.0.valor_metrocubico_complejiadad}}</td>
+                            <td>{{presupuesto.monto_m3_inmueble}}</td>
+                            <td>
+                                {% if presupuesto.maxrecursoteorico == presupuesto.monto_m3_inmueble %}
+                                {{presupuesto.maxrecursoteorico}}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if presupuesto.maxrecursooptimo == presupuesto.monto_m3_inmueble %}
+                                {{presupuesto.maxrecursooptimo}}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if presupuesto.maxrecursooptimo == presupuesto.monto_m3_inmueble %}
+                                {{presupuesto.maxrecursooptimo}}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr align="center">
+                            <td>Valor por ambiente </td>
+                            <td>{{ presupuesto.cantidad_ambientes}}</td>
+                            <td>{{direccion_origen.0.valor_ambiente_complejidad}}</td>
+                            <td>{{presupuesto.monto_amb_inmueble}}</td>
+                            <td>
+                                {% if presupuesto.maxrecursoteorico == presupuesto.monto_amb_inmueble %}
+                                {{presupuesto.maxrecursoteorico}}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if presupuesto.maxrecursooptimo == presupuesto.monto_amb_inmueble %}
+                                {{presupuesto.maxrecursooptimo}}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if presupuesto.maxrecursooptimo == presupuesto.monto_amb_inmueble %}
+                                {{presupuesto.maxrecursooptimo}}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr align="center">
+                            <td>Valor por recurso humano</td>
+                            <td>{{ presupuesto.cantidadpersonaterica}}</td>
+                            <td></td>
+                            <td>{{presupuesto.monto_personateorica}}</td>
+                            <td>
+                                {% if presupuesto.maxrecursoteorico == presupuesto.monto_personateorica %}
+                                {{presupuesto.maxrecursoteorico}}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if presupuesto.maxrecursooptimo == presupuesto.monto_personateorica %}
+                                {{presupuesto.maxrecursooptimo}}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if presupuesto.maxrecursooptimo == presupuesto.monto_personateorica %}
+                                {{presupuesto.maxrecursooptimo}}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr align="center">
+                            <td>Valor con RRHH adicional</td>
+                            <td>{{ presupuesto.cantidadpersonaoptima}}</td>
+                            <td></td>
+                            <td>{{presupuesto.monto_personaoptima}}</td>
+                            <td>
+                                {% if presupuesto.maxrecursoteorico == presupuesto.monto_personaoptima %}
+                                {{presupuesto.maxrecursoteorico}}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if presupuesto.maxrecursooptimo == presupuesto.monto_personaoptima %}
+                                {{presupuesto.maxrecursooptimo}}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if presupuesto.maxrecursooptimo == presupuesto.monto_personaoptima %}
+                                {{presupuesto.maxrecursooptimo}}
+                                {% endif %}
+                            </td>
+                        </tr>
 
-                    <tr align="center"  style="border-top: 2px solid #ddd;">
-                        <td>Valor de vehículos por hrs</td>
-                        <td></td>
-                        <td></td>
-                        <td>{{presupuesto.monto_vehiculo_hora}}</td>
-                        <td>
-                            {% if presupuesto.vehiculomontomax == presupuesto.monto_vehiculo_hora %}
-                            {{presupuesto.vehiculomontomax}}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if presupuesto.vehiculomontomax == presupuesto.monto_vehiculo_hora %}
-                            {{presupuesto.vehiculomontomax}}
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr align="center">
-                        <td>Valor de vehículos por km</td>
-                        <td></td>
-                        <td></td>
-                        <td>{{presupuesto.monto_vehiculo_recorrido}}</td>
-                        <td>
-                            {% if presupuesto.vehiculomontomax == presupuesto.monto_vehiculo_recorrido %}
-                            {{presupuesto.vehiculomontomax}}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if presupuesto.vehiculomontomax == presupuesto.monto_vehiculo_recorrido %}
-                            {{presupuesto.vehiculomontomax}}
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr align="center" style="border-top: 2px solid #ddd;">
-                        <td>Servicios aplicados</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>{{presupuesto.monto_servicios}}</td>
-                        <td>{{presupuesto.monto_servicios}}</td>
-                    </tr>
-                    <tr align="center">
-                        <td>Materiales utilizados</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>{{presupuesto.monto_materiales}}</td>
-                        <td>{{presupuesto.monto_materiales}}</td>
-                    </tr>
-                    <tr style="border-top: 2px solid #ddd;">
-                        <td colspan="4">Valor total mudanza</td>
-                        <td align="center">{{presupuesto.monto_mudanza_hrsdirectas}}</td>
-                        <td align="center">{{presupuesto.monto_mundanza_hrsoptimas}}</td>
-                    </tr>
-                    <tr style="border-top: 2px solid #ddd;">
-                        <td colspan="4">Descuento / recargo</td>
-                        <td align="center">{{presupuesto.monto_descuesto_regargo}}</td>
-                        <td align="center">{{presupuesto.monto_descuesto_regargo}}</td>
-                    </tr>
-                    <tr style="border-top: 2px solid #ddd;">
-                        <td colspan="4">Valor total mudanza revisado</td>
-                        <td align="center">{{presupuesto.mudanzamontorevisadotoerico}}</td>
-                        <td align="center">{{presupuesto.mudanzamontorevisadooptimo}}</td>
-                    </tr>
-                </table>
+                        <tr align="center"  style="border-top: 2px solid #ddd;">
+                            <td>Valor de vehículos por hrs</td>
+                            <td></td>
+                            <td></td>
+                            <td>{{presupuesto.monto_vehiculo_hora}}</td>
+                            <td rowspan="2">
+                                {{presupuesto.vehiculomonto}}
+                            </td>
+                            <td rowspan="2">
+                                {{presupuesto.vehiculomonto}}
+                            </td>
+                            <td rowspan="2">
+                                {{presupuesto.vehiculomonto}}
+                            </td>
+                        </tr>
+                        <tr align="center">
+                            <td>Valor de vehículos por km</td>
+                            <td></td>
+                            <td></td>
+                            <td>{{presupuesto.monto_vehiculo_recorrido}}</td>
+                        </tr>
+                        <tr align="center" style="border-top: 2px solid #ddd;">
+                            <td>Servicios aplicados</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{presupuesto.monto_servicios}}</td>
+                            <td>{{presupuesto.monto_servicios}}</td>
+                            <td>{{presupuesto.monto_servicios}}</td>
+                        </tr>
+                        <tr align="center">
+                            <td>Materiales utilizados</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{presupuesto.monto_materiales}}</td>
+                            <td>{{presupuesto.monto_materiales}}</td>
+                            <td>{{presupuesto.monto_materiales}}</td>
+                        </tr>
+                        <tr style="border-top: 2px solid #ddd;">
+                            <td colspan="4">Valor total mudanza</td>
+                            <td align="center">{{presupuesto.monto_mudanza_hrsdirectas}}</td>
+                            <td align="center">{{presupuesto.monto_mundanza_hrsoptimas}}</td>
+                            <td align="center">{{presupuesto.monto_mundanza_hrsoptimas}}</td>
+                        </tr>
+                        <tr style="border-top: 2px solid #ddd;">
+                            <td colspan="4">Descuento / recargo</td>
+                            <td align="center">{{presupuesto.monto_descuesto_regargo}}</td>
+                            <td align="center">{{presupuesto.monto_descuesto_regargo}}</td>
+                            <td align="center">{{presupuesto.monto_descuesto_regargo}}</td>
+                        </tr>
+                        <tr style="border-top: 2px solid #ddd;">
+                            <td colspan="4">Valor total mudanza revisado</td>
+                            <td align="center">{{presupuesto.mudanzamontorevisadotoerico}}</td>
+                            <td align="center">{{presupuesto.mudanzamontorevisadooptimo}}</td>
+                            <td align="center">{{presupuesto.mudanzamontorevisadooptimo}}</td>
+                        </tr>
+                    </table>
+                </div>
             </td>
         </tr>
 
         {% endif %} <!-- end del if de verificación del permiso en presupuesto -->
 
         <tr>
-            <td colspan="4">
+            <td colspan="4" class="border-none">
                 <h4>Detalle de los muebles</h4>
 
                 <div class="row">
                     <div class="col-md-12">
                         {% for ambiente in ambientes %}
-                        <h4>{{ambiente.ambiente}}</h4>
-                        <table class="table table-hover table-condensed table-bordered" align="center">
-                            <tr>
-                                <th width="250px">Mueble</th>
-                                <th width="100px">Tamaño</th>
-                                <th width="100px">Ocupación</th>
-                                <th width="200px">Servicio</th>
+                        <div class="break-inside">
+                            <h4>{{ambiente.ambiente}}</h4>
+                            <table class="table table-hover table-condensed table-bordered" align="center">
+                                <tr>
+                                    <th width="250px">Mueble</th>
+                                    <th width="100px">Tamaño</th>
+                                    <th width="100px">Ocupación</th>
+                                    <th width="200px">Servicio</th>
 
-                                {% if perms.presupuesto_detalle.see_detallepresupuestoitem %}
+                                    {% if perms.presupuesto_detalle.see_detallepresupuestoitem %}
 
-                                <th width="60px">Peso (kgs)</th>
-                                <th width="60px">Vol. (m3)</th>
-                                <th width="100px">Contenedor</th>
-                                <th width="60px">Trasl.</th>
+                                    <th width="60px">Peso (kgs)</th>
+                                    <th width="60px">Vol. (m3)</th>
+                                    <th width="100px">Contenedor</th>
+                                    <th width="60px">Trasl.</th>
 
-                                 {% endif %} <!-- end del if de verificación del permiso en detalle presupuesto -->
+                                     {% endif %} <!-- end del if de verificación del permiso en detalle presupuesto -->
 
-                            </tr>
+                                </tr>
 
-                            {% for det_mueble in detalle_list %}
-                            {% if ambiente.ambiente = det_mueble.ambiente %}
-                            <tr align="center">
-                                <td>
-                                    {{ det_mueble.mueble }}
-                                </td>
-                                <td>
-                                    {{ det_mueble.tamano }} <br>
-                                    ({{ det_mueble.ancho|floatformat:"0" }}x{{ det_mueble.largo|floatformat:"0" }}x{{ det_mueble.alto|floatformat:"0" }})
-                                </td>
-                                <td>{{ det_mueble.ocupacidad }}</td>
-                                <td>
-                                    {% if servicio %}
-                                    {% for det_servivio in servicio %}
-                                    {% if det_servivio.detalle_presupuesto = det_mueble.id %}
-                                    {{ det_servivio.servicio }}
-                                    {% if forloop.last %}
+                                {% for det_mueble in detalle_list %}
+                                {% if ambiente.ambiente = det_mueble.ambiente %}
+                                <tr align="center">
+                                    <td>
+                                        {{ det_mueble.mueble }}
+                                    </td>
+                                    <td>
+                                        {{ det_mueble.tamano }} <br>
+                                        ({{ det_mueble.ancho|floatformat:"0" }}x{{ det_mueble.largo|floatformat:"0" }}x{{ det_mueble.alto|floatformat:"0" }})
+                                    </td>
+                                    <td>{{ det_mueble.ocupacidad }}</td>
+                                    <td>
+                                        {% if servicio %}
+                                        {% for det_servivio in servicio %}
+                                        {% if det_servivio.detalle_presupuesto = det_mueble.id %}
+                                        {{ det_servivio.servicio }}
+                                        {% if forloop.last %}
 
-                                    {% else %} -
+                                        {% else %} -
 
-                                    {% endif %}
-                                    {% endif %}
-                                    {% endfor %}
-                                    {% endif %}
-                                </td>
+                                        {% endif %}
+                                        {% endif %}
+                                        {% endfor %}
+                                        {% endif %}
+                                    </td>
 
-                                {% if perms.presupuesto_detalle.see_detallepresupuestoitem %}
+                                    {% if perms.presupuesto_detalle.see_detallepresupuestoitem %}
 
-                                <td>{{ det_mueble.peso|floatformat:"0"}}</td>
-                                <td>{{det_mueble.volumen_mueble|floatformat:"0"}}</td>
-                                <td>{{ det_mueble.cantidad_contenedor }} {{ det_mueble.descripcion_contenedor}} <br>
-                                    {{ det_mueble.peso_contenedor|floatformat:"0"}} kgs
-                                </td>
-                                <td>
-                                    {{ det_mueble.trasladable|yesno:"Si,No" }}
+                                    <td>{{ det_mueble.peso|floatformat:"0"}}</td>
+                                    <td>{{det_mueble.volumen_mueble|floatformat:"0"}}</td>
+                                    <td>{{ det_mueble.cantidad_contenedor }} {{ det_mueble.descripcion_contenedor}} <br>
+                                        {{ det_mueble.peso_contenedor|floatformat:"0"}} kgs
+                                    </td>
+                                    <td>
+                                        {{ det_mueble.trasladable|yesno:"Si,No" }}
 
-                                </td>
+                                    </td>
 
-                                {%endif%} <!-- end del if de verificación del permiso en detalle presupuesto -->
+                                    {%endif%} <!-- end del if de verificación del permiso en detalle presupuesto -->
 
-                            </tr>
+                                </tr>
 
-                            {%endif%}
-                            {% endfor %}
-                        </table>
+                                {%endif%}
+                                {% endfor %}
+                            </table>
+                        </div>
                         {% endfor %}
                     </div>
                 </div>
@@ -525,7 +542,7 @@
         {% if perms.presupuesto_servicio.see_servicioitem %}
 
         <tr>
-            <td colspan="4">
+            <td colspan="4" class="border-none">
                 <h4>Detalle de los servicios</h4>
 
                 <table class="table table-hover table-condensed table-bordered" align="center">
@@ -546,6 +563,7 @@
 
                     {% for servicio in servicio_list %}
                     {% for item in servicio.list %}
+
                     <tr align="center">
                         {% if forloop.counter == 1 %}
                         <td rowspan="{{servicio.list|length}}">
@@ -579,9 +597,12 @@
                             {{item.smontomat}}
                         </td>
                     </tr>
+
                     {% endfor %}
                     {% endfor %}
+
                 </table>
+
             </td>
         </tr>
 
@@ -589,7 +610,6 @@
 
     </table>
 </div>
-
 
 {% endblock content1 %}
 

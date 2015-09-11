@@ -1,0 +1,386 @@
+{% extends "base_modal_form.html" %}
+{% load presupuesto_extras %}
+{% block formulario %}
+    <form action="" id="myform" method="post">
+        {% csrf_token %}
+
+        <div class="break-inside">
+            <h4>Detalle del presupuesto</h4>
+            <table class="table table-hover table-condensed table-bordered" align="center" style="border: 2px solid #ddd;">
+                <tr align="center">
+                    <td width="250px"></td>
+                    <td width="150px">Cantidad</td>
+                    <td width="150px">Tarifa</td>
+                    <td width="150px">Total recurso</td>
+                    <td width="150px">Básico</td>
+                    <td width="150px">Optimizado</td>
+                    <td width="100px">Revisado</td>
+                </tr>
+                <tr align="center">
+                    <td>Tiempo de mudanza </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+
+                        {% calular_horas presupuesto.duracion_teorica %}
+
+                    </td>
+                    <td>
+
+                        {% calular_horas presupuesto.duracion_optima %}
+
+                    </td>
+                    <td>
+                        <input type="hidden" value="{{ presupuesto.id }}" id="idpresupuesto">
+                    </td>
+                </tr>
+                <tr align="center" style="border-top: 2px solid #ddd;">
+                    <td>Valor por m3 </td>
+                    <td>{{presupuesto.total_m3|floatformat:"2"}}</td>
+                    <td>{{direccion_origen.0.valor_metrocubico_complejiadad}}</td>
+                    <td>{{presupuesto.monto_m3_inmueble}}</td>
+                    <td>
+
+                        {% if presupuesto.maxrecursoteorico == presupuesto.monto_m3_inmueble %}
+                        {{presupuesto.maxrecursoteorico}}
+                        {% endif %}
+
+                    </td>
+                    <td>
+
+                        {% if presupuesto.maxrecursooptimo == presupuesto.monto_m3_inmueble %}
+                        {{presupuesto.maxrecursooptimo}}
+                        {% endif %}
+
+                    </td>
+                    <td rowspan="4">
+                        {{form.monto_recursos_revisado}}
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td>Valor por ambiente </td>
+                    <td>{{ presupuesto.cantidad_ambientes}}</td>
+                    <td>{{direccion_origen.0.valor_ambiente_complejidad}}</td>
+                    <td>{{presupuesto.monto_amb_inmueble}}</td>
+                    <td>
+
+                        {% if presupuesto.maxrecursoteorico == presupuesto.monto_amb_inmueble %}
+                        {{presupuesto.maxrecursoteorico}}
+                        {% endif %}
+
+                    </td>
+                    <td>
+
+                        {% if presupuesto.maxrecursooptimo == presupuesto.monto_amb_inmueble %}
+                        {{presupuesto.maxrecursooptimo}}
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+                <tr align="center">
+                    <td>Valor por recurso humano</td>
+                    <td>{{ presupuesto.cantidadpersonaterica}}</td>
+                    <td></td>
+                    <td>{{presupuesto.monto_personateorica}}</td>
+                    <td>
+
+                        {% if presupuesto.maxrecursoteorico == presupuesto.monto_personateorica %}
+                        {{presupuesto.maxrecursoteorico}}
+                        {% endif %}
+
+                    </td>
+                    <td>
+
+                        {% if presupuesto.maxrecursooptimo == presupuesto.monto_personateorica %}
+                        {{presupuesto.maxrecursooptimo}}
+                        {% endif %}
+
+                    </td>
+
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td>Valor con RRHH adicional</td>
+                    <td>{{ presupuesto.cantidadpersonaoptima}}</td>
+                    <td></td>
+                    <td>{{presupuesto.monto_personaoptima}}</td>
+                    <td>
+
+                        {% if presupuesto.maxrecursoteorico == presupuesto.monto_personaoptima %}
+                        {{presupuesto.maxrecursoteorico}}
+                        {% endif %}
+
+                    </td>
+                    <td>
+
+                        {% if presupuesto.maxrecursooptimo == presupuesto.monto_personaoptima %}
+                        {{presupuesto.maxrecursooptimo}}
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                <tr align="center"  style="border-top: 2px solid #ddd;">
+                    <td>Valor de vehículos por hrs</td>
+                    <td></td>
+                    <td></td>
+                    <td>{{presupuesto.monto_vehiculo_hora}}</td>
+                    <td rowspan="2">
+                        {{presupuesto.vehiculomonto}}
+                    </td>
+                    <td rowspan="2">
+                        {{presupuesto.vehiculomonto}}
+                    </td>
+                    <td rowspan="2">
+                        {{form.monto_vehiculo_revisado}}
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td>Valor de vehículos por km</td>
+                    <td></td>
+                    <td></td>
+                    <td>{{presupuesto.monto_vehiculo_recorrido}}</td>
+                </tr>
+                <tr align="center" style="border-top: 2px solid #ddd;">
+                    <td>Servicios aplicados</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{presupuesto.monto_servicios}}</td>
+                    <td>{{presupuesto.monto_servicios}}</td>
+                    <td>
+                        {{form.monto_servicios_revisado}}
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td>Materiales utilizados</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{presupuesto.monto_materiales}}</td>
+                    <td>{{presupuesto.monto_materiales}}</td>
+                    <td>
+                        {{form.monto_materiales_revisado}}
+                    </td>
+                </tr>
+                <tr style="border-top: 2px solid #ddd;">
+                    <td colspan="4">Valor total mudanza</td>
+                    <td align="center">{{presupuesto.monto_mudanza_hrsdirectas}}</td>
+                    <td align="center">{{presupuesto.monto_mundanza_hrsoptimas}}</td>
+                    <td align="center">
+                        {{form.monto_mundanza_revisada}}
+                    </td>
+                </tr>
+                <tr style="border-top: 2px solid #ddd;">
+                    <td colspan="4">Descuento / recargo</td>
+                    <td align="center">
+                        <input id="descuesto_regargobasico" name="monto_descuesto_regargo" step="0.01" type="number" value="{{presupuesto.monto_descuesto_regargo}}">
+                        <input id="porc_descuentobasico" type="text" value="">  %
+                    </td>
+                    <td align="center">
+                        <input id="descuesto_regargooptimo" name="monto_descuesto_regargo" step="0.01" type="number" value="{{presupuesto.monto_descuesto_regargo}}">
+                        <input id="porc_descuentooptimo" type="text" value="">  %
+
+                    </td>
+                    <td align="center">
+                        {{form.monto_descuesto_regargo}}
+                        <input id="porc_descuento" type="text" value="">  %
+                    </td>
+                </tr>
+                <tr style="border-top: 2px solid #ddd;">
+                    <td colspan="4">Valor total mudanza revisado</td>
+                    <td align="center">
+                        <input id="mudanzamontorevisadotoerico" type="text" value="{{presupuesto.mudanzamontorevisadotoerico}}" readonly>
+                    </td>
+                    <td align="center">
+                        <input id="mudanzamontorevisadooptimo" type="text" value="{{presupuesto.mudanzamontorevisadooptimo}}" readonly>
+                    </td>
+                    <td align="center">
+                        <input id="mudanzamontorevisado" type="text" value={% if presupuesto.tipo_calculo == 'Revisado' %}
+                        {{presupuesto.mudanzamontorevisado|floatformat:"2"}}
+                        {% elif presupuesto.tipo_calculo == 'Optimizado' %}
+                        {{presupuesto.mudanzamontorevisadooptimo|floatformat:"2"}}
+                        {% else %}
+                        {{presupuesto.mudanzamontorevisadotoerico|floatformat:"2"}}
+                        {% endif %} readonly>
+
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" class="btn btn-default" style="float:right;">Guardar</button>
+        </div>
+    </form>
+{% endblock formulario %}
+{% block js_form %}
+<script type="text/javascript">
+$(document).ready(function(){
+
+    $('#id_monto_recursos_revisado').on('keyup', function(){
+      totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
+
+      porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuesto_regargo").val());
+
+      totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuesto_regargo").val());
+
+      $("#id_monto_mundanza_revisada").val(totalmudanza);
+      $("#porc_descuento").val(porc_descuento);
+      $("#mudanzamontorevisado").val(totalmudanzarevisado);
+
+    });
+
+    $('#id_monto_vehiculo_revisado').on('keyup', function(){
+      totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
+
+      porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuesto_regargo").val());
+
+      totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuesto_regargo").val());
+
+      $("#id_monto_mundanza_revisada").val(totalmudanza);
+      $("#porc_descuento").val(porc_descuento);
+      $("#mudanzamontorevisado").val(totalmudanzarevisado);
+
+    });
+
+    $('#id_monto_servicios_revisado').on('keyup', function(){
+      totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
+
+      porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuesto_regargo").val());
+
+      totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuesto_regargo").val());
+
+      $("#id_monto_mundanza_revisada").val(totalmudanza);
+      $("#porc_descuento").val(porc_descuento);
+      $("#mudanzamontorevisado").val(totalmudanzarevisado);
+
+    });
+
+    $('#id_monto_materiales_revisado').on('keyup', function(){
+      totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
+
+      porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuesto_regargo").val());
+
+      totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuesto_regargo").val());
+
+      $("#id_monto_mundanza_revisada").val(totalmudanza);
+      $("#porc_descuento").val(porc_descuento);
+      $("#mudanzamontorevisado").val(totalmudanzarevisado);
+
+    });
+
+    $('#id_monto_descuesto_regargo').on('keyup', function(){
+      porc_descuento = calcular_porcdescuentorecargo($("#id_monto_mundanza_revisada").val(), $("#id_monto_descuesto_regargo").val());
+
+      totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#id_monto_descuesto_regargo').val())
+
+      $("#porc_descuento").val(porc_descuento);
+      $("#mudanzamontorevisado").val(totalmudanzarevisado);
+
+    });
+
+    $('#porc_descuento').on('keyup', function(){
+      descuentorecargo = calcular_descuentorecargo($("#id_monto_mundanza_revisada").val(), $("#porc_descuento").val());
+
+      totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), descuentorecargo)
+
+      $("#id_monto_descuesto_regargo").val(descuentorecargo);
+      $("#mudanzamontorevisado").val(totalmudanzarevisado)
+
+    });
+
+    $('#descuesto_regargooptimo').on('keyup', function(){
+        porc_descuento = calcular_porcdescuentorecargo($("#id_monto_mundanza_revisada").val(), $("#descuesto_regargooptimo").val());
+
+        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuesto_regargooptimo').val())
+
+        $("#porc_descuentooptimo").val(porc_descuento);
+        $("#mudanzamontorevisadooptimo").val(totalmudanzarevisado);
+
+    });
+
+    $('#porc_descuentooptimo').on('keyup', function(){
+      descuentorecargo = calcular_descuentorecargo($("#id_monto_mundanza_revisada").val(), $("#porc_descuentooptimo").val());
+
+      totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), descuentorecargo)
+
+      $("#descuesto_regargooptimo").val(descuentorecargo);
+      $("#mudanzamontorevisadooptimo").val(totalmudanzarevisado)
+
+    });
+
+    $('#descuesto_regargobasico').on('keyup', function(){
+        porc_descuento = calcular_porcdescuentorecargo($("#id_monto_mundanza_revisada").val(), $("#descuesto_regargobasico").val());
+
+        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuesto_regargobasico').val())
+
+        $("#porc_descuentobasico").val(porc_descuento);
+        $("#mudanzamontorevisadotoerico").val(totalmudanzarevisado);
+
+    });
+
+    $('#porc_descuentobasico').on('keyup', function(){
+      descuentorecargo = calcular_descuentorecargo($("#id_monto_mundanza_revisada").val(), $("#porc_descuentobasico").val());
+
+      totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), descuentorecargo)
+
+      $("#descuesto_regargobasico").val(descuentorecargo);
+      $("#mudanzamontorevisadotoerico").val(totalmudanzarevisado)
+
+    });
+
+
+});
+
+// funcion para calcular el total de la mudanza antes del desc/recargo
+function calcular_totalmudanza(valorrecurso,valorvehiculo,valorservicio,valormaterial){
+  var resultado = 0;
+
+  resultado= parseFloat(valorrecurso) + parseFloat(valorvehiculo) + parseFloat(valorservicio) + parseFloat(valormaterial);
+
+  if (isNaN(parseFloat(resultado))) {
+  resultado=0;
+  }
+
+  return resultado.toFixed(2);
+}
+
+function calcular_porcdescuentorecargo(totalmudanza,descuentorecargo){
+    var resultado=0;
+
+    resultado=(descuentorecargo/totalmudanza)*100
+
+    if (isNaN(parseFloat(resultado))) {
+        resultado=0;
+    }
+
+    return resultado.toFixed(2);
+}
+
+function calcular_descuentorecargo(totalmudanza,porcdescuentorecargo){
+    var resultado=0;
+
+    resultado=(totalmudanza*porcdescuentorecargo)/100
+
+    if (isNaN(parseFloat(resultado))) {
+        resultado=0;
+    }
+
+    return resultado.toFixed(2);
+}
+
+function calcular_totalmudanzarevisado(totalmudanza, descuentorecargo){
+  var resultado = 0;
+
+  resultado= parseFloat(totalmudanza) + parseFloat(descuentorecargo);
+
+  if (isNaN(parseFloat(resultado))) {
+  resultado=0;
+  }
+
+  return resultado.toFixed(2);
+}
+
+</script>
+{% endblock js_form %}
