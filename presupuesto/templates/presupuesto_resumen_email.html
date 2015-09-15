@@ -6,6 +6,15 @@
 
 </head>
 <body>
+    {% if user.username %}
+
+    {{ user.username }}
+
+    {% endif %}
+
+
+        user: {{ user.username }}
+
     <div class="panel panel-default">
         <table class="table table-hover">
             <tr>

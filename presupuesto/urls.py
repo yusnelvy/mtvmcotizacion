@@ -66,4 +66,5 @@ urlpatterns = patterns('',
                            name='PresupuestoServicioViewFomset'),
                        url(r'^datos_precargados/(?P<pk>\d+)/', DatosPrecargadoUpdate.as_view(),
                            name='DatosPrecargadoUpdate'),
+                       url(r'^generar_pdf/$', views.generar_pdf, name='pdf'),
                        )

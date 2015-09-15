@@ -1,8 +1,10 @@
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
-# from django.template import Context
-# import cStringIO as StringIO
-# import xhtml2pdf as pisa
+from django.template import Context
+
+# from io import BytesIO
+
+# import xhtml2pdf.pisa as pisa
 # from django.http import HttpResponse
 # from cgi import escape
 
@@ -24,7 +26,7 @@ def Email(template, context, subject, text_content, from_email, to):
 #     template = get_template(template_src)
 #     context = Context(context_dict)
 #     html = template.render(context)
-#     result = StringIO.StringIO()
+#     result = BytesIO()
 
 #     pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("ISO-8859-1")), result)
 #     if not pdf.err:
