@@ -14,7 +14,7 @@ class="col-md-10"
 
 {% block titulo_form %}
 
-  <h2>Nuevo presupuesto</h2>
+<h2>Nuevo presupuesto</h2>
 
 {% endblock titulo_form %}
 
@@ -23,14 +23,14 @@ class="col-md-10"
 <link rel="stylesheet" href="/static/css/presupuestoForm/preDatosPersonales.css">
 <div class="form-group filtra-campos">
 
-{% for campo in form %}
+    {% for campo in form %}
 
     <p id="{{campo.name}}">
         <label for="{{campo.id_for_label}}">{{ campo.label }}</label>
         {{ campo }}
     </p>
 
-{% endfor %}
+    {% endfor %}
 
 </div>
 <script src="/static/js/presupuestoForm/preDatosPersonales.js"></script>
@@ -41,7 +41,7 @@ class="col-md-10"
 
 <div class="">
     <p>
-        Se llama <strong>presupuesto</strong> al cálculo y negociación anticipado de los ingresos y egresos de una actividad económica.  Es un plan de acción dirigido a cumplir una meta prevista, expresada en valores y términos financieros que debe cumplirse en determinado tiempo y bajo ciertas condiciones previstas.
+        El <strong>Presupuesto</strong> es el cálculo anticipado del valor del servicio a prestarse en determinado tiempo y bajo ciertas condiciones indicadas por el cliente.
     </p>
 </div>
 

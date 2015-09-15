@@ -1,5 +1,17 @@
 {% extends 'base_lista.html' %}
 
+{% block link_navegacion %}
+
+<li class="linknav"><a width="" href="{% url 'upresupuestos:DatosPrecargadoUpdate' 1 %}?next={{request.get_full_path}}" style="color:#777;">Datos precargados</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'upresupuestos:DatosPrecargadoUpdate' 1 %}?next={{request.get_full_path}}">Datos precargados</a></li>
+
+{% endblock footerLink %}
+
 {% block titulo %}
 
 <title>Presupuesto</title>
@@ -35,9 +47,48 @@ Eliminar presupuesto
 
   </span>
 </h6>
-<a width="" href="{% url 'upresupuestos:DatosPrecargadoUpdate' 1 %}?next={{request.get_full_path}}" class="glyphicon glyphicon-tag" >Datos precargados</a><br>
 
 {% endblock cantidad_tabla %}
+
+{% block pagination %}
+
+{% if page_obj.has_previous %}
+
+<li>
+  <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ page_obj.number }}
+
+    de
+
+    {{ page_obj.paginator.num_pages }}
+
+    desde el presupuesto
+
+    {{ page_obj.start_index }}
+
+    hasta el presupuesto
+
+    {{ page_obj.end_index }}
+
+  </a>
+</li>
+
+{% if page_obj.has_next %}
+
+<li>
+  <a href="?page={{ page_obj.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
 
 {% block cuerpo_tabla %}
 
@@ -71,7 +122,6 @@ Eliminar presupuesto
 
 {% endfor %}
 
-{% if page_obj.has_previous %} <a href="{% url 'PresupuestoList' %}?page={{ page_obj.previous_page_number }}"> Ir a página {{ page_obj.previous_page_number }} </a> {% endif %} La página actual es {{ page_obj.number }} {% if page_obj.has_next %} <a href="{% url 'PresupuestoList' %}?page={{ page_obj.next_page_number }}"> Ir a página {{ page_obj.next_page_number }} </a> {% endif %}
 <!-- Modal editar datos personales-->
 <div class="modal fade" id="myModalDatosPersonales" tabindex="-1" role="dialog" aria-labelledby="myModalLabel44">
     <div class="modal-dialog modal-lg" role="document">

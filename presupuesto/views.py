@@ -716,7 +716,8 @@ class PresupuestoDetalleUpdate(UpdateView):
 
         #actualizar valore de canti_ambiente y cant_mueble en presupuesto
         presu = Presupuesto_Detalle.objects.filter(presupuesto=self.request.POST.get('presupuesto'))
-        cant_ambiente = presu.values('ambiente').annotate(acount=Count('ambiente')).order_by('ambiente')
+        cant_ambiente = presu.values('ambiente').annotate(
+            acount=Count('ambiente')).order_by('ambiente')
 
         cant_mueble = presu.count()
         reporter = Presupuesto.objects.filter(pk=self.request.POST.get('presupuesto'))
