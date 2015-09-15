@@ -16,11 +16,24 @@
   text-align: center;
   z-index:2000;
 }
-#preResumen{
+#preResumen {
     background: #337ab7;
     color: #fff!important;
 }
-#preResumen a:hover{
+#preResumen a:hover {
     background: #337ab7;
+    color: #fff!important;
+}
+
+#preDetalle {
+    background: #5cb85c;
+    color: #fff!important;
+    display: block;
+    padding: 10px 5px!important;
+    width: 100%;
+    text-decoration: none!important;
+}
+#preDetalle a:hover {
+    background: #5cb85c!important;
     color: #fff!important;
 }

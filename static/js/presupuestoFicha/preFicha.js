@@ -15,9 +15,9 @@ $("#carga").click(function(){cerrar();});
 $(".resumenPresupuesto").on('click',function(evento2){
     evento2.preventDefault();
     var opcion = $(this).data('opcion');
-    $('#msjGuardado').css('width','200px');
+    $('#msjGuardado').css('width','300px');
     $('#msjGuardado').fadeIn();
-    $('#msjGuardado').text('Calculando presupuesto');
+    $('#msjGuardado').text('Cargando resumen del presupuesto');
     setTimeout(function() {
 window.location=opcion;
 },500);

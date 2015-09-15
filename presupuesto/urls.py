@@ -9,7 +9,8 @@ from presupuesto.views import PresupuestoView, PresupuestoList, PresupuestoDetai
     PresupuestoDelete, PresupuestoDetalleDelete, PresupuestoServicioDelete, \
     PresupuestoServicioList, PresupuestoDetalleServicioDetail, \
     PresupuestoDetalleDetail2, PresupuestoDireccionOrigenDetail, \
-    PresupuestoDireccionDestinoDetail, DatosPrecargadoUpdate, PresupuestoDatosPersonales
+    PresupuestoDireccionDestinoDetail, DatosPrecargadoUpdate, \
+    PresupuestoDatosPersonales, PresupuestoRevisarUpdateView
 from presupuesto import views
 from presupuesto.forms import PresupuestoDetalleForm1, PresupuestoDetalleForm2, \
     PresupuestoDetalleForm3
@@ -37,6 +38,9 @@ urlpatterns = patterns('',
                        url(r'^ficha/datospersonales/(?P<pk>\d+)/$',
                            PresupuestoDatosPersonales.as_view(),
                            name='PresupuestoDatosPersonales'),
+                       url(r'^ficha/revisar/(?P<pk>\d+)/$',
+                           PresupuestoRevisarUpdateView.as_view(),
+                           name='PresupuestoRevisarUpdateView'),
                        url(r'^ficha/direccionorigen/(?P<pk>\d+)/$',
                            PresupuestoDireccionOrigenDetail.as_view(),
                            name='PresupuestoDireccionOrigenDetail'),
@@ -77,7 +81,9 @@ urlpatterns = patterns('',
                            views.ajax_tamano_request,
                            name='ajax_tamano_request'),
                        url(r'^detalle/form$',
-                            ContactWizard.as_view([PresupuestoDetalleForm1, PresupuestoDetalleForm2, PresupuestoDetalleForm3])),
+                           ContactWizard.as_view([PresupuestoDetalleForm1,
+                                                  PresupuestoDetalleForm2,
+                                                  PresupuestoDetalleForm3])),
                        url(r'^servicio/(?P<pk>\d+)$',
                            PresupuestoServicioList.as_view(),
                            name='PresupuestoServicioList'),
@@ -96,4 +102,6 @@ urlpatterns = patterns('',
                        url(r'^datos_precargados/(?P<pk>\d+)/',
                            DatosPrecargadoUpdate.as_view(),
                            name='DatosPrecargadoUpdate'),
-  )
+                       url(r'^generar_pdf/$',
+                           views.generar_pdf,
+                           name='pdf'),)
