@@ -179,6 +179,20 @@ class PresupuestoRevisarForm(ModelForm):
                  'monto_mundanza_revisada',\
                  'monto_descuesto_regargo'
         widgets = {
-        'monto_mundanza_revisada': TextInput(attrs={'readonly': 'readonly'}),
-        'monto_recursos_revisado': TextInput(attrs={'required': 'True'})
+            'monto_mundanza_revisada': TextInput(attrs={'readonly': 'readonly', 'class': 'input-re check3'}),
+            'monto_recursos_revisado': TextInput(
+                attrs={'required': 'True', 'class': 'input-re check3'}
+                ),
+            'monto_vehiculo_revisado': TextInput(
+                attrs={'required': 'True', 'class': 'input-re check3'}
+                ),
+            'monto_servicios_revisado': TextInput(
+                attrs={'required': 'True', 'class': 'input-re check3'}
+                ),
+            'monto_materiales_revisado': TextInput(
+                attrs={'required': 'True', 'class': 'input-re check3'}
+                ),
+            'monto_descuesto_regargo': TextInput(
+                attrs={'required': 'True', 'class': 'input-descuento-recargo check3', 'style': 'text-align:left;'}
+                )
         }

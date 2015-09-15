@@ -140,7 +140,7 @@ body{
 .barra-vertical{
   background:#f5f5f5;
   width:180px;
-  color: #777!important;
+  color: #777;
   height:100%;
   z-index:0;
   position:fixed;
@@ -163,6 +163,7 @@ body{
     z-index: 1000;
     border-bottom: 1px solid #e7e7e7;
   }
+  #preResumen{float: right;}
   .linknav{padding:0px!important;display:inline-block!important;border-right:0px solid #e7e7e7;}
   .nav_l{padding:0px!important;background:#f5f5f5;list-style:none;padding:5px;max-width:1000px;}
   .divider-vertical{display: none;}

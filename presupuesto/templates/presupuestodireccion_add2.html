@@ -40,6 +40,20 @@
 
 {% endif %}
 
+@media (max-width:600px) {
+
+  {% if form.tipo_direccion.value = "Destino" %}
+
+  button{position: absolute;bottom:-325px;}
+
+  {% else %}
+
+  button{position: absolute;bottom:-400px;}
+
+  {% endif %}
+
+}
+
 </style>
 
 {% endblock style %}
@@ -48,11 +62,6 @@
 
 <script src="/static/js/presupuestoForm/preDireccion.js"></script>
 <script type="text/javascript">
-document.getElementById('s_rampa').setAttribute('class','checkbox-inline')
-document.getElementById('id_ascensor').setAttribute('onchange','javascript:showContent()')
-document.getElementById('id_ascensor_servicio').setAttribute('onchange','javascript:showContent2()')
-document.getElementById('s_ascensor').setAttribute('class','checkbox-inline')
-document.getElementById('s_ascensor_servicio').setAttribute('class','checkbox-inline')
 check5 = document.getElementById("id_ascensor");
 check6 = document.getElementById("id_ascensor_servicio");
 if (check5.checked){
@@ -68,6 +77,11 @@ if (check6.checked){
 else{
   $('#s_pisos_ascensor_servicio').css('visibility','hidden');
 }
+document.getElementById('s_rampa').setAttribute('class','checkbox-inline');
+document.getElementById('id_ascensor').setAttribute('onchange','javascript:showContent()');
+document.getElementById('id_ascensor_servicio').setAttribute('onchange','javascript:showContent2()');
+document.getElementById('s_ascensor').setAttribute('class','checkbox-inline');
+document.getElementById('s_ascensor_servicio').setAttribute('class','checkbox-inline');
 $(document).ready(function(){
 $('#myform').submit(function(){
     var action = "{% url 'upresupuestos:PresupuestoDireccionView' %}";
@@ -81,11 +95,9 @@ $('#myform').submit(function(){
             var divp = parent.document.getElementsByClassName("modal-backdrop");
             var bodyp = parent.document.getElementById('id_body');
             var closep = parent.document.getElementById("btn-cerrardir");
-            var closepd = parent.document.getElementById("btn-cerrardirD");
             var msj = parent.document.getElementById('msjGuardado');
           if (data.estatus=="ok"){
             $(closep).click();
-            $(closepd).click();
             $(msj).text('Guardado con exito');
             $(msj).fadeIn();
             setTimeout(function() {
@@ -96,7 +108,6 @@ $('#myform').submit(function(){
     });
     return false;
 });
-
 });
 function refresh() {
   var tipo_direccion = $("#id_tipo_direccion").val();
@@ -111,7 +122,6 @@ function refresh() {
     urldir = "/presupuesto/ficha/direcciondestino/"+ id_presupuesto;
     iddiv = 'direccion-destino';
   }
-
   $.ajax({
     url: urldir,
     success: function(data) {

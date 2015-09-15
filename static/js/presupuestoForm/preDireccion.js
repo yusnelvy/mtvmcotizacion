@@ -1,12 +1,10 @@
 setTimeout(function() {
-document.getElementById('id_direccion').focus();
-},100);
-
+$('label[for=id_direccion]').click();
+},500);
 function showContent() {
   element = document.getElementById("s_pisos_ascensor");
   pisos = document.getElementById("id_pisos_escalera").value;
   check = document.getElementById("id_ascensor");
-
   if (check.checked) {
     $('#s_pisos_ascensor').css('visibility','visible');
     if (pisos == "0"){
@@ -14,7 +12,6 @@ function showContent() {
     }else{
       document.getElementById("id_pisos_ascensor").value = pisos;
     }
-
   }
   else {
     $('#s_pisos_ascensor').css('visibility','hidden');
@@ -46,7 +43,6 @@ function showContent2() {
         $("#id_tipo_inmueble").val(data[0].tipoinmueble);
       });
   });
-
   $("input[name=lista_ocupacion]").click(function () {
     id_ocupacion = $('input[name=lista_ocupacion]:checked').val();
     $.get('/presupuesto/direccion/nuevo',
