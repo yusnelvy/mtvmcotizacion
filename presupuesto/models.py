@@ -74,11 +74,17 @@ TIEMPO_RECORRIDO = (
 class Presupuesto(models.Model):
     dni = models.CharField(max_length=20)
     nombre_cliente = models.CharField(max_length=250)
+    empresa_cliente = models.CharField(max_length=250, blank=True)
+    cargo_cliente = models.CharField(max_length=250, blank=True)
     telefono = models.CharField(max_length=100)
+    telefono_celular = models.CharField(max_length=100, blank=True)
     email = models.EmailField()
     cotizador = models.ForeignKey(User, related_name="creado_por")
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_estimadamudanza = models.DateTimeField()
+    fecha_creacion = models.DateField(auto_now_add=True)
+    hora_creacion = models.TimeField(auto_now_add=True)
+    fecha_estimadamudanza = models.DateField()
+    hora_estimadamudanza = models.TimeField()
+    fuente_promocion = models.CharField(max_length=100)
     descripcion_vehiculo = models.TextField(blank=True, default=0)
     descripcion_persona = models.TextField(blank=True, default=0)
     cantidad_vehiculo = models.IntegerField(blank=True, default=0)
@@ -111,14 +117,20 @@ class Presupuesto(models.Model):
                                                    blank=True, default=0.000)
     total_m3 = models.DecimalField(max_digits=8, decimal_places=3,
                                    blank=True, default=0.000)
-    recorrido_km = models.DecimalField(choices=RECORRIDO_KM, max_digits=7, decimal_places=2,
-                                       blank=False, default='5.00')
-    tiempo_recorrido = models.DecimalField(choices=TIEMPO_RECORRIDO, max_digits=7, decimal_places=2, blank=False, default='1.00')
-    tiempo_servicios = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
-    tiempo_carga = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
-    duracion_teorica = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
-    duracion_optima = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
-    tiempo_total = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
+    recorrido_km = models.DecimalField(choices=RECORRIDO_KM, max_digits=7,
+                                       decimal_places=2, blank=False, default='0.00')
+    tiempo_recorrido = models.DecimalField(choices=TIEMPO_RECORRIDO, max_digits=7,
+                                           decimal_places=2, blank=False, default='1.00')
+    tiempo_servicios = models.DecimalField(max_digits=7, decimal_places=2,
+                                           blank=True, default='0.00')
+    tiempo_carga = models.DecimalField(max_digits=7, decimal_places=2,
+                                       blank=True, default='0.00')
+    duracion_teorica = models.DecimalField(max_digits=7, decimal_places=2,
+                                           blank=True, default='0.00')
+    duracion_optima = models.DecimalField(max_digits=7, decimal_places=2,
+                                          blank=True, default='0.00')
+    tiempo_total = models.DecimalField(max_digits=7, decimal_places=2,
+                                       blank=True, default='0.00')
     monto_vehiculo_hora = models.DecimalField(max_digits=9, decimal_places=2,
                                               blank=True, default=0.00)
     monto_vehiculo_recorrido = models.DecimalField(max_digits=9, decimal_places=2,
@@ -220,6 +232,7 @@ class Presupuesto(models.Model):
 class Presupuesto_direccion(models.Model):
     """docstring"""
     presupuesto = models.ForeignKey(Presupuesto, on_delete=models.PROTECT)
+    orden = models.IntegerField()
     direccion = models.TextField()
     tipo_direccion = models.CharField(max_length=100)
     tipo_inmueble = models.CharField(max_length=100)
@@ -289,14 +302,21 @@ class Presupuesto_Detalle(models.Model):
 class Presupuesto_servicio(models.Model):
     detalle_presupuesto = models.ForeignKey(Presupuesto_Detalle, on_delete=models.PROTECT)
     servicio = models.CharField(max_length=100)
-    monto_servicio = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default='0.00')
+    monto_servicio = models.DecimalField(max_digits=9, decimal_places=2,
+                                         blank=True, default='0.00')
     material = models.TextField()
-    cantidad_material = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
-    precio_material = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default='0.00')
-    monto_material = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default='0.00')
-    volumen_material = models.DecimalField(max_digits=8, decimal_places=3, blank=True, default='0.000')
-    peso_material = models.DecimalField(max_digits=9, decimal_places=3, blank=True, default='0.000')
-    tiempo_aplicado = models.DecimalField(max_digits=7, decimal_places=2, blank=True, default='0.00')
+    cantidad_material = models.DecimalField(max_digits=7, decimal_places=2,
+                                            blank=True, default='0.00')
+    precio_material = models.DecimalField(max_digits=9, decimal_places=2,
+                                          blank=True, default='0.00')
+    monto_material = models.DecimalField(max_digits=9, decimal_places=2,
+                                         blank=True, default='0.00')
+    volumen_material = models.DecimalField(max_digits=8, decimal_places=3,
+                                           blank=True, default='0.000')
+    peso_material = models.DecimalField(max_digits=9, decimal_places=3,
+                                        blank=True, default='0.000')
+    tiempo_aplicado = models.DecimalField(max_digits=7, decimal_places=2,
+                                          blank=True, default='0.00')
 
     def __str__(self):
         return u' %s - %s' % (self.detalle_presupuesto, self.servicio)

@@ -3,6 +3,7 @@ from django.db import models
 
 # Create your models here.
 class Empresa(models.Model):
+    """docstring for Empresa"""
     empresa = models.CharField(max_length=250)
     telefonos = models.CharField(max_length=250)
     direccion = models.CharField(max_length=250)
@@ -11,3 +12,12 @@ class Empresa(models.Model):
     responsable = models.CharField(max_length=250, null=True, blank=True)
     cuit = models.CharField(max_length=100, null=True, blank=True)
     logo = models.ImageField(upload_to='static/image/')
+
+
+class FuentePromocion(models.Model):
+    """docstring for FuentePromocion"""
+    fuente_promocion = models.CharField(max_length=100)
+
+    def __init__(self, arg):
+        super(FuentePromocion, self).__init__()
+        self.arg = arg
