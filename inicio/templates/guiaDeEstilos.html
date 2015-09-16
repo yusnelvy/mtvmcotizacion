@@ -1,0 +1,533 @@
+{% extends 'base_ficha.html' %}
+
+{% block acceso_rapido %}
+
+<a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="../">
+    <span class="glyphicon glyphicon-chevron-left"></span>
+</a>
+<a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();">
+    <span class="glyphicon glyphicon-print"></span>
+</a>
+
+{% block acceso_rapido_adicional %}{% endblock acceso_rapido_adicional %}
+
+{% endblock acceso_rapido %}
+
+{% block link_navegacion %}
+
+<li class="linknav" id="" style="cursor:pointer;">
+    <a type="button"  style="color:#777;" href="#tipografia">Tipografía</a>
+</li>
+<li class="linknav" id="" style="cursor:pointer;">
+    <a type="button"  style="color:#777;" href="#colores">Paleta de colores</a>
+</li>
+<li class="linknav" id="" style="cursor:pointer;">
+    <a type="button"  style="color:#777;" href="#iconos">Iconos</a>
+</li>
+<li class="linknav" id="" style="cursor:pointer;">
+    <a type="button"  style="color:#777;" href="#botones">Botones</a>
+</li>
+<li class="linknav" id="" style="cursor:pointer;">
+    <a type="button"  style="color:#777;" href="#formularios">Formularios</a>
+</li>
+<li class="linknav" id="" style="cursor:pointer;">
+    <a type="button"  style="color:#777;" href="#listas">Listas</a>
+</li>
+<li class="linknav" id="" style="cursor:pointer;">
+    <a type="button"  style="color:#777;" href="#barras">Barra vertical</a>
+</li>
+
+{% endblock link_navegacion %}
+
+{% block titulo %}
+
+<title>Guía de estilos</title>
+
+{% endblock titulo %}
+
+{% block col1 %}
+
+class="col-md-10"
+
+{% endblock col1 %}
+
+{% block content1 %}
+
+<style>
+.paleta {
+    display: block;
+    width: 100%;
+    height: 200px;
+    background: #265a88;
+}
+.paleta:hover {
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)!important;
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+}
+.paleta-header {
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    background: #fff;
+    border-bottom: 1px solid #e7e7e7;
+}
+</style>
+<div class="page-header">
+    <div class="h1">Guía de estilos</div>
+</div>
+<div id="tipografia">
+    <h2>Tipografía </h2>
+    <p>
+        La aplicación Mudarte se encuentra tres tipos de fuentes Sans-serif, "Helvetica Neue" y "Glyphicons Halflings". <br>
+        Sans-serif se usa en el texto de párrafo. Helvetica Neue en los títulos de h1 hasta el h6. <br>
+        Y Glyphicons Halflings se usas para los controles.
+    </p>
+    <small>Ejemplo:</small>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <legend>Helvetica Neue</legend>
+                    <h1>h1. heading -<small> 36px Helvetica Neue</small></h1>
+                    <h2>h2. heading -<small> 30px Helvetica Neue</small></h2>
+                    <h3>h3. heading -<small> 24px Helvetica Neue</small></h3>
+                    <h4>h4. heading -<small> 18px Helvetica Neue</small></h4>
+                    <h5>h5. heading -<small> 14px Helvetica Neue</small></h5>
+                    <h6>h6. heading -<small> 12px Helvetica Neue</small></h6>
+                </div>
+                <div class="col-md-3">
+                    <legend>Sans-serif</legend>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent arcu ex, dapibus nec porttitor at, sollicitudin vitae magna. Etiam maximus pellentesque arcu, blandit aliquet ligula dictum sit amet. Vestibulum elit nisi, tristique eget convallis ac, semper ac quam. Cras ante odio, varius sit amet elementum vel, eleifend vitae lectus.
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    <legend>Glyphicons Halflings</legend>
+                    <br>
+                    <br>
+                    <br>
+                    <table class="table table-condensed">
+                        <tr style="text-align:center;">
+                            <td colspan="80px">
+                                <a title="Eliminar" href="#" role="button" class="glyphicon" id="" data-name="">Agregar</a>
+                            </td>
+                            <td colspan="80px">
+                                <a title="Eliminar" href="#" role="button" class="glyphicon" id="" data-name="">Editar</a>
+                            </td>
+                            <td colspan="80px">
+                                <a title="Eliminar" href="#" role="button" class="glyphicon" id="" data-name="">Eliminar</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="80px"></td>
+                            <td colspan="80px"></td>
+                            <td colspan="80px"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="colores">
+    <h2>Paleta de colores </h2>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="paleta panel panel-default" style="background: #fff;">
+                <div class="paleta-header">#FFF</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="paleta panel panel-default" style="background: #f5f5f5;">
+                <div class="paleta-header">#F5F5F5</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="paleta panel panel-default" style="background: #e7e7e7;">
+                <div class="paleta-header">#E7E7E7</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="paleta panel" style="background: #777;">
+                <div class="paleta-header">#777</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="paleta panel">
+                <div class="paleta-header">#265A88</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="paleta panel panel-default" style="background: #337ab7;">
+                <div class="paleta-header">#337AB7</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="paleta panel" style="background: #E38D13;">
+                <div class="paleta-header">#E38D13</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="paleta panel panel-default" style="background: #000;">
+                <div class="paleta-header">#000</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="paleta panel" style="background: #5CB85C;">
+                <div class="paleta-header">#5CB85C</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="paleta panel panel-default" style="background: #5BC0DE;">
+                <div class="paleta-header">#5BC0DE</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="paleta panel" style="background: #F0AD4E;">
+                <div class="paleta-header">#F0AD4E</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="paleta panel panel-default" style="background: #D9534F;">
+                <div class="paleta-header">#D9534F</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="iconos">
+    <h2>Iconos</h2>
+    <p>
+        Los iconos que usa el sistema mudarte son los iconos de bootstrap, un framework que hace <br>
+        el desarrollo front-end web más rápido y más fácil. Está hecho para la gente de todos los niveles, <br>
+        los dispositivos de todas las formas, y los proyectos de todos los tamaños.
+    </p>
+    <div class="panel panel-default">
+        <table class="table table-hover ">
+            <tr class="active">
+                <td>
+                    <strong>Icono</strong>
+                </td>
+                <td>
+                    <strong>Descripción</strong>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-plus"></span></td>
+                <td>
+                    Agregar nuevo objeto
+                </td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-edit"></span></td>
+                <td>Editar objeto</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-remove"></span></td>
+                <td>Eliminar un objeto</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-user"></span></td>
+                <td>Representar un usuario</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-home"></span></td>
+                <td>Inicio</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-road"></span></td>
+                <td>Logo de la compañía</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-flag"></span></td>
+                <td>Notificación</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-book"></span></td>
+                <td>Blog</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-print"></span></td>
+                <td>Imprimir</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-new-window"></span></td>
+                <td>Abrir enlace en nueva pestaña</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-chevron-left"></span></td>
+                <td>Volver</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-thumbs-up"></span></td>
+                <td>Soporte</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-phone"></span></td>
+                <td>Contáctenos</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-file"></span></td>
+                <td>Ver ficha</td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="icon-question"></span>
+                </td>
+                <td>Ayuda</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div id="botones">
+    <h2>Botones</h2>
+    <p>
+        Los botones de acción se utilizan en todo el sitio, para centrar la atención de los <br>
+        usuarios sobre los flujos importantes del sitio se diferencia el color según su acción.
+    </p>
+    <small>Ejemplo:</small><br>
+    <button type="button" class="btn btn-default">Default</button>
+    <button type="button" class="btn btn-primary">Primary</button>
+    <button type="button" class="btn btn-success">Success</button>
+    <button type="button" class="btn btn-info">Info</button>
+    <button type="button" class="btn btn-warning">Warning</button>
+    <button type="button" class="btn btn-danger">Danger</button>
+
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <strong style="width:70px;display:inline-block;">Default: </strong> se usa como acción por defecto en toda la aplicación.
+                </li>
+                <li class="list-group-item">
+                    <strong style="width:70px;display:inline-block;">Primary: </strong> se usa como acción de selección de elementos.
+                </li>
+                <li class="list-group-item">
+                    <strong style="width:70px;display:inline-block;">Success: </strong> se usa como acción primaria para completar un proceso.
+                </li>
+                <li class="list-group-item">
+                    <strong style="width:70px;display:inline-block;">Info: </strong> <small>en construcción.</small>
+                </li>
+                <li class="list-group-item">
+                    <strong style="width:70px;display:inline-block;">Warning: </strong> <small>en construcción.</small>
+                </li>
+                <li class="list-group-item">
+                    <strong style="width:70px;display:inline-block;">Danger: </strong> se usa como acción para la eliminación de un objeto.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="formularios">
+    <h2>Formularios</h2>
+    <p>Los siguientes componentes son usado en los formularios de la aplicación Mudarte, <br>
+        con una anchura de 6 columnas por cada input, basándonos en la <strong>Grid system</strong> de bootstrap.
+    </p>
+    <small>Ejemplo:</small>
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                <div class="panel-body form-group">
+                    <p>
+                        <input type="text" placeholder="Texto">
+                    </p>
+                    <p>
+                        <input type="number" value="1">
+                    </p>
+                    <p>
+                        <input type="password" placeholder="Password">
+                    </p>
+                    <p>
+                        <label for="checkbox">
+                            <input type="checkbox" id="checkbox"> Checkbox 1
+                        </label>
+                        <label for="checkbox2">
+                            <input type="checkbox" id="checkbox2"> Checkbox 2
+                        </label>
+                        <label for="checkbox3">
+                            <input type="checkbox" id="checkbox3"> Checkbox 3
+                        </label>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div>
+                <div class="panel-body form-group">
+                    <p>
+                        <select name="selectname" id="select">
+                            <option value="1">Opción 1</option>
+                            <option value="2">Opción 2</option>
+                            <option value="3">Opción 3</option>
+                        </select>
+                    </p>
+                    <p>
+                        <input type="text" id="date1" placeholder="Fecha">
+                    </p>
+                    <p>
+                        <input type="text" placeholder="Buscar...">
+                    </p>
+
+                    <p>
+                        <table class="table table-bordered">
+                            <tr style="text-align:center;">
+                                <td width="15%">
+                                    <input type="checkbox" name="enviarPresupuesto" onclick="radioColorBlue();" id="checkbox11">
+                                    <label for="checkbox11" class="label1">Checkbox 1</label>
+                                </td>
+                                <td width="15%">
+                                    <input type="checkbox" name="enviarPresupuesto" onclick="radioColorBlue();" id="checkbox22">
+                                    <label for="checkbox22" class="label1">Checkbox 2</label>
+                                </td>
+                                <td width="15%">
+                                    <input type="checkbox" name="enviarPresupuesto" onclick="radioColorBlue();" id="checkbox33">
+                                    <label for="checkbox33" class="label1">Checkbox 3</label>
+                                </td>
+                            </tr>
+                        </table>
+                    </p>
+                    <p>
+                        <table class="table table-bordered">
+                            <tr style="text-align:center;">
+                                <td width="15%">
+                                    <input type="radio" name="enviarPresupuesto" onclick="radioColorBlue();" id="radio11">
+                                    <label for="radio11" class="label1">Radio 1</label>
+                                </td>
+                                <td width="15%">
+                                    <input type="radio" name="enviarPresupuesto" onclick="radioColorBlue();" id="radio22">
+                                    <label for="radio22" class="label1">Radio 2</label>
+                                </td>
+                                <td width="15%">
+                                    <input type="radio" name="enviarPresupuesto" onclick="radioColorBlue();" id="radio33">
+                                    <label for="radio33" class="label1">Radio 3</label>
+                                </td>
+                            </tr>
+                        </table>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="listas">
+    <h2>Listas</h2>
+    <p>
+        Las listas se representan en tablas con sus operadores como lo es el editar y el eliminar. <br>
+        el estilos de las tablas son las de Bootstrap, con sus bordes y relleno asignados por las clases del diseño de bootstrap.
+    </p>
+    <small>Ejemplo:</small>
+    <div class="row">
+        <div class="col-md-6">
+
+            <table class="table table-hover table-bordered">
+                <tr class="active">
+                    <th>Titulo 1</th>
+                    <th>Titulo 2</th>
+                    <th>Titulo 3</th>
+                    <th width="80px">Editar</th>
+                    <th width="80px">Eliminar</th>
+                </tr>
+                <tr style="text-align:center;">
+                    <td>item 1</td>
+                    <td>item 2</td>
+                    <td>item 3</td>
+                    <td>
+                        <span class="glyphicon glyphicon-edit" style="color:#337ab7;"></span>
+                    </td>
+                    <td>
+                        <span class="glyphicon glyphicon-remove" style="color:#337ab7;"></span>
+                    </td>
+                </tr>
+                <tr style="text-align:center;">
+                    <td>item 4</td>
+                    <td>item 5</td>
+                    <td>item 6</td>
+                    <td>
+                        <span class="glyphicon glyphicon-edit" style="color:#337ab7;"></span>
+                    </td>
+                    <td>
+                        <span class="glyphicon glyphicon-remove" style="color:#337ab7;"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="barras">
+    <h2>Barra vertical</h2>
+    <p>
+        La barra vertical se usa para la navegación. tiene un fondo #F5F5F5, <br>
+        borde #E7E7E7, color de fuente #777 <small><a href="#colores">ver en la paleta de colores</a></small> <br>
+        el tamaño de la fuente es de 12px Sans-Serif.
+    </p>
+    <small>Ejemplo:</small>
+    <div class="row">
+        <div class="col-md-12">
+            <img src="/static/img/barra-vertical.png" alt="">
+        </div>
+    </div>
+</div>
+<div id="navbar-img">
+    <h2>Nav bar</h2>
+    <small>Ejemplo:</small>
+    <div class="row">
+        <div class="col-md-12">
+            <img src="/static/img/nav-bar.png" alt="" width="100%">
+        </div>
+    </div>
+</div>
+<div id="footer-img">
+    <h2>Footer</h2>
+    <small>Ejemplo:</small>
+    <div class="row">
+        <div class="col-md-12">
+            <img src="/static/img/footer.png" alt="" width="100%">
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<style>
+input[name=enviarPresupuesto] {
+    width: 1px;
+    height: 1px;
+}
+.checkedBlue {
+    background: #337ab7;
+    color:#fff;
+}
+.label1 {
+    width: 90%;
+    height: 90%;
+    cursor: pointer;
+    font-family: inherit;
+    font: inherit;
+}
+</style>
+<script>
+function radioColorBlue(){
+    $("td:has(input[name=enviarPresupuesto])").removeClass('checkedBlue');
+    $("td:has(input[name=enviarPresupuesto]:checked)").addClass('checkedBlue');
+}
+
+$(function() {
+    $( "#date1" ).datepicker();
+});
+
+</script>
+{% endblock content1 %}
