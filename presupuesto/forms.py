@@ -4,7 +4,7 @@ Ayuda del mueble/forms.py
 
 """
 from django.forms import ModelForm, ModelChoiceField, RadioSelect, \
-    Select, SelectMultiple, DateInput, TextInput
+    Select, SelectMultiple, TextInput
 from presupuesto.models import Presupuesto, Presupuesto_direccion, \
     Presupuesto_Detalle, Presupuesto_servicio, DatosPrecargado
 from django.core.exceptions import NON_FIELD_ERRORS
@@ -16,34 +16,46 @@ from django import forms
 
 
 class PresupuestoDetalleForm1(forms.Form):
+    """docstring"""
     lista_ambiente = ModelChoiceField(Ambiente.objects, widget=Select, empty_label=None, label='Ambientes')
 
 
 class PresupuestoDetalleForm2(forms.Form):
+    """docstring"""
     lista_mueble = ModelChoiceField(Mueble.objects, widget=Select, empty_label=None, label='Muebles')
 
 
 class PresupuestoDetalleForm3(forms.Form):
+    """docstring"""
     lista_tamano = ModelChoiceField(Tamano_Mueble.objects, widget=Select, label='Tamano')
 
 
 class PresupuestoForm(ModelForm):
-
     """Docstring"""
-    fecha_estimadamudanza = forms.DateField(label='Fecha estimada de la mudanza:', widget=forms.DateInput(format='%Y-%m-%d'), input_formats=('%Y-%m-%d',))
+    fecha_estimadamudanza = forms.DateField(
+        label='Fecha estimada de la mudanza:',
+        widget=forms.DateInput(format='%Y-%m-%d'),
+        input_formats=('%Y-%m-%d',))
 
     class Meta:
         model = Presupuesto
-        #widgets = {'fecha_estimadamudanza': DateInput(attrs={'type': 'date'})}
         fields = '__all__'
         labels = {
-            'nombre_cliente': ('Nombre del cliente:'),
-            'dni': ('DNI del cliente:'),
-            'recorrido_km': ('Recorrido en kilómetros de la mudanza:'),
-            'tiempo_recorrido': ('Tiempo recorrido de la mudanza:'),
+            'dni': ('DNI del solicitante:'),
+            'nombre_cliente': ('Nombre del solicitante:'),
+            'empresa_cliente': ('Empresa donde trabaja el solicitante:'),
+            'cargo_cliente': ('Cargo del solicitante:'),
+            'telefono_celular': ('Teléfono celular del solicitante:'),
+            'telefono': ('Teléfono fijo del solicitante:'),
+            'email': ('Email del solicitante:'),
             'fecha_estimadamudanza': ('Fecha estimada de la mudanza:'),
-            'telefono': ('Teléfono del cliente:'),
-            'email': ('Email del cliente:')
+            'hora_estimadamudanza': ('Hora estimada de la mudanza:'),
+            'recorrido_km': ('Distancia de traslado en Kms.:'),
+            'tiempo_recorrido': ('Tiempo de traslado en horas:'),
+            'cotizador': ('Cotizador:'),
+            'fecha_creacion': ('Fecha de registro:'),
+            'hora_creacion': ('Hora de registro:'),
+            'fuente_promocion': ('Fuente de promoción:'),
         }
         error_messages = {
             NON_FIELD_ERRORS: {
@@ -53,14 +65,12 @@ class PresupuestoForm(ModelForm):
 
 
 class PresupuestoDireccionForm(ModelForm):
-
     """Docstring"""
     lista_tipoinmueble = ModelChoiceField(Tipo_Inmueble.objects, widget=Select, empty_label=None, label='Tipo de inmueble:')
     lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=Select, empty_label=None, label='Nivel de ocupación del inmueble:')
 
     class Meta:
         model = Presupuesto_direccion
-        #widgets = {'pisos': forms.RadioSelect}
         fields = 'direccion', \
             'lista_tipoinmueble', \
             'lista_ocupacion', \
@@ -91,7 +101,8 @@ class PresupuestoDireccionForm(ModelForm):
             'pisos': ('Cantidad de pisos del inmueble:'),
             'pisos_escalera': ('Cantidad de pisos a recorrer por escaleras:'),
             'pisos_ascensor': ('Cantidad de pisos a recorrer por el ascensor:'),
-            'pisos_ascensor_servicio': ('Cantidad de pisos a recorrer por el ascensor de servicio:'),
+            'pisos_ascensor_servicio': (
+                'Cantidad de pisos a recorrer por el ascensor de servicio:'),
             }
         readonly_fields = ('tipo_direccion')
         error_messages = {
@@ -102,9 +113,7 @@ class PresupuestoDireccionForm(ModelForm):
 
 
 class PresupuestoDetalleForm(ModelForm):
-
     """Docstring"""
-
     lista_ambiente = ModelChoiceField(Ambiente.objects, widget=Select, empty_label='--seleccione el ambiente--', label='Ambiente del inmueble:')
     lista_mueble = ModelChoiceField(Mueble.objects, widget=Select, empty_label='seleccione el mueble', label='Mueble del ambiente:')
     lista_tamano = ModelChoiceField(Tamano.objects, widget=RadioSelect, empty_label=None, label='Tamaño del mueble:')
@@ -146,7 +155,6 @@ class PresupuestoDetalleForm(ModelForm):
 
 
 class PresupuestoServicioForm(ModelForm):
-
     """Docstring"""
     lista_servicio = ModelChoiceField(Servicio.objects.exclude(servicio_material__material__contenedor=True).distinct(), widget=SelectMultiple, empty_label=None, label='Servicios')
 
@@ -164,12 +172,14 @@ class PresupuestoServicioForm(ModelForm):
 
 
 class DatosPrecargadoForm(ModelForm):
+    """docstring"""
     class Meta:
         model = DatosPrecargado
         fields = '__all__'
 
 
 class PresupuestoRevisarForm(ModelForm):
+    """docstring"""
     class Meta:
         model = Presupuesto
         fields = 'monto_recursos_revisado', \

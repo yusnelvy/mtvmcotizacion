@@ -1,24 +1,160 @@
-    .filtra-campos>p>#id_descripcion_vehiculo,.filtra-campos>p>#id_tiempo_carga,.filtra-campos>p>#id_tiempo_total,.filtra-campos>p>label[for=id_descripcion_vehiculo],.filtra-campos>p>label[for=id_descripcion_persona],.filtra-campos>p>#id_descripcion_persona,.filtra-campos>p>input[type=number],.filtra-campos>p>label[for=id_cantidad_vehiculo],.filtra-campos>p>label[for=id_cantidad_persona],.filtra-campos>p>label[for=id_cantidad_ambientes],.filtra-campos>p>label[for=id_cantidad_muebles],.filtra-campos>p>label[for=id_cantidad_contenedores],.filtra-campos>p>label[for=id_total_peso_contenedores],.filtra-campos>p>label[for=id_total_peso_muebles],.filtra-campos>p>label[for=id_total_peso_contenidos],.filtra-campos>p>label[for=id_total_volumen_muebles],.filtra-campos>p>label[for=id_total_volumen_contenedores],.filtra-campos>p>label[for=id_total_volumen_contenidos],.filtra-campos>p>label[for=id_total_m3],.filtra-campos>p>label[for=id_tiempo_carga],.filtra-campos>p>label[for=id_tiempo_total],.filtra-campos>p>label[for=id_monto_vehiculo_hora],.filtra-campos>p>label[for=id_monto_vehiculo_recorrido],.filtra-campos>p>label[for=id_monto_persona],.filtra-campos>p>label[for=id_monto_sin_impuesto],.filtra-campos>p>label[for=id_monto_impuesto],.filtra-campos>p>label[for=id_monto_con_impuesto],#cantidad_ayudante,#cantidad_ayudanteadicional,#total_capacidad_vehiculokg,#total_capacidad_vehiculovol,#duracion_teorica,#duracion_optima,#monto_personateorica,#monto_personaoptima,#monto_m3_inmueble,#monto_amb_inmueble,#monto_mudanza_hrsdirectas,#monto_mundanza_hrsoptimas,#monto_descuesto_regargo{display: none;}
-    .campo{width: 49.50%;display: inline-table;}
-    #monto_recursos_revisado,#monto_servicios_revisado,#monto_vehiculo_revisado,#monto_materiales_revisado,#monto_mundanza_revisada,#tipo_calculo,#descripcion_vehiculo,#descripcion_persona,#cantidad_vehiculo,#cantidad_persona,#cantidad_ambientes,#cantidad_muebles,#cantidad_contenedores,#total_peso_contenedores,#total_peso_muebles,#total_peso_contenidos,#total_volumen_muebles,#total_volumen_contenedores,#total_volumen_contenidos,#total_m3,#tiempo_carga,#tiempo_total,#monto_vehiculo_hora,#monto_vehiculo_recorrido,#monto_persona,#monto_sin_impuesto,#monto_impuesto,#monto_con_impuesto,#cotizador,#total_capacidad_vehiculo,#total_peso_materiales,#total_peso_mudanza,#total_volumen_materiales,#tiempo_servicios,#monto_materiales,#monto_servicios,#estado,#activo{display: none;}
-    #recorrido_km,#tiempo_recorrido,#fecha_estimadamudanza{width: 33%;display: inline-table;}
-    @media (max-width:991px) {
-        .campo{width: 49%;display: inline-table;}
-        #recorrido_km,#tiempo_recorrido,#fecha_estimadamudanza{width: 32.5%;display: inline-table;}
-    }
-    @media (max-width:630px) {
-        .campo{width: 48%;display: inline-table;}
-        #recorrido_km,#tiempo_recorrido,#fecha_estimadamudanza{width:100%;display: inline-table;}
-    }
-.form-group>p>label{
+/* Ocultar datos de cabecera innecesarios
+   para la creación de un presupuesto
+*/
+.filtra-campos>p>label[for=id_cotizador],
+.filtra-campos>p>select#id_cotizador,
+.filtra-campos>p>label[for=id_descripcion_vehiculo],
+.filtra-campos>p>textarea#id_descripcion_vehiculo,
+.filtra-campos>p>label[for=id_descripcion_persona],
+.filtra-campos>p>textarea#id_descripcion_persona,
+.filtra-campos>p>label[for=id_cantidad_vehiculo],
+.filtra-campos>p>input#id_cantidad_vehiculo,
+.filtra-campos>p>label[for=id_cantidad_persona],
+.filtra-campos>p>input#id_cantidad_persona,
+.filtra-campos>p>label[for=id_cantidad_ayudante],
+.filtra-campos>p>input#id_cantidad_ayudante,
+.filtra-campos>p>label[for=id_cantidad_ayudanteadicional],
+.filtra-campos>p>input#id_cantidad_ayudanteadicional,
+.filtra-campos>p>label[for=id_cantidad_ambientes],
+.filtra-campos>p>input#id_cantidad_ambientes,
+.filtra-campos>p>label[for=id_cantidad_muebles],
+.filtra-campos>p>input#id_cantidad_muebles,
+.filtra-campos>p>label[for=id_cantidad_contenedores],
+.filtra-campos>p>input#id_cantidad_contenedores,
+.filtra-campos>p>label[for=id_total_capacidad_vehiculovol],
+.filtra-campos>p>input#id_total_capacidad_vehiculovol,
+.filtra-campos>p>label[for=id_total_capacidad_vehiculokg],
+.filtra-campos>p>input#id_total_capacidad_vehiculokg,
+.filtra-campos>p>label[for=id_total_peso_contenedores],
+.filtra-campos>p>input#id_total_peso_contenedores,
+.filtra-campos>p>label[for=id_total_peso_muebles],
+.filtra-campos>p>input#id_total_peso_muebles,
+.filtra-campos>p>label[for=id_total_peso_contenidos],
+.filtra-campos>p>input#id_total_peso_contenidos,
+.filtra-campos>p>label[for=id_total_peso_materiales],
+.filtra-campos>p>input#id_total_peso_materiales,
+.filtra-campos>p>label[for=id_total_peso_mudanza],
+.filtra-campos>p>input#id_total_peso_mudanza,
+.filtra-campos>p>label[for=id_total_volumen_muebles],
+.filtra-campos>p>input#id_total_volumen_muebles,
+.filtra-campos>p>label[for=id_total_volumen_contenedores],
+.filtra-campos>p>input#id_total_volumen_contenedores,
+.filtra-campos>p>label[for=id_total_volumen_contenidos],
+.filtra-campos>p>input#id_total_volumen_contenidos,
+.filtra-campos>p>label[for=id_total_volumen_materiales],
+.filtra-campos>p>input#id_total_volumen_materiales,
+.filtra-campos>p>label[for=id_total_m3],
+.filtra-campos>p>input#id_total_m3,
+.filtra-campos>p>label[for=id_tiempo_servicios],
+.filtra-campos>p>input#id_tiempo_servicios,
+.filtra-campos>p>label[for=id_tiempo_carga],
+.filtra-campos>p>input#id_tiempo_carga,
+.filtra-campos>p>label[for=id_duracion_teorica],
+.filtra-campos>p>input#id_duracion_teorica,
+.filtra-campos>p>label[for=id_duracion_optima],
+.filtra-campos>p>input#id_duracion_optima,
+.filtra-campos>p>label[for=id_tiempo_total],
+.filtra-campos>p>input#id_tiempo_total,
+.filtra-campos>p>label[for=id_monto_vehiculo_hora],
+.filtra-campos>p>input#id_monto_vehiculo_hora,
+.filtra-campos>p>label[for=id_monto_vehiculo_recorrido],
+.filtra-campos>p>input#id_monto_vehiculo_recorrido,
+.filtra-campos>p>label[for=id_monto_personateorica],
+.filtra-campos>p>input#id_monto_personateorica,
+.filtra-campos>p>label[for=id_monto_personaoptima],
+.filtra-campos>p>input#id_monto_personaoptima,
+.filtra-campos>p>label[for=id_monto_materiales],
+.filtra-campos>p>input#id_monto_materiales,
+.filtra-campos>p>label[for=id_monto_servicios],
+.filtra-campos>p>input#id_monto_servicios,
+.filtra-campos>p>label[for=id_monto_m3_inmueble],
+.filtra-campos>p>input#id_monto_m3_inmueble,
+.filtra-campos>p>label[for=id_monto_amb_inmueble],
+.filtra-campos>p>input#id_monto_amb_inmueble,
+.filtra-campos>p>label[for=id_monto_mudanza_hrsdirectas],
+.filtra-campos>p>input#id_monto_mudanza_hrsdirectas,
+.filtra-campos>p>label[for=id_monto_mundanza_hrsoptimas],
+.filtra-campos>p>input#id_monto_mundanza_hrsoptimas,
+.filtra-campos>p>label[for=id_monto_recursos_revisado],
+.filtra-campos>p>input#id_monto_recursos_revisado,
+.filtra-campos>p>label[for=id_monto_servicios_revisado],
+.filtra-campos>p>input#id_monto_servicios_revisado,
+.filtra-campos>p>label[for=id_monto_vehiculo_revisado],
+.filtra-campos>p>input#id_monto_vehiculo_revisado,
+.filtra-campos>p>label[for=id_monto_materiales_revisado],
+.filtra-campos>p>input#id_monto_materiales_revisado,
+.filtra-campos>p>label[for=id_monto_mundanza_revisada],
+.filtra-campos>p>input#id_monto_mundanza_revisada,
+.filtra-campos>p>label[for=id_monto_persona],
+.filtra-campos>p>input#id_monto_persona,
+.filtra-campos>p>label[for=id_monto_sin_impuesto],
+.filtra-campos>p>input#id_monto_sin_impuesto,
+.filtra-campos>p>label[for=id_monto_impuesto],
+.filtra-campos>p>input#id_monto_impuesto,
+.filtra-campos>p>label[for=id_monto_con_impuesto],
+.filtra-campos>p>input#id_monto_con_impuesto,
+.filtra-campos>p>label[for=id_monto_descuesto_regargo],
+.filtra-campos>p>input#id_monto_descuesto_regargo,
+.filtra-campos>p>label[for=id_estado],
+.filtra-campos>p>input#id_estado,
+.filtra-campos>p>label[for=id_activo],
+.filtra-campos>p>input#id_activo,
+.filtra-campos>p>label[for=id_tipo_calculo],
+.filtra-campos>p>input#id_tipo_calculo {
+  display: none;
+}
+
+#telefono,
+#telefono_celular,
+#email,
+.campo {
+  width: 50%;
+}
+
+#dni,
+#id_fuente_promocion,
+#recorrido_km,
+#tiempo_recorrido,
+#fecha_estimadamudanza,
+#hora_estimadamudanza {
+  width: 25%;
+}
+
+@media (max-width:991px) {
+
+  .campo {
+    width: 50%;
+  }
+
+  #recorrido_km, #tiempo_recorrido,
+  #fecha_estimadamudanza, #hora_estimadamudanza {
+    width: 32.5%;
+  }
+}
+
+@media (max-width:630px) {
+
+  .campo{
+    width: 48%;
+  }
+
+  #recorrido_km, #tiempo_recorrido,
+  #fecha_estimadamudanza, #hora_estimadamudanza {
+    width:100%;
+  }
+}
+
+.form-group>p>label {
   display:inline-table;
   font-family: inherit;
   font: inherit;
 }
-#id_dni,#id_nombre_cliente,#id_telefono,#id_email,#id_fecha_estimadamudanza,#id_recorrido_km,#id_tiempo_recorrido{
+
+#id_dni, #id_nombre_cliente, #id_telefono, #id_email,
+#id_fecha_estimadamudanza, #id_recorrido_km, #id_tiempo_recorrido {
   box-sizing: border-box;
   border-radius: 6px;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
   font-size: 18px;
   height: 46px;
   line-height: 1.33333;
@@ -30,13 +166,22 @@
   color: #555;
   font-family: inherit;
   font: inherit;
-  margin: 0px;
+  margin: 0;
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
   width: 100%;
 }
-#id_dni:focus,#id_nombre_cliente:focus,#id_telefono:focus,#id_email:focus,#id_fecha_estimadamudanza:focus,#id_recorrido_km:focus,#id_tiempo_recorrido:focus{
+
+#id_dni:focus, #id_nombre_cliente:focus, #id_telefono:focus, #id_email:focus,
+#id_fecha_estimadamudanza:focus, #id_recorrido_km:focus,
+#id_tiempo_recorrido:focus {
   border-color: #66afe9;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+
+.ui-icon-circle-triangle-w,
+.ui-icon-circle-triangle-e {
+  text-indent: 0!important;
+  font-size: 10px!important;
 }

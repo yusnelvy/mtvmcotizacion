@@ -1,248 +1,63 @@
-{% extends "base_edit.html" %}
+{% extends "base_modal_form.html" %}
 
-{% block titulo %}
+{% block formulario %}
 
-<title>Presupuesto</title>
+<form action="" method="post" id="myform" name="myform2">
 
-{% endblock titulo %}
+  {% csrf_token %}
 
-{% block col_edit %}
+  <div class="form-group campo">
 
-class="col-md-7"
+    {% for i in form %}
 
-{% endblock col_edit %}
+    <span  class="campo{{forloop.counter0}}"><label for="{{ i.id_for_label }}">{{i.label}}</label> {{i}}</span>
 
-{% block titulo_form %}
+    {% endfor %}
 
-  <h2>Agregar detalle</h2>
+    <input type="text" id="capacidadmueble">
+    <input type="text" id="densidadcontenido">
+    <input type="text" id="volmaterial">
+    <input type="text" id="pesomaterial">
+  </div>
 
-{% endblock titulo_form %}
+  {{form_data}}
 
-{% block cuerpo_form %}
+  <button type="submit" class="btn btn-default" style="float:right;">Agregar</button>
+  <br>
+</form>
 
-<style>
-.campo>label,li label{font-family: inherit;font: inherit;}
-.campo4,.campo5,.campo6,.campo7,.campo11,.campo12,.campo13,.campo14,.campo15,.campo16,.campo17,.campo18,.campo19,.campo20,.campo21,.campo22,.campo23,.campo24,#capacidadmueble,#densidadcontenido,#volmaterial,#pesomaterial{display: none;}
-.custom-combobox-input,.campo0>select,.campo1>select,input[type=number],.campo2>select{
-  box-sizing: border-box;
-  border-radius: 6px;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
-  font-size: 18px;
-  height: 46px;
-  line-height: 1.33333;
-  padding: 10px 16px;
-  display:block;
-  background-color: #FFF;
-  background-image: none;
-  border: 1px solid #CCC;
-  color: #555;
-  font-family: inherit;
-  font: inherit;
-  margin: 0px;
-  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-  width: 100%;
-}
-.custom-combobox-input:focus,.campo0>select:focus,.campo1>select:focus,input[type=number]:focus,.campo2>select:focus{
-  border-color: #66afe9;
-  outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
-}
-.campo0,.campo1,.campo2{width: 32%;}
-.campo8,.campo9,.campo10{width: 32%;}
-.campo3{width: 100%;margin-top: 20px;}
-.ul-list{list-style: none;}
-#id_lista_ocupacion li{display: inline-table;margin-left: 30px;}
-.custom-combobox {
-    position: relative;
-    display: inline-block;
-  }
-  .custom-combobox-toggle {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin-left: -1px;
-    padding: 0;
-  }
-  .custom-combobox-input {
-    margin: 0;
-    padding: 5px 10px;
-    width: 100%;
-    max-width: 100%;
-  }
-  .ui-autocomplete{
-    background: #fff;
-    border:1px solid rgba(102, 175, 233, .6);
-    border-top: none;
-  }
-</style>
+{% endblock formulario %}
+
+{% block style %}
+
+<link rel="stylesheet" href="/static/css/presupuestoForm/preDetalle.css">
+
+{% endblock style %}
+
+{% block js_form %}
+
+<script src="/static/js/presupuestoForm/preDetalle.js"></script>
 <script>
-  (function( $ ) {
-    $.widget( "custom.combobox", {
-      _create: function() {
-        this.wrapper = $( "<span>" )
-          .addClass( "custom-combobox" )
-          .insertAfter( this.element );
 
-        this.element.hide();
-        this._createAutocomplete();
-        this._createShowAllButton();
-      },
-
-      _createAutocomplete: function() {
-        var selected = this.element.children( ":selected" ),
-          value = selected.val() ? selected.text() : "";
-
-        this.input = $( "<input>" )
-          .appendTo( this.wrapper )
-          .val( value )
-          .attr( "title", "" )
-          .attr( "id", "input-focus" )
-          .addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
-          .autocomplete({
-            delay: 0,
-            minLength: 0,
-            source: $.proxy( this, "_source" )
-          })
-          .tooltip({
-            tooltipClass: "ui-state-highlight"
-          });
-
-        this._on( this.input, {
-          autocompleteselect: function( event, ui ) {
-            ui.item.option.selected = true;
-            this._trigger( "select", event, {
-              item: ui.item.option
-            });
-          },
-
-          autocompletechange: "_removeIfInvalid"
-        });
-      },
-
-      _createShowAllButton: function() {
-        var input = this.input,
-          wasOpen = false;
-
-        $( "<a>" )
-          .attr( "tabIndex", -1 )
-          .attr( "title", "Show All Items" )
-          .tooltip()
-          .appendTo( this.wrapper )
-          .button({
-            icons: {
-              primary: "ui-icon-triangle-1-s"
-            },
-            text: false
-          })
-          .removeClass( "ui-corner-all" )
-          .addClass( "custom-combobox-toggle ui-corner-right" )
-          .mousedown(function() {
-            wasOpen = input.autocomplete( "widget" ).is( ":visible" );
-          })
-          .click(function() {
-            input.focus();
-
-            // Close if already visible
-            if ( wasOpen ) {
-              return;
-            }
-
-            // Pass empty string as value to search for, displaying all results
-            input.autocomplete( "search", "" );
-          });
-      },
-
-      _source: function( request, response ) {
-        var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
-        response( this.element.children( "option" ).map(function() {
-          var text = $( this ).text();
-          if ( this.value && ( !request.term || matcher.test(text) ) )
-            return {
-              label: text,
-              value: text,
-              option: this
-            };
-        }) );
-      },
-
-      _removeIfInvalid: function( event, ui ) {
-
-        // Selected an item, nothing to do
-        if ( ui.item ) {
-          return;
-        }
-
-        // Search for a match (case-insensitive)
-        var value = this.input.val(),
-          valueLowerCase = value.toLowerCase(),
-          valid = false;
-        this.element.children( "option" ).each(function() {
-          if ( $( this ).text().toLowerCase() === valueLowerCase ) {
-            this.selected = valid = true;
-            return false;
-          }
-        });
-
-        // Found a match, nothing to do
-        if ( valid ) {
-          return;
-        }
-
-        // Remove invalid value
-        this.input
-          .val( "" )
-          .attr( "title", value + " didn't match any item" )
-          .tooltip( "open" );
-        this.element.val( "" );
-        this._delay(function() {
-          this.input.tooltip( "close" ).attr( "title", "" );
-        }, 2500 );
-        this.input.autocomplete( "instance" ).term = "";
-      },
-
-      _destroy: function() {
-        this.wrapper.remove();
-        this.element.show();
-      }
-    });
-  })( jQuery );
-
-  $(function() {
-    $( "#id_lista_ambiente2" ).combobox();
-    $( "#toggle" ).click(function() {
-      $( "#id_lista_ambiente2" ).toggle();
-    });
-  });
-  </script>
-
-
-
-<div class="form-group campo">
-
-  {% for i in form %}
-
-    <label for="{{ i.id_for_label }}" class="campo{{forloop.counter0}}">{{i.label}} {{i}}</label>
-
-  {% endfor %}
-
-
-<input type="text" id="capacidadmueble">
-<input type="text" id="densidadcontenido">
-<input type="text" id="volmaterial">
-<input type="text" id="pesomaterial">
-
-</div>
-{{form_data}}
-
-<script>
-document.getElementById('input-focus');
-$( "#id_lista_ocupacion" ).addClass( "ul-list" );
-  </script>
-{% endblock cuerpo_form %}
-
-{% block js_sup %}
-<script>
+$('#id_lista_ocupacion li label').addClass('btn-radio');
+$('#id_lista_tamano li label').addClass('btn-radio');
+$('input[name=lista_ocupacion]').click(function(){
+  radioColorOcupacion()
+});
+radioColorOcupacion()
+$('input[name=lista_tamano]').click(function(){
+  radioColorTamano()
+});
+radioColorTamano()
+setTimeout(function() {
+  var idAmbinete = $(parent.document.getElementsByClassName("id_opcionMueble")).attr('id');
+  if (idAmbinete=="ambienteFocus"){
+    document.getElementById('id_lista_ambiente').focus();
+  }else{
+    document.getElementById('id_lista_mueble').focus();
+    document.getElementById('id_lista_ambiente').disabled = true;
+  }
+},500);
 $(document).ready(function(){
   $("#id_lista_ambiente").on("change", function(){
     id_lista_ambiente = $("#id_lista_ambiente").val();
@@ -253,7 +68,6 @@ $(document).ready(function(){
         $("#id_ambiente").val(data[0].ambiente);
       });
   });
-
   $("#id_lista_mueble").on("change", function(){
     id_lista_mueble = $("#id_lista_mueble").val();
     $.get('/presupuesto/detalle/nuevo',
@@ -270,18 +84,24 @@ $(document).ready(function(){
         $("#id_capacidad_peso_contenedor").val(data[0].capacidadpesocontenedor);
         $("#id_descripcion_contenedor").val(data[0].descripcioncontenedor);
         $("#pesomaterial").val(data[0].peso_contenedor);
-
         lista_ocupacion = $("input[name=lista_ocupacion]");
         for(var i=0; i<lista_ocupacion.length; i++){
           if (data[0].ocupacion==lista_ocupacion[i].value){
             $(lista_ocupacion[i]).attr("checked","checked");
+            radioColorOcupacion()
           }
         }
+        if (data[0].trasladable == true){
+          document.getElementById("id_trasladable").checked = true;
+        }else{
+          document.getElementById("id_trasladable").checked = false;
+        }
+        $('#id_lista_tamano_1').click();
+        radioColorTamano()
       });
 });
-
 $("#id_lista_tamano").on("change", function(){
-  id_lista_tamano = $("#id_lista_tamano").val();
+  id_lista_tamano = $('input[name=lista_tamano]:checked').val();
   id_lista_mueble = $("#id_lista_mueble").val();
   $.get('/presupuesto/detalle/nuevo',
     {id_lista_tamano: id_lista_tamano, id_lista_mueble: id_lista_mueble},
@@ -311,9 +131,9 @@ $("#id_lista_tamano").on("change", function(){
 
       pesocontenedor = calcular_pesocontenedor($("#id_cantidad_contenedor").val(),$("#pesomaterial").val());
       $("#id_peso_contenedor").val(pesocontenedor);
+
     });
 });
-
 $("input[name=lista_ocupacion]").click(function () {
   id_ocupacion = $('input[name=lista_ocupacion]:checked').val();
   $.get('/presupuesto/detalle/nuevo',
@@ -339,32 +159,65 @@ $("input[name=lista_ocupacion]").click(function () {
       $("#id_peso_contenedor").val(pesocontenedor);
     });
 });
-
 $('#id_ancho').on('change', function(){
   densidad = calcular_densidad($("#id_peso").val(),$(this).val(),$("#id_largo").val(),$("#id_alto").val());
   volumen = calcular_volumen($(this).val(),$("#id_largo").val(),$("#id_alto").val());
   $("#id_valor_densidad").val(densidad);
   $("#id_volumen_mueble").val(volumen);
-
 });
-
 $('#id_largo').on('change', function(){
   densidad = calcular_densidad($("#id_peso").val(),$("#id_ancho").val(),$(this).val(),$("#id_alto").val());
   volumen = calcular_volumen($("#id_ancho").val(),$(this).val(),$("#id_alto").val());
   $("#id_valor_densidad").val(densidad);
   $("#id_volumen_mueble").val(volumen);
 });
-
 $('#id_alto').on('change', function(){
-  densidad = calcular_densidad($("#id_peso").val(),$("#id_ancho").val(),$("#id_largo").val(),$(this).val());
+  densidad = calcular_densidad($("#id_peso").val(), $("#id_ancho").val(), $("#id_largo").val(), $(this).val());
   volumen = calcular_volumen($("#id_ancho").val(),$("#id_largo").val(),$(this).val());
   $("#id_valor_densidad").val(densidad);
   $("#id_volumen_mueble").val(volumen);
 });
-
+$('#myform').submit(function(){
+  document.getElementById('id_lista_ambiente').disabled = false;
+  var action = "{% url 'upresupuestos:PresupuestoDetalleView' %}";
+  var that = $(this);
+  $.ajax({
+    url: action,
+    type: 'POST',
+    data: that.serialize()
+    ,success: function(data){
+      var modalp = parent.document.getElementById('myModalAmbiente');
+      var divp = parent.document.getElementsByClassName("modal-backdrop");
+      var bodyp = parent.document.getElementById('id_body');
+      var closep = parent.document.getElementById("btn-cerrarmueble");
+      var guardar = parent.document.getElementById("msjGuardado");
+      if (data.estatus=="ok"){
+        $(closep).click();
+        setTimeout(function() {
+          parent.location.reload();
+        },1000);
+        $(guardar).css('width','300px');
+        $(guardar).text('Mueble guardado con exito');
+        $(guardar).fadeIn();
+      }
+    }
+  });
+  return false;
+});
 });
 </script>
-
+<script type="text/javascript">
+function refresh() {
+  var id_presupuesto = $("#id_presupuesto").val();
+  $.ajax({
+    url: "/presupuesto/ficha/detalle/"+ id_presupuesto,
+    success: function(data) {
+      var divs = parent.document.getElementById('accordion');
+      $(divs).html(data);
+    }
+  });
+}
+</script>
 <script>
 function calcular_densidad(peso,ancho,largo,alto){
   var resultado = 0;
@@ -377,14 +230,14 @@ function calcular_volumen(ancho,largo,alto){
   var resultado = 0;
   resultado= (ancho*largo*alto)/1000000;
 
-  return resultado.toFixed(2);
+  return resultado.toFixed(3);
 }
 
 function calcular_volcontenido(cap_mueble,vol_mueble,ocupacidad){
   var resultado = 0;
   resultado= (cap_mueble*vol_mueble*ocupacidad);
 
-  return resultado.toFixed(2);
+  return resultado.toFixed(3);
 
 }
 
@@ -392,11 +245,11 @@ function calcular_pesocontenido(vol_contenido,densidadcontenido){
   var resultado = 0;
   resultado= (vol_contenido*densidadcontenido)
 
-  return resultado.toFixed(2);
+  return resultado.toFixed(3);
 
 }
 
-function calcular_cantidadcontenedor(vol_contenido,cap_volcontenedor,peso_contenido,cap_pesocontenedor){
+function calcular_cantidadcontenedor(vol_contenido, cap_volcontenedor, peso_contenido, cap_pesocontenedor){
   var resultado = 0;
   var cant_volumen = 0;
   var cant_peso = 0;
@@ -421,7 +274,7 @@ function calcular_volcontenedor(cant_contenedor,vol_material){
   var resultado = 0;
   resultado= (cant_contenedor*vol_material);
 
-  return resultado.toFixed(2);
+  return resultado.toFixed(3);
 
 }
 
@@ -429,18 +282,9 @@ function calcular_pesocontenedor(cant_contenedor,peso_material){
   var resultado = 0;
   resultado= (cant_contenedor*peso_material)
 
-  return resultado.toFixed(2);
+  return resultado.toFixed(3);
 
 }
-
 </script>
 
-{% endblock js_sup %}
-
-{% block ayuda %}
-
-<div class="well well-lg">
-  <p>La <strong>Presupuesto</strong>  es la acción y efecto de cotizar, poner precio a algo, estimar a alguien o algo en relación con un fin. el documento informa y establece el valor del servicios.</p>
-</div>
-
-{% endblock ayuda %}
+{% endblock js_form %}
