@@ -177,22 +177,55 @@ class PresupuestoRevisarForm(ModelForm):
                  'monto_servicios_revisado', \
                  'monto_materiales_revisado', \
                  'monto_mundanza_revisada',\
-                 'monto_descuesto_regargo'
+                 'monto_descuento_recargo', \
+                 'descuento_recargo', \
+                 'tipo_calculo'
         widgets = {
-            'monto_mundanza_revisada': TextInput(attrs={'readonly': 'readonly', 'class': 'input-re check3'}),
+            'monto_mundanza_revisada': TextInput(
+                attrs={
+                    'required': 'True',
+                    'readonly': 'readonly',
+                    'class': 'input-re check3',
+                    'type': 'number',
+                    'step': '0.01'
+                    }),
             'monto_recursos_revisado': TextInput(
-                attrs={'required': 'True', 'class': 'input-re check3'}
+                attrs={
+                    'required': 'True',
+                    'class': 'input-re check3',
+                    'type': 'number',
+                    'step': '0.01'}
                 ),
             'monto_vehiculo_revisado': TextInput(
-                attrs={'required': 'True', 'class': 'input-re check3'}
+                attrs={
+                    'required': 'True',
+                    'class': 'input-re check3',
+                    'type': 'number',
+                    'step': '0.01'
+                    }
                 ),
             'monto_servicios_revisado': TextInput(
-                attrs={'required': 'True', 'class': 'input-re check3'}
+                attrs={
+                    'required': 'True',
+                    'class': 'input-re check3',
+                    'type': 'number',
+                    'step': '0.01'}
                 ),
             'monto_materiales_revisado': TextInput(
-                attrs={'required': 'True', 'class': 'input-re check3'}
+                attrs={
+                    'required': 'True',
+                    'class': 'input-re check3',
+                    'type': 'number',
+                    'step': '0.01'}
                 ),
-            'monto_descuesto_regargo': TextInput(
-                attrs={'required': 'True', 'class': 'input-descuento-recargo check3', 'style': 'text-align:left;'}
-                )
+            'monto_descuento_recargo': TextInput(
+                attrs={
+                    'required': 'True',
+                    'class': 'input-descuento-recargo check3',
+                    'style': 'text-align:left;',
+                    'type': 'number',
+                    'step': '0.01'}
+                ),
+            'descuento_recargo': TextInput(attrs={'hidden': 'hiden'}),
+            'tipo_calculo': TextInput(attrs={'hidden': 'hiden'})
         }

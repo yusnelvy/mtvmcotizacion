@@ -931,24 +931,6 @@ def generar_pdf(request):
     return response
 
 
-def PresupuestoRevisar(request, pk):
-
-    if request.method == "POST":
-        mensaje = {'estatus': 'ok',
-                   'msj': 'Registro guardado' + str(request.POST.get('idpresupuesto')) + str(request.POST.get('servicios_revisado'))
-                   }
-        return JsonResponse(mensaje, safe=False)
-
-    try:
-        presupuesto = Presupuesto.objects.get(pk=pk)
-    except Presupuesto.DoesNotExist:
-        presupuesto = None
-    empresa = Empresa.objects.get(id=1)
-
-    context = {'presupuesto': presupuesto, 'empresa': empresa}
-    return render(request, 'presupuesto_revisar.html', context)
-
-
 class PresupuestoRevisarUpdateView(UpdateView):
     form_class = PresupuestoRevisarForm
     model = Presupuesto

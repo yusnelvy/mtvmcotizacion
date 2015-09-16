@@ -167,8 +167,9 @@ class Presupuesto(models.Model):
                                          blank=True, default=0.00)
     monto_con_impuesto = models.DecimalField(max_digits=9, decimal_places=2,
                                              blank=True, default=0.00)
-    monto_descuesto_regargo = models.DecimalField(max_digits=9, decimal_places=2,
+    monto_descuento_recargo = models.DecimalField(max_digits=9, decimal_places=2,
                                                   blank=True, default=Decimal("0.00"))
+    descuento_recargo = models.CharField(max_length=1, default='-')
     estado = models.CharField(max_length=20, default='Iniciado')
     activo = models.CharField(max_length=20, default='Activado')
     tipo_calculo = models.CharField(max_length=20, default='Optimizado')
@@ -213,15 +214,15 @@ class Presupuesto(models.Model):
     vehiculomonto = property(_get_vehiculomonto)
 
     def _get_mudanzamontorevisadotoerico(self):
-        return self.monto_mudanza_hrsdirectas + self.monto_descuesto_regargo
+        return self.monto_mudanza_hrsdirectas + self.monto_descuento_recargo
     mudanzamontorevisadotoerico = property(_get_mudanzamontorevisadotoerico)
 
     def _get_mudanzamontorevisadooptimo(self):
-        return self.monto_mundanza_hrsoptimas + self.monto_descuesto_regargo
+        return self.monto_mundanza_hrsoptimas + self.monto_descuento_recargo
     mudanzamontorevisadooptimo = property(_get_mudanzamontorevisadooptimo)
 
     def _get_mudanzamontorevisado(self):
-        return self.monto_mundanza_revisada + self.monto_descuesto_regargo
+        return self.monto_mundanza_revisada + self.monto_descuento_recargo
     mudanzamontorevisado = property(_get_mudanzamontorevisado)
 
     class Meta:

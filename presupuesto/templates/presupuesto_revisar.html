@@ -1,5 +1,4 @@
 {% extends 'base_ficha.html' %}
-
 {% load presupuesto_extras %}
 
 {% block acceso_rapido %}
@@ -38,6 +37,13 @@ class="col-md-10"
     text-align: center;
     box-shadow: transparent!important;
 }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 .input-re:focus {
     border-color: transparent!important;
     box-shadow: transparent!important;
@@ -73,6 +79,9 @@ input[type=radio] {
 
     {% csrf_token %}
 
+    {{form.tipo_calculo}}
+    {{form.descuento_recargo}}
+
     <div class="break-inside">
         <h4>Detalle del presupuesto</h4>
         <table class="table table-condensed table-bordered" align="center" style="border: 2px solid #ddd;">
@@ -86,7 +95,7 @@ input[type=radio] {
                     <label for="basico" class="label1">Básico</label>
                 </td>
                 <td width="15%">
-                    <input type="radio" name="enviarPresupuesto" id="optimizado" checked>
+                    <input type="radio" name="enviarPresupuesto" id="optimizado">
                     <label for="optimizado" class="label1">Optimizado</label>
                 </td>
                 <td width="15%">
@@ -119,9 +128,9 @@ input[type=radio] {
                 <td align="center">{{presupuesto.total_m3|floatformat:"2"}}</td>
                 <td align="center">
                     <input type="radio" name="totalRecurso" onclick="radioTotal();" id="m3" disabled="disabled">
-                    <label for="m3" id="labelBasico" class="label1">{{presupuesto.monto_m3_inmueble}}</label>
+                    <label for="m3" id="montom3inmueble" class="label1">{{presupuesto.monto_m3_inmueble}}</label>
                 </td>
-                <td align="center" rowspan="4" style="vertical-align: middle;" class="check">
+                <td align="center" rowspan="4" style="vertical-align: middle;" class="check" id="montorecursobasico">
 
                     {% if presupuesto.maxrecursoteorico == presupuesto.monto_m3_inmueble %}
 
@@ -148,7 +157,7 @@ input[type=radio] {
                     {% endif %}
 
                 </td>
-                <td align="center" rowspan="4" style="vertical-align: middle;" class="check2">
+                <td align="center" rowspan="4" style="vertical-align: middle;" class="check2" id="montorecursooptimo">
 
                     {% if presupuesto.maxrecursooptimo == presupuesto.monto_m3_inmueble %}
 
@@ -185,7 +194,7 @@ input[type=radio] {
                 <td align="center">{{ presupuesto.cantidad_ambientes}}</td>
                 <td align="center">
                     <input type="radio" name="totalRecurso" onclick="radioTotal();" id="amb" disabled="disabled">
-                    <label for="amb" class="label1" style="text-align:center;">{{presupuesto.monto_amb_inmueble}}</label>
+                    <label for="amb" class="label1" style="text-align:center;" id="montoambinmueble">{{presupuesto.monto_amb_inmueble}}</label>
                 </td>
             </tr>
             <tr>
@@ -193,7 +202,7 @@ input[type=radio] {
                 <td align="center">{{ presupuesto.cantidadpersonaterica}}</td>
                 <td align="center">
                     <input type="radio" name="totalRecurso" onclick="radioTotal();" id="rrhh" disabled="disabled">
-                    <label for="rrhh" class="label1" style="text-align:center;">{{presupuesto.monto_personateorica}}</label>
+                    <label for="rrhh" class="label1" style="text-align:center;" id="montopersonateorica">{{presupuesto.monto_personateorica}}</label>
                 </td>
             </tr>
             <tr>
@@ -201,7 +210,7 @@ input[type=radio] {
                 <td align="center">{{ presupuesto.cantidadpersonaoptima}}</td>
                 <td align="center">
                     <input type="radio" name="totalRecurso" onclick="radioTotal();" id="rrhha" disabled="disabled">
-                    <label for="rrhha" class="label1" style="text-align:center;">{{presupuesto.monto_personaoptima}}</label>
+                    <label for="rrhha" class="label1" style="text-align:center;" id="montopersonaoptima">{{presupuesto.monto_personaoptima}}</label>
                 </td>
             </tr>
             <tr style="border-top: 2px solid #ddd;">
@@ -210,10 +219,10 @@ input[type=radio] {
                     <input type="radio" name="vehiculo" disabled="disabled">
                     <label class="label1" style="cursor:default;">{{presupuesto.monto_vehiculo_hora}}</label>
                 </td>
-                <td align="center" rowspan="2" style="vertical-align: middle;" class="check">
+                <td align="center" rowspan="2" style="vertical-align: middle;" class="check" id="vehiculomontobasico">
                     {{presupuesto.vehiculomonto}}
                 </td>
-                <td align="center" rowspan="2" style="vertical-align: middle;" class="check2">
+                <td align="center" rowspan="2" style="vertical-align: middle;" class="check2" id="vehiculomontooptima">
                     {{presupuesto.vehiculomonto}}
                 </td>
                 <td align="center" rowspan="2" style="vertical-align: middle;" class="check3">
@@ -229,24 +238,24 @@ input[type=radio] {
             </tr>
             <tr style="border-top: 2px solid #ddd;">
                 <td colspan="4">Servicios aplicados</td>
-                <td align="center" class="check">{{presupuesto.monto_servicios}}</td>
-                <td align="center" class="check2">{{presupuesto.monto_servicios}}</td>
+                <td align="center" class="check" id="montoserviciosbasico">{{presupuesto.monto_servicios}}</td>
+                <td align="center" class="check2" id="montoserviciosoptima" >{{ presupuesto.monto_servicios }}</td>
                 <td align="center" class="check3">
-                    {{form.monto_servicios_revisado}}
+                    {{ form.monto_servicios_revisado }}
                 </td>
             </tr>
             <tr style="border-top: 2px solid #ddd;">
                 <td colspan="4">Materiales utilizados</td>
-                <td align="center" class="check">{{presupuesto.monto_materiales}}</td>
-                <td align="center" class="check2">{{presupuesto.monto_materiales}}</td>
+                <td align="center" class="check" id="montomaterialesbasico">{{presupuesto.monto_materiales}}</td>
+                <td align="center" class="check2" id="montomaterialesoptima">{{presupuesto.monto_materiales}}</td>
                 <td align="center" class="check3">
                     {{form.monto_materiales_revisado}}
                 </td>
             </tr>
             <tr style="border-top: 2px solid #ddd;">
                 <td colspan="4">Valor total mudanza</td>
-                <td align="center" class="check">{{presupuesto.monto_mudanza_hrsdirectas}}</td>
-                <td align="center" class="check2">{{presupuesto.monto_mundanza_hrsoptimas}}</td>
+                <td align="center" class="check" id="montomudanzahrsdirectas">{{presupuesto.monto_mudanza_hrsdirectas}}</td>
+                <td align="center" class="check2" id="montomundanzahrsoptimas">{{presupuesto.monto_mundanza_hrsoptimas}}</td>
                 <td align="center" class="check3">
                     {{form.monto_mundanza_revisada}}
                 </td>
@@ -254,24 +263,24 @@ input[type=radio] {
             <tr style="border-top: 2px solid #ddd;">
                 <td colspan="2">Descuento / recargo</td>
                 <td style="text-align:center;">
-                    <input type="radio" name="descuentoRecargo" onclick="descuentoRecargoj();" id="descuento">
+                    <input type="radio" name="descuentoRecargo" onclick="descuentoRecargoj();" id="descuento" value="-">
                     <label for="descuento" class="label1">Descuento</label>
                 </td>
                 <td style="text-align:center;">
-                    <input type="radio" name="descuentoRecargo" onclick="descuentoRecargoj();" id="recargo">
+                    <input type="radio" name="descuentoRecargo" onclick="descuentoRecargoj();" id="recargo" value="+">
                     <label for="recargo" class="label1">Recargo</label>
                 </td>
                 <td align="center" class="check">
-                    <input class="input-descuento-recargo check" id="descuesto_regargobasico" name="monto_descuesto_regargo" step="0.01" type="number" value="{{presupuesto.monto_descuesto_regargo}}" style="text-align:left;">
+                    <input class="input-descuento-recargo check" id="descuento_regargobasico" name="monto_descuento_recargo" step="0.01" type="number" value="{{presupuesto.monto_descuento_recargo}}" style="text-align:left;">
                     <input class="input-descuento-recargo check" id="porc_descuentobasico" type="text" value="" style="text-align:right;"><span>%</span>
                 </td>
                 <td align="center" class="check2">
-                    <input class="input-descuento-recargo check2" id="descuesto_regargooptimo" name="monto_descuesto_regargo" step="0.01" type="number" value="{{presupuesto.monto_descuesto_regargo}}" style="text-align:left;">
+                    <input class="input-descuento-recargo check2" id="descuento_recargooptimo" name="monto_descuento_recargo" step="0.01" type="number" value="{{presupuesto.monto_descuento_recargo}}" style="text-align:left;">
                     <input class="input-descuento-recargo check2" id="porc_descuentooptimo" type="text" value="" style="text-align:right;"><span>%</span>
                 </td>
                 <td align="center" class="check3">
-                    {{form.monto_descuesto_regargo}}
-                    <input class="input-descuento-recargo check3" id="porc_descuento" type="text" value="" style="text-align:right;"><span>%</span>
+                    {{form.monto_descuento_recargo}}
+                    <input class="input-descuento-recargo check3" id="porc_descuento" type="text" value="0" style="text-align:right;"><span>%</span>
                 </td>
             </tr>
             <tr style="border-top: 2px solid #ddd;">
@@ -283,13 +292,14 @@ input[type=radio] {
                     <input id="mudanzamontorevisadooptimo" type="text" value="{{presupuesto.mudanzamontorevisadooptimo}}" readonly class="input-re check2">
                 </td>
                 <td align="center" class="check3">
-                    <input id="mudanzamontorevisado" type="text" value={% if presupuesto.tipo_calculo == 'Revisado' %}
+                    <input id="mudanzamontorevisado" type="text" value={% if form.tipo_calculo == 'Revisado' %}
                     {{presupuesto.mudanzamontorevisado|floatformat:"2"}}
-                    {% elif presupuesto.tipo_calculo == 'Optimizado' %}
+                    {% elif form.tipo_calculo == 'Optimizado' %}
                     {{presupuesto.mudanzamontorevisadooptimo|floatformat:"2"}}
                     {% else %}
                     {{presupuesto.mudanzamontorevisadotoerico|floatformat:"2"}}
                     {% endif %} readonly class="input-re check3">
+
                 </td>
             </tr>
         </table>
@@ -298,73 +308,198 @@ input[type=radio] {
 </form>
 <script type="text/javascript">
 $(document).ready(function(){
+
+    if ($('#id_tipo_calculo').val() == 'Optimizado'){
+        $("#optimizado").attr("checked","checked");
+        radioColorBlue()
+        checkOptimizado()
+    }else if($('#id_tipo_calculo').val() == 'Basico'){
+        $("#basico").attr("checked","checked");
+        radioColorBlue()
+        checkBasico()
+    }else if ($('#id_tipo_calculo').val() == 'Revisado'){
+        $("#revisado").attr("checked","checked");
+        radioColorBlue()
+        checkRevisado()
+        EnableRevisadoInput()
+    }
+
+    if ($('#id_descuento_recargo').val() == $('#descuento').val()){
+        $("#descuento").attr("checked","checked");
+        descuentoRecargoj();
+    }
+    if ($('#id_descuento_recargo').val() == $('#recargo').val()){
+        $("#recargo").attr("checked","checked");
+        descuentoRecargoj();
+    }
+
+    $('#basico').click(function(){
+        radioColorBlue()
+        checkBasico()
+        radioBdisabled()
+        limpiar('totalRecurso',0)
+        limpiar('descuentoRecargo',0)
+        radioTotal()
+        DisableRevisadoInput()
+    });
+    $('#optimizado').click(function(){
+        radioColorBlue()
+        checkOptimizado()
+        radioBdisabled()
+        limpiar('totalRecurso',0)
+        limpiar('descuentoRecargo',0)
+        radioTotal()
+        DisableRevisadoInput()
+    });
+    $('#revisado').click(function(){
+        EnableRevisadoInput()
+        radioColorBlue()
+        checkRevisado()
+        radioBenable()
+    });
+
+    $('#m3').click(function(){
+        $('#id_monto_recursos_revisado').val(parseFloat($('#montom3inmueble').text().replace(',','')).toFixed(2));
+        totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
+        porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuento_recargo").val());
+        totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuento_recargo").val(), $('#id_descuento_recargo').val());
+        $("#id_monto_mundanza_revisada").val(totalmudanza);
+        $("#porc_descuento").val(porc_descuento);
+        $("#mudanzamontorevisado").val(totalmudanzarevisado);
+    });
+    $('#amb').click(function(){
+        $('#id_monto_recursos_revisado').val(parseFloat($('#montoambinmueble').text().replace(',','')).toFixed(2));
+        totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
+        porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuento_recargo").val());
+        totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuento_recargo").val(), $('#id_descuento_recargo').val());
+        $("#id_monto_mundanza_revisada").val(totalmudanza);
+        $("#porc_descuento").val(porc_descuento);
+        $("#mudanzamontorevisado").val(totalmudanzarevisado);
+    });
+    $('#rrhh').click(function(){
+        $('#id_monto_recursos_revisado').val(parseFloat($('#montopersonateorica').text().replace(',','')).toFixed(2));
+        totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
+        porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuento_recargo").val());
+        totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuento_recargo").val(), $('#id_descuento_recargo').val());
+        $("#id_monto_mundanza_revisada").val(totalmudanza);
+        $("#porc_descuento").val(porc_descuento);
+        $("#mudanzamontorevisado").val(totalmudanzarevisado);
+    });
+    $('#rrhha').click(function(){
+        $('#id_monto_recursos_revisado').val(parseFloat($('#montopersonaoptima').text().replace(',','')).toFixed(2));
+        totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
+        porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuento_recargo").val());
+        totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuento_recargo").val(), $('#id_descuento_recargo').val());
+        $("#id_monto_mundanza_revisada").val(totalmudanza);
+        $("#porc_descuento").val(porc_descuento);
+        $("#mudanzamontorevisado").val(totalmudanzarevisado);
+    });
+
+     $('#descuento').click(function(){
+        $('#id_descuento_recargo').val($('#descuento').val());
+        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#id_monto_descuento_recargo').val(), $('#id_descuento_recargo').val());
+
+        totalmudanzarevisadooptmo = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_recargooptimo').val(), $('#id_descuento_recargo').val());
+
+        totalmudanzarevisadobasico = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_regargobasico').val(), $('#id_descuento_recargo').val());
+
+        $("#mudanzamontorevisado").val(totalmudanzarevisado);
+        $("#mudanzamontorevisadooptimo").val(totalmudanzarevisadooptmo);
+        $("#mudanzamontorevisadotoerico").val(totalmudanzarevisadobasico);
+    });
+     $('#recargo').click(function(){
+        $('#id_descuento_recargo').val($('#recargo').val());
+        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#id_monto_descuento_recargo').val(), $('#id_descuento_recargo').val());
+
+        totalmudanzarevisadooptmo = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_recargooptimo').val(), $('#id_descuento_recargo').val());
+
+        totalmudanzarevisadobasico = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_regargobasico').val(), $('#id_descuento_recargo').val());
+
+        $("#mudanzamontorevisado").val(totalmudanzarevisado);
+        $("#mudanzamontorevisadooptimo").val(totalmudanzarevisadooptmo);
+        $("#mudanzamontorevisadotoerico").val(totalmudanzarevisadobasico);
+    })
+
     $('#id_monto_recursos_revisado').on('keyup', function(){
         totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
-        porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuesto_regargo").val());
-        totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuesto_regargo").val());
+        porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuento_recargo").val());
+        totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuento_recargo").val(), $('#id_descuento_recargo').val());
         $("#id_monto_mundanza_revisada").val(totalmudanza);
         $("#porc_descuento").val(porc_descuento);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
     $('#id_monto_vehiculo_revisado').on('keyup', function(){
         totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
-        porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuesto_regargo").val());
-        totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuesto_regargo").val());
+        porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuento_recargo").val());
+        totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuento_recargo").val(), $('#id_descuento_recargo').val());
         $("#id_monto_mundanza_revisada").val(totalmudanza);
         $("#porc_descuento").val(porc_descuento);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
     $('#id_monto_servicios_revisado').on('keyup', function(){
         totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
-        porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuesto_regargo").val());
-        totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuesto_regargo").val());
+        porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuento_recargo").val());
+        totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuento_recargo").val(), $('#id_descuento_recargo').val());
         $("#id_monto_mundanza_revisada").val(totalmudanza);
         $("#porc_descuento").val(porc_descuento);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
     $('#id_monto_materiales_revisado').on('keyup', function(){
         totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
-        porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuesto_regargo").val());
-        totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuesto_regargo").val());
+        porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuento_recargo").val());
+        totalmudanzarevisado = calcular_totalmudanzarevisado(totalmudanza, $("#id_monto_descuento_recargo").val(), $('#id_descuento_recargo').val());
         $("#id_monto_mundanza_revisada").val(totalmudanza);
         $("#porc_descuento").val(porc_descuento);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
-    $('#id_monto_descuesto_regargo').on('keyup', function(){
-        porc_descuento = calcular_porcdescuentorecargo($("#id_monto_mundanza_revisada").val(), $("#id_monto_descuesto_regargo").val());
-        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#id_monto_descuesto_regargo').val())
+    $('#id_monto_descuento_recargo').on('keyup', function(){
+        porc_descuento = calcular_porcdescuentorecargo($("#id_monto_mundanza_revisada").val(), $("#id_monto_descuento_recargo").val());
+        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#id_monto_descuento_recargo').val(), $('#id_descuento_recargo').val())
         $("#porc_descuento").val(porc_descuento);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
     $('#porc_descuento').on('keyup', function(){
         descuentorecargo = calcular_descuentorecargo($("#id_monto_mundanza_revisada").val(), $("#porc_descuento").val());
-        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), descuentorecargo)
-        $("#id_monto_descuesto_regargo").val(descuentorecargo);
+        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), descuentorecargo, $('#id_descuento_recargo').val())
+        $("#id_monto_descuento_recargo").val(descuentorecargo);
         $("#mudanzamontorevisado").val(totalmudanzarevisado)
     });
-    $('#descuesto_regargooptimo').on('keyup', function(){
-        porc_descuento = calcular_porcdescuentorecargo($("#id_monto_mundanza_revisada").val(), $("#descuesto_regargooptimo").val());
-        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuesto_regargooptimo').val())
+    $('#descuento_recargooptimo').on('keyup', function(){
+        porc_descuento = calcular_porcdescuentorecargo($("#id_monto_mundanza_revisada").val(), $("#descuento_recargooptimo").val());
+        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_recargooptimo').val(), $('#id_descuento_recargo').val())
         $("#porc_descuentooptimo").val(porc_descuento);
         $("#mudanzamontorevisadooptimo").val(totalmudanzarevisado);
+        $("#porc_descuento").val(porc_descuento);
+        $("#id_monto_descuento_recargo").val($('#descuento_recargooptimo').val());
+        $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
     $('#porc_descuentooptimo').on('keyup', function(){
         descuentorecargo = calcular_descuentorecargo($("#id_monto_mundanza_revisada").val(), $("#porc_descuentooptimo").val());
-        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), descuentorecargo)
-        $("#descuesto_regargooptimo").val(descuentorecargo);
-        $("#mudanzamontorevisadooptimo").val(totalmudanzarevisado)
+        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), descuentorecargo, $('#id_descuento_recargo').val())
+        $("#descuento_recargooptimo").val(descuentorecargo);
+        $("#mudanzamontorevisadooptimo").val(totalmudanzarevisado);
+        $("#porc_descuento").val($('#porc_descuentooptimo').val());
+        $("#id_monto_descuento_recargo").val(descuentorecargo);
+        $("#mudanzamontorevisado").val(totalmudanzarevisado);
+
     });
-    $('#descuesto_regargobasico').on('keyup', function(){
-        porc_descuento = calcular_porcdescuentorecargo($("#id_monto_mundanza_revisada").val(), $("#descuesto_regargobasico").val());
-        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuesto_regargobasico').val())
+    $('#descuento_regargobasico').on('keyup', function(){
+        porc_descuento = calcular_porcdescuentorecargo($("#id_monto_mundanza_revisada").val(), $("#descuento_regargobasico").val());
+        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_regargobasico').val(), $('#id_descuento_recargo').val())
         $("#porc_descuentobasico").val(porc_descuento);
         $("#mudanzamontorevisadotoerico").val(totalmudanzarevisado);
+        $("#porc_descuento").val(porc_descuento);
+        $("#id_monto_descuento_recargo").val($('#descuento_regargobasico').val());
+        $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
     $('#porc_descuentobasico').on('keyup', function(){
         descuentorecargo = calcular_descuentorecargo($("#id_monto_mundanza_revisada").val(), $("#porc_descuentobasico").val());
-        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), descuentorecargo)
-        $("#descuesto_regargobasico").val(descuentorecargo);
-        $("#mudanzamontorevisadotoerico").val(totalmudanzarevisado)
+        totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), descuentorecargo, $('#id_descuento_recargo').val());
+        $("#descuento_regargobasico").val(descuentorecargo);
+        $("#mudanzamontorevisadotoerico").val(totalmudanzarevisado);
+        $("#porc_descuento").val($('#porc_descuentobasico').val());
+        $("#id_monto_descuento_recargo").val(descuentorecargo);
+        $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
 });
 // funcion para calcular el total de la mudanza antes del desc/recargo
@@ -376,7 +511,7 @@ function calcular_totalmudanza(valorrecurso,valorvehiculo,valorservicio,valormat
     }
     return resultado.toFixed(2);
 }
-function calcular_porcdescuentorecargo(totalmudanza,descuentorecargo){
+function calcular_porcdescuentorecargo(totalmudanza, descuentorecargo){
     var resultado=0;
     resultado=(descuentorecargo/totalmudanza)*100
     if (isNaN(parseFloat(resultado))) {
@@ -384,7 +519,7 @@ function calcular_porcdescuentorecargo(totalmudanza,descuentorecargo){
     }
     return resultado.toFixed(2);
 }
-function calcular_descuentorecargo(totalmudanza,porcdescuentorecargo){
+function calcular_descuentorecargo(totalmudanza, porcdescuentorecargo){
     var resultado=0;
     resultado=(totalmudanza*porcdescuentorecargo)/100
     if (isNaN(parseFloat(resultado))) {
@@ -392,9 +527,9 @@ function calcular_descuentorecargo(totalmudanza,porcdescuentorecargo){
     }
     return resultado.toFixed(2);
 }
-function calcular_totalmudanzarevisado(totalmudanza, descuentorecargo){
+function calcular_totalmudanzarevisado(totalmudanza, descuentorecargo, operador){
     var resultado = 0;
-    resultado= parseFloat(totalmudanza) + parseFloat(descuentorecargo);
+    resultado=eval(parseFloat(totalmudanza) + operador +  parseFloat(descuentorecargo));
     if (isNaN(parseFloat(resultado))) {
         resultado=0;
     }
@@ -437,41 +572,41 @@ function radioBenable(){
     document.getElementById("rrhha").disabled = false;
 }
 function RecargodisabledBasico(){
-    document.getElementById("descuesto_regargobasico").disabled = true;
+    document.getElementById("descuento_regargobasico").disabled = true;
     document.getElementById("porc_descuentobasico").disabled = true;
-    $('#descuesto_regargobasico').css('background', 'none');
+    $('#descuento_regargobasico').css('background', 'none');
     $('#porc_descuentobasico').css('background', 'none');
-    document.getElementById("descuesto_regargobasico").value = 0;
+    document.getElementById("descuento_regargobasico").value = 0;
     document.getElementById("porc_descuentobasico").value = 0;
 }
 function RecargoEnableBasico(){
-    document.getElementById("descuesto_regargobasico").disabled = false;
+    document.getElementById("descuento_regargobasico").disabled = false;
     document.getElementById("porc_descuentobasico").disabled = false;
 }
 function RecargodisabledOptimo(){
-    document.getElementById("descuesto_regargooptimo").disabled = true;
+    document.getElementById("descuento_recargooptimo").disabled = true;
     document.getElementById("porc_descuentooptimo").disabled = true;
-    $('#descuesto_regargooptimo').css('background', 'none');
+    $('#descuento_recargooptimo').css('background', 'none');
     $('#porc_descuentooptimo').css('background', 'none');
-    document.getElementById("descuesto_regargooptimo").value = 0;
+    document.getElementById("descuento_recargooptimo").value = 0;
     document.getElementById("porc_descuentooptimo").value = 0;
 }
-document.getElementById("descuesto_regargooptimo").value = 0;
+document.getElementById("descuento_recargooptimo").value = 0;
 document.getElementById("porc_descuentooptimo").value = 0;
 function RecargoEnableOptimo(){
-    document.getElementById("descuesto_regargooptimo").disabled = false;
+    document.getElementById("descuento_recargooptimo").disabled = false;
     document.getElementById("porc_descuentooptimo").disabled = false;
 }
 function RecargodisabledRevisado(){
-    document.getElementById("id_monto_descuesto_regargo").disabled = true;
+    document.getElementById("id_monto_descuento_recargo").disabled = true;
     document.getElementById("porc_descuento").disabled = true;
-    $('#id_monto_descuesto_regargo').css('background', 'none');
+    $('#id_monto_descuento_recargo').css('background', 'none');
     $('#porc_descuento').css('background', 'none');
-    document.getElementById("id_monto_descuesto_regargo").value = 0;
+    document.getElementById("id_monto_descuento_recargo").value = 0;
     document.getElementById("porc_descuento").value = 0;
 }
 function RecargoEnableRevisado(){
-    document.getElementById("id_monto_descuesto_regargo").disabled = false;
+    document.getElementById("id_monto_descuento_recargo").disabled = false;
     document.getElementById("porc_descuento").disabled = false;
 }
 function DisableRevisadoInput(){
@@ -495,52 +630,63 @@ function checkBasico(){
     $('.check').addClass('selec');
     $('.check2').removeClass('selec');
     $('.check3').removeClass('selec');
+    $('#id_tipo_calculo').val('Basico');
+    $('#id_monto_recursos_revisado').val(parseFloat($('#montorecursobasico').text().replace(',','')).toFixed(2));
+    $('#id_monto_vehiculo_revisado').val(parseFloat($('#vehiculomontobasico').text().replace(',','')).toFixed(2));
+    $('#id_monto_servicios_revisado').val(parseFloat($('#montoserviciosbasico').text().replace(',','')).toFixed(2));
+    $('#id_monto_materiales_revisado').val(parseFloat($('#montomaterialesbasico').text().replace(',','')).toFixed(2));
+    $('#id_monto_mundanza_revisada').val(parseFloat($('#montomudanzahrsdirectas').text().replace(',','')).toFixed(2));
+    $('#id_monto_descuento_recargo').val(parseFloat($('#descuento_regargobasico').val().replace(',','')).toFixed(2));
+    $('#porc_descuento').val(parseFloat($('#porc_descuentobasico').val().replace(',','')).toFixed(2));
+    $('#mudanzamontorevisado').val(parseFloat($('#mudanzamontorevisadotoerico').val().replace(',','')).toFixed(2));
+
     RecargoEnableBasico()
     RecargodisabledOptimo()
     RecargodisabledRevisado()
+
+    totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_recargooptimo').val(), $('#id_descuento_recargo').val());
+    $("#mudanzamontorevisadooptimo").val(totalmudanzarevisado);
+
 }
 function checkOptimizado(){
     $('.check').removeClass('selec');
     $('.check3').removeClass('selec');
     $('.check2').addClass('selec');
+    $('#id_tipo_calculo').val('Optimizado');
+    $('#id_monto_recursos_revisado').val(parseFloat($('#montorecursooptimo').text().replace(',','')).toFixed(2));
+    $('#id_monto_vehiculo_revisado').val(parseFloat($('#vehiculomontooptima').text().replace(',','')).toFixed(2));
+    $('#id_monto_servicios_revisado').val(parseFloat($('#montoserviciosoptima').text().replace(',','')).toFixed(2));
+    $('#id_monto_materiales_revisado').val(parseFloat($('#montomaterialesoptima').text().replace(',','')).toFixed(2));
+    $('#id_monto_mundanza_revisada').val(parseFloat($('#montomundanzahrsoptimas').text().replace(',','')).toFixed(2));
+    $('#id_monto_descuento_recargo').val(parseFloat($('#descuento_recargooptimo').val().replace(',','')).toFixed(2));
+    $('#porc_descuento').val(parseFloat($('#porc_descuentooptimo').val().replace(',','')).toFixed(2));
+    $('#mudanzamontorevisado').val(parseFloat($('#mudanzamontorevisadooptimo').val().replace(',','')).toFixed(2));
+
     RecargodisabledBasico()
     RecargoEnableOptimo()
     RecargodisabledRevisado()
+    totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_regargobasico').val(), $('#id_descuento_recargo').val());
+    $("#mudanzamontorevisadotoerico").val(totalmudanzarevisado);
 }
 function checkRevisado(){
     $('.check3').addClass('selec');
     $('.check2').removeClass('selec');
     $('.check').removeClass('selec');
+    $('#id_tipo_calculo').val('Revisado');
     RecargodisabledBasico()
     RecargodisabledOptimo()
     RecargoEnableRevisado()
+
+    totalmudanzarevisadooptmo = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_recargooptimo').val(), $('#id_descuento_recargo').val());
+
+    totalmudanzarevisadobasico = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_regargobasico').val(), $('#id_descuento_recargo').val());
+
+    $("#mudanzamontorevisadooptimo").val(totalmudanzarevisadooptmo);
+    $("#mudanzamontorevisadotoerico").val(totalmudanzarevisadobasico);
+
+
 }
-$('#basico').click(function(){
-    radioColorBlue()
-    checkBasico()
-    radioBdisabled()
-    limpiar('totalRecurso',0)
-    limpiar('descuentoRecargo',0)
-    radioTotal()
-    DisableRevisadoInput()
-});
-$('#optimizado').click(function(){
-    radioColorBlue()
-    checkOptimizado()
-    radioBdisabled()
-    limpiar('totalRecurso',0)
-    limpiar('descuentoRecargo',0)
-    radioTotal()
-    DisableRevisadoInput()
-});
-$('#revisado').click(function(){
-    EnableRevisadoInput()
-    radioColorBlue()
-    checkRevisado()
-    radioBenable()
-});
-checkOptimizado()
-radioColorBlue()
+
 $('#myform').submit(function(){
     EnableRevisadoInput()
 });
