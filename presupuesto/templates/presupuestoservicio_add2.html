@@ -1,110 +1,99 @@
-{% extends "base_edit.html" %}
+{% extends "base_modal_form.html" %}
 
-{% block titulo %}
+{% block formulario %}
 
-<title>Presupuesto</title>
+<form action="" method="post" id="myform">
 
-{% endblock titulo %}
+  {% csrf_token %}
 
-{% block titulo_form %}
+  <div class="form-group">
 
-  <h2>Agregar servicio 2</h2>
-
-{% endblock titulo_form %}
-
-{% block cuerpo_form %}
-
-<div class="form-group">
-
-
-  {{formset.managament_form}}
-  {% for form in formset %}
     {{ form.as_p }}
-  {% endfor %}
 
-</div>
-{{form_data}}
+  </div>
+  <span id="seleccion"></span>
+  <button type="submit" style="float:right;" class="btn btn-default btn-registrar">Agregar</button>
+</form>
+<div class="alert alert-danger" id="seleccionServicio" style="display:none;" role="alert"></div>
 
-{% endblock cuerpo_form %}
+{% endblock formulario %}
 
-{% block js_sup %}
+{% block style %}
+
+<link rel="stylesheet" href="/static/css/presupuestoForm/preServicio.css">
+
+{% endblock style %}
+
+{% block js_form %}
+
 <script>
-$(document).ready(function(){
-  $("#id_lista_ambiente").on("change", function(){
-    id_lista_ambiente = $("#id_lista_ambiente").val();
-    $.get('/presupuesto/detalle/nuevo',
-      {id_lista_ambiente: id_lista_ambiente},
-          function(data){
-            $("#id_ambiente").val(data[0].ambiente);
+setTimeout(function() {
+  document.getElementById('id_lista_servicio').focus();
+},500);
+$('#id_lista_servicio').multiSelect(
+{
+  afterSelect: function(values){
+    $("#id_servicio").val(values);
+  },
+});
+$(document).ready(function() {
+  $('#myform').submit(function(){
+    if ($('#id_lista_servicio').val() == null){
+      $("#seleccionServicio").text('Seleccione un servicio');
+      $("#seleccionServicio").fadeIn();
+      setTimeout(function() {
+        $("#seleccionServicio").fadeOut();
+      },3000);
+      return false;
+    }else{
+      var action = "{% url 'upresupuestos:PresupuestoServicioView' %}";
+      var that = $(this);
+      $.ajax({
+        url: action,
+        type: 'POST',
+        data: that.serialize()
+        ,success: function(data){
+          var modalp = parent.document.getElementById('myModalServicio');
+          var divp = parent.document.getElementsByClassName("modal-backdrop");
+          var bodyp = parent.document.getElementById('id_body');
+          var closep = parent.document.getElementById("btn-cerrar");
+          var guardar = parent.document.getElementById("msjGuardado");
+          if (data.estatus=="ok"){
+            $(closep).click();
+            setTimeout(function() {
+              parent.location.reload();
+            },1000);
+            $(guardar).css('width','300px');
+            $(guardar).text('Servicio guardado con éxito');
+            $(guardar).fadeIn();
+          }else{
+            $("#seleccionServicio").text(data.msj);
+            $("#seleccionServicio").fadeIn();
+            setTimeout(function() {
+              $("#seleccionServicio").fadeOut();
+            },3000);
+          }
+        },
+        error: function (ajaxContext) {
+          alert('Ocurrió un error...');
+        }
       });
-    });
-
-  $("#id_lista_mueble").on("change", function(){
-      id_lista_mueble = $("#id_lista_mueble").val();
-        $.get('/presupuesto/detalle/nuevo',
-          {id_lista_mueble: id_lista_mueble},
-              function(data){
-                $("#id_mueble").val(data[0].mueble);
-                $("#id_ocupacidad").val(data[0].descripocupacion);
-                $("#id_valor_ocupacidad").val(data[0].valorocupacion);
-                $("#id_lista_ocupacion").val(data[0].ocupacion);
-                $("#capacidadmueble").val(data[0].capacidadmueble);
-                lista_ocupacion = $("input[name=lista_ocupacion]");
-                for(var i=0; i<lista_ocupacion.length; i++){
-                  if (data[0].ocupacion==lista_ocupacion[i].value){
-                    $(lista_ocupacion[i]).attr("checked","checked");
-                  }
-                }
-          });
-  });
-
-  $("#id_lista_tamano").on("change", function(){
-  id_lista_tamano = $("#id_lista_tamano").val();
-  id_lista_mueble = $("#id_lista_mueble").val();
-  $.get('/presupuesto/detalle/nuevo',
-    {id_lista_tamano: id_lista_tamano, id_lista_mueble: id_lista_mueble},
-        function(data){
-          $("#id_tamano").val(data[0].tamano);
-          $("#id_ancho").val(data[0].ancho);
-          $("#id_largo").val(data[0].largo);
-          $("#id_alto").val(data[0].alto);
-          $("#id_densidad").val(data[0].densidad);
-          $("#id_peso").val(data[0].peso);
-          valor_densidad= calcular_densidad($("#id_peso").val(),$("#id_ancho").val(),$("#id_largo").val(),$("#id_alto").val())
-          $("#id_valor_densidad").val(valor_densidad);
-    });
-  });
-
-  $("input[name=lista_ocupacion]").click(function () {
-    id_ocupacion = $('input[name=lista_ocupacion]:checked').val();
-    $.get('/presupuesto/detalle/nuevo',
-      {id_ocupacion: id_ocupacion},
-          function(data){
-            $("#id_ocupacidad").val(data[0].ocupacion);
-            $("#id_valor_ocupacidad").val(data[0].valorocupacion);
-             vol_contenido = $("#id_valor_ocupacidad").val()*$("#capacidadmueble").val();
-            $("#id_volumen_contenido").val(vol_contenido.toFixed(2))
-      });
-  });
-
+return false;
+}
+});
 });
 </script>
-
-<script>
-function calcular_densidad(peso,ancho,largo,alto){
-    var resultado;
-    resultado= (peso/(ancho*largo*alto));
-
-  return resultado.toFixed(2);
+<script type="text/javascript">
+function refresh() {
+  var id_mueble = $("#id_detalle_presupuesto").val();
+  $.ajax({
+    url: "/presupuesto/detalle/servicio/"+ id_mueble,
+    success: function(data) {
+      var divs = parent.document.getElementById('listservi'+id_mueble);
+      $(divs).html(data);
+    }
+  });
 }
 </script>
 
-{% endblock js_sup %}
-
-{% block ayuda %}
-
-<div class="well well-lg">
-  <p>La <strong>Presupuesto</strong>  es la acción y efecto de cotizar, poner precio a algo, estimar a alguien o algo en relación con un fin. el documento informa y establece el valor del servicios.</p>
-</div>
-
-{% endblock ayuda %}
+{% endblock js_form %}

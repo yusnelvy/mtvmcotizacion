@@ -4,7 +4,7 @@ Ayuda del mueble/forms.py
 
 """
 from django.forms import ModelForm, ModelChoiceField, RadioSelect, \
-    Select, SelectMultiple, DateInput
+    Select, SelectMultiple, DateInput, TextInput
 from presupuesto.models import Presupuesto, Presupuesto_direccion, \
     Presupuesto_Detalle, Presupuesto_servicio, DatosPrecargado
 from django.core.exceptions import NON_FIELD_ERRORS
@@ -30,7 +30,7 @@ class PresupuestoDetalleForm3(forms.Form):
 class PresupuestoForm(ModelForm):
 
     """Docstring"""
-    fecha_estimadamudanza = forms.DateField(widget=forms.DateInput(format='%Y-%m-%d'), input_formats=('%Y-%m-%d',))
+    fecha_estimadamudanza = forms.DateField(label='Fecha estimada de la mudanza:', widget=forms.DateInput(format='%Y-%m-%d'), input_formats=('%Y-%m-%d',))
 
     class Meta:
         model = Presupuesto
@@ -148,7 +148,7 @@ class PresupuestoDetalleForm(ModelForm):
 class PresupuestoServicioForm(ModelForm):
 
     """Docstring"""
-    lista_servicio = ModelChoiceField(Servicio.objects.exclude(servicio_material__material__contenedor=True).distinct(), widget=Select, empty_label=None, label='Servicios')
+    lista_servicio = ModelChoiceField(Servicio.objects.exclude(servicio_material__material__contenedor=True).distinct(), widget=SelectMultiple, empty_label=None, label='Servicios')
 
     class Meta:
         model = Presupuesto_servicio
@@ -167,3 +167,65 @@ class DatosPrecargadoForm(ModelForm):
     class Meta:
         model = DatosPrecargado
         fields = '__all__'
+
+
+class PresupuestoRevisarForm(ModelForm):
+    class Meta:
+        model = Presupuesto
+        fields = 'monto_recursos_revisado', \
+                 'monto_vehiculo_revisado', \
+                 'monto_servicios_revisado', \
+                 'monto_materiales_revisado', \
+                 'monto_mundanza_revisada',\
+                 'monto_descuento_recargo', \
+                 'descuento_recargo', \
+                 'tipo_calculo'
+        widgets = {
+            'monto_mundanza_revisada': TextInput(
+                attrs={
+                    'required': 'True',
+                    'readonly': 'readonly',
+                    'class': 'input-re check3',
+                    'type': 'number',
+                    'step': '0.01'
+                    }),
+            'monto_recursos_revisado': TextInput(
+                attrs={
+                    'required': 'True',
+                    'class': 'input-re check3',
+                    'type': 'number',
+                    'step': '0.01'}
+                ),
+            'monto_vehiculo_revisado': TextInput(
+                attrs={
+                    'required': 'True',
+                    'class': 'input-re check3',
+                    'type': 'number',
+                    'step': '0.01'
+                    }
+                ),
+            'monto_servicios_revisado': TextInput(
+                attrs={
+                    'required': 'True',
+                    'class': 'input-re check3',
+                    'type': 'number',
+                    'step': '0.01'}
+                ),
+            'monto_materiales_revisado': TextInput(
+                attrs={
+                    'required': 'True',
+                    'class': 'input-re check3',
+                    'type': 'number',
+                    'step': '0.01'}
+                ),
+            'monto_descuento_recargo': TextInput(
+                attrs={
+                    'required': 'True',
+                    'class': 'input-descuento-recargo check3',
+                    'style': 'text-align:left;',
+                    'type': 'number',
+                    'step': '0.01'}
+                ),
+            'descuento_recargo': TextInput(attrs={'hidden': 'hiden'}),
+            'tipo_calculo': TextInput(attrs={'hidden': 'hiden'})
+        }
