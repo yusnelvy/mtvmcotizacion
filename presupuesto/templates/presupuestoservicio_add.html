@@ -1,49 +1,99 @@
-{% extends "base_edit.html" %}
+{% extends "base_modal_form.html" %}
 
-{% block titulo %}
+{% block formulario %}
 
-<title>Presupuesto</title>
+<form action="" method="post" id="myform">
 
-{% endblock titulo %}
+  {% csrf_token %}
 
-{% block titulo_form %}
-
-  <h2>Agregar servicio este</h2>
-
-{% endblock titulo_form %}
-
-{% block cuerpo_form %}
-
-<div class="form-group">
+  <div class="form-group">
 
     {{ form.as_p }}
 
-</div>
+  </div>
+  <span id="seleccion"></span>
+  <button type="submit" style="float:right;" class="btn btn-default btn-registrar">Agregar</button>
+</form>
+<div class="alert alert-danger" id="seleccionServicio" style="display:none;" role="alert"></div>
 
-{% endblock cuerpo_form %}
+{% endblock formulario %}
 
-{% block js_sup %}
+{% block style %}
+
+<link rel="stylesheet" href="/static/css/presupuestoForm/preServicio.css">
+
+{% endblock style %}
+
+{% block js_form %}
+
 <script>
-$(document).ready(function(){
-  $("#id_lista_servicio").on("change", function(){
-    id_lista_servicio = $("#id_lista_servicio").val();
-    $.get('/presupuesto/servicio/nuevo'+id_lista_servicio,
-      {id_lista_servicio: id_lista_servicio},
-          function(data){
-            $("#id_servicio").val(data[0].servicio);
-      });
-    });
-
+setTimeout(function() {
+  document.getElementById('id_lista_servicio').focus();
+},500);
+$('#id_lista_servicio').multiSelect(
+{
+  afterSelect: function(values){
+    $("#id_servicio").val(values);
+  },
 });
-
+$(document).ready(function() {
+  $('#myform').submit(function(){
+    if ($('#id_lista_servicio').val() == null){
+      $("#seleccionServicio").text('Seleccione un servicio');
+      $("#seleccionServicio").fadeIn();
+      setTimeout(function() {
+        $("#seleccionServicio").fadeOut();
+      },3000);
+      return false;
+    }else{
+      var action = "{% url 'upresupuestos:PresupuestoServicioView' %}";
+      var that = $(this);
+      $.ajax({
+        url: action,
+        type: 'POST',
+        data: that.serialize()
+        ,success: function(data){
+          var modalp = parent.document.getElementById('myModalServicio');
+          var divp = parent.document.getElementsByClassName("modal-backdrop");
+          var bodyp = parent.document.getElementById('id_body');
+          var closep = parent.document.getElementById("btn-cerrar");
+          var guardar = parent.document.getElementById("msjGuardado");
+          if (data.estatus=="ok"){
+            $(closep).click();
+            setTimeout(function() {
+              parent.location.reload();
+            },1000);
+            $(guardar).css('width','300px');
+            $(guardar).text('Servicio guardado con éxito');
+            $(guardar).fadeIn();
+          }else{
+            $("#seleccionServicio").text(data.msj);
+            $("#seleccionServicio").fadeIn();
+            setTimeout(function() {
+              $("#seleccionServicio").fadeOut();
+            },3000);
+          }
+        },
+        error: function (ajaxContext) {
+          alert('Ocurrió un error...');
+        }
+      });
+return false;
+}
+});
+});
+</script>
+<script type="text/javascript">
+function refresh() {
+  var id_mueble = $("#id_detalle_presupuesto").val();
+  $.ajax({
+    url: "/presupuesto/detalle/servicio/"+ id_mueble,
+    success: function(data) {
+      var divs = parent.document.getElementById('listservi'+id_mueble);
+      $(divs).html(data);
+    }
+  });
+}
 </script>
 
-{% endblock js_sup %}
-
-{% block ayuda %}
-
-<div class="well well-lg">
-  <p>La <strong>Presupuesto</strong>  es la acción y efecto de cotizar, poner precio a algo, estimar a alguien o algo en relación con un fin. el documento informa y establece el valor del servicios.</p>
-</div>
-
-{% endblock ayuda %}
+{% endblock js_form %}

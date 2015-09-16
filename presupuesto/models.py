@@ -1,3 +1,5 @@
+"""docstring"""
+
 from django.db import models
 from django.contrib.auth.models import User
 from decimal import Decimal
@@ -13,7 +15,8 @@ PISOS_CHOICES = (
     (8, '8'),
     (9, '9'),
     (10, '10 o más'),
-)
+    )
+
 PISOS_RECORRER_CHOICES = (
     (0, '0'),
     (1, '1'),
@@ -26,52 +29,69 @@ PISOS_RECORRER_CHOICES = (
     (8, '8'),
     (9, '9'),
     (10, '10 o más'),
-)
+    )
+
 DISTANCIA_VEHICULO_INMUEBLE = (
-    (10, 'Menos de 10 metros'),
-    (20, 'De 11 a 20 metros'),
-    (30, 'De 21 a 30 metros'),
-    (40, 'De 31 a 40 metros'),
-    (50, 'De 41 a 50 metros'),
-    (60, 'De 51 a 60 metros'),
-    (70, 'Más de 70 metros'),
+    (10, '10 mts o menos'),
+    (20, 'De 11 a 20 mts'),
+    (30, 'De 21 a 30 mts'),
+    (40, 'De 31 a 40 mts'),
+    (50, 'De 41 a 50 mts'),
+    (60, 'De 51 a 60 mts'),
+    (70, '70 mts o más'),
     )
+
 METROSCUADRADO_INMUEBLE = (
-    (Decimal('40.00'), 'Entre 40 metros cuadrado'),
-    (Decimal('80.00'), 'Entre 41 a 80 metros cuadrado'),
-    (Decimal('120.00'), 'Entre 81 a 120 metros cuadrado'),
-    (Decimal('160.00'), 'Entre 121 a 160 metros cuadrado'),
-    (Decimal('200.00'), 'Entre 161 a 200 metros cuadrado'),
-    (Decimal('240.00'), 'Más de 240 metros cuadrado'),
+    (Decimal('40.00'), '40 m2 o menos'),
+    (Decimal('80.00'), 'De 41 a 80 m2'),
+    (Decimal('120.00'), 'De 81 a 120 m2'),
+    (Decimal('160.00'), 'De 121 a 160 m2'),
+    (Decimal('200.00'), 'De 161 a 200 m2'),
+    (Decimal('240.00'), '240 m2 o más'),
     )
+
 RECORRIDO_KM = (
-    (Decimal('20.00'), 'Entre 1 KM a 20 KM'),
-    (Decimal('40.00'), 'Entre 21 KM a 40 KM'),
-    (Decimal('60.00'), 'Entre 41 KM a 60 KM'),
-    (Decimal('80.00'), 'Entre 61 KM a 80 KM'),
-    (Decimal('100.00'), 'Entre 81 KM a 100 KM'),
-    (Decimal('120.00'), 'Entre 101 KM a 120 KM'),
-    (Decimal('140.00'), 'Entre 121 KM a 140 KM'),
-    (Decimal('160.00'), 'Entre 141 KM a 160 KM'),
-    (Decimal('180.00'), 'Entre 161 KM a 180 KM'),
-    (Decimal('200.00'), 'Más de 200 KM')
+    (Decimal('20.00'), '20 Km o menos'),
+    (Decimal('40.00'), 'De 21 a 40 Km'),
+    (Decimal('60.00'), 'De 41 a 60 Km'),
+    (Decimal('80.00'), 'De 61 a 80 Km'),
+    (Decimal('100.00'), 'De 81 a 100 Km'),
+    (Decimal('120.00'), 'De 101 a 120 Km'),
+    (Decimal('140.00'), 'De 121 a 140 Km'),
+    (Decimal('160.00'), 'De 141 a 160 Km'),
+    (Decimal('180.00'), 'De 161 a 180 Km'),
+    (Decimal('200.00'), '200 Km o más')
     )
+
 TIEMPO_RECORRIDO = (
-    (Decimal('1.00'), 'Entre 30 minuto a 1 hora'),
-    (Decimal('2.00'), 'Entre 1 hora a 2 horas'),
-    (Decimal('3.00'), 'Entre 2 horas a 3 horas'),
-    (Decimal('4.00'), 'Entre 3 horas a 4 horas'),
-    (Decimal('5.00'), 'Entre 4 horas a 5 horas'),
-    (Decimal('6.00'), 'Entre 5 horas a 6 horas'),
-    (Decimal('7.00'), 'Entre 6 horas a 7 horas'),
-    (Decimal('8.00'), 'Entre 7 horas a 8 horas'),
-    (Decimal('9.00'), 'Entre 8 horas a 9 horas'),
-    (Decimal('10.00'), 'Más de 10 horas')
+    (Decimal('1.00'), '1 hora o menos'),
+    (Decimal('2.00'), 'De 1 a 2 horas'),
+    (Decimal('3.00'), 'De 2 a 3 horas'),
+    (Decimal('4.00'), 'De 3 a 4 horas'),
+    (Decimal('5.00'), 'De 4 a 5 horas'),
+    (Decimal('6.00'), 'De 5 a 6 horas'),
+    (Decimal('7.00'), 'De 6 a 7 horas'),
+    (Decimal('8.00'), 'De 7 a 8 horas'),
+    (Decimal('9.00'), 'De 8 a 9 horas'),
+    (Decimal('10.00'), '10 horas o más')
+    )
+
+HORAS_CHOICES = (
+    (Decimal('1.00'), '8:00 am o antes'),
+    (Decimal('2.00'), '9:00 am'),
+    (Decimal('3.00'), '10:00 am'),
+    (Decimal('4.00'), '11:00 am'),
+    (Decimal('5.00'), '12:00 pm'),
+    (Decimal('6.00'), '01:00 pm'),
+    (Decimal('7.00'), '02:00 pm'),
+    (Decimal('8.00'), '03:00 pm'),
+    (Decimal('9.00'), '04:00 pm'),
+    (Decimal('10.00'), '05:00 pm o después')
     )
 
 
-# Create your models here.
 class Presupuesto(models.Model):
+    """docstring"""
     dni = models.CharField(max_length=20)
     nombre_cliente = models.CharField(max_length=250)
     empresa_cliente = models.CharField(max_length=250, blank=True)

@@ -1,5 +1,18 @@
 {% extends "base_edit.html" %}
 
+{% block js_sup %}
+
+<script>
+$(function() {
+    $( "#id_fecha_estimadamudanza" ).datepicker();
+    $( "#anim" ).change(function() {
+        $( "#datepicker" ).datepicker( "option", "showAnim", $( this ).val() );
+    });
+});
+</script>
+
+{% endblock js_sup %}
+
 {% block titulo %}
 
 <title>Presupuesto</title>
@@ -20,7 +33,6 @@ class="col-md-10"
 
 {% block cuerpo_form %}
 
-<link rel="stylesheet" href="/static/css/presupuestoForm/preDatosPersonales.css">
 <div class="form-group filtra-campos">
 
     {% for campo in form %}
@@ -33,7 +45,6 @@ class="col-md-10"
     {% endfor %}
 
 </div>
-<script src="/static/js/presupuestoForm/preDatosPersonales.js"></script>
 
 {% endblock cuerpo_form %}
 
