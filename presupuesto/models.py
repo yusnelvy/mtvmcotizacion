@@ -3,6 +3,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from decimal import Decimal
+from datetime import datetime, date, time
+
 
 PISOS_CHOICES = (
     (1, '1'),
@@ -77,16 +79,16 @@ TIEMPO_RECORRIDO = (
     )
 
 HORAS_CHOICES = (
-    (Decimal('1.00'), '8:00 am o antes'),
-    (Decimal('2.00'), '9:00 am'),
-    (Decimal('3.00'), '10:00 am'),
-    (Decimal('4.00'), '11:00 am'),
-    (Decimal('5.00'), '12:00 pm'),
-    (Decimal('6.00'), '01:00 pm'),
-    (Decimal('7.00'), '02:00 pm'),
-    (Decimal('8.00'), '03:00 pm'),
-    (Decimal('9.00'), '04:00 pm'),
-    (Decimal('10.00'), '05:00 pm o después')
+    (time(8, 00), '8:00 am o antes'),
+    (time(9, 00), '9:00 am'),
+    (time(10, 00), '10:00 am'),
+    (time(11, 00), '11:00 am'),
+    (time(12, 00), '12:00 pm'),
+    (time(13, 00), '01:00 pm'),
+    (time(14, 00), '02:00 pm'),
+    (time(15, 00), '03:00 pm'),
+    (time(16, 00), '04:00 pm'),
+    (time(17, 00), '05:00 pm o después')
     )
 
 
@@ -94,8 +96,8 @@ class Presupuesto(models.Model):
     """docstring"""
     dni = models.CharField(max_length=20)
     nombre_cliente = models.CharField(max_length=250)
-    empresa_cliente = models.CharField(max_length=250, blank=True)
-    cargo_cliente = models.CharField(max_length=250, blank=True)
+    empresa_cliente = models.CharField(max_length=250, blank=True, default='')
+    cargo_cliente = models.CharField(max_length=250, blank=True, default='')
     telefono = models.CharField(max_length=100)
     telefono_celular = models.CharField(max_length=100, blank=True)
     email = models.EmailField()
@@ -103,7 +105,7 @@ class Presupuesto(models.Model):
     fecha_creacion = models.DateField(auto_now_add=True)
     hora_creacion = models.TimeField(auto_now_add=True)
     fecha_estimadamudanza = models.DateField()
-    hora_estimadamudanza = models.TimeField()
+    hora_estimadamudanza = models.TimeField(choices=HORAS_CHOICES, default='08:00')
     fuente_promocion = models.CharField(max_length=100)
     descripcion_vehiculo = models.TextField(blank=True, default=0)
     descripcion_persona = models.TextField(blank=True, default=0)
