@@ -5,9 +5,11 @@
 <a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="../../">
     <span class="glyphicon glyphicon-chevron-left"></span>
 </a>
-<a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();">
-    <span class="glyphicon glyphicon-print"></span>
-</a>
+<a title="Imprimir" class="navbar-brand " role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
+<a title="Editar detalles del presupuesto" class="navbar-brand botonmodalDatosPersonales" role="button" aria-expanded="false" data-toggle="modal" data-target="#myModalDatosPersonales" data-opcion="{% url 'upresupuestos:PresupuestoUpdate' presupuesto.id %}" data-numero="{{presupuesto.id}}"><span class="glyphicon glyphicon-pencil"></span></a>
+<a title="Agregar dirección de origen" class="navbar-brand botonmodalDireccion" role="button" aria-expanded="false" data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Origen&pre={{presupuesto.id}}"><span class="glyphicon glyphicon-export"></span></a>
+<a title="Agregar dirección de destino" class="navbar-brand botonmodalDireccion" role="button" aria-expanded="false" data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Destino&pre={{presupuesto.id}}"><span class="glyphicon glyphicon-import"></span></a>
+<a title="Agregar mueble" class="navbar-brand botonmodalMueble" role="button" aria-expanded="false" data-toggle="modal" data-target="#myModalAmbiente" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}"><span class="glyphicon glyphicon-lamp"></span></a>
 
 {% block acceso_rapido_adicional %}{% endblock acceso_rapido_adicional %}
 
@@ -88,133 +90,205 @@ class="col-md-10"
 <div>
     <h2>Detalles del presupuesto</h2>
     <table class="table table-hover table-bordered">
-         <tr>
-             <td><b>Cotizador:</b> {{ presupuesto.cotizador }}</td>
-             <td><b>Fecha de registro:</b> {{ presupuesto.fecha_creacion|date:"d/m/Y" }}</td>
-             <td><b>Hora de registro:</b> {{ presupuesto.hora_creacion|time:"h:i a" }}</td>
-             <td><b>N° de presupuesto:</b> {{ presupuesto.id }}</td>
-         </tr>
-         <tr>
-             <td colspan="2"><b>Solicitante:</b> {{ presupuesto.nombre_cliente }}</td>
-             <td><b>Teléfono celular:</b> {{ presupuesto.telefono_celular }}</td>
-             <td><b>Teléfono fijo:</b> {{ presupuesto.telefono }}</td>
-         </tr>
-         <tr>
-             <td colspan="2"><b>e-mail:</b> {{ presupuesto.email }}</td>
-             <td><b>Cargo:</b> {{ presupuesto.empresa_cliente }}</td>
-             <td><b>Empresa:</b> {{ presupuesto.cargo_cliente }}</td>
-         </tr>
-         <tr>
-             <td colspan="2"><b>Medio de contacto:</b> {{ presupuesto.fuente_promocion }}</td>
-             <td><b>Fecha de mudanza:</b> {{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}</td>
-             <td><b>Hora de mudanza:</b> {{ presupuesto.hora_estimadamudanza|time:"h:i a" }}</td>
-         </tr>
-     </table>
-     <a title="Editar detalles del presupuesto" data-toggle="modal" data-target="#myModalDatosPersonales" data-opcion="{% url 'upresupuestos:PresupuestoUpdate' presupuesto.id %}" data-numero="{{presupuesto.id}}" class="btn btn-default botonmodalDatosPersonales hidden-print" data-toggletooltip="tooltip" data-placement="left">Editar detalles del presupuesto</a>
+        <tr>
+            <td><b>Cotizador:</b> {{ presupuesto.cotizador }}</td>
+            <td><b>Fecha de registro:</b> {{ presupuesto.fecha_creacion|date:"d/m/Y" }}</td>
+            <td><b>Hora de registro:</b> {{ presupuesto.hora_creacion|time:"h:i a" }}</td>
+            <td><b>N° de presupuesto:</b> {{ presupuesto.id }}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><b>Solicitante:</b> {{ presupuesto.nombre_cliente }}</td>
+            <td><b>Teléfono celular:</b> {{ presupuesto.telefono_celular }}</td>
+            <td><b>Teléfono fijo:</b> {{ presupuesto.telefono }}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><b>e-mail:</b> {{ presupuesto.email }}</td>
+            <td><b>Cargo:</b> {{ presupuesto.empresa_cliente }}</td>
+            <td><b>Empresa:</b> {{ presupuesto.cargo_cliente }}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><b>Medio de contacto:</b> {{ presupuesto.fuente_promocion }}</td>
+            <td><b>Fecha de mudanza:</b> {{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}</td>
+            <td><b>Hora de mudanza:</b> {{ presupuesto.hora_estimadamudanza|time:"h:i a" }}</td>
+        </tr>
+    </table>
+    <a title="Editar detalles del presupuesto" data-toggle="modal" data-target="#myModalDatosPersonales" data-opcion="{% url 'upresupuestos:PresupuestoUpdate' presupuesto.id %}" data-numero="{{presupuesto.id}}" class="btn btn-default botonmodalDatosPersonales hidden-print" data-toggletooltip="tooltip" data-placement="left">Editar detalles del presupuesto</a>
 </div>
 <br>
 <div class="panel panel-color1">
+    <div>
+        <h2>Direcciones</h2>
+        <table class="table table-condensed table-hover table-bordered">
+            <tr align="center">
+                <th width="40px"><small>Orden</small></th>
+                <th width="40px"><small>Tipo</th>
+                <th><small>Dirección</small></th>
+                <th><small>Inmueble</small></th>
+                <th width="60px"><small>Área</small></th>
+                <th width="60px"><small>Ocup.</small></th>
+                <th width="60px"><small>Estac.</small></th>
+                <th width="60px"><small>Escaleras</small></th>
+                <th width="60px"><small>Ascensor</small></th>
+                <th width="60px"><small>Asc.Serv.</small></th>
+                <th width="60px"><small>Rampa</small></th>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
     <div class="panel-body">
-        <div class="row" id="myLabel">
-            <div class="col-md-4 boton-almedio">
-                <h4 class="titulo-seccion">Dirección de origen</h4>
-                {% if direccion_origen %}
+        <div class="boton-almedio">
+            <h4 class="titulo-seccion">Dirección de origen</h4>
+            {% if direccion_origen %}
 
-                {% for direc_origen in direccion_origen %}
+            {% for direc_origen in direccion_origen %}
 
-                <table class="table table-condensed table-hover table-bordered">
-                    <tr>
-                        <td colspan="2">
+            <table class="table table-condensed table-hover table-bordered">
+                <tr>
+                    <td colspan="2">
 
-                            {{ direc_origen.direccion }}
+                        {{ direc_origen.direccion }}
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span style="color:#777;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="color:#777;">
 
-                                {{ direc_origen.tipo_inmueble }}
+                            {{ direc_origen.tipo_inmueble }}
 
-                            </span>
-                        </td>
-                        <td>
+                        </span>
+                    </td>
+                    <td>
 
-                            {{ direc_origen.total_m2|floatformat:"0" }}
+                        {{ direc_origen.total_m2|floatformat:"0" }}
 
-                             m<sup>2</sup> en
+                        m<sup>2</sup> en
 
-                            {{ direc_origen.pisos }}
+                        {{ direc_origen.pisos }}
 
-                            {% if direc_origen.pisos > 1 %}
+                        {% if direc_origen.pisos > 1 %}
 
-                             pisos
+                        pisos
+
+                        {% else %}
+
+                        piso
+
+                        {% endif %}
+
+                    </td>
+                </tr>
+                <tr>
+                    <td><span style="color:#777;">Nivel de ocupación: </span> </td>
+                    <td>{{ direc_origen.ocupacidad_inmueble }}</td>
+                </tr>
+                <tr>
+                    <td><span style="color:#777;">Distancia del vehículo: </span></td>
+                    <td>
+
+                        {% if direc_origen.distancia_vehiculo = 70 %}
+
+                        Más de
+
+                        {% endif %}
+
+                        {{ direc_origen.distancia_vehiculo }} metros
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+
+                        {% if direc_origen.pisos_escalera = 0 %}
+
+                        <span style="color:#777;">Sin escaleras</span>
+
+                        {% else %}
+
+                        <span style="color:#777;">
+                            Con escaleras (
+
+                            {{ direc_origen.pisos_escalera }}
+
+                            {% if direc_origen.pisos_escalera > 1 %}
+
+                            pisos
 
                             {% else %}
 
-                             piso
+                            piso
 
                             {% endif %}
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span style="color:#777;">Nivel de ocupación: </span> </td>
-                        <td>{{ direc_origen.ocupacidad_inmueble }}</td>
-                    </tr>
-                    <tr>
-                        <td><span style="color:#777;">Distancia del vehículo: </span></td>
-                        <td>
+                            )
+                        </span>
 
-                            {% if direc_origen.distancia_vehiculo = 70 %}
+                        {% endif %}
 
-                            Más de
-
-                            {% endif %}
-
-                            {{ direc_origen.distancia_vehiculo }} metros
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-
-                            {% if direc_origen.pisos_escalera = 0 %}
-
-                            <span style="color:#777;">Sin escaleras</span>
-
-                            {% else %}
-
-                            <span style="color:#777;">
-                                Con escaleras (
-
-                                {{ direc_origen.pisos_escalera }}
-
-                                {% if direc_origen.pisos_escalera > 1 %}
-
-                                pisos
-
-                                {% else %}
-
-                                piso
-
-                                {% endif %}
-
-                                )
-                            </span>
-
-                            {% endif %}
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <span style="color:#777;">
 
                             {% if direc_origen.pisos_ascensor = 0 %}
 
-                            <span style="color:#777;">Sin ascensor</span>
+                            Sin ascensor
 
                             {% else %}
+
+                            Con ascensor (
 
                             {{ direc_origen.pisos_ascensor }}
 
@@ -222,13 +296,149 @@ class="col-md-10"
 
                             {% if direc_origen.pisos_ascensor = 10 %}
 
-                            o más pisos
+                            o más pisos)
 
                             {% else %}
 
-                            pisos
+                            pisos)
 
                             {% endif %}
+
+                        </span>
+
+                        {% else %}
+
+                        piso
+
+                        {% endif %}
+
+                    </td>
+                </tr>
+
+                {% endif %}
+
+                <tr>
+                    <td colspan="2">
+                        <span style="color:#777;">
+                            {{ direc_origen.ascensor_servicio|yesno:"Con ascensor de servicio,Sin ascensor de servicio" }}
+
+                            {% if direc_origen.ascensor_servicio %}
+
+                            (
+
+                            {{ direc_origen.pisos_ascensor_servicio }}
+
+                            {% if direc_origen.pisos_ascensor_servicio > 1 %}
+
+                            pisos)
+
+                            {% else %}
+
+                            piso)
+
+                            {% endif %}
+
+                            {% endif %}
+
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <span style="color:#777;">{{ direc_origen.rampa|yesno:"Con rampa,Sin rampa" }}</span>
+                    </td>
+                </tr>
+            </table>
+
+            {% endfor %}
+
+            {% for direc_origen in direccion_origen %}
+
+            <a data-toggle="modal" data-target="#myModalDireccion" title="Editar dirección de origen"  data-opcion="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_origen.id %}?next={{request.get_full_path}}" class="btn btn-default botonmodalDireccion edit" id="{{direc_origen.id}}" data-numero="{{direc_origen.id}}">Editar</a>
+            <a title="Eliminar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_origen.id %}?next={{request.get_full_path}}"  class="btn btn-default botonmodalEliminar" data-toggle="modal" data-target=".eliminar" data-nombre="Dirección de origen">Eliminar</a>
+
+            {% endfor %}
+
+            {% else %}
+
+            <a data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Origen&pre={{presupuesto.id}}" title="Agregar dirección de origen" class="botonmodalDireccion btn btn-success hidden-print">Agregar dirección de origen</a>
+
+            {% endif %}
+        </div>
+        <br>
+        <div class="">
+            <h4 class="titulo-seccion">Dirección de destino</h4>
+            {% if direccion_destino %}
+
+            {% for direc_destino in direccion_destino %}
+
+            <table class="table table-condensed table-hover table-bordered">
+                <tr>
+                    <td colspan="2">
+
+                        {{ direc_destino.direccion }}
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="color:#777;">
+
+                            {{ direc_destino.tipo_inmueble }}
+
+                        </span>
+                    </td>
+                    <td>
+
+                        {{ direc_destino.total_m2|floatformat:"0" }}
+
+                        m<sup>2</sup> en
+
+                        {{ direc_destino.pisos }}
+
+                        {% if direc_destino.pisos > 1 %}
+
+                        pisos
+
+                        {% else %}
+
+                        piso
+
+                        {% endif %}
+
+                    </td>
+                </tr>
+                <tr>
+                    <td><span style="color:#777;">Distancia del vehículo: </span></td>
+                    <td>
+
+                        {% if direc_destino.distancia_vehiculo = 70 %}
+
+                        Más de
+
+                        {% endif %}
+
+                        {{ direc_destino.distancia_vehiculo }} metros
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+
+                        {% if direc_destino.pisos_escalera = 0 %}
+
+                        <span style="color:#777;">Sin escaleras</span>
+
+                        {% else %}
+
+                        <span style="color:#777;">
+                            Con escaleras (
+
+                            {{ direc_destino.pisos_escalera }}
+
+                            {% if direc_destino.pisos_escalera > 1 %}
+
+                            pisos
 
                             {% else %}
 
@@ -236,233 +446,99 @@ class="col-md-10"
 
                             {% endif %}
 
-                        </td>
-                    </tr>
+                            )
+                        </span>
 
-                    {% endif %}
+                        {% endif %}
 
-                    <tr>
-                        <td colspan="2">
-                            <span style="color:#777;">
-                                {{ direc_origen.ascensor_servicio|yesno:"Con ascensor de servicio,Sin ascensor de servicio" }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
 
-                                {% if direc_origen.ascensor_servicio %}
+                        {% if direc_destino.pisos_ascensor = 0 %}
 
-                                (
+                        <span style="color:#777;">Sin ascensor</span>
 
-                                {{ direc_origen.pisos_ascensor_servicio }}
+                        {% else %}
 
-                                {% if direc_origen.pisos_ascensor_servicio > 1 %}
+                        {{ direc_destino.pisos_ascensor }}
 
-                                pisos)
+                        {% if direc_destino.pisos_ascensor > 1 %}
 
-                                {% else %}
+                        {% if direc_destino.pisos_ascensor = 10 %}
 
-                                piso)
+                        o más pisos
 
-                                {% endif %}
+                        {% else %}
 
-                                {% endif %}
+                        pisos
 
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <span style="color:#777;">{{ direc_origen.rampa|yesno:"Con rampa,Sin rampa" }}</span>
-                        </td>
-                    </tr>
-                </table>
+                        {% endif %}
 
-                {% endfor %}
+                        {% else %}
 
-                {% for direc_origen in direccion_origen %}
+                        piso
 
-                <a data-toggle="modal" data-target="#myModalDireccion" title="Editar dirección de origen"  data-opcion="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_origen.id %}?next={{request.get_full_path}}" class="btn btn-default botonmodalDireccion edit" id="{{direc_origen.id}}" data-numero="{{direc_origen.id}}">Editar</a>
-                <a title="Eliminar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_origen.id %}?next={{request.get_full_path}}"  class="btn btn-default botonmodalEliminar" data-toggle="modal" data-target=".eliminar" data-nombre="Dirección de origen">Eliminar</a>
+                        {% endif %}
 
-                {% endfor %}
-
-                {% else %}
-
-                <a data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Origen&pre={{presupuesto.id}}" title="Agregar dirección de origen" class="botonmodalDireccion btn btn-success hidden-print">Agregar dirección de origen</a>
+                    </td>
+                </tr>
 
                 {% endif %}
-            </div>
-            <div class="col-md-4">
-                <h4 class="titulo-seccion">Dirección de destino</h4>
-                {% if direccion_destino %}
 
-                {% for direc_destino in direccion_destino %}
+                <tr>
+                    <td colspan="2">
+                        <span style="color:#777;">
+                            {{ direc_destino.ascensor_servicio|yesno:"Con ascensor de servicio,Sin ascensor de servicio" }}
 
-                <table class="table table-condensed table-hover table-bordered">
-                    <tr>
-                        <td colspan="2">
+                            {% if direc_destino.ascensor_servicio %}
 
-                            {{ direc_destino.direccion }}
+                            (
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span style="color:#777;">
+                            {{ direc_destino.pisos_ascensor_servicio }}
 
-                                {{ direc_destino.tipo_inmueble }}
+                            {% if direc_destino.pisos_ascensor_servicio > 1 %}
 
-                            </span>
-                        </td>
-                        <td>
-
-                            {{ direc_destino.total_m2|floatformat:"0" }}
-
-                             m<sup>2</sup> en
-
-                            {{ direc_destino.pisos }}
-
-                            {% if direc_destino.pisos > 1 %}
-
-                             pisos
+                            pisos)
 
                             {% else %}
 
-                             piso
+                            piso)
 
                             {% endif %}
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span style="color:#777;">Distancia del vehículo: </span></td>
-                        <td>
-
-                            {% if direc_destino.distancia_vehiculo = 70 %}
-
-                            Más de
-
                             {% endif %}
 
-                            {{ direc_destino.distancia_vehiculo }} metros
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <span style="color:#777;">{{ direc_destino.rampa|yesno:"Con rampa,Sin rampa" }}</span>
+                    </td>
+                </tr>
+            </table>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
+            {% endfor %}
 
-                            {% if direc_destino.pisos_escalera = 0 %}
+            {% for direc_destino in direccion_destino %}
 
-                            <span style="color:#777;">Sin escaleras</span>
+            <a data-toggle="modal" data-target="#myModalDireccion" title="Editar dirección de destino"  data-opcion="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_destino.id %}?next={{request.get_full_path}}" class="btn btn-default botonmodalDireccion edit" id="{{direc_destino.id}}" data-numero="{{direc_destino.id}}">Editar</a>
+            <a title="Eliminar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_destino.id %}?next={{request.get_full_path}}"  class="btn btn-default botonmodalEliminar" data-toggle="modal" data-target=".eliminar" data-nombre="Dirección de destino">Eliminar</a>
 
-                            {% else %}
+            {% endfor %}
 
-                            <span style="color:#777;">
-                                Con escaleras (
+            {% else %}
 
-                                {{ direc_destino.pisos_escalera }}
+            <a data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Destino&pre={{presupuesto.id}}" title="Agregar dirección de destino" class="botonmodalDireccion btn btn-success hidden-print boton-almedio">Agregar dirección de destino</a>
 
-                                {% if direc_destino.pisos_escalera > 1 %}
-
-                                pisos
-
-                                {% else %}
-
-                                piso
-
-                                {% endif %}
-
-                                )
-                            </span>
-
-                            {% endif %}
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-
-                            {% if direc_destino.pisos_ascensor = 0 %}
-
-                            <span style="color:#777;">Sin ascensor</span>
-
-                            {% else %}
-
-                            {{ direc_destino.pisos_ascensor }}
-
-                            {% if direc_destino.pisos_ascensor > 1 %}
-
-                            {% if direc_destino.pisos_ascensor = 10 %}
-
-                            o más pisos
-
-                            {% else %}
-
-                            pisos
-
-                            {% endif %}
-
-                            {% else %}
-
-                            piso
-
-                            {% endif %}
-
-                        </td>
-                    </tr>
-
-                    {% endif %}
-
-                    <tr>
-                        <td colspan="2">
-                            <span style="color:#777;">
-                                {{ direc_destino.ascensor_servicio|yesno:"Con ascensor de servicio,Sin ascensor de servicio" }}
-
-                                {% if direc_destino.ascensor_servicio %}
-
-                                (
-
-                                {{ direc_destino.pisos_ascensor_servicio }}
-
-                                {% if direc_destino.pisos_ascensor_servicio > 1 %}
-
-                                pisos)
-
-                                {% else %}
-
-                                piso)
-
-                                {% endif %}
-
-                                {% endif %}
-
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <span style="color:#777;">{{ direc_destino.rampa|yesno:"Con rampa,Sin rampa" }}</span>
-                        </td>
-                    </tr>
-                </table>
-
-                {% endfor %}
-
-                {% for direc_destino in direccion_destino %}
-
-                <a data-toggle="modal" data-target="#myModalDireccion" title="Editar dirección de destino"  data-opcion="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_destino.id %}?next={{request.get_full_path}}" class="btn btn-default botonmodalDireccion edit" id="{{direc_destino.id}}" data-numero="{{direc_destino.id}}">Editar</a>
-                <a title="Eliminar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_destino.id %}?next={{request.get_full_path}}"  class="btn btn-default botonmodalEliminar" data-toggle="modal" data-target=".eliminar" data-nombre="Dirección de destino">Eliminar</a>
-
-                {% endfor %}
-
-                {% else %}
-
-                <a data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Destino&pre={{presupuesto.id}}" title="Agregar dirección de destino" class="botonmodalDireccion btn btn-success hidden-print boton-almedio">Agregar dirección de destino</a>
-
-                {% endif %}
-            </div>
+            {% endif %}
         </div>
     </div>
 
 </div><!--fin panel default datos básicos-->
-<h3 id="ambientes" style="border-bottom:1px solid #e7e7e7;" >Detalle de muebles a mudar
+<h2 id="ambientes" style="border-bottom:1px solid #e7e7e7;" >Detalle de muebles a mudar
     <small class="btn-group btn-group-xs" role="group" aria-label="..." style="float:right;">
         <a data-toggle="modal" data-target="#myModalAmbiente" title="Agregar ambiente" style="float:righ;" class="btn btn-default btn-sm botonmodalMueble hidden-print" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}" data-numero="ambienteFocus">Agregar mueble</a>
 
@@ -474,7 +550,7 @@ class="col-md-10"
         {% endif %}
 
     </small>
-</h3>
+</h2>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
     {% if lista_ambiente %}
