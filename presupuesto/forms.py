@@ -13,6 +13,7 @@ from direccion.models import Tipo_Inmueble
 from ambiente.models import Ambiente
 from servicio.models import Servicio
 from django import forms
+from premisas.models import FuentePromocion
 
 
 class PresupuestoDetalleForm1(forms.Form):
@@ -32,10 +33,14 @@ class PresupuestoDetalleForm3(forms.Form):
 
 class PresupuestoForm(ModelForm):
     """Docstring"""
+    fuente_choices = [(fuente.fuente_promocion, fuente.fuente_promocion) for fuente in FuentePromocion.objects.all()]
+
     fecha_estimadamudanza = forms.DateField(
         label='Fecha estimada de la mudanza:',
         widget=forms.DateInput(format='%Y-%m-%d'),
-        input_formats=('%Y-%m-%d',))
+        input_formats=('%Y-%m-%d', '%d/%m/%Y',))
+
+    fuente_promocion = forms.ChoiceField(widget=Select, label='Fuente de promoción: ', choices=fuente_choices)
 
     class Meta:
         model = Presupuesto
@@ -57,6 +62,7 @@ class PresupuestoForm(ModelForm):
             'hora_creacion': ('Hora de registro:'),
             'fuente_promocion': ('Fuente de promoción:'),
         }
+
         error_messages = {
             NON_FIELD_ERRORS: {
                 'dni': "%(model_name)s's %(field_labels)s esta vacio.",
