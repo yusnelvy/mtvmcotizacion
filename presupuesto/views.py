@@ -337,7 +337,7 @@ class PresupuestoDireccionView(View):
 
 class PresupuestoDetalleView(View):
     form_class = PresupuestoDetalleForm
-    template_name = 'presupuestodetalle_add2.html'
+    template_name = 'presupuestodetalle_add.html'
 
     def get(self, request, *args, **kwargs):
 

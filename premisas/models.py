@@ -18,6 +18,5 @@ class FuentePromocion(models.Model):
     """docstring for FuentePromocion"""
     fuente_promocion = models.CharField(max_length=100)
 
-    def __init__(self, arg):
-        super(FuentePromocion, self).__init__()
-        self.arg = arg
+    def __str__(self):
+        return self.fuente_promocion

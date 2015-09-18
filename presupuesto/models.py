@@ -3,6 +3,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from decimal import Decimal
+from datetime import datetime, date, time
+
 
 PISOS_CHOICES = (
     (1, '1'),
@@ -33,60 +35,60 @@ PISOS_RECORRER_CHOICES = (
 
 DISTANCIA_VEHICULO_INMUEBLE = (
     (10, '10 mts o menos'),
-    (20, 'De 11 a 20 mts'),
-    (30, 'De 21 a 30 mts'),
-    (40, 'De 31 a 40 mts'),
-    (50, 'De 41 a 50 mts'),
-    (60, 'De 51 a 60 mts'),
+    (20, '11 a 20 mts'),
+    (30, '21 a 30 mts'),
+    (40, '31 a 40 mts'),
+    (50, '41 a 50 mts'),
+    (60, '51 a 60 mts'),
     (70, '70 mts o más'),
     )
 
 METROSCUADRADO_INMUEBLE = (
     (Decimal('40.00'), '40 m2 o menos'),
-    (Decimal('80.00'), 'De 41 a 80 m2'),
-    (Decimal('120.00'), 'De 81 a 120 m2'),
-    (Decimal('160.00'), 'De 121 a 160 m2'),
-    (Decimal('200.00'), 'De 161 a 200 m2'),
+    (Decimal('80.00'), '41 a 80 m2'),
+    (Decimal('120.00'), '81 a 120 m2'),
+    (Decimal('160.00'), '121 a 160 m2'),
+    (Decimal('200.00'), '161 a 200 m2'),
     (Decimal('240.00'), '240 m2 o más'),
     )
 
 RECORRIDO_KM = (
     (Decimal('20.00'), '20 Km o menos'),
-    (Decimal('40.00'), 'De 21 a 40 Km'),
-    (Decimal('60.00'), 'De 41 a 60 Km'),
-    (Decimal('80.00'), 'De 61 a 80 Km'),
-    (Decimal('100.00'), 'De 81 a 100 Km'),
-    (Decimal('120.00'), 'De 101 a 120 Km'),
-    (Decimal('140.00'), 'De 121 a 140 Km'),
-    (Decimal('160.00'), 'De 141 a 160 Km'),
-    (Decimal('180.00'), 'De 161 a 180 Km'),
+    (Decimal('40.00'), '21 a 40 Km'),
+    (Decimal('60.00'), '41 a 60 Km'),
+    (Decimal('80.00'), '61 a 80 Km'),
+    (Decimal('100.00'), '81 a 100 Km'),
+    (Decimal('120.00'), '101 a 120 Km'),
+    (Decimal('140.00'), '121 a 140 Km'),
+    (Decimal('160.00'), '141 a 160 Km'),
+    (Decimal('180.00'), '161 a 180 Km'),
     (Decimal('200.00'), '200 Km o más')
     )
 
 TIEMPO_RECORRIDO = (
     (Decimal('1.00'), '1 hora o menos'),
-    (Decimal('2.00'), 'De 1 a 2 horas'),
-    (Decimal('3.00'), 'De 2 a 3 horas'),
-    (Decimal('4.00'), 'De 3 a 4 horas'),
-    (Decimal('5.00'), 'De 4 a 5 horas'),
-    (Decimal('6.00'), 'De 5 a 6 horas'),
-    (Decimal('7.00'), 'De 6 a 7 horas'),
-    (Decimal('8.00'), 'De 7 a 8 horas'),
-    (Decimal('9.00'), 'De 8 a 9 horas'),
+    (Decimal('2.00'), '1 a 2 horas'),
+    (Decimal('3.00'), '2 a 3 horas'),
+    (Decimal('4.00'), '3 a 4 horas'),
+    (Decimal('5.00'), '4 a 5 horas'),
+    (Decimal('6.00'), '5 a 6 horas'),
+    (Decimal('7.00'), '6 a 7 horas'),
+    (Decimal('8.00'), '7 a 8 horas'),
+    (Decimal('9.00'), '8 a 9 horas'),
     (Decimal('10.00'), '10 horas o más')
     )
 
 HORAS_CHOICES = (
-    (Decimal('1.00'), '8:00 am o antes'),
-    (Decimal('2.00'), '9:00 am'),
-    (Decimal('3.00'), '10:00 am'),
-    (Decimal('4.00'), '11:00 am'),
-    (Decimal('5.00'), '12:00 pm'),
-    (Decimal('6.00'), '01:00 pm'),
-    (Decimal('7.00'), '02:00 pm'),
-    (Decimal('8.00'), '03:00 pm'),
-    (Decimal('9.00'), '04:00 pm'),
-    (Decimal('10.00'), '05:00 pm o después')
+    (time(8, 00), '8:00 am o antes'),
+    (time(9, 00), '9:00 am'),
+    (time(10, 00), '10:00 am'),
+    (time(11, 00), '11:00 am'),
+    (time(12, 00), '12:00 pm'),
+    (time(13, 00), '01:00 pm'),
+    (time(14, 00), '02:00 pm'),
+    (time(15, 00), '03:00 pm'),
+    (time(16, 00), '04:00 pm'),
+    (time(17, 00), '05:00 pm o después')
     )
 
 
@@ -94,8 +96,8 @@ class Presupuesto(models.Model):
     """docstring"""
     dni = models.CharField(max_length=20)
     nombre_cliente = models.CharField(max_length=250)
-    empresa_cliente = models.CharField(max_length=250, blank=True)
-    cargo_cliente = models.CharField(max_length=250, blank=True)
+    empresa_cliente = models.CharField(max_length=250, blank=True, default='')
+    cargo_cliente = models.CharField(max_length=250, blank=True, default='')
     telefono = models.CharField(max_length=100)
     telefono_celular = models.CharField(max_length=100, blank=True)
     email = models.EmailField()
@@ -103,7 +105,7 @@ class Presupuesto(models.Model):
     fecha_creacion = models.DateField(auto_now_add=True)
     hora_creacion = models.TimeField(auto_now_add=True)
     fecha_estimadamudanza = models.DateField()
-    hora_estimadamudanza = models.TimeField()
+    hora_estimadamudanza = models.TimeField(choices=HORAS_CHOICES, default='08:00')
     fuente_promocion = models.CharField(max_length=100)
     descripcion_vehiculo = models.TextField(blank=True, default=0)
     descripcion_persona = models.TextField(blank=True, default=0)
@@ -284,7 +286,7 @@ class Presupuesto_direccion(models.Model):
     class Meta:
         verbose_name = "direccion del presupuesto"
         verbose_name_plural = "direcciones del presupuesto"
-        ordering = ['presupuesto', 'direccion']
+        ordering = ['presupuesto', 'orden']
 
 
 class Presupuesto_Detalle(models.Model):

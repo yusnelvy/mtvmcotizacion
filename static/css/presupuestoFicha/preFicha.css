@@ -2,7 +2,8 @@
   visibility: hidden;
 }
 
-.tr-mueble:hover .controles {
+.tr-mueble:hover .controles,
+.tr-direccion:hover .controles {
   visibility: visible;
 }
 
