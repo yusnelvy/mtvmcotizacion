@@ -1,17 +1,21 @@
-<div class="col-md-5">
-    <h2>{{ presupuesto.nombre_cliente|capfirst }}</h2>
-</div>
-<div class="col-md-3">
-    <h4>
-        <p><small>DNI: </small>{{ presupuesto.dni }}</p>
-        <p><small>Teléfono: </small>{{ presupuesto.telefono }}</p>
-        <p><small>Email: </small>{{ presupuesto.email }}</p>
-    </h4>
-</div>
-<div class="col-md-4">
-    <h4>
-        <p><small>N° presupuesto: </small>{{ presupuesto.id }}</p>
-        <p><small>Fecha presupuesto: </small>{{ presupuesto.fecha_creacion|date:"d/m/Y" }}</p>
-        <p><small>Fecha estimada de la mudanza: </small>{{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}</p>
-    </h4>
-</div>
+<tr>
+    <td><b>Cotizador:</b> {{ presupuesto.cotizador }}</td>
+    <td><b>Fecha de registro:</b> {{ presupuesto.fecha_creacion|date:"d/m/Y" }}</td>
+    <td><b>Hora de registro:</b> {{ presupuesto.hora_creacion|time:"h:i a" }}</td>
+    <td><b>N° de presupuesto:</b> {{ presupuesto.id }}</td>
+</tr>
+<tr>
+    <td colspan="2"><b>Solicitante:</b> {{ presupuesto.nombre_cliente }}</td>
+    <td><b>Teléfono celular:</b> {{ presupuesto.telefono_celular }}</td>
+    <td><b>Teléfono fijo:</b> {{ presupuesto.telefono }}</td>
+</tr>
+<tr>
+    <td colspan="2"><b>e-mail:</b> {{ presupuesto.email }}</td>
+    <td><b>Cargo:</b> {{ presupuesto.empresa_cliente }}</td>
+    <td><b>Empresa:</b> {{ presupuesto.cargo_cliente }}</td>
+</tr>
+<tr>
+    <td colspan="2"><b>Medio de contacto:</b> {{ presupuesto.fuente_promocion }}</td>
+    <td><b>Fecha de mudanza:</b> {{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}</td>
+    <td><b>Hora de mudanza:</b> {{ presupuesto.hora_estimadamudanza|time:"h:i a" }}</td>
+</tr>

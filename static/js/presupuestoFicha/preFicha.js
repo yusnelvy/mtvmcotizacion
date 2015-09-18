@@ -1,7 +1,6 @@
-
 //Ajusta el tamaño de un iframe al de su contenido interior para evitar scroll
-function autofitIframe(id){
-    if (!window.opera && document.all && document.getElementById){
+function autofitIframe(id) {
+  if (!window.opera && document.all && document.getElementById){
         id.style.height=id.contentWindow.document.body.scrollHeight;
     } else if(document.getElementById) {
         id.style.height=id.contentDocument.body.scrollHeight+"px";
@@ -55,15 +54,19 @@ $(".botonmodalMueble").on('click',function(eve){
 });
 $(".botonmodalDatosPersonales").on('click',function(even){
     even.preventDefault();
+    var nombre = $(this).data('nombre');
     var numero = $(this).data('numero');
     var opcion = $(this).data('opcion');
     $('.id_opcionDatosPersonales').attr('src', opcion);
     $('.id_opcionDatosPersonales').attr('id', numero);
+    $('.nombre').text(nombre);
 });
+
 $(document).ready(function() {
     $(function () {
-        $('[data-toggletooltip="tooltip"]').tooltip()
-    })
+        $('[data-toggletooltip="tooltip"]').tooltip();
+    });
+
     document.getElementById('id_body').setAttribute('data-spy','scroll');
     document.getElementById('id_body').setAttribute('data-target','#navbar-example');
     document.getElementById('id_body').setAttribute('data-offset','70');

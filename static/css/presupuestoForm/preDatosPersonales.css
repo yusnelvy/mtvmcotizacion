@@ -100,23 +100,25 @@
 .filtra-campos>p>label[for=id_activo],
 .filtra-campos>p>input#id_activo,
 .filtra-campos>p>label[for=id_tipo_calculo],
-.filtra-campos>p>input#id_tipo_calculo {
+.filtra-campos>p>input#id_tipo_calculo,
+.filtra-campos>p>label[for=id_descuento_recargo],
+.filtra-campos>p>input#id_descuento_recargo {
   display: none;
 }
 
 #telefono,
 #telefono_celular,
 #email,
-.campo {
-  width: 50%;
-}
-
-#dni,
+.campo,
 #id_fuente_promocion,
 #recorrido_km,
 #tiempo_recorrido,
 #fecha_estimadamudanza,
 #hora_estimadamudanza {
+  width: 50%;
+}
+
+#dni {
   width: 25%;
 }
 
@@ -128,7 +130,7 @@
 
   #recorrido_km, #tiempo_recorrido,
   #fecha_estimadamudanza, #hora_estimadamudanza {
-    width: 32.5%;
+    width: 50%;
   }
 }
 
@@ -142,42 +144,6 @@
   #fecha_estimadamudanza, #hora_estimadamudanza {
     width:100%;
   }
-}
-
-.form-group>p>label {
-  display:inline-table;
-  font-family: inherit;
-  font: inherit;
-}
-
-#id_dni, #id_nombre_cliente, #id_telefono, #id_email,
-#id_fecha_estimadamudanza, #id_recorrido_km, #id_tiempo_recorrido {
-  box-sizing: border-box;
-  border-radius: 6px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-  font-size: 18px;
-  height: 46px;
-  line-height: 1.33333;
-  padding: 10px 16px;
-  display:block;
-  background-color: #FFF;
-  background-image: none;
-  border: 1px solid #CCC;
-  color: #555;
-  font-family: inherit;
-  font: inherit;
-  margin: 0;
-  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-  width: 100%;
-}
-
-#id_dni:focus, #id_nombre_cliente:focus, #id_telefono:focus, #id_email:focus,
-#id_fecha_estimadamudanza:focus, #id_recorrido_km:focus,
-#id_tiempo_recorrido:focus {
-  border-color: #66afe9;
-  outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
 }
 
 .ui-icon-circle-triangle-w,

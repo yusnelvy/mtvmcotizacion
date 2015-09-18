@@ -89,7 +89,7 @@ class="col-md-10"
 
 <div>
     <h2>Detalles del presupuesto</h2>
-    <table class="table table-hover table-bordered">
+    <table class="table table-hover table-bordered" id="myDatosPersonales">
         <tr>
             <td><b>Cotizador:</b> {{ presupuesto.cotizador }}</td>
             <td><b>Fecha de registro:</b> {{ presupuesto.fecha_creacion|date:"d/m/Y" }}</td>
@@ -112,7 +112,7 @@ class="col-md-10"
             <td><b>Hora de mudanza:</b> {{ presupuesto.hora_estimadamudanza|time:"h:i a" }}</td>
         </tr>
     </table>
-    <a title="Editar detalles del presupuesto" data-toggle="modal" data-target="#myModalDatosPersonales" data-opcion="{% url 'upresupuestos:PresupuestoUpdate' presupuesto.id %}" data-numero="{{presupuesto.id}}" class="btn btn-default botonmodalDatosPersonales hidden-print" data-toggletooltip="tooltip" data-placement="left">Editar detalles del presupuesto</a>
+    <a title="Editar detalles del presupuesto" data-toggle="modal" data-target="#myModalDatosPersonales" data-opcion="{% url 'upresupuestos:PresupuestoUpdate' presupuesto.id %}" data-nombre="Editar datos personales" data-numero="{{presupuesto.id}}" class="btn btn-default botonmodalDatosPersonales hidden-print" data-toggletooltip="tooltip" data-placement="left">Editar detalles del presupuesto</a>
 </div>
 <br>
 <div class="panel panel-color1">
@@ -733,16 +733,16 @@ class="col-md-10"
 </div>
 <!-- Modal editar datos personales-->
 <div class="modal fade" id="myModalDatosPersonales" tabindex="-1" role="dialog" aria-labelledby="myModalLabel44">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn-cerrarDatosPersonales">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel44">Editar datos personales</h4>
+                <h4 class="modal-title nombre" id="myModalLabel44">Editar datos personales</h4>
             </div>
             <div class="modal-body">
-                <iframe class="id_opcionDatosPersonales" id="" src="" width="100%" height="310"  scrolling="auto" frameborder="0">
+                <iframe class="id_opcionDatosPersonales" id="" src="" width="100%" height="500"  scrolling="auto" frameborder="0">
                     <p>Texto alternativo para navegadores que no aceptan iframes.</p>
                 </iframe>
             </div>
