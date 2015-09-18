@@ -93,6 +93,8 @@
 .filtra-campos>p>input#id_monto_impuesto,
 .filtra-campos>p>label[for=id_monto_con_impuesto],
 .filtra-campos>p>input#id_monto_con_impuesto,
+.filtra-campos>p>label[for=id_descuento_recargo],
+.filtra-campos>p>input#id_descuento_recargo,
 .filtra-campos>p>label[for=id_monto_descuento_recargo],
 .filtra-campos>p>input#id_monto_descuento_recargo,
 .filtra-campos>p>label[for=id_estado],
