@@ -125,7 +125,13 @@ class="col-md-10"
                 <table class="table table-condensed table-hover table-bordered">
                     <tr>
                         <td colspan="2">
+                        {% if forloop.first %}
+                        <a title="Dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_origen.id %}?tipo=Origen&posicion=bajar" data-numero="{{direc_origen.id}}" class="btn glyphicon glyphicon-menu-down botonOrden"></a>
 
+                        {% else %}
+                        <a title="Dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_origen.id %}?tipo=Origen&posicion=subir" data-numero="{{direc_origen.id}}" class="btn glyphicon glyphicon-menu-up botonOrden"></a>
+
+                        {% endif %}
                             {{ direc_origen.direccion }}
 
                         </td>
@@ -282,6 +288,7 @@ class="col-md-10"
                 <a title="Eliminar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_origen.id %}?next={{request.get_full_path}}"  class="btn btn-default botonmodalEliminar" data-toggle="modal" data-target=".eliminar" data-nombre="Dirección de origen">Eliminar</a>
 
                 {% endfor %}
+                <a data-toggle="modal" data-target="#myModalDireccion" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Origen&pre={{presupuesto.id}}" title="Agregar dirección de origen" class="botonmodalDireccion btn btn-success hidden-print">Agregar dirección de origen</a>
 
                 {% else %}
 

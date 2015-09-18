@@ -19,8 +19,8 @@ $(".resumenPresupuesto").on('click',function(evento2){
     $('#msjGuardado').fadeIn();
     $('#msjGuardado').text('Cargando resumen del presupuesto');
     setTimeout(function() {
-window.location=opcion;
-},500);
+        window.location=opcion;
+    },500);
 
 });
 $(".botonmodalEliminar").on('click',function(evento){
@@ -95,6 +95,33 @@ $('body,html').stop(true,true).animate({
 scrollTop: $(strAncla).offset().top-70
 },1000);
 });
+
+$(".botonOrden").on('click',function(){
+    var numero = $(this).data('numero');
+    var action = $(this).data('opcion');
+    $.ajax({
+        url: action,
+        type: 'GET',
+        data: numero
+        ,success: function(data){
+
+          if (data.estatus=="ok"){
+            setTimeout(function() {
+            parent.location.reload();
+            },1000);
+
+          }else{
+            alert('Ocurrio un error '+data.estatus);
+          }
+
+        },
+        error: function (ajaxContext) {
+        alert('No se puede cambiar el orden.');
+    }
+    });
+    return false;
+});
+
 });
 
 });
