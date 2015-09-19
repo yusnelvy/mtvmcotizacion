@@ -1,6 +1,17 @@
 {% extends "base_modal_form.html" %}
 
 {% block formulario %}
+<script>
+$(function() {
+    $( "#id_fecha_estimadamudanza" ).datepicker();
+    $( "#anim" ).change(function() {
+        $( "#datepicker" ).datepicker( "option", "showAnim", $( this ).val() );
+    });
+});
+setTimeout(function () {
+  document.getElementById('id_dni').focus();
+}, 500);
+</script>
 
 <form action="" method="post" id="myform">
 
@@ -8,17 +19,10 @@
 
 <div class="form-group filtra-campos">
 
-  {% for campo in form %}
-
-    <p id="{{campo.name}}">
-        <label for="{{campo.id_for_label}}">{{ campo.label }}</label>
-        {{ campo }}
-    </p>
-
-{% endfor %}
+{{form.as_p}}
 
 </div>
-<button type="submit" class="btn btn-default" style="float:right;margin-right:15px;">Guardar</button>
+<button type="submit" class="btn btn-default">Guardar</button>
 </form>
 
 {% endblock formulario %}
@@ -33,7 +37,6 @@
 
 <script src="/static/js/presupuestoForm/preDatosPersonales.js"></script>
 <script type="text/javascript">
-
 $('#myform').submit(function(){
     var id = $(parent.document.getElementsByClassName("id_opcionDatosPersonales")).attr('id');
     var action = "../../editar/"+id+"/";
@@ -76,7 +79,7 @@ $('#myform').submit(function(){
     {
         if (request.readyState == 4 && request.status == 200)
         {
-            parent.document.getElementById("myLabel").innerHTML = request.responseText;
+            parent.document.getElementById("myDatosPersonales").innerHTML = request.responseText;
         }
     }
 }
