@@ -293,6 +293,7 @@ class Presupuesto_Detalle(models.Model):
     presupuesto = models.ForeignKey(Presupuesto, on_delete=models.PROTECT)
     ambiente = models.CharField(max_length=100)
     mueble = models.CharField(max_length=100)
+    cantidad = models.PositiveIntegerField(default=1)
     tamano = models.CharField(max_length=100)
     ancho = models.DecimalField(max_digits=7, decimal_places=2)
     largo = models.DecimalField(max_digits=7, decimal_places=2)
