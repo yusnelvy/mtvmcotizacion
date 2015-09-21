@@ -416,6 +416,19 @@
             {% endif %}
 
         </table>
+
+        {% if direccion_origen %}
+
+            <a class="botonmodalDireccion btn btn-default hidden-print" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Origen&pre={{presupuesto.id}}" data-target="#myModalDireccion" data-toggle="modal" title="Agregar dirección de origen">Agregar dirección de origen</a>
+
+        {% endif %}
+
+        {% if direccion_destino %}
+
+            <a class="botonmodalDireccion btn btn-default hidden-print boton-almedio" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Destino&pre={{presupuesto.id}}" data-target="#myModalDireccion" data-toggle="modal" title="Agregar dirección de destino">Agregar dirección de destino</a>
+
+        {% endif %}
+
     </div>
 </div><!--fin de Panel de Direcciones-->
 <div class="panel"> <!--Panel Detalle de muebles-->
