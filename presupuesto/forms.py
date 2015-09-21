@@ -37,10 +37,13 @@ class PresupuestoForm(ModelForm):
 
     fecha_estimadamudanza = forms.DateField(
         label='Fecha estimada de la mudanza:',
-        widget=forms.DateInput(format='%Y-%m-%d'),
+        widget=forms.DateInput(format='%Y-%m-%d', attrs={'class': 'width50'}),
         input_formats=('%Y-%m-%d', '%d/%m/%Y',))
 
-    fuente_promocion = forms.ChoiceField(widget=Select, label='Fuente de promoción: ', choices=fuente_choices)
+    fuente_promocion = forms.ChoiceField(
+        widget=Select,
+        label='Fuente de promoción',
+        choices=fuente_choices)
 
     class Meta:
         model = Presupuesto
@@ -60,8 +63,46 @@ class PresupuestoForm(ModelForm):
             'cotizador': ('Cotizador:'),
             'fecha_creacion': ('Fecha de registro:'),
             'hora_creacion': ('Hora de registro:'),
-            'fuente_promocion': ('Fuente de promoción:'),
+            'fuente_promocion': ('Fuente de promoció'),
         }
+        widgets = {
+            'dni': TextInput(
+                attrs={
+                    'class': 'width25',
+                    }),
+            'telefono_celular': TextInput(
+                attrs={
+                    'class': 'width50',
+                    }),
+            'telefono': TextInput(
+                attrs={
+                    'class': 'width50',
+                    }),
+            'email': TextInput(
+                attrs={
+                    'class': 'width50',
+                    }),
+            'hora_estimadamudanza': Select(
+                attrs={
+                    'class': 'width50',
+                    }),
+            'recorrido_km': Select(
+                attrs={
+                    'class': 'width50',
+                    }),
+            'fuente_promocion': TextInput(
+                attrs={
+                    'class': 'width50',
+                    }),
+            'tiempo_recorrido': Select(
+                attrs={
+                    'class': 'width50',
+                    }),
+            'fecha_estimadamudanza': TextInput(
+                attrs={
+                    'class': 'width50',
+                    }),
+            }
 
         error_messages = {
             NON_FIELD_ERRORS: {
@@ -73,7 +114,7 @@ class PresupuestoForm(ModelForm):
 class PresupuestoDireccionForm(ModelForm):
     """Docstring"""
     lista_tipoinmueble = ModelChoiceField(Tipo_Inmueble.objects, widget=Select, empty_label=None, label='Tipo de inmueble:')
-    lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=Select, empty_label=None, label='Nivel de ocupación del inmueble:')
+    lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=RadioSelect(attrs={'onclick': 'radioColorBlue(name);'}), empty_label=None, label='Nivel de ocupación del inmueble:')
 
     class Meta:
         model = Presupuesto_direccion
@@ -86,8 +127,8 @@ class PresupuestoDireccionForm(ModelForm):
             'pisos_escalera', \
             'rampa', \
             'ascensor', \
-            'ascensor_servicio', \
             'pisos_ascensor', \
+            'ascensor_servicio', \
             'pisos_ascensor_servicio', \
             'presupuesto', \
             'tipo_direccion', \
@@ -110,6 +151,24 @@ class PresupuestoDireccionForm(ModelForm):
             'pisos_ascensor_servicio': (
                 'Cantidad de pisos a recorrer por el ascensor de servicio:'),
             }
+        widgets = {
+            'pisos_ascensor': RadioSelect(
+                attrs={
+                    'class': 'radioselect', 'onclick': 'radioColorBlue(name)'
+                    }),
+            'pisos_ascensor_servicio': RadioSelect(
+                attrs={
+                    'class': 'radioselect', 'onclick': 'radioColorBlue(name)'
+                    }),
+            'pisos': RadioSelect(
+                attrs={
+                    'class': 'radioselect', 'onclick': 'radioColorBlue(name)'
+                    }),
+            'pisos_escalera': RadioSelect(
+                attrs={
+                    'class': 'radioselect', 'onclick': 'radioColorBlue(name)'
+                    }),
+        }
         readonly_fields = ('tipo_direccion')
         error_messages = {
             'nombre_cliente': {

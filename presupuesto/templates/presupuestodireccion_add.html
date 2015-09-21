@@ -2,7 +2,6 @@
 
 {% block formulario %}
 
-<h4 style="margin-top:0px;">Agregar dirección de {{ form.tipo_direccion.value|lower }}</h4>
 <form action="" method="post" id="myform">
 
   {% csrf_token %}
@@ -15,14 +14,8 @@
 
     {% endif %}
 
-    {% for i in form %}
 
-    <div class="campo form-group {{i.name}}" id="s_{{i.name}}">
-      <label for="{{ i.id_for_label }}">{{ i.label }} {{ i }}</label>
-    </div>
-
-    {% endfor %}
-
+{{form.as_p}}
   </div>
   <button type="submit" class="btn btn-default">Registrar</button>
 </form>
@@ -31,12 +24,14 @@
 
 {% block style %}
 
-<link rel="stylesheet" href="/static/css/presupuestoForm/preDireccion.css">
+
 <style>
 
 {% if form.tipo_direccion.value = "Destino" %}
 
-#s_lista_ocupacion,#s_total_m2{display: none;}
+#s_lista_ocupacion, #s_total_m2 {
+  display: none;
+}
 
 {% endif %}
 
@@ -44,14 +39,38 @@
 
   {% if form.tipo_direccion.value = "Destino" %}
 
-  button{position: absolute;bottom:-325px;}
+  butto{position: absolute;bottom:-325px;}
 
   {% else %}
 
-  button{position: absolute;bottom:-400px;}
+  butto{position: absolute;bottom:-400px;}
 
   {% endif %}
 
+}
+
+.radioselect-ul {
+  display: block;
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.radioselect-ul li {
+  display: inline-table;
+  margin: -3px;
+  border: 1px solid #ccc;
+}
+
+.radioselect-ul li label {
+  padding: 5px 10px;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.radioselect-ul li label input {
+  width: 0;
+  height: 0;
 }
 
 </style>
@@ -62,26 +81,6 @@
 
 <script src="/static/js/presupuestoForm/preDireccion.js"></script>
 <script type="text/javascript">
-check5 = document.getElementById("id_ascensor");
-check6 = document.getElementById("id_ascensor_servicio");
-if (check5.checked){
-  $('#s_pisos_ascensor').css('visibility','visible');
-}
-else{
-  $('#s_pisos_ascensor').css('visibility','hidden');
-}
-
-if (check6.checked){
-  $('#s_pisos_ascensor_servicio').css('visibility','visible');
-}
-else{
-  $('#s_pisos_ascensor_servicio').css('visibility','hidden');
-}
-document.getElementById('s_rampa').setAttribute('class','checkbox-inline');
-document.getElementById('id_ascensor').setAttribute('onchange','javascript:showContent()');
-document.getElementById('id_ascensor_servicio').setAttribute('onchange','javascript:showContent2()');
-document.getElementById('s_ascensor').setAttribute('class','checkbox-inline');
-document.getElementById('s_ascensor_servicio').setAttribute('class','checkbox-inline');
 $(document).ready(function(){
 $('#myform').submit(function(){
     var action = "{% url 'upresupuestos:PresupuestoDireccionView' %}";

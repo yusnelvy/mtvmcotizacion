@@ -9,6 +9,9 @@ $(function() {
         $( "#datepicker" ).datepicker( "option", "showAnim", $( this ).val() );
     });
 });
+setTimeout(function () {
+  document.getElementById('id_dni').focus();
+}, 500);
 </script>
 
 {% endblock js_sup %}
@@ -21,7 +24,7 @@ $(function() {
 
 {% block col_edit %}
 
-class="col-md-10"
+class="col-md-5"
 
 {% endblock col_edit %}
 
@@ -35,14 +38,7 @@ class="col-md-10"
 
 <div class="form-group filtra-campos">
 
-    {% for campo in form %}
-
-    <p id="{{campo.name}}">
-        <label for="{{campo.id_for_label}}">{{ campo.label }}</label>
-        {{ campo }}
-    </p>
-
-    {% endfor %}
+{{form.as_p}}
 
 </div>
 
