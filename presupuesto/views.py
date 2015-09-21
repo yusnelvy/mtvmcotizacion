@@ -22,7 +22,7 @@ from inicio.email import Email
 from formtools.wizard.views import SessionWizardView
 from django.forms.formsets import formset_factory
 
-from django.db.models import Count, Sum
+from django.db.models import Count, Sum, F
 from decimal import Decimal
 
 from io import BytesIO
@@ -307,12 +307,14 @@ class PresupuestoDireccionView(View):
 
         tipo_inmueble = Tipo_Inmueble.objects.get(id=request.POST['lista_tipoinmueble'])
         ocupacidad_inmueble = Ocupacion.objects.get(id=request.POST['lista_ocupacion'])
+        orden = Presupuesto_direccion.objects.filter(presupuesto=request.POST['presupuesto'], tipo_direccion=request.POST['tipo_direccion']).count()
 
         if form.is_valid():
             formResult = form.save(commit=False)
             formResult.tipo_inmueble = tipo_inmueble.tipo_inmueble
             formResult.ocupacidad_inmueble = ocupacidad_inmueble.descripcion
             formResult.valor_ocupacidad = ocupacidad_inmueble.valor
+            formResult.orden = orden + 1
             formResult.save()
 
             cantOrig = Presupuesto_direccion.objects.filter(presupuesto=request.POST['presupuesto'], tipo_direccion='Origen').count()
@@ -797,7 +799,11 @@ class PresupuestoDireccionDelete(DeleteView):
     def delete(self, request, *args, **kwargs):
         self.obj = self.get_object()
         presu = self.obj.presupuesto
+        tipo = self.obj.tipo_direccion
+        orden = self.obj.orden
         self.obj.delete()
+
+        Presupuesto_direccion.objects.filter(presupuesto=presu, tipo_direccion=tipo, orden__gt=orden).update(orden=(F('orden')-1))
 
         cantOrig = Presupuesto_direccion.objects.filter(presupuesto=presu, tipo_direccion='Origen').count()
         cantDest = Presupuesto_direccion.objects.filter(presupuesto=presu, tipo_direccion='Destino').count()
@@ -897,6 +903,35 @@ class PresupuestoDetailResumen(DetailView):
               'yusnelvy@hotmail.com')
 
         return context
+
+
+def PresupuestoDireccionOrden(request, pk):
+    if request.method == "GET" and request.is_ajax():
+        tipo = request.GET['tipo']
+        posicion = request.GET['posicion']
+
+        if (posicion == 'bajar'):
+            direccionactual = Presupuesto_direccion.objects.filter(id=pk)
+            presupuestoactual = direccionactual[0].presupuesto
+            ordenactual = direccionactual[0].orden
+
+            direccionsiguiente = Presupuesto_direccion.objects.filter(presupuesto=presupuestoactual, tipo_direccion=tipo, orden=(ordenactual + 1))
+
+            direccionsiguiente.update(orden=(F('orden')-1))
+            direccionactual.update(orden=(F('orden')+1))
+
+        elif (posicion == 'subir'):
+            direccionactual = Presupuesto_direccion.objects.filter(id=pk)
+            presupuestoactual = direccionactual[0].presupuesto
+            ordenactual = direccionactual[0].orden
+
+            direccionanterior = Presupuesto_direccion.objects.filter(presupuesto=presupuestoactual, tipo_direccion=tipo, orden=(ordenactual - 1))
+
+            direccionanterior.update(orden=(F('orden')+1))
+            direccionactual.update(orden=(F('orden')-1))
+
+        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+        return JsonResponse(mensaje, safe=False)
 
 
 def generar_pdf(request):
