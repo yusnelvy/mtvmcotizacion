@@ -126,10 +126,10 @@ class="col-md-10"
                     <tr>
                         <td colspan="2">
                         {% if forloop.first %}
-                        <a title="Dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_origen.id %}?tipo=Origen&posicion=bajar" data-numero="{{direc_origen.id}}" class="btn glyphicon glyphicon-menu-down botonOrden"></a>
+                        <a title="Dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_origen.id %}?presupuesto={{presupuesto.id}}&tipo=Origen&posicion=bajar" data-numero="{{direc_origen.id}}" class="btn glyphicon glyphicon-menu-down botonOrden"></a>
 
                         {% else %}
-                        <a title="Dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_origen.id %}?tipo=Origen&posicion=subir" data-numero="{{direc_origen.id}}" class="btn glyphicon glyphicon-menu-up botonOrden"></a>
+                        <a title="Dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_origen.id %}?presupuesto={{presupuesto.id}}&tipo=Origen&posicion=subir" data-numero="{{direc_origen.id}}" class="btn glyphicon glyphicon-menu-up botonOrden"></a>
 
                         {% endif %}
                             {{ direc_origen.direccion }}
