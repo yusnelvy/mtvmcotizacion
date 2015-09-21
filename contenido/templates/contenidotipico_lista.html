@@ -2,14 +2,22 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="{% url 'ucontenidos:lista_contenido' %}" style="color:#777;">Contenidos</a></li>
+  <li class="linknav"><a href="{% url 'ucontenidos:lista_contenido' %}">Contenidos</a></li>
+  <li class="linknav"><a href="{% url 'umuebles:lista_mueble' %}">Muebles</a></li>
 
 {% endblock link_navegacion %}
 
+{% block footerlink %}
+
+  <li><a href="{% url 'ucontenidos:lista_contenido' %}">Contenidos</a></li>
+  <li><a href="{% url 'umuebles:lista_mueble' %}">Muebles</a></li>
+
+{% endblock footerlink %}
+
 {% block acceso_rapido_adicional%}
 
-<a id="addClass" style="cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
-<a id="removeClass" style="display:none;cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
+<a id="addClass" style="cursor: pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
+<a id="removeClass" style="display: none; cursor: pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
 
 {% endblock acceso_rapido_adicional%}
 
@@ -30,25 +38,6 @@ Eliminar contenido típico
 <p>¿Desea eliminar el registro: <span id="modal_name"></span>?</p>
 
 {% endblock validacion_modal %}
-
-{% block link %}
-
-<ul class="nav navbar-nav">
-  <li>
-    <a href="/contenido/contenido_tipico/nuevo" class="btn">Nuevo</a>
-  </li>
-  <li>
-    <a href="/contenido/contenido_tipico/0/" class="btn">Ver todos</a>
-  </li>
-  <li>
-    <a href="/contenido/" class="btn">Contenidos</a>
-  </li>
-  <li>
-    <a href="/mueble/" class="btn">Muebles</a>
-  </li>
-</ul>
-
-{% endblock link %}
 
 {% block titulo_ficha %}
 
@@ -121,7 +110,7 @@ class="col-md-7"
   {% for im in contenidotipicos %}
 
   <div class="panel panel-default">
-    <div style="cursor:pointer;" class="panel-heading" role="tab" id="heading{{im.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
+    <div style="cursor: pointer;" class="panel-heading" role="tab" id="heading{{im.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
       <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
 

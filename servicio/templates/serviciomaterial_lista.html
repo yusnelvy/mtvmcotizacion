@@ -2,8 +2,8 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="{% url 'uservicios:lista_material' %}" style="color:#777;">Materiales</a></li>
-<li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}" style="color:#777;">Servicios</a></li>
+<li class="linknav"><a href="{% url 'uservicios:lista_material' %}">Materiales</a></li>
+<li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}">Servicios</a></li>
 
 {% endblock link_navegacion %}
 
@@ -16,8 +16,8 @@
 
 {% block acceso_rapido_adicional%}
 
-<a id="addClass" style="cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
-<a id="removeClass" style="display:none;cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
+<a id="addClass" style="cursor: pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
+<a id="removeClass" style="display: none; cursor: pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
 
 {% endblock acceso_rapido_adicional%}
 
@@ -38,25 +38,6 @@ Eliminar material aplicado al servicio
 <p>¿Desea eliminar el registro: <span id="modal_name"></span>?</p>
 
 {% endblock validacion_modal %}
-
-{% block link %}
-
-<ul class="nav navbar-nav">
-  <li>
-    <a href="javascript:history.back();" class="btn">Regresar</a>
-  </li>
-  <li>
-    <a href="/servicio/servicio_material/nuevo/0/" class="btn">Nuevo</a>
-  </li>
-  <li>
-    <a href="/servicio/servicio_material/0/0/" class="btn">Ver todos</a>
-  </li>
-  <li>
-    <a href="/servicio/" class="btn">Servicios</a>
-  </li>
-</ul>
-
-{% endblock link %}
 
 {% block col1 %}
 
@@ -129,7 +110,7 @@ class="col-md-6"
   {% for im in servicios %}
 
   <div class="panel panel-default">
-    <div style="cursor:pointer;" class="panel-heading" role="tab" id="heading{{im.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
+    <div style="cursor: pointer;" class="panel-heading" role="tab" id="heading{{im.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
       <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
 

@@ -2,17 +2,17 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="{% url 'uclientes:lista_cliente' %}" style="color:#777;">Lista de clientes</a></li>
-<li class="linknav"><a href="{% url 'uclientes:lista_estadocivil' %}" style="color:#777;">Lista de estado civil</a></li>
-<li class="linknav"><a href="{% url 'uclientes:lista_sexo' %}" style="color:#777;">Lista de sexo</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_cliente' %}">Lista de clientes</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_estadocivil' %}">Lista de estado civil</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_sexo' %}">Lista de sexo</a></li>
 
 {% endblock link_navegacion %}
 
 {% block footerLink %}
 
-<li><a href="{% url 'uclientes:lista_cliente' %}" style="color:#777;">Lista de clientes</a></li>
-<li><a href="{% url 'uclientes:lista_estadocivil' %}" style="color:#777;">Lista de estado civil</a></li>
-<li><a href="{% url 'uclientes:lista_sexo' %}" style="color:#777;">Lista de sexo</a></li>
+<li><a href="{% url 'uclientes:lista_cliente' %}">Lista de clientes</a></li>
+<li><a href="{% url 'uclientes:lista_estadocivil' %}">Lista de estado civil</a></li>
+<li><a href="{% url 'uclientes:lista_sexo' %}">Lista de sexo</a></li>
 
 {% endblock footerLink %}
 
@@ -45,16 +45,6 @@ Eliminar
 <p>¿Realmente desea eliminar el registro: <strong id="modal_name"></strong>?</p>
 
 {% endblock validacion_modal %}
-
-{% block link %}
-
-<ul class="nav navbar-nav">
-  <li>
-    <a href="../../"><span class="glyphicon glyphicon-chevron-left"></span></a>
-  </li>
-</ul>
-
-{% endblock link %}
 
 {% block content1 %}
 

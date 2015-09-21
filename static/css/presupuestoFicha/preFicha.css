@@ -68,3 +68,18 @@
   background: #5cb85c!important;
   color: #fff!important;
 }
+
+.linknav>a>.glyphicon-ok {
+  float: right;
+  color: #5cb85c!important;
+}
+
+.linknav>a>.glyphicon-minus {
+  float: right;
+  color: #c9302c!important;
+}
+
+.linknav>a {
+  color: #777;
+  cursor: pointer;
+}
