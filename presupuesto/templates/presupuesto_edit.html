@@ -9,20 +9,19 @@ $(function() {
     });
 });
 setTimeout(function () {
-  document.getElementById('id_dni').focus();
+    document.getElementById('id_dni').focus();
 }, 500);
 </script>
-
 <form action="" method="post" id="myform">
 
-  {% csrf_token %}
+    {% csrf_token %}
 
-<div class="form-group filtra-campos">
+    <div class="form-group filtra-campos">
 
-{{form.as_p}}
+        {{form.as_p}}
 
-</div>
-<button type="submit" class="btn btn-default">Guardar</button>
+    </div>
+    <button type="submit" class="btn btn-default">Guardar</button>
 </form>
 
 {% endblock formulario %}
@@ -38,32 +37,32 @@ setTimeout(function () {
 <script src="/static/js/presupuestoForm/preDatosPersonales.js"></script>
 <script type="text/javascript">
 $('#myform').submit(function(){
-    var id = $(parent.document.getElementsByClassName("id_opcionDatosPersonales")).attr('id');
-    var action = "../../editar/"+id+"/";
+    var id = $(parent.document.getElementsByClassName("id_opcionFormulario")).attr('id');
+    var action = "../../editar/" + id + "/";
     var that = $(this)
-    var closep = parent.document.getElementById("btn-cerrarDatosPersonales");
+    var closep = parent.document.getElementById("btn-cerrarModal");
     $.ajax({
         url: action,
         type: 'POST',
         data: that.serialize()
         ,success: function(data){
-          if (data.estatus=="ok"){
-            var closep = parent.document.getElementById("btn-cerrarDatosPersonales");
-            var msj = parent.document.getElementById('msjGuardado');
-            $(closep).click();
-            $(msj).text('Guardado con exito');
-            $(msj).fadeIn();
-            setTimeout(function() {$(msj).fadeOut();}, 3000);
-            asyncChange();
-          }
+            if (data.estatus=="ok"){
+                var closep = parent.document.getElementById("btn-cerrarModal");
+                var msj = parent.document.getElementById('msjGuardado');
+                $(closep).click();
+                $(msj).text('Guardado con exito');
+                $(msj).fadeIn();
+                setTimeout(function() {$(msj).fadeOut();}, 3000);
+                asyncChange();
+            }
         }
     });
- return false;
+    return false;
 });
-    function asyncChange()
+function asyncChange()
 {
     var request;
-    var id3 = $(parent.document.getElementsByClassName("id_opcionDatosPersonales")).attr('id');
+    var id3 = $(parent.document.getElementsByClassName("id_opcionFormulario")).attr('id');
     var url2 = "/presupuesto/ficha/datospersonales/"+id3+"/";
 
     if (window.XMLHttpRequest) {

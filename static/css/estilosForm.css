@@ -173,10 +173,9 @@ body {
   z-index:0;
   position:fixed;
   top: 50px;
-  left: 0px;
+  left: 0;
   border-right: 1px solid #e7e7e7;
   font-size: 12px;
-  padding-left: 10px;
 }
 
 .linknav {
@@ -185,7 +184,7 @@ body {
 
 .linknav a {
   display: block;
-  padding: 10px 5px!important;
+  padding: 10px 15px!important;
   width: 100%;
   text-decoration: none!important;
 }
@@ -196,7 +195,8 @@ body {
 
 .nav_l {
   list-style: none;
-  padding: 0px;
+  padding: 0;
+  margin: 0;
 }
 
 @media (max-width:992px) {
@@ -216,9 +216,9 @@ body {
   }
 
   .linknav {
-    padding:0px!important;
+    padding:0!important;
     display:inline-block!important;
-    border-right:0px solid #e7e7e7;
+    border-right:0 solid #e7e7e7;
   }
 
   .nav_l {
@@ -238,10 +238,6 @@ body {
     overflow-y: scroll;
     max-height: 80%;
     width: 60%;
-  }
-
-  body {
-    margin-top:27px!important;
   }
 }
 
@@ -305,4 +301,32 @@ que sobreescribe el diseño Bootstrap
 
 .width50 {
   width: 50%!important;
+}
+.radioselect-ul {
+  display: block;
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.radioselect-ul li {
+  display: inline-table;
+  margin: -3px;
+  border: 1px solid #ccc;
+}
+
+.radioselect-ul li label {
+  padding: 5px 10px;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.radioselect-ul li label input {
+  width: 0;
+  height: 0;
+}
+
+.btn-verde:hover {
+  background: #5CB85C!important;
+  opacity: .9;
 }

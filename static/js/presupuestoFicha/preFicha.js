@@ -31,42 +31,19 @@ $(".botonmodalEliminar").on('click',function(evento){
     $('.id_opcionEliminar').attr('id', numero);
     $('.nombreEliminar').text(nombre);
 });
-$(".botonmodalServicio").on('click',function(evento){
-    evento.preventDefault();
-    var opcion = $(this).data('opcion');
-    var name = $(this).data('name');
-    $('.id_opcionServicio').attr('src', opcion);
-    $('#name-mueble').text(name);
-});
-$(".botonmodalDireccion").on('click',function(ev){
-    ev.preventDefault();
-    var numero = $(this).data('numero');
-    var opcion = $(this).data('opcion');
-    $('.id_opcionDireccion').attr('src', opcion);
-    $('.id_opcionDireccion').attr('id', numero);
-});
-$(".botonmodalMueble").on('click',function(eve){
-    eve.preventDefault();
-    var numero = $(this).data('numero');
-    var opcion = $(this).data('opcion');
-    $('.id_opcionMueble').attr('src', opcion);
-    $('.id_opcionMueble').attr('id', numero);
-});
-$(".botonmodalDatosPersonales").on('click',function(even){
+$(".botonmodalFormulario").on('click',function(even){
     even.preventDefault();
     var nombre = $(this).data('nombre');
     var numero = $(this).data('numero');
     var opcion = $(this).data('opcion');
-    $('.id_opcionDatosPersonales').attr('src', opcion);
-    $('.id_opcionDatosPersonales').attr('id', numero);
-    $('.nombre').text(nombre);
+    $('.id_opcionFormulario').attr('src', opcion);
+    $('.id_opcionFormulario').attr('id', numero);
+    $('.nombreTitulo').text(nombre);
 });
-
 $(document).ready(function() {
     $(function () {
         $('[data-toggletooltip="tooltip"]').tooltip();
     });
-
     document.getElementById('id_body').setAttribute('data-spy','scroll');
     document.getElementById('id_body').setAttribute('data-target','#navbar-example');
     document.getElementById('id_body').setAttribute('data-offset','70');
@@ -98,7 +75,6 @@ $('body,html').stop(true,true).animate({
 scrollTop: $(strAncla).offset().top-70
 },1000);
 });
-
 $(".botonOrden").on('click',function(){
     var numero = $(this).data('numero');
     var action = $(this).data('opcion');
