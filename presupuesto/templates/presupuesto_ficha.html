@@ -73,18 +73,18 @@
     </a>
 </li>
 
-{% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente%}
+{% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente %}
 
-{% if presupuesto.estado = "Muebles cargados" %}
+{% if servicio %}
 
 <li>
-    <a class="btn btn-success btn-verde" data-target=".resumen21" data-toggle="modal" type="button">Ver resumen</a>
+    <a href="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}">Ver resumen</a>
 </li>
 
 {% else %}
 
-<li>
-    <a class="btn btn-default" data-target=".resumen21" data-toggle="modal" style="color:#777;" type="button">Ver resumen</a>
+<li class="linknav">
+    <a data-target=".resumen" data-toggle="modal" type="button">Ver resumen</a>
 </li>
 
 {% endif %}
@@ -99,12 +99,6 @@
     <a class="btn btn-success btn-verde" type="button">Finalizar solicitud</a>
 </li>
 
-{% else %}
-
-<li>
-    <a class="btn btn-default disabled" style="color: #777;" type="button">Finalizar solicitud</a>
-</li>
-
 {% endif %}
 
 {% endif %}
@@ -115,24 +109,12 @@
     <a class="btn btn-success btn-verde" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{request.get_full_path}}" type="button">Revisar presupuesto</a>
 </li>
 
-{% else %}
-
-<li>
-    <a class="btn btn-default disabled" style="color:#777;" type="button" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{request.get_full_path}}" disabled="disabled">Revisar presupuesto</a>
-</li>
-
 {% endif %}
 
 {% if presupuesto.estado = "Terminado cotizador" %}
 
 <li>
     <a class="btn btn-success btn-verde" href="#" type="button">Enviar correo</a>
-</li>
-
-{% else %}
-
-<li>
-    <a class="btn btn-default disabled" style="color:#777;" type="button" href="#" disabled="disabled">Enviar correo</a>
 </li>
 
 {% endif %}
@@ -168,6 +150,9 @@
             <td colspan="2"><b>Medio de contacto:</b> {{ presupuesto.fuente_promocion }}</td>
             <td><b>Fecha de mudanza:</b> {{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}</td>
             <td><b>Hora de mudanza:</b> {{ presupuesto.hora_estimadamudanza|time:"h:i a" }}</td>
+        </tr>
+        <tr>
+            <td colspan="4"><b>Observaciones:</b></td>
         </tr>
     </table>
     <a class="btn btn-default botonmodalFormulario hidden-print" data-numero="{{presupuesto.id}}" data-nombre="Editar detalles del presupuesto" data-opcion="{% url 'upresupuestos:PresupuestoUpdate' presupuesto.id %}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Editar detalles del presupuesto">Editar detalles del presupuesto</a>
@@ -635,7 +620,7 @@
 </div>
 
 <!-- Modal resumen de presupuesto-->
-<div class="modal fade resumen21" role="dialog" aria-labelledby="resumen">
+<div class="modal fade resumen" role="dialog" aria-labelledby="resumen">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
@@ -660,12 +645,12 @@
                 {% if servicio %}
 
                 <a href="#ambientes" type="button" class="btn btn-default" data-dismiss="modal" >Si</a>
-                <a class="btn btn-default resumenPresupuesto" data-opcion="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}"  data-dismiss="modal" >No, calcular presupuesto</a>
+                <a class="btn btn-default resumenPresupuesto" data-opcion="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}"  data-dismiss="modal" >No, Ver presupuesto</a>
 
                 {% else %}
 
                 <a href="#ambientes" type="button" class="btn btn-default" data-dismiss="modal" >Si</a>
-                <a data-opcion="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}" href="" type="button" class="btn btn-default resumenPresupuesto" data-dismiss="modal" >No, calcular presupuesto</a>
+                <a data-opcion="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}" href="" type="button" class="btn btn-default resumenPresupuesto" data-dismiss="modal" >No, Ver presupuesto</a>
 
                 {% endif %}
 
