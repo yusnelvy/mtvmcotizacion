@@ -28,45 +28,45 @@
 {% block link_navegacion %}
 
 <li class="linknav">
-    <a href="#datos-personales" style="color:#777;">Datos del cliente
+    <a href="#datos-personales">Datos del cliente
 
         {% if presupuesto.dni %}
 
-        <span class="glyphicon glyphicon-ok" style="float:right;"></span>
+        <span class="glyphicon glyphicon-ok"></span>
 
         {% else %}
 
-        <span class="glyphicon glyphicon-minus" style="float:right;"></span>
+        <span class="glyphicon glyphicon-minus"></span>
 
         {% endif %}
 
     </a>
 </li>
 <li class="linknav">
-    <a href="#direcciones" style="color:#777;">Direcciones y datos de los inmuebles
+    <a href="#direcciones">Direcciones
 
         {% if direccion_origen and direccion_destino %}
 
-        <span class="glyphicon glyphicon-ok" style="float:right;"></span>
+        <span class="glyphicon glyphicon-ok"></span>
 
         {% else %}
 
-        <span class="glyphicon glyphicon-minus" style="float:right;"></span>
+        <span class="glyphicon glyphicon-minus"></span>
 
         {% endif %}
 
     </a>
 </li>
 <li class="linknav">
-    <a href="#ambientes" style="color:#777;">Ambientes y muebles
+    <a href="#ambientes">Ambientes y muebles
 
         {% if lista_ambiente %}
 
-        <span class="glyphicon glyphicon-ok" style="float:right;"></span>
+        <span class="glyphicon glyphicon-ok"></span>
 
         {% else %}
 
-        <span class="glyphicon glyphicon-minus" style="float:right;"></span>
+        <span class="glyphicon glyphicon-minus"></span>
 
         {% endif %}
 

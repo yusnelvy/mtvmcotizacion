@@ -2,7 +2,7 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a width="" href="{% url 'upresupuestos:DatosPrecargadoUpdate' 1 %}?next={{request.get_full_path}}" style="color:#777;">Datos precargados</a></li>
+<li class="linknav"><a width="" href="{% url 'upresupuestos:DatosPrecargadoUpdate' 1 %}?next={{request.get_full_path}}">Datos precargados</a></li>
 
 {% endblock link_navegacion %}
 
@@ -115,7 +115,7 @@ Eliminar presupuesto
     <a width="" href="{% url 'upresupuestos:PresupuestoDetail' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-file" ></a>
   </td>
   <td>
-    <a width="50" class="botonmodalDatosPersonales glyphicon glyphicon-edit" data-toggle="modal" data-target="#myModalDatosPersonales" data-opcion="editar/{{i.id}}" data-numero="{{i.id}}" style="cursor:pointer;"></a>
+    <a width="50" class="botonmodalDatosPersonales glyphicon glyphicon-edit" data-toggle="modal" data-target="#myModalDatosPersonales" data-opcion="editar/{{i.id}}" data-numero="{{i.id}}" style="cursor: pointer;"></a>
   </td>
   <td>
     <a style="padding:0px 0px 8px 8px;" href="{% url 'upresupuestos:PresupuestoDelete' i.id %}?next={{request.get_full_path}}" onclick="" class="glyphicon glyphicon-remove"></a>

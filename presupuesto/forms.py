@@ -1,8 +1,5 @@
-"""
-Docstring
-Ayuda del mueble/forms.py
+"""Docstring"""
 
-"""
 from django.forms import ModelForm, ModelChoiceField, RadioSelect, \
     Select, SelectMultiple, TextInput
 from presupuesto.models import Presupuesto, Presupuesto_direccion, \
@@ -58,7 +55,7 @@ class PresupuestoForm(ModelForm):
             'email': ('Email del solicitante:'),
             'fecha_estimadamudanza': ('Fecha estimada de la mudanza:'),
             'hora_estimadamudanza': ('Hora estimada de la mudanza:'),
-            'recorrido_km': ('Distancia de traslado en Kms.:'),
+            'recorrido_km': ('Distancia de traslado en Kms:'),
             'tiempo_recorrido': ('Tiempo de traslado en horas:'),
             'cotizador': ('Cotizador:'),
             'fecha_creacion': ('Fecha de registro:'),
@@ -136,16 +133,16 @@ class PresupuestoDireccionForm(ModelForm):
             'valor_ambiente_complejidad', \
             'valor_metrocubico_complejiadad',
         labels = {
-            'nombre_cliente': ('Cliente'),
-            'direccion': ('Dirección del inmueble:'),
+            'nombre_cliente': ('Nombre del solicitante'),
+            'direccion': ('Dirección del inmueble'),
             'ascensor_servicio': ('Ascensor de servicio'),
-            'distancia_vehiculo': ('Distancia del inmueble al vehículo (m):'),
-            'total_m2': ('Metros cuadrado del inmueble (m2):'),
-            'pisos': ('Cantidad de pisos del inmueble:'),
-            'pisos_escalera': ('Cantidad de pisos a recorrer por escaleras:'),
-            'pisos_ascensor': ('Cantidad de pisos a recorrer por el ascensor:'),
+            'distancia_vehiculo': ('Distancia del inmueble al vehículo (m)'),
+            'total_m2': ('Área del inmueble (m2)'),
+            'pisos': ('Cantidad de pisos del inmueble'),
+            'pisos_escalera': ('Cantidad de pisos a recorrer por escaleras'),
+            'pisos_ascensor': ('Cantidad de pisos a recorrer por el ascensor'),
             'pisos_ascensor_servicio': (
-                'Cantidad de pisos a recorrer por el ascensor de servicio:'),
+                'Cantidad de pisos a recorrer por el ascensor de servicio'),
             }
         widgets = {
             'pisos_ascensor': RadioSelect(
@@ -176,7 +173,7 @@ class PresupuestoDireccionForm(ModelForm):
         readonly_fields = ('tipo_direccion')
         error_messages = {
             'nombre_cliente': {
-                'required': 'Please enter your name',
+                'required': 'Por favor indique el nombre del solicitante',
             },
         }
 
@@ -217,9 +214,9 @@ class PresupuestoDetalleForm(ModelForm):
             'descripcion_contenedor', \
             'trasladable'
         labels = {
-            'ancho': ('Ancho del mueble:'),
-            'largo': ('Largo del mueble:'),
-            'alto': ('Alto del mueble:'),
+            'ancho': ('Ancho del mueble (cms)'),
+            'largo': ('Largo del mueble (cms)'),
+            'alto': ('Alto del mueble (cms)'),
             }
         widgets = {
             'ancho': TextInput(
@@ -249,7 +246,7 @@ class PresupuestoServicioForm(ModelForm):
 
         error_messages = {
             NON_FIELD_ERRORS: {
-                'servicio': "%(model_name)s's %(field_labels)s esta vacio.",
+                'servicio': "%(model_name)s's %(field_labels)s está vacío.",
             }
         }
 
