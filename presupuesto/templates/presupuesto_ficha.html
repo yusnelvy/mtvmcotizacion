@@ -309,11 +309,11 @@
 
                     {% if forloop.first %}
 
-                    <a class="btn controles glyphicon glyphicon-arrow-down botonOrden" data-numero="{{direc_origen.id}}"  data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_origen.id %}?tipo=Origen&posicion=bajar" data-toggletooltip="tooltip" style="cursor:pointer; padding:0px 0px 5px 5px;" title="Dirección de origen"></a>
+                    <a class="btn controles glyphicon glyphicon-arrow-down botonOrden" data-numero="{{direc_origen.id}}" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_origen.id %}?presupuesto={{presupuesto.id}}&tipo=Origen&posicion=bajar" data-toggletooltip="tooltip" style="cursor:pointer; padding:0px 0px 5px 5px;" title="Dirección de origen"></a>
 
                     {% else %}
 
-                    <a class="btn controles glyphicon glyphicon-arrow-up botonOrden" data-numero="{{direc_origen.id}}"  data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_origen.id %}?tipo=Origen&posicion=subir" data-toggletooltip="tooltip" style="cursor:pointer; padding:0px 0px 5px 5px;" title="Dirección de origen"></a>
+                    <a class="btn controles glyphicon glyphicon-arrow-up botonOrden" data-numero="{{direc_origen.id}}" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_origen.id %}?presupuesto={{presupuesto.id}}&tipo=Origen&posicion=subir" data-toggletooltip="tooltip" style="cursor:pointer; padding:0px 0px 5px 5px;" title="Dirección de origen"></a>
 
                     {% endif %}
 
@@ -456,11 +456,11 @@
 
                     {% if forloop.first %}
 
-                    <a class="btn controles glyphicon glyphicon-arrow-down botonOrden" data-numero="{{direc_destino.id}}" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_destino.id %}?tipo=destino&posicion=bajar" data-toggletooltip="tooltip" style="cursor:pointer; padding:0px 0px 5px 5px;" title="Dirección de destino"></a>
+                    <a class="btn controles glyphicon glyphicon-arrow-down botonOrden" data-numero="{{direc_destino.id}}" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_destino.id %}?presupuesto={{presupuesto.id}}&tipo=destino&posicion=bajar" data-toggletooltip="tooltip" style="cursor:pointer; padding:0px 0px 5px 5px;" title="Dirección de destino"></a>
 
                     {% else %}
 
-                    <a class="btn controles glyphicon glyphicon-arrow-up botonOrden" data-numero="{{direc_destino.id}}" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_destino.id %}?tipo=destino&posicion=subir" style="cursor:pointer; padding:0px 0px 5px 5px;" title="Dirección de destino"></a>
+                    <a class="btn controles glyphicon glyphicon-arrow-up botonOrden" data-numero="{{direc_destino.id}}" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_destino.id %}?presupuesto={{presupuesto.id}}&tipo=destino&posicion=subir" style="cursor:pointer; padding:0px 0px 5px 5px;" title="Dirección de destino"></a>
 
                     {% endif %}
                 </td>
