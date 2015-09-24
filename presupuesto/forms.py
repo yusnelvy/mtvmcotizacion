@@ -65,7 +65,7 @@ class PresupuestoForm(ModelForm):
         widgets = {
             'dni': TextInput(
                 attrs={
-                    'class': 'width25',
+                    'class': 'width50',
                     'onkeypress': 'return justNumbers(event);',
                     }),
             'telefono_celular': TextInput(
@@ -198,6 +198,7 @@ class PresupuestoDetalleForm(ModelForm):
             'ambiente', \
             'mueble', \
             'tamano', \
+            'cantidad', \
             'ancho', \
             'largo', \
             'alto', \
@@ -224,15 +225,21 @@ class PresupuestoDetalleForm(ModelForm):
         widgets = {
             'ancho': TextInput(
                 attrs={
-                    'class': 'width25'
+                    'class': 'width50'
                     }),
             'largo': TextInput(
                 attrs={
-                    'class': 'width25'
+                    'class': 'width50'
                     }),
             'alto': TextInput(
                 attrs={
-                    'class': 'width25'
+                    'class': 'width50'
+                    }),
+            'cantidad': TextInput(
+                attrs={
+                    'class': 'width50',
+                    'type': 'number',
+                    'step': '1.00'
                     }),
         }
 
