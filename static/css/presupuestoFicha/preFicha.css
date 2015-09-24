@@ -1,5 +1,7 @@
 .controles {
   visibility: hidden;
+  cursor:pointer;
+  padding:0px 0px 5px 5px;
 }
 
 .tr-mueble:hover .controles,

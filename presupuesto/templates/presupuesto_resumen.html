@@ -65,7 +65,7 @@
             <td colspan="2">
                 {% for direc_origen in direccion_origen %}
                 {{ direc_origen.direccion }} <br>
-                Tipo: {{ direc_origen.tipo_inmueble }}, {{ direc_origen.total_m2 }} m2, {{ direc_origen.pisos }}
+                Tipo: {{ direc_origen.tipo_inmueble }}, {{ direc_origen.total_m2 }} m<sup>2</sup>, {{ direc_origen.pisos }}
                 {% if direc_origen.pisos > 1 %}
                 pisos,
                 {% else %}
@@ -115,7 +115,7 @@
             <td colspan="2">
                 {% for direc_destino in direccion_destino %}
                 {{ direc_destino.direccion }}<br>
-                Tipo: {{ direc_destino.tipo_inmueble }}, {{ direc_destino.total_m2 }} m2, {{ direc_destino.pisos }}
+                Tipo: {{ direc_destino.tipo_inmueble }}, {{ direc_destino.total_m2 }} m<sup>2</sup>, {{ direc_destino.pisos }}
                 {% if direc_destino.pisos > 1 %}
                 pisos,
                 {% else %}
@@ -171,16 +171,16 @@
             <td colspan="4">
                 <div class="row">
                     <div class="col-md-4 break-inside">
-                        <h4>Detalle de la Mudanza</h4>
+                        <h4>Detalles de la mudanza</h4>
                         <table class="table table-hover table-condensed table-bordered" align="center">
                             <tr align="center">
-                                <td width="20px"></td>
-                                <td width="20px">Cantidad</td>
-                                <td width="20px">Peso kg</td>
-                                <td width="20px">Volumen m3</td>
+                                <td width="40%">Ítem</td>
+                                <td width="20%">Cantidad</td>
+                                <td width="20%">Peso Kg</td>
+                                <td width="20%">Vol. m<sup>3</sup></td>
                             </tr>
                             <tr align="center">
-                                <td>Ambiente</td>
+                                <td>Ambientes</td>
                                 <td>{{ presupuesto.cantidad_ambientes}}</td>
                                 <td>-</td>
                                 <td>-</td>
@@ -192,19 +192,19 @@
                                 <td>{{ presupuesto.total_volumen_muebles|floatformat:"2"}}</td>
                             </tr>
                             <tr align="center">
-                                <td>Contenido</td>
+                                <td>Contenidos</td>
                                 <td>-</td>
                                 <td>{{ presupuesto.total_peso_contenidos|floatformat:"2"}}</td>
                                 <td>{{ presupuesto.total_volumen_contenidos|floatformat:"2"}}</td>
                             </tr>
                             <tr align="center">
-                                <td>Contenedor</td>
+                                <td>Contenedores</td>
                                 <td>{{presupuesto.cantidad_contenedores}}</td>
                                 <td>{{ presupuesto.total_peso_contenedores|floatformat:"2"}}</td>
                                 <td>{{ presupuesto.total_volumen_contenedores|floatformat:"2"}}</td>
                             </tr>
                             <tr align="center">
-                                <td>Material</td>
+                                <td>Materiales</td>
                                 <td>-</td>
                                 <td>{{ presupuesto.total_peso_materiales|floatformat:"2"}}</td>
                                 <td>{{ presupuesto.total_volumen_materiales|floatformat:"2"}}</td>
@@ -212,38 +212,35 @@
                         </table>
                         <table class="table table-hover table-condensed table-bordered break" align="center">
                             <tr align="center">
-                                <td width="50px">Tiempo de servicios</td>
+                                <td width="50px">Km recorrido</td>
                                 <td width="50px">Tiempo de recorrido</td>
-                                <td width="50px">km recorrido</td>
+                                <td width="50px">Tiempo de servicios</td>
                             </tr>
                             <tr align="center">
-                                <td>
-                                    {% calular_horas presupuesto.tiempo_servicios %}
-                                </td>
-                                <td>
-                                    {% calular_horas presupuesto.tiempo_recorrido %}
-                                </td>
                                 <td>{{ presupuesto.recorrido_km}}</td>
+                                <td>{% calular_horas presupuesto.tiempo_recorrido %}</td>
+                                <td>{% calular_horas presupuesto.tiempo_servicios %}</td>
                             </tr>
                         </table>
                     </div>
                     <div class="col-md-4 break-inside">
-                        <h4>Detalle de Vehículos</h4>
+                        <h4>Detalles de vehículos</h4>
                         <table class="table table-hover table-condensed table-bordered" align="center" style="display:inline-table">
                             <tr align="center">
-                                <td width="20px">
-                                    <strong>Cantidad: {{ presupuesto.cantidad_vehiculo}}</strong>
+                                <td width="40%">
+                                    Cantidad: {{ presupuesto.cantidad_vehiculo}}
                                 </td>
-                                <td width="20px">Volumen m3</td>
-                                <td width="20px">Peso kg</td>
+                                <td width="30%">Peso Kg</td>
+                                <td width="30%">Vol. m<sup>3</sup></td>
+
                             </tr>
                             <tr align="center">
                                 <td>Disponible</td>
-                                <td>{{ presupuesto.total_capacidad_vehiculovol|floatformat:"2"}}</td>
                                 <td>{{presupuesto.total_capacidad_vehiculokg|floatformat:"2"}}</td>
+                                <td>{{ presupuesto.total_capacidad_vehiculovol|floatformat:"2"}}</td>
                             </tr>
                             <tr align="center">
-                                <td>Usado</td>
+                                <td>Utilizado</td>
                                 <td>{{presupuesto.total_m3|floatformat:"2"}}</td>
                                 <td>{{presupuesto.total_peso_mudanza|floatformat:"2"}}</td>
                             </tr>
@@ -254,13 +251,13 @@
                             </tr>
                             <tr>
                                 <td colspan="3" >
-                                    <strong> Descripción de vehículos: </strong>{{ presupuesto.descripcion_vehiculo}}
+                                    <strong> Descripción: </strong>{{ presupuesto.descripcion_vehiculo}}
                                 </td>
                             </tr>
                         </table>
                     </div>
                     <div class="col-md-4">
-                        <h4>Detalle de Trabajadores</h4>
+                        <h4>Detalles de trabajadores</h4>
                         <table class="table table-hover table-condensed table-bordered" align="center">
                             <tr align="center">
                                 <td></td>
@@ -276,7 +273,7 @@
                             </tr>
                             <tr>
                                 <td colspan="4">
-                                    <strong>Descripción de Trabajadores: </strong>{{ presupuesto.descripcion_persona}}
+                                    <strong>Descripción: </strong>{{ presupuesto.descripcion_persona}}
                                 </td>
                             </tr>
                         </table>
@@ -292,7 +289,7 @@
         <tr>
             <td colspan="4" class="border-none">
                 <div class="break-inside">
-                    <h4>Detalle del presupuesto</h4>
+                    <h4>Detalles del presupuesto</h4>
                     <table class="table table-hover table-condensed table-bordered" align="center" style="border: 2px solid #ddd;">
                         <tr align="center">
                             <td width="200px"></td>
@@ -317,7 +314,7 @@
                             <td></td>
                         </tr>
                         <tr align="center" style="border-top: 2px solid #ddd;">
-                            <td>Valor por m3 </td>
+                            <td>Valor por m<sup>3</sup> </td>
                             <td>{{presupuesto.total_m3|floatformat:"2"}}</td>
                             <td>{{direccion_origen.0.valor_metrocubico_complejiadad}}</td>
                             <td>{{presupuesto.monto_m3_inmueble}}</td>
@@ -402,7 +399,7 @@
                         </tr>
 
                         <tr align="center"  style="border-top: 2px solid #ddd;">
-                            <td>Valor de vehículos por hrs</td>
+                            <td>Valor de vehículos por hora</td>
                             <td></td>
                             <td></td>
                             <td>{{presupuesto.monto_vehiculo_hora}}</td>
@@ -417,7 +414,7 @@
                             </td>
                         </tr>
                         <tr align="center">
-                            <td>Valor de vehículos por km</td>
+                            <td>Valor de vehículos por Km</td>
                             <td></td>
                             <td></td>
                             <td>{{presupuesto.monto_vehiculo_recorrido}}</td>
@@ -467,7 +464,7 @@
 
         <tr>
             <td colspan="4" class="border-none">
-                <h4>Detalle de los muebles</h4>
+                <h4>Detalles de los muebles</h4>
 
                 <div class="row">
                     <div class="col-md-12">
@@ -479,13 +476,13 @@
                                     <th width="250px">Mueble</th>
                                     <th width="100px">Tamaño</th>
                                     <th width="100px">Ocupación</th>
-                                    <th width="200px">Servicio</th>
+                                    <th width="200px">Servicios</th>
 
                                     {% if perms.presupuesto_detalle.see_detallepresupuestoitem %}
 
-                                    <th width="60px">Peso (kgs)</th>
-                                    <th width="60px">Vol. (m3)</th>
-                                    <th width="100px">Contenedor</th>
+                                    <th width="60px">Peso (Kg)</th>
+                                    <th width="60px">Vol. (m<sup>3</sup>)</th>
+                                    <th width="100px">Contenedores</th>
                                     <th width="60px">Trasl.</th>
 
                                      {% endif %} <!-- end del if de verificación del permiso en detalle presupuesto -->
@@ -523,7 +520,7 @@
                                     <td>{{ det_mueble.peso|floatformat:"0"}}</td>
                                     <td>{{det_mueble.volumen_mueble|floatformat:"0"}}</td>
                                     <td>{{ det_mueble.cantidad_contenedor }} {{ det_mueble.descripcion_contenedor}} <br>
-                                        {{ det_mueble.peso_contenedor|floatformat:"0"}} kgs
+                                        {{ det_mueble.peso_contenedor|floatformat:"0"}} Kg
                                     </td>
                                     <td>
                                         {{ det_mueble.trasladable|yesno:"Si,No" }}
@@ -548,20 +545,18 @@
 
         <tr>
             <td colspan="4" class="border-none">
-                <h4>Detalle de los servicios</h4>
-
+                <h4>Detalles de los servicios</h4>
                 <table class="table table-hover table-condensed table-bordered" align="center">
                     <tr>
-                        <th width="200px">Servicio</th>
-                        <th width="80px">Monto</th>
-                        <th width="60px">Tiempo aplicado</th>
-                        <th width="200px">Material</th>
-                        <th width="60px">Vol. (m3)</th>
-                        <th width="60px">Peso (kgs)</th>
-                        <th width="60px">Cantidad</th>
-                        <th width="80px">Precio</th>
-                        <th width="80px">Monto</th>
-
+                        <th width="26%">Servicio</th>
+                        <th width="8%">Monto ($)</th>
+                        <th width="8%">Duración</th>
+                        <th width="26%">Material</th>
+                        <th width="8%">Vol. (m <sup>3</sup>)</th>
+                        <th width="8%">Peso (Kg)</th>
+                        <th width="8%">Cantidad</th>
+                        <th width="8%">Precio</th>
+                        <th width="8%">Monto</th>
                     </tr>
 
                     {% regroup servicio2 by servicio as servicio_list %}
