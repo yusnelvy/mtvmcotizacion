@@ -537,7 +537,7 @@ def buscar_cotizacion(request, pk):
         'det_servicio_contenido': det_servicio_contenido,
         'det_complejidad': det_complejidad
     }
-    return render(request, 'cotizacion_buscar2.html', context)
+    return render(request, 'cotizacion_buscar.html', context)
 
 
 # agregar nuevo

@@ -11,11 +11,14 @@
 </tr>
 <tr>
     <td colspan="2"><b>e-mail:</b> {{ presupuesto.email }}</td>
-    <td><b>Cargo:</b> {{ presupuesto.empresa_cliente }}</td>
-    <td><b>Empresa:</b> {{ presupuesto.cargo_cliente }}</td>
+    <td><b>Cargo:</b> {{ presupuesto.cargo_cliente }}</td>
+    <td><b>Empresa:</b> {{ presupuesto.empresa_cliente }}</td>
 </tr>
 <tr>
     <td colspan="2"><b>Medio de contacto:</b> {{ presupuesto.fuente_promocion }}</td>
     <td><b>Fecha de mudanza:</b> {{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}</td>
     <td><b>Hora de mudanza:</b> {{ presupuesto.hora_estimadamudanza|time:"h:i a" }}</td>
+</tr>
+<tr>
+    <td colspan="4"><b>Observaciones:</b> {{ presupuesto.comentario }}</td>
 </tr>

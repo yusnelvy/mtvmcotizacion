@@ -1,4 +1,0 @@
-{% include "servicio/serviciomaterial_lista.html" %}
-
-{% url 'uservicios:buscar_servicio_material' idserv=1 idmat=0 as the_url %}
-<div>{{ the_url }}</div>

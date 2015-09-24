@@ -8,18 +8,14 @@
 
   <div class="form-group campo">
 
-    {% for i in form %}
-
-    <span  class="campo{{forloop.counter0}}"><label for="{{ i.id_for_label }}">{{i.label}}</label> {{i}}</span>
-
-    {% endfor %}
+    {{form.as_p}}
 
   </div>
 
-  <button type="submit" class="btn btn-default" style="float:right;">Guardar</button>
+  <button type="submit" class="btn btn-default">Guardar</button>
   <br>
 </form>
-<div title="Click para Cerrar" id="carga" style="cursor:pointer;border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:10px;box-shadow:inset yellow 0px 0px 14px;background-position:center;background-size:100%;background-color:#111111;width:300px;color:#fff;text-align:center;height:100px;padding:52px 12px 12px 12px;position:fixed;top:30%;left:40%;z-index:6;display:none;">Guardando...</div>
+
 {% endblock formulario %}
 
 {% block style %}
@@ -38,23 +34,23 @@ $('#id_lista_tamano li label').addClass('btn-radio');
 $('input[name=lista_ocupacion]').click(function(){
   radioColorOcupacion()
 });
-  radioColorOcupacion()
+radioColorOcupacion()
 $('input[name=lista_tamano]').click(function(){
   radioColorTamano()
 });
-  radioColorTamano()
+radioColorTamano()
 $(document).ready(function(){
   $("#id_lista_ambiente").on("change", function(){
     id_lista_ambiente = $("#id_lista_ambiente").val();
     $("#id_ambiente").val(id_lista_ambiente);
     $.get('/presupuesto/detalle/nuevo',
       {id_lista_ambiente: id_lista_ambiente},
-          function(data){
-            $("#id_ambiente").val(data[0].ambiente);
+      function(data){
+        $("#id_ambiente").val(data[0].ambiente);
       });
-    });
+  });
 
- $("#id_lista_mueble").on("change", function(){
+  $("#id_lista_mueble").on("change", function(){
     id_lista_mueble = $("#id_lista_mueble").val();
     $.get('/presupuesto/detalle/nuevo',
       {id_lista_mueble: id_lista_mueble},
@@ -167,31 +163,35 @@ $('#id_alto').on('change', function(){
 
 });
 $('#myform').submit(function(){
-    document.getElementById('id_lista_ambiente').disabled = false;
-    var id = $(parent.document.getElementsByClassName("id_opcionMueble")).attr('src');
-    var action = id;
-    var that = $(this);
-    $.ajax({
-        url: action,
-        type: 'POST',
-        data: that.serialize(),
-                      beforeSend: function(data) {
-                    $('#carga').css('display','block');
-                  }
-        ,success: function(data){
-            var modalp = parent.document.getElementById('myModalAmbiente');
-            var divp = parent.document.getElementsByClassName("modal-backdrop");
-            var bodyp = parent.document.getElementById('id_body');
-            var closep = parent.document.getElementById("btn-cerrarmuebleEdit");
-          if (data.estatus=="ok"){
-            $(closep).click();
-            setTimeout(function() {
-            parent.location.reload();
-            },100);
-          }
-        }
-    });
-    return false;
+  document.getElementById('id_lista_ambiente').disabled = false;
+  var id = $(parent.document.getElementsByClassName("id_opcionFormulario")).attr('src');
+  var action = id;
+  var that = $(this);
+  $.ajax({
+    url: action,
+    type: 'POST',
+    data: that.serialize(),
+    beforeSend: function(data) {
+      $('#carga').css('display','block');
+    }
+    ,success: function(data){
+      var modalp = parent.document.getElementById('myModalAmbiente');
+      var divp = parent.document.getElementsByClassName("modal-backdrop");
+      var bodyp = parent.document.getElementById('id_body');
+      var closep = parent.document.getElementById("btn-cerrarModal");
+      var guardar = parent.document.getElementById("msjGuardado");
+      if (data.estatus=="ok"){
+        $(closep).click();
+        $(guardar).css('width','300px');
+        $(guardar).text('Mueble guardado con exito');
+        $(guardar).fadeIn();
+        setTimeout(function() {
+          parent.location.reload();
+        },500);
+      }
+    }
+  });
+  return false;
 });
 </script>
 

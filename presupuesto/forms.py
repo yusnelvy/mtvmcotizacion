@@ -1,8 +1,5 @@
-"""
-Docstring
-Ayuda del mueble/forms.py
+"""Docstring"""
 
-"""
 from django.forms import ModelForm, ModelChoiceField, RadioSelect, \
     Select, SelectMultiple, TextInput
 from presupuesto.models import Presupuesto, Presupuesto_direccion, \
@@ -41,7 +38,7 @@ class PresupuestoForm(ModelForm):
         input_formats=('%Y-%m-%d', '%d/%m/%Y',))
 
     fuente_promocion = forms.ChoiceField(
-        widget=Select,
+        widget=Select(attrs={'class': 'width50'}),
         label='Fuente de promoción',
         choices=fuente_choices)
 
@@ -58,25 +55,28 @@ class PresupuestoForm(ModelForm):
             'email': ('Email del solicitante:'),
             'fecha_estimadamudanza': ('Fecha estimada de la mudanza:'),
             'hora_estimadamudanza': ('Hora estimada de la mudanza:'),
-            'recorrido_km': ('Distancia de traslado en Kms.:'),
+            'recorrido_km': ('Distancia de traslado en Kms:'),
             'tiempo_recorrido': ('Tiempo de traslado en horas:'),
             'cotizador': ('Cotizador:'),
             'fecha_creacion': ('Fecha de registro:'),
             'hora_creacion': ('Hora de registro:'),
-            'fuente_promocion': ('Fuente de promoció'),
+            'comentario': ('Observaciones')
         }
         widgets = {
             'dni': TextInput(
                 attrs={
                     'class': 'width25',
+                    'onkeypress': 'return justNumbers(event);',
                     }),
             'telefono_celular': TextInput(
                 attrs={
                     'class': 'width50',
+                    'onkeypress': 'return justNumbers(event);',
                     }),
             'telefono': TextInput(
                 attrs={
                     'class': 'width50',
+                    'onkeypress': 'return justNumbers(event);',
                     }),
             'email': TextInput(
                 attrs={
@@ -87,10 +87,6 @@ class PresupuestoForm(ModelForm):
                     'class': 'width50',
                     }),
             'recorrido_km': Select(
-                attrs={
-                    'class': 'width50',
-                    }),
-            'fuente_promocion': TextInput(
                 attrs={
                     'class': 'width50',
                     }),
@@ -113,7 +109,7 @@ class PresupuestoForm(ModelForm):
 
 class PresupuestoDireccionForm(ModelForm):
     """Docstring"""
-    lista_tipoinmueble = ModelChoiceField(Tipo_Inmueble.objects, widget=Select, empty_label=None, label='Tipo de inmueble:')
+    lista_tipoinmueble = ModelChoiceField(Tipo_Inmueble.objects, widget=Select(attrs={'class': 'width50'}), empty_label=None, label='Tipo de inmueble:')
     lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=RadioSelect(attrs={'onclick': 'radioColorBlue(name);'}), empty_label=None, label='Nivel de ocupación del inmueble:')
 
     class Meta:
@@ -140,16 +136,16 @@ class PresupuestoDireccionForm(ModelForm):
             'valor_ambiente_complejidad', \
             'valor_metrocubico_complejiadad',
         labels = {
-            'nombre_cliente': ('Cliente'),
-            'direccion': ('Dirección del inmueble:'),
+            'nombre_cliente': ('Nombre del solicitante'),
+            'direccion': ('Dirección del inmueble'),
             'ascensor_servicio': ('Ascensor de servicio'),
-            'distancia_vehiculo': ('Distancia del inmueble al vehículo (m):'),
-            'total_m2': ('Metros cuadrado del inmueble (m2):'),
-            'pisos': ('Cantidad de pisos del inmueble:'),
-            'pisos_escalera': ('Cantidad de pisos a recorrer por escaleras:'),
-            'pisos_ascensor': ('Cantidad de pisos a recorrer por el ascensor:'),
+            'distancia_vehiculo': ('Distancia del inmueble al vehículo (m)'),
+            'total_m2': ('Área del inmueble (m2)'),
+            'pisos': ('Cantidad de pisos del inmueble'),
+            'pisos_escalera': ('Cantidad de pisos a recorrer por escaleras'),
+            'pisos_ascensor': ('Cantidad de pisos a recorrer por el ascensor'),
             'pisos_ascensor_servicio': (
-                'Cantidad de pisos a recorrer por el ascensor de servicio:'),
+                'Cantidad de pisos a recorrer por el ascensor de servicio'),
             }
         widgets = {
             'pisos_ascensor': RadioSelect(
@@ -168,11 +164,19 @@ class PresupuestoDireccionForm(ModelForm):
                 attrs={
                     'class': 'radioselect', 'onclick': 'radioColorBlue(name)'
                     }),
+            'total_m2': Select(
+                attrs={
+                    'class': 'width50'
+                    }),
+            'distancia_vehiculo': Select(
+                attrs={
+                    'class': 'width50'
+                    }),
         }
         readonly_fields = ('tipo_direccion')
         error_messages = {
             'nombre_cliente': {
-                'required': 'Please enter your name',
+                'required': 'Por favor indique el nombre del solicitante',
             },
         }
 
@@ -213,10 +217,24 @@ class PresupuestoDetalleForm(ModelForm):
             'descripcion_contenedor', \
             'trasladable'
         labels = {
-            'ancho': ('Ancho del mueble:'),
-            'largo': ('Largo del mueble:'),
-            'alto': ('Alto del mueble:'),
+            'ancho': ('Ancho del mueble (cms)'),
+            'largo': ('Largo del mueble (cms)'),
+            'alto': ('Alto del mueble (cms)'),
             }
+        widgets = {
+            'ancho': TextInput(
+                attrs={
+                    'class': 'width25'
+                    }),
+            'largo': TextInput(
+                attrs={
+                    'class': 'width25'
+                    }),
+            'alto': TextInput(
+                attrs={
+                    'class': 'width25'
+                    }),
+        }
 
 
 class PresupuestoServicioForm(ModelForm):
@@ -231,7 +249,7 @@ class PresupuestoServicioForm(ModelForm):
 
         error_messages = {
             NON_FIELD_ERRORS: {
-                'servicio': "%(model_name)s's %(field_labels)s esta vacio.",
+                'servicio': "%(model_name)s's %(field_labels)s está vacío.",
             }
         }
 
@@ -260,7 +278,7 @@ class PresupuestoRevisarForm(ModelForm):
                 attrs={
                     'required': 'True',
                     'readonly': 'readonly',
-                    'class': 'input-re check3',
+                    'class': 'input-re check3 input-re-no-border',
                     'type': 'number',
                     'step': '0.01'
                     }),
@@ -276,8 +294,7 @@ class PresupuestoRevisarForm(ModelForm):
                     'required': 'True',
                     'class': 'input-re check3',
                     'type': 'number',
-                    'step': '0.01'
-                    }
+                    'step': '0.01'}
                 ),
             'monto_servicios_revisado': TextInput(
                 attrs={
@@ -301,6 +318,12 @@ class PresupuestoRevisarForm(ModelForm):
                     'type': 'number',
                     'step': '0.01'}
                 ),
-            'descuento_recargo': TextInput(attrs={'hidden': 'hiden'}),
-            'tipo_calculo': TextInput(attrs={'hidden': 'hiden'})
+            'descuento_recargo': TextInput(
+                attrs={
+                    'hidden': 'hiden'
+                }),
+            'tipo_calculo': TextInput(
+                attrs={
+                    'hidden': 'hiden'
+                })
         }

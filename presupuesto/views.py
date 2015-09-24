@@ -910,25 +910,28 @@ def PresupuestoDireccionOrden(request, pk):
         tipo = request.GET['tipo']
         posicion = request.GET['posicion']
 
-        if (posicion == 'bajar'):
-            direccionactual = Presupuesto_direccion.objects.filter(id=pk)
-            presupuestoactual = direccionactual[0].presupuesto
-            ordenactual = direccionactual[0].orden
+        cantdireccion = Presupuesto_direccion.objects.filter(presupuesto=request.GET['presupuesto'], tipo_direccion=tipo).count()
 
-            direccionsiguiente = Presupuesto_direccion.objects.filter(presupuesto=presupuestoactual, tipo_direccion=tipo, orden=(ordenactual + 1))
+        if cantdireccion > 1:
+            if (posicion == 'bajar'):
+                direccionactual = Presupuesto_direccion.objects.filter(id=pk)
+                presupuestoactual = direccionactual[0].presupuesto
+                ordenactual = direccionactual[0].orden
 
-            direccionsiguiente.update(orden=(F('orden')-1))
-            direccionactual.update(orden=(F('orden')+1))
+                direccionsiguiente = Presupuesto_direccion.objects.filter(presupuesto=presupuestoactual, tipo_direccion=tipo, orden=(ordenactual + 1))
 
-        elif (posicion == 'subir'):
-            direccionactual = Presupuesto_direccion.objects.filter(id=pk)
-            presupuestoactual = direccionactual[0].presupuesto
-            ordenactual = direccionactual[0].orden
+                direccionsiguiente.update(orden=(F('orden')-1))
+                direccionactual.update(orden=(F('orden')+1))
 
-            direccionanterior = Presupuesto_direccion.objects.filter(presupuesto=presupuestoactual, tipo_direccion=tipo, orden=(ordenactual - 1))
+            elif (posicion == 'subir'):
+                direccionactual = Presupuesto_direccion.objects.filter(id=pk)
+                presupuestoactual = direccionactual[0].presupuesto
+                ordenactual = direccionactual[0].orden
 
-            direccionanterior.update(orden=(F('orden')+1))
-            direccionactual.update(orden=(F('orden')-1))
+                direccionanterior = Presupuesto_direccion.objects.filter(presupuesto=presupuestoactual, tipo_direccion=tipo, orden=(ordenactual - 1))
+
+                direccionanterior.update(orden=(F('orden')+1))
+                direccionactual.update(orden=(F('orden')-1))
 
         mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
         return JsonResponse(mensaje, safe=False)

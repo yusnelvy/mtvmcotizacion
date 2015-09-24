@@ -1,5 +1,7 @@
 .controles {
   visibility: hidden;
+  cursor:pointer;
+  padding:0px 0px 5px 5px;
 }
 
 .tr-mueble:hover .controles,
@@ -14,7 +16,7 @@
 .t-ambiente {
   cursor: pointer;
   font-size: 18px;
-  width: 83%;
+  width: 100%;
   display: inline-block;
   padding: 10px 1px;
 }
@@ -43,16 +45,20 @@
   .btn-addmueble{
     width: 30%;
   }
+
+  .msj {
+    top: 110px!important;
+    left: 45%!important;
+  }
 }
 
-#msjEliminado,
-#msjGuardado {
+.msj {
   position: fixed;
-  width: 180px;
-  top: 0px;
-  left: 405px;
+  width: 360px;
+  top: 60px;
+  left: 50%;
   text-align: center;
-  z-index: 2000;
+  z-index: 1040;
 }
 
 #preDetalle {
@@ -67,4 +73,19 @@
 #preDetalle a:hover {
   background: #5cb85c!important;
   color: #fff!important;
+}
+
+.linknav>a>.glyphicon-ok {
+  float: right;
+  color: #5cb85c!important;
+}
+
+.linknav>a>.glyphicon-minus {
+  float: right;
+  color: #c9302c!important;
+}
+
+.linknav>a {
+  color: #777;
+  cursor: pointer;
 }

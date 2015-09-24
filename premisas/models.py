@@ -11,7 +11,7 @@ class Empresa(models.Model):
     correo = models.EmailField()
     responsable = models.CharField(max_length=250, null=True, blank=True)
     cuit = models.CharField(max_length=100, null=True, blank=True)
-    logo = models.ImageField(upload_to='static/image/')
+    logo = models.ImageField(upload_to='static/img/')
 
 
 class FuentePromocion(models.Model):
