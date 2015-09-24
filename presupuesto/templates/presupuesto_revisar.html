@@ -4,10 +4,10 @@
 
 {% block acceso_rapido %}
 
-<a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="javascript:history.back();">
+<a class="navbar-brand" href="javascript:history.back();" role="button" title="Volver">
     <span class="glyphicon glyphicon-chevron-left"></span>
 </a>
-<a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();">
+<a class="navbar-brand" onclick="window.print();" role="button" title="Imprimir">
     <span class="glyphicon glyphicon-print"></span>
 </a>
 
@@ -33,7 +33,6 @@ class="col-md-10"
 
 <style>
 .input-re {
-    border-color:transparent;
     width: 60%;
     text-align: center;
     box-shadow: transparent!important;
@@ -45,32 +44,38 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;
 }
 
-.input-re:focus {
+.input-re-no-border {
     border-color: transparent!important;
+}
+
+.input-re:focus {
     box-shadow: transparent!important;
     -o-box-shadow: transparent!important;
     -webkit-box-shadow:transparent!important;
 }
+
 input[type=radio] {
-    width: 1px;
-    height: 1px;
+    float: left;
 }
+
 .label1 {
-    width: 90%;
+    width: 80%;
     height: 90%;
     cursor: pointer;
     font-family: inherit;
     font: inherit;
 }
+
 .selec {
     background: #e8e8e8;
 }
+
 .checkedBlue {
     background: #337ab7;
     color:#fff;
 }
+
 .input-descuento-recargo {
-    border-color:transparent;
     width: 40%;
     text-align: center;
     box-shadow: transparent!important;
@@ -80,28 +85,28 @@ input[type=radio] {
 
     {% csrf_token %}
 
-    {{form.tipo_calculo}}
-    {{form.descuento_recargo}}
+    {{ form.tipo_calculo }}
+    {{ form.descuento_recargo }}
 
     <div class="break-inside">
-        <h4>Detalle del presupuesto</h4>
-        <table class="table table-condensed table-bordered" align="center" style="border: 2px solid #ddd;">
+        <h2>Detalle del presupuesto</h2>
+        <table align="center" class="table table-condensed table-bordered" style="border: 2px solid #ddd;">
             <tr align="center">
                 <td width="20%"></td>
                 <td width="10%">Tarifa</td>
                 <td width="10%">Cantidad</td>
                 <td width="10%">Total recurso</td>
                 <td width="15%">
-                    <input type="radio" name="enviarPresupuesto" id="basico">
-                    <label for="basico" class="label1">Básico</label>
+                    <input id="basico" name="enviarPresupuesto" type="radio">
+                    <label class="label1" for="basico">Básico</label>
                 </td>
                 <td width="15%">
-                    <input type="radio" name="enviarPresupuesto" id="optimizado">
-                    <label for="optimizado" class="label1">Optimizado</label>
+                    <input id="optimizado" name="enviarPresupuesto" type="radio">
+                    <label class="label1" for="optimizado">Optimizado</label>
                 </td>
                 <td width="15%">
-                    <input type="radio" name="enviarPresupuesto" id="revisado">
-                    <label for="revisado" class="label1">Revisado</label>
+                    <input id="revisado" name="enviarPresupuesto" type="radio">
+                    <label class="label1" for="revisado">Revisado</label>
                 </td>
             </tr>
             <tr>
@@ -120,126 +125,135 @@ input[type=radio] {
 
                 </td>
                 <td align="center" class="check3">
-                    <input type="hidden" value="{{ presupuesto.id }}" id="idpresupuesto">
+                    <input id="idpresupuesto" type="hidden" value="{{ presupuesto.id }}">
                 </td>
             </tr>
             <tr style="border-top: 2px solid #ddd;">
                 <td>Metros cúbicos del inmueble</td>
-                <td align="center">{{direccion_origen.0.valor_metrocubico_complejiadad}}</td>
-                <td align="center">{{presupuesto.total_m3|floatformat:"2"}}</td>
+                <td align="center">{{ direccion_origen.0.valor_metrocubico_complejiadad }}</td>
+                <td align="center">{{ presupuesto.total_m3|floatformat:"2" }}</td>
                 <td align="center">
-                    <input type="radio" name="totalRecurso" onclick="radioTotal();" id="m3" disabled="disabled">
-                    <label for="m3" id="montom3inmueble" class="label1">{{presupuesto.monto_m3_inmueble}}</label>
+                    <input disabled="disabled" id="m3" name="totalRecurso" onclick="radioTotal();" type="radio">
+                    <label class="label1" for="m3" id="montom3inmueble">
+                        {{ presupuesto.monto_m3_inmueble }}
+                    </label>
                 </td>
-                <td align="center" rowspan="4" style="vertical-align: middle;" class="check" id="montorecursobasico">
+                <td align="center" class="check" id="montorecursobasico" rowspan="4" style="vertical-align: middle;">
 
                     {% if presupuesto.maxrecursoteorico == presupuesto.monto_m3_inmueble %}
 
-                    {{presupuesto.maxrecursoteorico}}
+                    {{ presupuesto.maxrecursoteorico }}
 
                     {% endif %}
 
                     {% if presupuesto.maxrecursoteorico == presupuesto.monto_amb_inmueble %}
 
-                    {{presupuesto.maxrecursoteorico}}
+                    {{ presupuesto.maxrecursoteorico }}
 
                     {% endif %}
 
                     {% if presupuesto.maxrecursoteorico == presupuesto.monto_personateorica %}
 
-                    {{presupuesto.maxrecursoteorico}}
+                    {{ presupuesto.maxrecursoteorico }}
 
                     {% endif %}
 
                     {% if presupuesto.maxrecursoteorico == presupuesto.monto_personaoptima %}
 
-                    {{presupuesto.maxrecursoteorico}}
+                    {{ presupuesto.maxrecursoteorico }}
 
                     {% endif %}
 
                 </td>
-                <td align="center" rowspan="4" style="vertical-align: middle;" class="check2" id="montorecursooptimo">
+                <td align="center" class="check2"  id="montorecursooptimo" rowspan="4" style="vertical-align: middle;">
 
                     {% if presupuesto.maxrecursooptimo == presupuesto.monto_m3_inmueble %}
 
-                    {{presupuesto.maxrecursooptimo}}
+                    {{ presupuesto.maxrecursooptimo }}
 
                     {% endif %}
 
                     {% if presupuesto.maxrecursooptimo == presupuesto.monto_amb_inmueble %}
 
-                    {{presupuesto.maxrecursooptimo}}
+                    {{ presupuesto.maxrecursooptimo }}
 
                     {% endif %}
 
                     {% if presupuesto.maxrecursooptimo == presupuesto.monto_personateorica %}
 
-                    {{presupuesto.maxrecursooptimo}}
+                    {{ presupuesto.maxrecursooptimo }}
 
                     {% endif %}
 
                     {% if presupuesto.maxrecursooptimo == presupuesto.monto_personaoptima %}
 
-                    {{presupuesto.maxrecursooptimo}}
+                    {{ presupuesto.maxrecursooptimo }}
 
                     {% endif %}
 
                 </td>
-                <td align="center" rowspan="4" style="vertical-align: middle;" class="check3">
-                    {{form.monto_recursos_revisado}}
+                <td align="center" class="check3" rowspan="4" style="vertical-align: middle;">
+                    {{ form.monto_recursos_revisado }}
                 </td>
             </tr>
             <tr>
                 <td>Valor por ambiente </td>
-                <td align="center">{{direccion_origen.0.valor_ambiente_complejidad}}</td>
-                <td align="center">{{ presupuesto.cantidad_ambientes}}</td>
+                <td align="center">{{ direccion_origen.0.valor_ambiente_complejidad }}</td>
+                <td align="center">{{ presupuesto.cantidad_ambientes }}</td>
                 <td align="center">
-                    <input type="radio" name="totalRecurso" onclick="radioTotal();" id="amb" disabled="disabled">
-                    <label for="amb" class="label1" style="text-align:center;" id="montoambinmueble">{{presupuesto.monto_amb_inmueble}}</label>
+                    <input disabled="disabled" id="amb" name="totalRecurso" onclick="radioTotal();" type="radio" >
+                    <label class="label1" for="amb" id="montoambinmueble" style="text-align:center;">
+                        {{ presupuesto.monto_amb_inmueble }}
+                    </label>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">Valor por recurso humano</td>
-                <td align="center">{{ presupuesto.cantidadpersonaterica}}</td>
+                <td align="center">{{ presupuesto.cantidadpersonaterica }}</td>
                 <td align="center">
-                    <input type="radio" name="totalRecurso" onclick="radioTotal();" id="rrhh" disabled="disabled">
-                    <label for="rrhh" class="label1" style="text-align:center;" id="montopersonateorica">{{presupuesto.monto_personateorica}}</label>
+                    <input disabled="disabled" id="rrhh" name="totalRecurso" onclick="radioTotal();" type="radio">
+                    <label class="label1" for="rrhh" id="montopersonateorica" style="text-align:center;">
+                        {{ presupuesto.monto_personateorica }}
+                    </label>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">Valor con RRHH adicional</td>
-                <td align="center">{{ presupuesto.cantidadpersonaoptima}}</td>
+                <td align="center">{{ presupuesto.cantidadpersonaoptima }}</td>
                 <td align="center">
-                    <input type="radio" name="totalRecurso" onclick="radioTotal();" id="rrhha" disabled="disabled">
-                    <label for="rrhha" class="label1" style="text-align:center;" id="montopersonaoptima">{{presupuesto.monto_personaoptima}}</label>
+                    <input disabled="disabled" id="rrhha" name="totalRecurso" onclick="radioTotal();" type="radio">
+                    <label class="label1" for="rrhha" id="montopersonaoptima" style="text-align:center;">
+                        {{ presupuesto.monto_personaoptima }}
+                    </label>
                 </td>
             </tr>
             <tr style="border-top: 2px solid #ddd;">
                 <td colspan="3">Valor de vehículos por hrs</td>
                 <td align="center">
-                    <input type="radio" name="vehiculo" disabled="disabled">
-                    <label class="label1" style="cursor:default;">{{presupuesto.monto_vehiculo_hora}}</label>
+                    <label class="label1" style="cursor:default;">{{ presupuesto.monto_vehiculo_hora }}
+                    </label>
                 </td>
-                <td align="center" rowspan="2" style="vertical-align: middle;" class="check" id="vehiculomontobasico">
-                    {{presupuesto.vehiculomonto}}
+                <td align="center" class="check" id="vehiculomontobasico" rowspan="2" style="vertical-align: middle;">
+                    {{ presupuesto.vehiculomonto }}
                 </td>
-                <td align="center" rowspan="2" style="vertical-align: middle;" class="check2" id="vehiculomontooptima">
-                    {{presupuesto.vehiculomonto}}
+                <td align="center" class="check2" id="vehiculomontooptima" rowspan="2" style="vertical-align: middle;">
+                    {{ presupuesto.vehiculomonto }}
                 </td>
-                <td align="center" rowspan="2" style="vertical-align: middle;" class="check3">
-                    {{form.monto_vehiculo_revisado}}
+                <td align="center" class="check3" rowspan="2" style="vertical-align: middle;">
+                    {{ form.monto_vehiculo_revisado }}
                 </td>
             </tr>
             <tr>
                 <td colspan="3">Valor de vehículos por km</td>
                 <td align="center">
-                    <input type="radio" name="vehiculo" disabled="disabled">
-                    <label class="label1" style="cursor:default;">{{presupuesto.monto_vehiculo_recorrido}}</label>
+                    <label class="label1" style="cursor:default;">
+                        {{ presupuesto.monto_vehiculo_recorrido }}
+                    </label>
                 </td>
             </tr>
             <tr style="border-top: 2px solid #ddd;">
                 <td colspan="4">Servicios aplicados</td>
-                <td align="center" class="check" id="montoserviciosbasico">{{presupuesto.monto_servicios}}</td>
+                <td align="center" class="check" id="montoserviciosbasico">{{ presupuesto.monto_servicios }}</td>
                 <td align="center" class="check2" id="montoserviciosoptima" >{{ presupuesto.monto_servicios }}</td>
                 <td align="center" class="check3">
                     {{ form.monto_servicios_revisado }}
@@ -247,60 +261,59 @@ input[type=radio] {
             </tr>
             <tr style="border-top: 2px solid #ddd;">
                 <td colspan="4">Materiales utilizados</td>
-                <td align="center" class="check" id="montomaterialesbasico">{{presupuesto.monto_materiales}}</td>
-                <td align="center" class="check2" id="montomaterialesoptima">{{presupuesto.monto_materiales}}</td>
+                <td align="center" class="check" id="montomaterialesbasico">{{ presupuesto.monto_materiales }}</td>
+                <td align="center" class="check2" id="montomaterialesoptima">{{ presupuesto.monto_materiales }}</td>
                 <td align="center" class="check3">
-                    {{form.monto_materiales_revisado}}
+                    {{ form.monto_materiales_revisado }}
                 </td>
             </tr>
             <tr style="border-top: 2px solid #ddd;">
                 <td colspan="4">Valor total mudanza</td>
-                <td align="center" class="check" id="montomudanzahrsdirectas">{{presupuesto.monto_mudanza_hrsdirectas}}</td>
-                <td align="center" class="check2" id="montomundanzahrsoptimas">{{presupuesto.monto_mundanza_hrsoptimas}}</td>
+                <td align="center" class="check" id="montomudanzahrsdirectas">{{ presupuesto.monto_mudanza_hrsdirectas }}</td>
+                <td align="center" class="check2" id="montomundanzahrsoptimas">{{ presupuesto.monto_mundanza_hrsoptimas }}</td>
                 <td align="center" class="check3">
-                    {{form.monto_mundanza_revisada}}
+                    {{ form.monto_mundanza_revisada }}
                 </td>
             </tr>
             <tr style="border-top: 2px solid #ddd;">
                 <td colspan="2">Descuento / recargo</td>
                 <td style="text-align:center;">
-                    <input type="radio" name="descuentoRecargo" onclick="descuentoRecargoj();" id="descuento" value="-">
-                    <label for="descuento" class="label1">Descuento</label>
+                    <input id="descuento" name="descuentoRecargo" onclick="descuentoRecargoj();" type="radio" value="-">
+                    <label class="label1" for="descuento">Descuento</label>
                 </td>
                 <td style="text-align:center;">
-                    <input type="radio" name="descuentoRecargo" onclick="descuentoRecargoj();" id="recargo" value="+">
-                    <label for="recargo" class="label1">Recargo</label>
+                    <input id="recargo" name="descuentoRecargo" onclick="descuentoRecargoj();" type="radio" value="+">
+                    <label class="label1" for="recargo">Recargo</label>
                 </td>
                 <td align="center" class="check">
-                    <input class="input-descuento-recargo check" id="descuento_regargobasico" name="monto_descuento_recargo" step="0.01" type="number" value="{{presupuesto.monto_descuento_recargo}}" style="text-align:left;">
-                    <input class="input-descuento-recargo check" id="porc_descuentobasico" type="text" value="" style="text-align:right;"><span>%</span>
+                    <input class="input-descuento-recargo check" id="descuento_regargobasico" name="monto_descuento_recargo" step="0.01" style="text-align:left;" type="number" value="{{presupuesto.monto_descuento_recargo}}">
+                    <input class="input-descuento-recargo check" id="porc_descuentobasico" onkeypress="return justNumbers(event);" style="text-align:right;" type="text" value=""><span>%</span>
                 </td>
                 <td align="center" class="check2">
-                    <input class="input-descuento-recargo check2" id="descuento_recargooptimo" name="monto_descuento_recargo" step="0.01" type="number" value="{{presupuesto.monto_descuento_recargo}}" style="text-align:left;">
-                    <input class="input-descuento-recargo check2" id="porc_descuentooptimo" type="text" value="" style="text-align:right;"><span>%</span>
+                    <input class="input-descuento-recargo check2" id="descuento_recargooptimo" name="monto_descuento_recargo" step="0.01" style="text-align:left;" type="number" value="{{presupuesto.monto_descuento_recargo}}">
+                    <input class="input-descuento-recargo check2" id="porc_descuentooptimo" onkeypress="return justNumbers(event);" style="text-align:right;" type="text" value=""><span>%</span>
                 </td>
                 <td align="center" class="check3">
-                    {{form.monto_descuento_recargo}}
-                    <input class="input-descuento-recargo check3" id="porc_descuento" type="text" value="0" style="text-align:right;"><span>%</span>
+                    {{ form.monto_descuento_recargo }}
+                    <input class="input-descuento-recargo check3" id="porc_descuento" onkeypress="return justNumbers(event);" style="text-align:right;" type="text" value="0"><span>%</span>
                 </td>
             </tr>
             <tr style="border-top: 2px solid #ddd;">
                 <td colspan="4">Valor total mudanza revisado</td>
                 <td align="center" class="check">
-                    <input id="mudanzamontorevisadotoerico" type="text" value="{{presupuesto.mudanzamontorevisadotoerico}}" readonly class="input-re check">
+                    <input class="input-re check input-re-no-border" id="mudanzamontorevisadotoerico" readonly type="text" value="{{ presupuesto.mudanzamontorevisadotoerico }}">
                 </td>
                 <td align="center" class="check2">
-                    <input id="mudanzamontorevisadooptimo" type="text" value="{{presupuesto.mudanzamontorevisadooptimo}}" readonly class="input-re check2">
+                    <input class="input-re check2 input-re-no-border" id="mudanzamontorevisadooptimo" readonly type="text" value="{{ presupuesto.mudanzamontorevisadooptimo }}">
                 </td>
                 <td align="center" class="check3">
-                    <input id="mudanzamontorevisado" type="text" value={% if form.tipo_calculo == 'Revisado' %}
-                    {{presupuesto.mudanzamontorevisado|floatformat:"2"}}
+                    <input class="input-re check3 input-re-no-border" id="mudanzamontorevisado" type="text" value={% if form.tipo_calculo == 'Revisado' %}
+                    {{ presupuesto.mudanzamontorevisado|floatformat:"2" }}
                     {% elif form.tipo_calculo == 'Optimizado' %}
-                    {{presupuesto.mudanzamontorevisadooptimo|floatformat:"2"}}
+                    {{ presupuesto.mudanzamontorevisadooptimo|floatformat:"2" }}
                     {% else %}
-                    {{presupuesto.mudanzamontorevisadotoerico|floatformat:"2"}}
-                    {% endif %} readonly class="input-re check3">
-
+                    {{ presupuesto.mudanzamontorevisadotoerico|floatformat:"2" }}
+                    {% endif %} readonly>
                 </td>
             </tr>
         </table>
@@ -309,7 +322,6 @@ input[type=radio] {
 </form>
 <script type="text/javascript">
 $(document).ready(function(){
-
     if ($('#id_tipo_calculo').val() == 'Optimizado'){
         $("#optimizado").attr("checked","checked");
         radioColorBlue()
@@ -325,7 +337,6 @@ $(document).ready(function(){
         EnableRevisadoInput()
         radioBenable()
     }
-
     if ($('#id_descuento_recargo').val() == $('#descuento').val()){
         $("#descuento").attr("checked","checked");
         descuentoRecargoj();
@@ -334,7 +345,6 @@ $(document).ready(function(){
         $("#recargo").attr("checked","checked");
         descuentoRecargoj();
     }
-
     $('#basico').click(function(){
         radioColorBlue()
         checkBasico()
@@ -343,6 +353,7 @@ $(document).ready(function(){
         limpiar('descuentoRecargo',0)
         radioTotal()
         DisableRevisadoInput()
+        descuentoRecargoj()
     });
     $('#optimizado').click(function(){
         radioColorBlue()
@@ -352,14 +363,15 @@ $(document).ready(function(){
         limpiar('descuentoRecargo',0)
         radioTotal()
         DisableRevisadoInput()
+        descuentoRecargoj()
     });
     $('#revisado').click(function(){
         EnableRevisadoInput()
         radioColorBlue()
         checkRevisado()
         radioBenable()
+        descuentoRecargoj()
     });
-
     $('#m3').click(function(){
         $('#id_monto_recursos_revisado').val(parseFloat($('#montom3inmueble').text().replace(',','')).toFixed(2));
         totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
@@ -396,32 +408,24 @@ $(document).ready(function(){
         $("#porc_descuento").val(porc_descuento);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
-
-     $('#descuento').click(function(){
+    $('#descuento').click(function(){
         $('#id_descuento_recargo').val($('#descuento').val());
         totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#id_monto_descuento_recargo').val(), $('#id_descuento_recargo').val());
-
         totalmudanzarevisadooptmo = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_recargooptimo').val(), $('#id_descuento_recargo').val());
-
         totalmudanzarevisadobasico = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_regargobasico').val(), $('#id_descuento_recargo').val());
-
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
         $("#mudanzamontorevisadooptimo").val(totalmudanzarevisadooptmo);
         $("#mudanzamontorevisadotoerico").val(totalmudanzarevisadobasico);
     });
-     $('#recargo').click(function(){
+    $('#recargo').click(function(){
         $('#id_descuento_recargo').val($('#recargo').val());
         totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#id_monto_descuento_recargo').val(), $('#id_descuento_recargo').val());
-
         totalmudanzarevisadooptmo = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_recargooptimo').val(), $('#id_descuento_recargo').val());
-
         totalmudanzarevisadobasico = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_regargobasico').val(), $('#id_descuento_recargo').val());
-
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
         $("#mudanzamontorevisadooptimo").val(totalmudanzarevisadooptmo);
         $("#mudanzamontorevisadotoerico").val(totalmudanzarevisadobasico);
     })
-
     $('#id_monto_recursos_revisado').on('keyup', function(){
         totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
         porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuento_recargo").val());
@@ -483,7 +487,6 @@ $(document).ready(function(){
         $("#porc_descuento").val($('#porc_descuentooptimo').val());
         $("#id_monto_descuento_recargo").val(descuentorecargo);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
-
     });
     $('#descuento_regargobasico').on('keyup', function(){
         porc_descuento = calcular_porcdescuentorecargo($("#id_monto_mundanza_revisada").val(), $("#descuento_regargobasico").val());
@@ -617,13 +620,13 @@ function DisableRevisadoInput(){
     document.getElementById("id_monto_servicios_revisado").disabled = true;
     document.getElementById("id_monto_materiales_revisado").disabled = true;
 }
+DisableRevisadoInput();
 function EnableRevisadoInput(){
     document.getElementById("id_monto_recursos_revisado").disabled = false;
     document.getElementById("id_monto_vehiculo_revisado").disabled = false;
     document.getElementById("id_monto_servicios_revisado").disabled = false;
     document.getElementById("id_monto_materiales_revisado").disabled = false;
 }
-DisableRevisadoInput()
 $('#id_monto_recursos_revisado').css('background', 'none');
 $('#id_monto_vehiculo_revisado').css('background', 'none');
 $('#id_monto_servicios_revisado').css('background', 'none');
@@ -641,14 +644,15 @@ function checkBasico(){
     $('#id_monto_descuento_recargo').val(parseFloat($('#descuento_regargobasico').val().replace(',','')).toFixed(2));
     $('#porc_descuento').val(parseFloat($('#porc_descuentobasico').val().replace(',','')).toFixed(2));
     $('#mudanzamontorevisado').val(parseFloat($('#mudanzamontorevisadotoerico').val().replace(',','')).toFixed(2));
-
     RecargoEnableBasico()
     RecargodisabledOptimo()
     RecargodisabledRevisado()
-
     totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_recargooptimo').val(), $('#id_descuento_recargo').val());
     $("#mudanzamontorevisadooptimo").val(totalmudanzarevisado);
-
+    $('.input-descuento-recargo').addClass('input-re-no-border');
+    $('.input-re').addClass('input-re-no-border');
+    $('#descuento_regargobasico').removeClass('input-re-no-border');
+    $('#porc_descuentobasico').removeClass('input-re-no-border');
 }
 function checkOptimizado(){
     $('.check').removeClass('selec');
@@ -663,12 +667,15 @@ function checkOptimizado(){
     $('#id_monto_descuento_recargo').val(parseFloat($('#descuento_recargooptimo').val().replace(',','')).toFixed(2));
     $('#porc_descuento').val(parseFloat($('#porc_descuentooptimo').val().replace(',','')).toFixed(2));
     $('#mudanzamontorevisado').val(parseFloat($('#mudanzamontorevisadooptimo').val().replace(',','')).toFixed(2));
-
     RecargodisabledBasico()
     RecargoEnableOptimo()
     RecargodisabledRevisado()
     totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_regargobasico').val(), $('#id_descuento_recargo').val());
     $("#mudanzamontorevisadotoerico").val(totalmudanzarevisado);
+    $('.input-descuento-recargo').addClass('input-re-no-border');
+    $('.input-re').addClass('input-re-no-border');
+    $('#descuento_recargooptimo').removeClass('input-re-no-border');
+    $('#porc_descuentooptimo').removeClass('input-re-no-border');
 }
 function checkRevisado(){
     $('.check3').addClass('selec');
@@ -678,17 +685,21 @@ function checkRevisado(){
     RecargodisabledBasico()
     RecargodisabledOptimo()
     RecargoEnableRevisado()
-
     totalmudanzarevisadooptmo = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_recargooptimo').val(), $('#id_descuento_recargo').val());
-
     totalmudanzarevisadobasico = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_regargobasico').val(), $('#id_descuento_recargo').val());
-
     $("#mudanzamontorevisadooptimo").val(totalmudanzarevisadooptmo);
     $("#mudanzamontorevisadotoerico").val(totalmudanzarevisadobasico);
-
-
+    $('.input-descuento-recargo').removeClass('input-re-no-border');
+    $('.input-re').removeClass('input-re-no-border');
+    $('#descuento_regargobasico').addClass('input-re-no-border');
+    $('#porc_descuentobasico').addClass('input-re-no-border');
+    $('#descuento_recargooptimo').addClass('input-re-no-border');
+    $('#porc_descuentooptimo').addClass('input-re-no-border');
+    $('#mudanzamontorevisadooptimo').addClass('input-re-no-border');
+    $('#mudanzamontorevisadotoerico').addClass('input-re-no-border');
+    $('#mudanzamontorevisado').addClass('input-re-no-border');
+    $('#id_monto_mundanza_revisada').addClass('input-re-no-border');
 }
-
 $('#myform').submit(function(){
     EnableRevisadoInput()
 });
@@ -698,7 +709,7 @@ $('#myform').submit(function(){
 
 {% block ayuda %}
 
-<div class="">
+<div>
     <p>
         Se llama <strong>presupuesto</strong> al cálculo y negociación anticipado del ingreso y egreso de una actividad económica.  Es un plan de acción dirigido a cumplir una meta prevista, expresada en valores y términos financieros que debe cumplirse en determinado tiempo y bajo ciertas condiciones previstas.
     </p>

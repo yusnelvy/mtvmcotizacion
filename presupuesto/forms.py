@@ -60,20 +60,23 @@ class PresupuestoForm(ModelForm):
             'cotizador': ('Cotizador:'),
             'fecha_creacion': ('Fecha de registro:'),
             'hora_creacion': ('Hora de registro:'),
-            'fuente_promocion': ('Fuente de promoció'),
+            'comentario': ('Observaciones')
         }
         widgets = {
             'dni': TextInput(
                 attrs={
                     'class': 'width25',
+                    'onkeypress': 'return justNumbers(event);',
                     }),
             'telefono_celular': TextInput(
                 attrs={
                     'class': 'width50',
+                    'onkeypress': 'return justNumbers(event);',
                     }),
             'telefono': TextInput(
                 attrs={
                     'class': 'width50',
+                    'onkeypress': 'return justNumbers(event);',
                     }),
             'email': TextInput(
                 attrs={
@@ -275,7 +278,7 @@ class PresupuestoRevisarForm(ModelForm):
                 attrs={
                     'required': 'True',
                     'readonly': 'readonly',
-                    'class': 'input-re check3',
+                    'class': 'input-re check3 input-re-no-border',
                     'type': 'number',
                     'step': '0.01'
                     }),
@@ -291,8 +294,7 @@ class PresupuestoRevisarForm(ModelForm):
                     'required': 'True',
                     'class': 'input-re check3',
                     'type': 'number',
-                    'step': '0.01'
-                    }
+                    'step': '0.01'}
                 ),
             'monto_servicios_revisado': TextInput(
                 attrs={

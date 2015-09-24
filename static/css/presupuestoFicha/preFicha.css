@@ -43,16 +43,20 @@
   .btn-addmueble{
     width: 30%;
   }
+
+  .msj {
+    top: 110px!important;
+    left: 45%!important;
+  }
 }
 
-#msjEliminado,
-#msjGuardado {
+.msj {
   position: fixed;
-  width: 180px;
-  top: 0;
-  left: 405px;
+  width: 360px;
+  top: 60px;
+  left: 50%;
   text-align: center;
-  z-index: 2000;
+  z-index: 1040;
 }
 
 #preDetalle {

@@ -183,16 +183,16 @@ $('#myform').submit(function(){
       var modalp = parent.document.getElementById('myModalAmbiente');
       var divp = parent.document.getElementsByClassName("modal-backdrop");
       var bodyp = parent.document.getElementById('id_body');
-      var closep = parent.document.getElementById("btn-cerrarmueble");
+      var closep = parent.document.getElementById("btn-cerrarModal");
       var guardar = parent.document.getElementById("msjGuardado");
       if (data.estatus=="ok"){
         $(closep).click();
-        setTimeout(function() {
-          parent.location.reload();
-        },1000);
         $(guardar).css('width','300px');
         $(guardar).text('Mueble guardado con exito');
         $(guardar).fadeIn();
+        setTimeout(function() {
+          parent.location.reload();
+        },1000);
       }
     }
   });
