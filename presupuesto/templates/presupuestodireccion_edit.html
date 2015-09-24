@@ -2,28 +2,15 @@
 
 {% block formulario %}
 
-<h4 style="margin-top:0px;">Editar dirección de {{ form.tipo_direccion.value|lower }}</h4>
 <form action="" method="post" id="myform">
 
   {% csrf_token %}
 
   <div class="form-group control-campos">
 
-    {% if form.errors %}
+    {{form.as_p}}
 
-    <p class="alert-danger alerta">Complete todos los campos y luego clic en registrar.</p>
-
-    {% endif %}
-
-    {% for i in form %}
-
-    <div class="campo form-group {{i.name}}" id="s_{{i.name}}">
-      <label for="{{ i.id_for_label }}">{{ i.label }} {{ i }}</label>
-    </div>
-
-    {% endfor %}
-
-    <button type="submit" class="btn btn-default" style="float:right;margin-right:10px;">Registrar</button>
+    <button type="submit" class="btn btn-default">Guardar</button>
   </div>
 
 </form>
@@ -32,28 +19,19 @@
 
 {% block style %}
 
-<link rel="stylesheet" href="/static/css/presupuestoForm/preDireccion.css">
 <style>
 
 {% if form.tipo_direccion.value = "Destino" %}
 
-#s_lista_ocupacion,#s_total_m2{display: none;}
+#id_lista_ocupacion,
+.control-campos p label[for=id_lista_ocupacion_0],
+#id_total_m2,
+.control-campos p label[for=id_total_m2] {
+  display: none;
+}
 
 {% endif %}
 
-@media (max-width:600px) {
-
-  {% if form.tipo_direccion.value = "Destino" %}
-
-  button{position: absolute;bottom:-325px;}
-
-  {% else %}
-
-  button{position: absolute;bottom:-400px;}
-
-  {% endif %}
-
-}
 </style>
 
 {% endblock style %}
@@ -61,59 +39,28 @@
 {% block js_form %}
 
 <script src="/static/js/presupuestoForm/preDireccion.js"></script>
-<script type="text/javascript">
-check5 = document.getElementById("id_ascensor");
-check6 = document.getElementById("id_ascensor_servicio");
-if (check5.checked){
-  $('#s_pisos_ascensor').css('visibility','visible');
-}
-else{
-  $('#s_pisos_ascensor').css('visibility','hidden');
-}
-
-if (check6.checked){
-  $('#s_pisos_ascensor_servicio').css('visibility','visible');
-}
-else{
-  $('#s_pisos_ascensor_servicio').css('visibility','hidden');
-}
-</script>
-<script type="text/javascript">
-document.getElementById('s_rampa').setAttribute('class','checkbox-inline')
-document.getElementById('id_ascensor').setAttribute('onchange','javascript:showContent()')
-document.getElementById('id_ascensor_servicio').setAttribute('onchange','javascript:showContent2()')
-document.getElementById('s_ascensor').setAttribute('class','checkbox-inline')
-document.getElementById('s_ascensor_servicio').setAttribute('class','checkbox-inline')
-$( "l" ).addClass( "radio radio-primary" );
-$('#s_pisos_ascensor').css('visibility','hidde');
-$('#s_pisos_ascensor_servicio').css('visibility','hidde');
-
-$(document).ready(function() {
-  setTimeout(function() {
-    $(".alerta").fadeOut(1500);
-  },3000);
-});
-</script>
 <script>
 $(document).ready(function(){
+  showContent();
+  showContent2();
   $('#myform').submit(function(){
-    var id = $(parent.document.getElementsByClassName("id_opcionDireccion")).attr('id');
+    var id = $(parent.document.getElementsByClassName("id_opcionFormulario")).attr('id');
     var action = "/presupuesto/direccion/"+id+"/";
     var that = $(this)
-    var closep = parent.document.getElementById("btn-cerrardir");
+    var closep = parent.document.getElementById("btn-cerrarModal");
     $.ajax({
       url: action,
       type: 'POST',
       data: that.serialize()
       ,success: function(data){
         if (data.estatus=="ok"){
-          var closep = parent.document.getElementById("btn-cerrardir");
+          var closep = parent.document.getElementById("btn-cerrarModal");
           var msj = parent.document.getElementById('msjGuardado');
           $(closep).click();
           $(msj).text('Guardado con éxito');
           $(msj).fadeIn();
           setTimeout(function() {$(msj).fadeOut();}, 3000);
-          refresh();
+          parent.location.reload();
         }
       }
     });
@@ -133,7 +80,6 @@ function refresh() {
     urldir = "/presupuesto/ficha/direcciondestino/"+ id_presupuesto;
     iddiv = 'direccion-destino';
   }
-
   $.ajax({
     url: urldir,
     success: function(data) {
@@ -141,6 +87,53 @@ function refresh() {
       $(divs).html(data);
     }
   });
+}
+function showContent() {
+  element = document.getElementById("id_pisos_ascensor");
+  pisos = $('input:radio[name=pisos_escalera]:checked').val();
+  check = document.getElementById("id_ascensor");
+  label = $('label[for=id_pisos_ascensor_0]');
+  if (check.checked) {
+    $(element).css('display','block');
+    $(label).css('display','block');
+    if (pisos == "0"){
+      $("input[name=pisos_ascensor][value=0]").attr('checked', 'checked');
+      radioColorBlue('pisos_ascensor');
+    }else{
+      $("input[name=pisos_ascensor][value=" + pisos + "]").click();
+      radioColorBlue('pisos_ascensor');
+    }
+  }
+  else {
+    $("input[name=pisos_ascensor][value=0]").click();
+    $(element).css('display','none');
+    $(label).css('display','none');
+  }
+}
+$(document.getElementById("id_pisos_ascensor_servicio")).css('display','none');
+$('label[for=id_pisos_ascensor_servicio_0]').css('display','none');
+function showContent2() {
+  element = document.getElementById("id_pisos_ascensor_servicio");
+  pisos = $('input:radio[name=pisos_escalera]:checked').val();
+  check = document.getElementById("id_ascensor_servicio");
+  label = $('label[for=id_pisos_ascensor_servicio_0]');
+
+  if (check.checked) {
+    $(element).css('display','block');
+    $(label).css('display','block');
+    if (pisos == "0"){
+      $("input[name=pisos_ascensor_servicio][value=0]").attr('checked', 'checked');
+      radioColorBlue('pisos_ascensor_servicio');
+    }else{
+      $("input[name=pisos_ascensor_servicio][value=" + pisos + "]").click();
+      radioColorBlue('pisos_ascensor_servicio');
+    }
+  }
+  else {
+    $("input[name=pisos_ascensor_servicio][value=0]").click();
+    $(element).css('display','none');
+    $(label).css('display','none');
+  }
 }
 </script>
 

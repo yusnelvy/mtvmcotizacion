@@ -108,22 +108,6 @@
   display: none;
 }
 
-#telefono,
-#telefono_celular,
-#email,
-.campo,
-#id_fuente_promocion,
-#recorrido_km,
-#tiempo_recorrido,
-#fecha_estimadamudanza,
-#hora_estimadamudanza {
-  width: 50%;
-}
-
-#dni {
-  width: 25%;
-}
-
 @media (max-width:991px) {
 
   .campo {

@@ -38,7 +38,7 @@ class PresupuestoForm(ModelForm):
         input_formats=('%Y-%m-%d', '%d/%m/%Y',))
 
     fuente_promocion = forms.ChoiceField(
-        widget=Select,
+        widget=Select(attrs={'class': 'width50'}),
         label='Fuente de promoción',
         choices=fuente_choices)
 
@@ -60,20 +60,23 @@ class PresupuestoForm(ModelForm):
             'cotizador': ('Cotizador:'),
             'fecha_creacion': ('Fecha de registro:'),
             'hora_creacion': ('Hora de registro:'),
-            'fuente_promocion': ('Fuente de promoció'),
+            'comentario': ('Observaciones')
         }
         widgets = {
             'dni': TextInput(
                 attrs={
                     'class': 'width25',
+                    'onkeypress': 'return justNumbers(event);',
                     }),
             'telefono_celular': TextInput(
                 attrs={
                     'class': 'width50',
+                    'onkeypress': 'return justNumbers(event);',
                     }),
             'telefono': TextInput(
                 attrs={
                     'class': 'width50',
+                    'onkeypress': 'return justNumbers(event);',
                     }),
             'email': TextInput(
                 attrs={
@@ -84,10 +87,6 @@ class PresupuestoForm(ModelForm):
                     'class': 'width50',
                     }),
             'recorrido_km': Select(
-                attrs={
-                    'class': 'width50',
-                    }),
-            'fuente_promocion': TextInput(
                 attrs={
                     'class': 'width50',
                     }),
@@ -110,7 +109,7 @@ class PresupuestoForm(ModelForm):
 
 class PresupuestoDireccionForm(ModelForm):
     """Docstring"""
-    lista_tipoinmueble = ModelChoiceField(Tipo_Inmueble.objects, widget=Select, empty_label=None, label='Tipo de inmueble:')
+    lista_tipoinmueble = ModelChoiceField(Tipo_Inmueble.objects, widget=Select(attrs={'class': 'width50'}), empty_label=None, label='Tipo de inmueble:')
     lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=RadioSelect(attrs={'onclick': 'radioColorBlue(name);'}), empty_label=None, label='Nivel de ocupación del inmueble:')
 
     class Meta:
@@ -165,6 +164,14 @@ class PresupuestoDireccionForm(ModelForm):
                 attrs={
                     'class': 'radioselect', 'onclick': 'radioColorBlue(name)'
                     }),
+            'total_m2': Select(
+                attrs={
+                    'class': 'width50'
+                    }),
+            'distancia_vehiculo': Select(
+                attrs={
+                    'class': 'width50'
+                    }),
         }
         readonly_fields = ('tipo_direccion')
         error_messages = {
@@ -214,6 +221,20 @@ class PresupuestoDetalleForm(ModelForm):
             'largo': ('Largo del mueble (cms)'),
             'alto': ('Alto del mueble (cms)'),
             }
+        widgets = {
+            'ancho': TextInput(
+                attrs={
+                    'class': 'width25'
+                    }),
+            'largo': TextInput(
+                attrs={
+                    'class': 'width25'
+                    }),
+            'alto': TextInput(
+                attrs={
+                    'class': 'width25'
+                    }),
+        }
 
 
 class PresupuestoServicioForm(ModelForm):
@@ -257,7 +278,7 @@ class PresupuestoRevisarForm(ModelForm):
                 attrs={
                     'required': 'True',
                     'readonly': 'readonly',
-                    'class': 'input-re check3',
+                    'class': 'input-re check3 input-re-no-border',
                     'type': 'number',
                     'step': '0.01'
                     }),
@@ -273,8 +294,7 @@ class PresupuestoRevisarForm(ModelForm):
                     'required': 'True',
                     'class': 'input-re check3',
                     'type': 'number',
-                    'step': '0.01'
-                    }
+                    'step': '0.01'}
                 ),
             'monto_servicios_revisado': TextInput(
                 attrs={
@@ -298,6 +318,12 @@ class PresupuestoRevisarForm(ModelForm):
                     'type': 'number',
                     'step': '0.01'}
                 ),
-            'descuento_recargo': TextInput(attrs={'hidden': 'hiden'}),
-            'tipo_calculo': TextInput(attrs={'hidden': 'hiden'})
+            'descuento_recargo': TextInput(
+                attrs={
+                    'hidden': 'hiden'
+                }),
+            'tipo_calculo': TextInput(
+                attrs={
+                    'hidden': 'hiden'
+                })
         }
