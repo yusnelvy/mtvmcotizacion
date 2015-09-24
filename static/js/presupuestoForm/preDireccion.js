@@ -18,9 +18,9 @@ $("input[name=lista_ocupacion]").click(function () {
       $("#id_valor_ocupacidad").val(data[0].valorocupacion);
     });
 });
-$('input[name="rampa"]').bootstrapSwitch('state', false, true);
-$('input[name="ascensor"]').bootstrapSwitch('state', false, true);
-$('input[name="ascensor_servicio"]').bootstrapSwitch('state', false, true);
+$('input[name="rampa"]').bootstrapSwitch();
+$('input[name="ascensor"]').bootstrapSwitch();
+$('input[name="ascensor_servicio"]').bootstrapSwitch();
 $('ul').attr('class', 'radioselect-ul');
 function radioColorBlue (name) {
   $("label:has(input[name=" + name + "])").css("background-color", "#fff");
@@ -52,52 +52,5 @@ showContent();
 $('input[name="ascensor_servicio"]').on('switchChange.bootstrapSwitch', function(event, state) {
 showContent2();
 });
-$(document.getElementById("id_pisos_ascensor")).css('visibility','hidden');
-$('label[for=id_pisos_ascensor_0]').css('visibility','hidden');
-function showContent() {
-  element = document.getElementById("id_pisos_ascensor");
-  pisos = $('input:radio[name=pisos_escalera]:checked').val();
-  check = document.getElementById("id_ascensor");
-  label = $('label[for=id_pisos_ascensor_0]');
-  if (check.checked) {
-    $(element).css('visibility','visible');
-    $(label).css('visibility','visible');
-    if (pisos == "0"){
-      $("input[name=pisos_ascensor][value=0]").attr('checked', 'checked');
-      radioColorBlue('pisos_ascensor');
-    }else{
-      $("input[name=pisos_ascensor][value=" + pisos +  "]").attr('checked', 'checked');
-      radioColorBlue('pisos_ascensor');
-    }
-  }
-  else {
-    $("input[name=pisos_ascensor][value=0]").attr('checked', 'checked');
-    $(element).css('visibility','hidden');
-    $(label).css('visibility','hidden');
-  }
-}
-$(document.getElementById("id_pisos_ascensor_servicio")).css('visibility','hidden');
-$('label[for=id_pisos_ascensor_servicio_0]').css('visibility','hidden');
-function showContent2() {
-  element = document.getElementById("id_pisos_ascensor_servicio");
-  pisos = $('input:radio[name=pisos_escalera]:checked').val();
-  check = document.getElementById("id_ascensor_servicio");
-  label = $('label[for=id_pisos_ascensor_servicio_0]');
-
-  if (check.checked) {
-    $(element).css('visibility','visible');
-    $(label).css('visibility','visible');
-    if (pisos == "0"){
-      $("input[name=pisos_ascensor_servicio][value=0]").attr('checked', 'checked');
-      radioColorBlue('pisos_ascensor_servicio');
-    }else{
-      $("input[name=pisos_ascensor_servicio][value=" + pisos + "]").attr('checked', 'checked');
-      radioColorBlue('pisos_ascensor_servicio');
-    }
-  }
-  else {
-    $("input[name=pisos_ascensor_servicio][value=0]").attr('checked', 'checked');
-    $(element).css('visibility','hidden');
-    $(label).css('visibility','hidden');
-  }
-}
+$(document.getElementById("id_pisos_ascensor")).css('display','none');
+$('label[for=id_pisos_ascensor_0]').css('display','none');

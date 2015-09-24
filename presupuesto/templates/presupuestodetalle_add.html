@@ -8,11 +8,7 @@
 
   <div class="form-group campo">
 
-    {% for i in form %}
-
-    <span  class="campo{{forloop.counter0}}"><label for="{{ i.id_for_label }}">{{i.label}}</label> {{i}}</span>
-
-    {% endfor %}
+    {{form.as_p}}
 
     <input type="text" id="capacidadmueble">
     <input type="text" id="densidadcontenido">
@@ -22,7 +18,7 @@
 
   {{form_data}}
 
-  <button type="submit" class="btn btn-default" style="float:right;">Agregar</button>
+  <button type="submit" class="btn btn-default">Agregar</button>
   <br>
 </form>
 
@@ -39,8 +35,6 @@
 <script src="/static/js/presupuestoForm/preDetalle.js"></script>
 <script>
 
-$('#id_lista_ocupacion li label').addClass('btn-radio');
-$('#id_lista_tamano li label').addClass('btn-radio');
 $('input[name=lista_ocupacion]').click(function(){
   radioColorOcupacion()
 });
@@ -189,16 +183,16 @@ $('#myform').submit(function(){
       var modalp = parent.document.getElementById('myModalAmbiente');
       var divp = parent.document.getElementsByClassName("modal-backdrop");
       var bodyp = parent.document.getElementById('id_body');
-      var closep = parent.document.getElementById("btn-cerrarmueble");
+      var closep = parent.document.getElementById("btn-cerrarModal");
       var guardar = parent.document.getElementById("msjGuardado");
       if (data.estatus=="ok"){
         $(closep).click();
-        setTimeout(function() {
-          parent.location.reload();
-        },1000);
         $(guardar).css('width','300px');
         $(guardar).text('Mueble guardado con exito');
         $(guardar).fadeIn();
+        setTimeout(function() {
+          parent.location.reload();
+        },1000);
       }
     }
   });

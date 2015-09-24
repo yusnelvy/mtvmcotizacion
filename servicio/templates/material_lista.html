@@ -2,12 +2,11 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}" style="color:#777;">Servicios</a></li>
-<li class="linknav"><a href="{% url 'uservicios:lista_unidad' %}" style="color:#777;">Unidades</a></li>
-<li class="linknav"><a href="{% url 'uservicios:lista_complejidad' %}" style="color:#777;">Niveles de complejidad</a></li>
-<li class="linknav"><a href="{% url 'uservicios:buscar_complejidad_servicio' 0 0 %}" style="color:#777;">Niveles de complejidad para el servicio
-</a></li>
-<li class="linknav"><a href="{% url 'uservicios:buscar_servicio_material' 0 0 %}" style="color:#777;">Servicios con sus materiales relacionados</a></li>
+<li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}">Servicios</a></li>
+<li class="linknav"><a href="{% url 'uservicios:lista_unidad' %}">Unidades</a></li>
+<li class="linknav"><a href="{% url 'uservicios:lista_complejidad' %}">Niveles de complejidad</a></li>
+<li class="linknav"><a href="{% url 'uservicios:buscar_complejidad_servicio' 0 0 %}">Niveles de complejidad para el servicio</a></li>
+<li class="linknav"><a href="{% url 'uservicios:buscar_servicio_material' 0 0 %}">Servicios con sus materiales relacionados</a></li>
 
 {% endblock link_navegacion %}
 
@@ -16,8 +15,7 @@
 <li><a href="{% url 'uservicios:lista_servicio' %}">Servicios</a></li>
 <li><a href="{% url 'uservicios:lista_unidad' %}">Unidades</a></li>
 <li><a href="{% url 'uservicios:lista_complejidad' %}">Niveles de complejidad</a></li>
-<li><a href="{% url 'uservicios:buscar_complejidad_servicio' 0 0 %}">Niveles de complejidad para el servicio
-</a></li>
+<li><a href="{% url 'uservicios:buscar_complejidad_servicio' 0 0 %}">Niveles de complejidad para el servicio</a></li>
 <li><a href="{% url 'uservicios:buscar_servicio_material' 0 0 %}">Servicios con sus materiales relacionados</a></li>
 
 {% endblock footerLink %}
@@ -40,19 +38,6 @@ Eliminar material
 
 {% endblock validacion_modal %}
 
-{% block link %}
-
-<ul class="nav navbar-nav">
-  <li>
-    <a href="/servicio/" class="btn">Servicios</a>
-  </li>
-  <li>
-    <a href="/servicio/servicio_material/0/0/" class="btn">Materiales de servicios</a>
-  </li>
-</ul>
-
-{% endblock link %}
-
 {% if lista_material %}
 
 {% block titulo_tabla %}
@@ -63,12 +48,11 @@ Eliminar material
 
 {% block cantidad_tabla %}
 
-<h6>Cantidad de materiales registrados:
-  <span class="badge" id="count_reg">
+<h6>Cantidad de materiales registrados: <span class="badge" id="count_reg">
 
-    {{ lista_material.count }}
+  {{ lista_material.count }}
 
-  </span>
+</span>
 </h6>
 
 {% endblock cantidad_tabla %}

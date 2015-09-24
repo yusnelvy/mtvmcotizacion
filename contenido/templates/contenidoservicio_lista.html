@@ -2,8 +2,8 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="{% url 'ucontenidos:lista_contenido' %}" style="color:#777;">Contenidos</a></li>
-<li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}" style="color:#777;">Servicios</a></li>
+<li class="linknav"><a href="{% url 'ucontenidos:lista_contenido' %}">Contenidos</a></li>
+<li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}">Servicios</a></li>
 
 {% endblock link_navegacion %}
 
@@ -16,8 +16,8 @@
 
 {% block acceso_rapido_adicional%}
 
-<a id="addClass" style="cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
-<a id="removeClass" style="display:none;cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
+<a id="addClass" style="cursor: pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
+<a id="removeClass" style="display: none; cursor: pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
 
 {% endblock acceso_rapido_adicional%}
 
@@ -62,7 +62,7 @@ class="col-md-6"
 {% endif %}
 
 <li class="current">
-  <a style="color:#000;"> Página
+  <a style="color: #000;"> Página
 
     {{ contenidos.number }}
 
@@ -109,7 +109,7 @@ class="col-md-6"
   {% for im in contenidos %}
 
   <div class="panel panel-default">
-    <div style="cursor:pointer;" class="panel-heading" role="tab" id="heading{{im.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
+    <div style="cursor: pointer;" class="panel-heading" role="tab" id="heading{{im.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
       <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
 
