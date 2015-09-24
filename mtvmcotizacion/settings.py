@@ -108,8 +108,6 @@ TEMPLATES = [
     },
 ]
 
-TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 
 ROOT_URLCONF = 'mtvmcotizacion.urls'

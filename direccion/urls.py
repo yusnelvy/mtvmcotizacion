@@ -54,6 +54,10 @@ urlpatterns = patterns('',
                            name='edit_inmueble'),
                        url(r'^provincia/search_provincia/$', views.search_provincia,
                            name='search_provincia'),
-
-
+                       url(r'^pais/search_pais/$',
+                           views.search_pais,
+                           name='search_pais'),
+                       url(r'^ciudad/search_ciudad/$',
+                           views.search_ciudad,
+                           name='search_ciudad'),
                        )

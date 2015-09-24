@@ -195,7 +195,7 @@ class Presupuesto(models.Model):
     estado = models.CharField(max_length=20, default='Iniciado')
     activo = models.CharField(max_length=20, default='Activado')
     tipo_calculo = models.CharField(max_length=20, default='Optimizado')
-    comentario = models.TextField()
+    comentario = models.TextField(blank=True)
 
     def __str__(self):
         return self.dni

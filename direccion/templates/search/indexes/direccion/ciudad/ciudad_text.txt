@@ -1,0 +1,3 @@
+{{ object.ciudad }}
+{{ object.pais }}
+{{ object.provincia }}
