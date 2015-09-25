@@ -524,17 +524,17 @@
 
                                     {% regroup mueble.presupuesto_servicio_set.all by servicio as servicio_list %}
 
-                                    {% for det_servivio in servicio_list %}
+                                    {% for det_servicio in servicio_list %}
 
                                     <span class="{% if servicio %}servicioStyle{% endif %}" style="margin-left:5px;padding-left:5px;">
 
-                                        {{ det_servivio.grouper }}
+                                        {{ det_servicio.grouper }}
 
-                                        {% for item in det_servivio.list %}
+                                        {% for item in det_servicio.list %}
 
                                         {% if forloop.first %}
 
-                                        <a class="hidden-print glyphicon glyphicon-remove botonmodalEliminar" data-nombre="{{ det_servivio.grouper }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioDelete' item.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" style="font-size:10px;color:#777;cursor:pointer;" title="Eliminar {{ det_servivio.grouper }}"></a>
+                                        <a class="hidden-print glyphicon glyphicon-remove botonmodalEliminar" data-nombre="{{ det_servicio.grouper }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioDelete' item.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" style="font-size:10px;color:#777;cursor:pointer;" title="Eliminar {{ det_servicio.grouper }}"></a>
 
                                         {% endif %}
 

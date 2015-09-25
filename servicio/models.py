@@ -57,6 +57,8 @@ class Material(models.Model):
     capacidad_volumen = models.DecimalField(max_digits=8, decimal_places=3)
     contenedor = models.BooleanField(default=False)
     unidad = models.ForeignKey(Unidad, on_delete=models.PROTECT)
+    nrovuelta = models.PositiveIntegerField(default=1)
+    solape = models.DecimalField(max_digits=7, decimal_places=2, default='0.20')
 
     def __str__(self):
         return self.material

@@ -484,9 +484,9 @@
                                         <td>{{ det_mueble.ocupacidad }}</td>
                                         <td>
                                             {% if servicio %}
-                                            {% for det_servivio in servicio %}
-                                            {% if det_servivio.detalle_presupuesto = det_mueble.id %}
-                                            {{ det_servivio.servicio }}
+                                            {% for det_servicio in servicio %}
+                                            {% if det_servicio.detalle_presupuesto = det_mueble.id %}
+                                            {{ det_servicio.servicio }}
                                             {% if forloop.last %}
 
                                             {% else %} -

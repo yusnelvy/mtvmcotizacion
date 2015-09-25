@@ -198,7 +198,7 @@ class Presupuesto(models.Model):
     comentario = models.TextField(blank=True)
 
     def __str__(self):
-        return self.dni
+        return str(self.pk)
 
     def _get_cantidadobjmudanza(self):
         return self.cantidad_muebles+self.cantidad_contenedores
@@ -237,15 +237,37 @@ class Presupuesto(models.Model):
     vehiculomonto = property(_get_vehiculomonto)
 
     def _get_mudanzamontorevisadotoerico(self):
-        return self.monto_mudanza_hrsdirectas + self.monto_descuento_recargo
+        if self.tipo_calculo == 'Basico':
+            if self.descuento_recargo == '-':
+                monto = self.monto_mudanza_hrsdirectas - self.monto_descuento_recargo
+            else:
+                monto = self.monto_mudanza_hrsdirectas + self.monto_descuento_recargo
+        else:
+            monto = self.monto_mudanza_hrsdirectas
+        return monto
     mudanzamontorevisadotoerico = property(_get_mudanzamontorevisadotoerico)
 
     def _get_mudanzamontorevisadooptimo(self):
-        return self.monto_mundanza_hrsoptimas + self.monto_descuento_recargo
+        if self.tipo_calculo == 'Optimizado':
+            if self.descuento_recargo == '-':
+                monto = self.monto_mundanza_hrsoptimas - self.monto_descuento_recargo
+            else:
+                monto = self.monto_mundanza_hrsoptimas + self.monto_descuento_recargo
+        else:
+            monto = self.monto_mundanza_hrsoptimas
+        return monto
     mudanzamontorevisadooptimo = property(_get_mudanzamontorevisadooptimo)
 
     def _get_mudanzamontorevisado(self):
-        return self.monto_mundanza_revisada + self.monto_descuento_recargo
+        if self.tipo_calculo == 'Revisado':
+            if self.descuento_recargo == '-':
+                monto = self.monto_mundanza_revisada - self.monto_descuento_recargo
+            else:
+                monto = self.monto_mundanza_revisada + self.monto_descuento_recargo
+        else:
+            monto = self.monto_mundanza_revisada
+        return monto
+
     mudanzamontorevisado = property(_get_mudanzamontorevisado)
 
     class Meta:
@@ -325,7 +347,7 @@ class Presupuesto_Detalle(models.Model):
 
 
 class Presupuesto_servicio(models.Model):
-    detalle_presupuesto = models.ForeignKey(Presupuesto_Detalle, on_delete=models.PROTECT)
+    detalle_presupuesto = models.ForeignKey(Presupuesto_Detalle)
     servicio = models.CharField(max_length=100)
     monto_servicio = models.DecimalField(max_digits=9, decimal_places=2,
                                          blank=True, default='0.00')
@@ -342,6 +364,7 @@ class Presupuesto_servicio(models.Model):
                                         blank=True, default='0.000')
     tiempo_aplicado = models.DecimalField(max_digits=7, decimal_places=2,
                                           blank=True, default='0.00')
+    unidad_material = models.CharField(max_length=20, blank=True, default='')
 
     def __str__(self):
         return u' %s - %s' % (self.detalle_presupuesto, self.servicio)
