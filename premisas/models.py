@@ -13,6 +13,9 @@ class Empresa(models.Model):
     cuit = models.CharField(max_length=100, null=True, blank=True)
     logo = models.ImageField(upload_to='static/img/')
 
+    def __str__(self):
+        return self.empresa
+
 
 class FuentePromocion(models.Model):
     """docstring for FuentePromocion"""

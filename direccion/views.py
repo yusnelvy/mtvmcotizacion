@@ -16,14 +16,55 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 
 
+import re
+
+
+def normalize_query(query_string,
+                    findterms=re.compile(r'"([^"]+)"|(\S+)').findall,
+                    normspace=re.compile(r'\s{2,}').sub):
+    ''' Splits the query string in invidual keywords, getting rid of unecessary spaces
+        and grouping quoted words together.
+        Example:
+
+        >>> normalize_query('  some random  words "with   quotes  " and   spaces')
+        ['some', 'random', 'words', 'with quotes', 'and', 'spaces']
+
+    '''
+    return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)]
+
+
+def get_query(query_string, search_fields):
+    ''' Returns a query, that is a combination of Q objects. That combination
+        aims to search keywords within a model by testing the given search fields.
+
+    '''
+    query = None  # Query to search for every search term
+    terms = normalize_query(query_string)
+    for term in terms:
+        or_query = None  # Query to search for a given term in each field
+        for field_name in search_fields:
+            q = Q(**{"%s__icontains" % field_name: term})
+            if or_query is None:
+                or_query = q
+            else:
+                or_query = or_query | q
+        if query is None:
+            query = or_query
+        else:
+            query = query & or_query
+    return query
+
+
 # Create your views here.
+
 def search_provincia(request):
     if request.method == "POST":
         search_text = request.POST['search_text']
-    else:
-        search_text = ''
-
-    lista_provincia = Provincia.objects.filter(Q(provincia__icontains=search_text) | Q(pais__pais__icontains=search_text))
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['provincia', 'pais__pais', ])
+            lista_provincia = Provincia.objects.filter(entry_query)
+        else:
+            lista_provincia = Provincia.objects.all()
 
     paginator = Paginator(lista_provincia, 25)
 
@@ -38,6 +79,55 @@ def search_provincia(request):
         provincias = paginator.page(paginator.num_pages)
 
     return render_to_response('provincia_lista_search.html', {'lista_provincia': lista_provincia, 'provincias': provincias})
+
+
+def search_pais(request):
+    if request.method == "POST":
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['pais', ])
+            lista_pais = Pais.objects.filter(entry_query)
+        else:
+            lista_pais = Pais.objects.all()
+
+    paginator = Paginator(lista_pais, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        paises = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        paises = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        paises = paginator.page(paginator.num_pages)
+
+    return render_to_response('pais_lista_search.html', {'lista_pais': lista_pais, 'paises': paises})
+
+
+def search_ciudad(request):
+    """docstring"""
+    if request.method == "POST":
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['ciudad', 'provincia__provincia', 'pais__pais', ])
+            lista_ciudad = Ciudad.objects.filter(entry_query)
+        else:
+            lista_ciudad = Ciudad.objects.all()
+
+    paginator = Paginator(lista_ciudad, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        ciudades = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        ciudades = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        ciudades = paginator.page(paginator.num_pages)
+    context = {'lista_ciudad': lista_ciudad, 'ciudades': ciudades}
+    return render(request, 'ciudad_lista_search.html', context)
 
 
 # lista
@@ -71,6 +161,17 @@ def lista_pais(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_pais = Pais.objects.all()
+
+    if request.is_ajax() and request.POST:
+        if request.POST['search_text']:
+            search_text = request.POST['search_text']
+        else:
+            search_text = ''
+
+        lista_pais = Pais.objects.filter(pais__icontains=search_text)
+
+        return render_to_response('object_list.html', {'paises': lista_pais}, context_instance=RequestContext(request))
+
     paginator = Paginator(lista_pais, 25)
     # Show 25 contacts per page
     page = request.GET.get('page')
@@ -84,7 +185,8 @@ def lista_pais(request):
         paises = paginator.page(paginator.num_pages)
 
     context = {'lista_pais': lista_pais, 'paises': paises}
-    return render(request, 'pais_lista.html', context)
+    #return render(request, 'pais_lista.html', context)
+    return render_to_response('pais_lista.html', context, context_instance=RequestContext(request))
 
 
 def lista_provincia(request):
@@ -133,6 +235,9 @@ def lista_ciudad(request):
     """docstring"""
 
     if request.method == "POST":
+        search_text = request.POST.get('q', '')
+        lista_ciudad = Ciudad.objects.filter(Q(ciudad__icontains=search_text) | Q(provincia__provincia__icontains=search_text))
+
         if "item_id" in request.POST:
             try:
                 id_ciudad = request.POST['item_id']

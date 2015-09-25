@@ -55,15 +55,32 @@
         </tr>
         <tr>
             <td colspan="2">
-                <h4>Dirección de origen</h4>
+                <h4>
+
+                    {% if direccion_origen.count > 1%}
+                        Direcciones de origen
+                    {% else %}
+                        Dirección de origen
+                    {% endif %}
+
+                </h4>
             </td>
             <td colspan="2">
-                <h4>Dirección de destino</h4>
+                <h4>
+
+                    {% if direccion_destino.count > 1%}
+                        Direcciones de destino
+                    {% else %}
+                        Dirección de destino
+                    {% endif %}
+
+                </h4>
             </td>
         </tr>
         <tr>
             <td colspan="2">
                 {% for direc_origen in direccion_origen %}
+                <strong>{{ direc_origen.tipo_direccion }} {{ direc_origen.orden }}</strong> <br>
                 {{ direc_origen.direccion }} <br>
                 Tipo: {{ direc_origen.tipo_inmueble }}, {{ direc_origen.total_m2 }} m<sup>2</sup>, {{ direc_origen.pisos }}
                 {% if direc_origen.pisos > 1 %}
@@ -109,11 +126,12 @@
                 sin ascensor de servicio <br>
                 {% endif %}
 
-                Distancia del vehículo al inmueble: {{ direc_origen.distancia_vehiculo }} mts
+                Distancia del vehículo al inmueble: {{ direc_origen.distancia_vehiculo }} mts <br>
                 {% endfor %}
             </td>
             <td colspan="2">
                 {% for direc_destino in direccion_destino %}
+                <strong>{{ direc_destino.tipo_direccion }} {{ direc_destino.orden }}</strong> <br>
                 {{ direc_destino.direccion }}<br>
                 Tipo: {{ direc_destino.tipo_inmueble }}, {{ direc_destino.total_m2 }} m<sup>2</sup>, {{ direc_destino.pisos }}
                 {% if direc_destino.pisos > 1 %}
@@ -159,7 +177,7 @@
                 sin ascensor de servicio <br>
                 {% endif %}
 
-                Distancia del vehículo al inmueble: {{ direc_destino.distancia_vehiculo }} mts
+                Distancia del vehículo al inmueble: {{ direc_destino.distancia_vehiculo }} mts <br>
                 {% endfor %}
 
             </td>
@@ -441,19 +459,47 @@
                             <td colspan="4">Valor total mudanza</td>
                             <td align="center">{{presupuesto.monto_mudanza_hrsdirectas}}</td>
                             <td align="center">{{presupuesto.monto_mundanza_hrsoptimas}}</td>
-                            <td align="center">{{presupuesto.monto_mundanza_hrsoptimas}}</td>
+                            <td align="center">
+
+                                {{presupuesto.monto_mundanza_revisada}}
+
+                            </td>
                         </tr>
                         <tr style="border-top: 2px solid #ddd;">
                             <td colspan="4">Descuento / recargo</td>
-                            <td align="center">{{presupuesto.monto_descuesto_regargo}}</td>
-                            <td align="center">{{presupuesto.monto_descuesto_regargo}}</td>
-                            <td align="center">{{presupuesto.monto_descuesto_regargo}}</td>
+                            <td align="center">
+
+                                {% if presupuesto.tipo_calculo == 'Basico' %}
+                                    {{presupuesto.monto_descuento_recargo}}
+                                {% else %}
+                                 0.00
+                                {% endif %}
+
+                            </td>
+                            <td align="center">
+
+                                {% if presupuesto.tipo_calculo == 'Optimizado' %}
+                                    {{presupuesto.monto_descuento_recargo}}
+                                {% else %}
+                                 0.00
+                                {% endif %}
+
+                            </td>
+                            <td align="center">
+
+                                {% if presupuesto.tipo_calculo == 'Revisado' %}
+                                    {{presupuesto.monto_descuento_recargo}}
+                                {% else %}
+                                 0.00
+                                {% endif %}
+
+                            </td>
                         </tr>
                         <tr style="border-top: 2px solid #ddd;">
                             <td colspan="4">Valor total mudanza revisado</td>
                             <td align="center">{{presupuesto.mudanzamontorevisadotoerico}}</td>
                             <td align="center">{{presupuesto.mudanzamontorevisadooptimo}}</td>
-                            <td align="center">{{presupuesto.mudanzamontorevisadooptimo}}</td>
+                            <td align="center">{{presupuesto.mudanzamontorevisado}}</td>
                         </tr>
                     </table>
                 </div>
@@ -502,9 +548,9 @@
                                     <td>{{ det_mueble.ocupacidad }}</td>
                                     <td>
                                         {% if servicio %}
-                                        {% for det_servivio in servicio %}
-                                        {% if det_servivio.detalle_presupuesto = det_mueble.id %}
-                                        {{ det_servivio.servicio }}
+                                        {% for det_servicio in servicio %}
+                                        {% if det_servicio.detalle_presupuesto = det_mueble.id %}
+                                        {{ det_servicio.servicio }}
                                         {% if forloop.last %}
 
                                         {% else %} -
@@ -588,7 +634,7 @@
                             {{ item.spesomat|floatformat:"2" }}
                         </td>
                         <td>
-                            {{ item.scantmat }}
+                            {{ item.scantmat }} {{item.unidad_material}}
                         </td>
                         <td>
                             {{ item.precio_material }}
@@ -600,6 +646,17 @@
 
                     {% endfor %}
                     {% endfor %}
+                    <tr>
+                        <td>Totales</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
 
                 </table>
 

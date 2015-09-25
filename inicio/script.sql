@@ -26,9 +26,9 @@ DROP TABLE IF EXISTS `ambiente_ambiente`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ambiente_ambiente` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ambiente` varchar(100) COLLATE utf8_bin NOT NULL,
+  `ambiente` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -58,7 +58,7 @@ CREATE TABLE `ambiente_ambiente_tipo_inmueble` (
   KEY `ambiente_ambiente_tipo_inmueble_0a525c68` (`tipo_inmueble_id`) USING BTREE,
   CONSTRAINT `ambiente_ambiente_t_ambiente_id_1a2e0d98_fk_ambiente_ambiente_id` FOREIGN KEY (`ambiente_id`) REFERENCES `ambiente_ambiente` (`id`),
   CONSTRAINT `ambiente_tipo_inmueble_id_1ecea4b5_fk_direccion_tipo_inmueble_id` FOREIGN KEY (`tipo_inmueble_id`) REFERENCES `direccion_tipo_inmueble` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -80,10 +80,10 @@ DROP TABLE IF EXISTS `auth_group`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `auth_group` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(80) COLLATE utf8_bin NOT NULL,
+  `name` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `name` (`name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -112,7 +112,7 @@ CREATE TABLE `auth_group_permissions` (
   KEY `auth_group_permissions_8373b171` (`permission_id`) USING BTREE,
   CONSTRAINT `auth_group_permissi_permission_id_7e336f96_fk_auth` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
   CONSTRAINT `auth_group_permissions_group_id_1bb1e253_fk_auth_g` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,14 +133,14 @@ DROP TABLE IF EXISTS `auth_permission`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `auth_permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_bin NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `content_type_id` int(11) NOT NULL,
-  `codename` varchar(100) COLLATE utf8_bin NOT NULL,
+  `codename` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`) USING BTREE,
   KEY `auth_permission_417f1b1c` (`content_type_id`) USING BTREE,
   CONSTRAINT `auth_permissi_content_type_id_5e820315_fk_django_c` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=199 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=199 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,19 +162,19 @@ DROP TABLE IF EXISTS `auth_user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `auth_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `password` varchar(128) COLLATE utf8_bin NOT NULL,
+  `password` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `last_login` datetime(6) DEFAULT NULL,
   `is_superuser` tinyint(1) NOT NULL,
-  `username` varchar(30) COLLATE utf8_bin NOT NULL,
-  `first_name` varchar(30) COLLATE utf8_bin NOT NULL,
-  `last_name` varchar(30) COLLATE utf8_bin NOT NULL,
-  `email` varchar(254) COLLATE utf8_bin NOT NULL,
+  `username` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `first_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `last_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(254) COLLATE utf8_unicode_ci NOT NULL,
   `is_staff` tinyint(1) NOT NULL,
   `is_active` tinyint(1) NOT NULL,
   `date_joined` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `username` (`username`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,7 +183,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$20000$4zJoFe6mK0or$zxdihjWlTMdLexABZc9VT2QjILitlt9+azwRX82vXHU=','2015-09-09 14:53:10.800128',1,'admin','','','yusnelvy@gmail.com',1,1,'2015-06-18 21:19:32'),(2,'pbkdf2_sha256$20000$CSQ4ootz6pL0$R5m7W/+sk9L5mj1ZUXRJOy6D2d3qxOEQDOMlgXiZcM0=','2015-09-03 20:23:36.558202',0,'yusnelvy','yusnelvy','Arrieche','yusnelvy@gmail.com',0,1,'2015-07-09 19:32:22');
+INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$20000$4zJoFe6mK0or$zxdihjWlTMdLexABZc9VT2QjILitlt9+azwRX82vXHU=','2015-09-25 14:48:14.886731',1,'admin','','','yusnelvy@gmail.com',1,1,'2015-06-18 21:19:32'),(2,'pbkdf2_sha256$20000$CSQ4ootz6pL0$R5m7W/+sk9L5mj1ZUXRJOy6D2d3qxOEQDOMlgXiZcM0=','2015-09-03 20:23:36.558202',0,'yusnelvy','yusnelvy','Arrieche','yusnelvy@gmail.com',0,1,'2015-07-09 19:32:22');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,7 +204,7 @@ CREATE TABLE `auth_user_groups` (
   KEY `auth_user_groups_0e939a4f` (`group_id`) USING BTREE,
   CONSTRAINT `auth_user_groups_group_id_17160da7_fk_auth_group_i` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
   CONSTRAINT `auth_user_groups_user_id_3d0d766f_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,7 +233,7 @@ CREATE TABLE `auth_user_user_permissions` (
   KEY `auth_user_user_permissions_8373b171` (`permission_id`) USING BTREE,
   CONSTRAINT `auth_user_user_perm_permission_id_267ceb85_fk_auth` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
   CONSTRAINT `auth_user_user_permissions_user_id_1cf43736_fk_aut` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -254,14 +254,14 @@ DROP TABLE IF EXISTS `cliente_cliente`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cliente_cliente` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre_principal` varchar(250) COLLATE utf8_bin NOT NULL,
-  `dni` varchar(15) COLLATE utf8_bin NOT NULL,
+  `nombre_principal` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `dni` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
   `fecha_nacimiento` date NOT NULL,
-  `comentarios` longtext COLLATE utf8_bin NOT NULL,
-  `adicional1` varchar(50) COLLATE utf8_bin NOT NULL,
-  `adicional2` varchar(50) COLLATE utf8_bin NOT NULL,
-  `adicional3` varchar(50) COLLATE utf8_bin NOT NULL,
-  `adicional4` varchar(50) COLLATE utf8_bin NOT NULL,
+  `comentarios` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `adicional1` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `adicional2` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `adicional3` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `adicional4` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `activo` tinyint(1) NOT NULL,
   `estado_civil_id` int(11) NOT NULL,
   `sexo_id` int(11) NOT NULL,
@@ -270,7 +270,7 @@ CREATE TABLE `cliente_cliente` (
   KEY `cliente_cliente_68bc6daa` (`sexo_id`) USING BTREE,
   CONSTRAINT `cliente_clie_estado_civil_id_2b598a50_fk_cliente_estado_civil_id` FOREIGN KEY (`estado_civil_id`) REFERENCES `cliente_estado_civil` (`id`),
   CONSTRAINT `cliente_cliente_sexo_id_278bb5c4_fk_cliente_sexo_id` FOREIGN KEY (`sexo_id`) REFERENCES `cliente_sexo` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -292,13 +292,13 @@ DROP TABLE IF EXISTS `cliente_email`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cliente_email` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(254) COLLATE utf8_bin NOT NULL,
+  `email` varchar(254) COLLATE utf8_unicode_ci NOT NULL,
   `cliente_id` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `email` (`email`) USING BTREE,
   KEY `cliente_email_4a860110` (`cliente_id`) USING BTREE,
   CONSTRAINT `cliente_email_cliente_id_5d3d2700_fk_cliente_clien` FOREIGN KEY (`cliente_id`) REFERENCES `cliente_cliente` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -320,10 +320,10 @@ DROP TABLE IF EXISTS `cliente_estado_civil`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cliente_estado_civil` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `estado_civil` varchar(25) COLLATE utf8_bin NOT NULL,
+  `estado_civil` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `estado_civil` (`estado_civil`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -345,10 +345,10 @@ DROP TABLE IF EXISTS `cliente_sexo`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cliente_sexo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sexo` varchar(25) COLLATE utf8_bin NOT NULL,
+  `sexo` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `sexo` (`sexo`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -370,14 +370,14 @@ DROP TABLE IF EXISTS `contenido_contenido`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `contenido_contenido` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `contenido` varchar(100) COLLATE utf8_bin NOT NULL,
+  `contenido` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `densidad_baja` decimal(7,2) NOT NULL,
   `densidad_media` decimal(7,2) NOT NULL,
   `densidad_alta` decimal(7,2) NOT NULL,
   `densidad_superalta` decimal(7,2) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `contenido` (`contenido`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -408,7 +408,7 @@ CREATE TABLE `contenido_contenido_servicio` (
   KEY `contenido_contenido_servicio_4bb699dc` (`servicio_id`) USING BTREE,
   CONSTRAINT `contenido_conten_contenido_id_5e09a9bb_fk_contenido_contenido_id` FOREIGN KEY (`contenido_id`) REFERENCES `contenido_contenido` (`id`),
   CONSTRAINT `contenido_contenido_servicio_id_62907984_fk_servicio_servicio_id` FOREIGN KEY (`servicio_id`) REFERENCES `servicio_servicio` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -440,7 +440,7 @@ CREATE TABLE `contenido_contenido_tipico` (
   KEY `contenido_contenido_tipico_49933347` (`mueble_id`) USING BTREE,
   CONSTRAINT `contenido_conten_contenido_id_3ce1b6a5_fk_contenido_contenido_id` FOREIGN KEY (`contenido_id`) REFERENCES `contenido_contenido` (`id`),
   CONSTRAINT `contenido_contenido_tipic_mueble_id_473e3f56_fk_mueble_mueble_id` FOREIGN KEY (`mueble_id`) REFERENCES `mueble_mueble` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -462,8 +462,8 @@ DROP TABLE IF EXISTS `cotizacion_cotizacion`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cotizacion_cotizacion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `numero_contrato` varchar(100) COLLATE utf8_bin NOT NULL,
-  `numero_cotizacion` varchar(100) COLLATE utf8_bin NOT NULL,
+  `numero_contrato` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `numero_cotizacion` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `fecha_creacion` datetime NOT NULL,
   `fecha_culminacion` datetime NOT NULL,
   `fecha_estimadamudanza` datetime NOT NULL,
@@ -502,7 +502,7 @@ CREATE TABLE `cotizacion_cotizacion` (
   CONSTRAINT `cotizacion_cotizacion_cotizador_id_227888a5_fk_aut` FOREIGN KEY (`cotizador_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `cotizacion_cotizacion_creadopor_id_a50e140_fk_auth` FOREIGN KEY (`creadopor_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `cotizacion_estado_id_725bfc18_fk_cotizacion_estado` FOREIGN KEY (`estado_id`) REFERENCES `cotizacion_estado_cotizacion` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -533,7 +533,7 @@ CREATE TABLE `cotizacion_cotizacion_ambiente` (
   `volumen_contenidos` decimal(8,3) NOT NULL,
   `peso_contenidos` decimal(9,3) NOT NULL,
   `peso_materiales` decimal(9,3) NOT NULL,
-  `observaciones` longtext COLLATE utf8_bin NOT NULL,
+  `observaciones` longtext COLLATE utf8_unicode_ci NOT NULL,
   `ambiente_id` int(11) NOT NULL,
   `cotizacion_id` int(11) NOT NULL,
   `piso_id` int(11) NOT NULL,
@@ -544,7 +544,7 @@ CREATE TABLE `cotizacion_cotizacion_ambiente` (
   CONSTRAINT `cotizacion_cot_cotizacion_id_6be28da_fk_cotizacion_cotizacion_id` FOREIGN KEY (`cotizacion_id`) REFERENCES `cotizacion_cotizacion` (`id`),
   CONSTRAINT `cotizacion_cotizaci_ambiente_id_6acfaf5e_fk_ambiente_ambiente_id` FOREIGN KEY (`ambiente_id`) REFERENCES `ambiente_ambiente` (`id`),
   CONSTRAINT `cotizacion_cotizacion_amb_piso_id_2ea195aa_fk_cotizacion_piso_id` FOREIGN KEY (`piso_id`) REFERENCES `cotizacion_piso` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -577,7 +577,7 @@ CREATE TABLE `cotizacion_cotizacion_contenido` (
   KEY `cotizacion_cotizacion_contenido_c01c3066` (`cotizacion_mueble_id`) USING BTREE,
   CONSTRAINT `D592dd68862d13c41653dee60d797c74` FOREIGN KEY (`cotizacion_mueble_id`) REFERENCES `cotizacion_cotizacion_mueble` (`id`),
   CONSTRAINT `cotizacion_cotiza_contenido_id_8398dce_fk_contenido_contenido_id` FOREIGN KEY (`contenido_id`) REFERENCES `contenido_contenido` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -599,25 +599,25 @@ DROP TABLE IF EXISTS `cotizacion_cotizacion_direccion`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cotizacion_cotizacion_direccion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `direccion` varchar(550) COLLATE utf8_bin NOT NULL,
-  `tipo_direccion` varchar(100) COLLATE utf8_bin NOT NULL,
+  `direccion` varchar(550) COLLATE utf8_unicode_ci NOT NULL,
+  `tipo_direccion` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `cotizacion_id` int(11) NOT NULL,
   `ascensor` tinyint(1) NOT NULL,
   `ascensor_servicio` tinyint(1) NOT NULL,
-  `complejidad` varchar(100) COLLATE utf8_bin NOT NULL,
+  `complejidad` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `distancia_vehiculo` int(11) NOT NULL,
-  `inmueble` varchar(100) COLLATE utf8_bin NOT NULL,
+  `inmueble` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `pisos` int(11) NOT NULL,
   `pisos_ascensor` int(11) NOT NULL,
   `pisos_ascensor_servicio` int(11) NOT NULL,
   `pisos_escalera` int(11) NOT NULL,
   `rampa` tinyint(1) NOT NULL,
-  `tipo_inmueble` varchar(100) COLLATE utf8_bin NOT NULL,
+  `tipo_inmueble` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `total_m2` decimal(7,2) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `cotizacion_cotizacion_direccion_1b44b901` (`cotizacion_id`) USING BTREE,
   CONSTRAINT `cotizacion_co_cotizacion_id_5cc6412f_fk_cotizacion_cotizacion_id` FOREIGN KEY (`cotizacion_id`) REFERENCES `cotizacion_cotizacion` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -653,7 +653,7 @@ CREATE TABLE `cotizacion_cotizacion_material` (
   KEY `cotizacion_cotizacion_material_0efeca26` (`cotizacion_servicio_id`) USING BTREE,
   CONSTRAINT `cotizacion_cotizaci_material_id_7bf6e5a4_fk_servicio_material_id` FOREIGN KEY (`material_id`) REFERENCES `servicio_material` (`id`),
   CONSTRAINT `d09c653cf72992f8e405d67a993de563` FOREIGN KEY (`cotizacion_servicio_id`) REFERENCES `cotizacion_cotizacion_servicio` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -675,29 +675,29 @@ DROP TABLE IF EXISTS `cotizacion_cotizacion_mueble`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cotizacion_cotizacion_mueble` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `tamano` varchar(100) COLLATE utf8_bin NOT NULL,
+  `tamano` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `ancho` decimal(7,2) NOT NULL,
   `alto` decimal(7,2) NOT NULL,
   `largo` decimal(7,2) NOT NULL,
   `volumen` decimal(8,3) NOT NULL,
   `capacidad` decimal(8,3) NOT NULL,
   `ocupacion` decimal(5,2) DEFAULT NULL,
-  `forma` varchar(100) COLLATE utf8_bin NOT NULL,
+  `forma` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `trasladable` tinyint(1) NOT NULL,
   `apilable` tinyint(1) NOT NULL,
   `capacidad_carga` tinyint(1) NOT NULL,
   `capacidad_interna` tinyint(1) NOT NULL,
-  `observaciones` longtext COLLATE utf8_bin NOT NULL,
+  `observaciones` longtext COLLATE utf8_unicode_ci NOT NULL,
   `cotizacion_ambiente_id` int(11) NOT NULL,
   `mueble_id` int(11) NOT NULL,
-  `densidad` varchar(100) COLLATE utf8_bin NOT NULL,
+  `densidad` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `peso` decimal(9,3) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `cotizacion_cotizacion_mueble_57d468d7` (`cotizacion_ambiente_id`) USING BTREE,
   KEY `cotizacion_cotizacion_mueble_49933347` (`mueble_id`) USING BTREE,
   CONSTRAINT `D8a02815931df906aa099e0a1f35b3c7` FOREIGN KEY (`cotizacion_ambiente_id`) REFERENCES `cotizacion_cotizacion_ambiente` (`id`),
   CONSTRAINT `cotizacion_cotizacion_mue_mueble_id_188a23e5_fk_mueble_mueble_id` FOREIGN KEY (`mueble_id`) REFERENCES `mueble_mueble` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -722,7 +722,7 @@ CREATE TABLE `cotizacion_cotizacion_servicio` (
   `cotizacion_mueble_id` int(11) NOT NULL,
   `servicio_id` int(11) NOT NULL,
   `cotizacion_contenido_id` int(11) DEFAULT NULL,
-  `complejidad` varchar(100) COLLATE utf8_bin NOT NULL,
+  `complejidad` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `tarifa` decimal(9,2) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `cotizacion_cotizacion_servicio_c01c3066` (`cotizacion_mueble_id`) USING BTREE,
@@ -730,7 +730,7 @@ CREATE TABLE `cotizacion_cotizacion_servicio` (
   KEY `cotizacion_cotizacion_servicio_a068eccf` (`cotizacion_contenido_id`) USING BTREE,
   CONSTRAINT `D74bb3d33b8b3eebbac864be305f0b09` FOREIGN KEY (`cotizacion_mueble_id`) REFERENCES `cotizacion_cotizacion_mueble` (`id`),
   CONSTRAINT `cotizacion_cotizaci_servicio_id_3d7d767e_fk_servicio_servicio_id` FOREIGN KEY (`servicio_id`) REFERENCES `servicio_servicio` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -767,7 +767,7 @@ CREATE TABLE `cotizacion_cotizacion_trabajador` (
   KEY `cotizacion_cotizacion_trabajador_1b44b901` (`cotizacion_id`) USING BTREE,
   CONSTRAINT `cotizacion_co_cargo_id_156bb34_fk_trabajador_cargo_trabajador_id` FOREIGN KEY (`cargo_id`) REFERENCES `trabajador_cargo_trabajador` (`id`),
   CONSTRAINT `cotizacion_co_cotizacion_id_7db8d092_fk_cotizacion_cotizacion_id` FOREIGN KEY (`cotizacion_id`) REFERENCES `cotizacion_cotizacion` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -789,10 +789,10 @@ DROP TABLE IF EXISTS `cotizacion_estado_cotizacion`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cotizacion_estado_cotizacion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `estado` varchar(100) COLLATE utf8_bin NOT NULL,
+  `estado` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `estado` (`estado`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -814,11 +814,11 @@ DROP TABLE IF EXISTS `cotizacion_piso`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cotizacion_piso` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `piso` varchar(100) COLLATE utf8_bin NOT NULL,
+  `piso` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `factor` decimal(5,2) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `piso` (`piso`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -849,7 +849,7 @@ CREATE TABLE `cotizacion_tiempo_carga` (
   `peso_max` decimal(9,3) NOT NULL,
   `cantidad_trabajador` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -871,7 +871,7 @@ DROP TABLE IF EXISTS `cotizacion_vehiculo`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cotizacion_vehiculo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `modelo` varchar(100) COLLATE utf8_bin NOT NULL,
+  `modelo` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `tarifa_hora` decimal(9,2) NOT NULL,
   `tarifa_recorrido` decimal(9,2) NOT NULL,
   `capacidad_volumen` decimal(8,3) NOT NULL,
@@ -884,7 +884,7 @@ CREATE TABLE `cotizacion_vehiculo` (
   UNIQUE KEY `modelo` (`modelo`) USING BTREE,
   KEY `cotizacion_vehiculo_d036ebc9` (`cargo_id`) USING BTREE,
   CONSTRAINT `cotizacion_v_cargo_id_2aad98fa_fk_trabajador_cargo` FOREIGN KEY (`cargo_id`) REFERENCES `trabajador_cargo_trabajador` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -920,7 +920,7 @@ CREATE TABLE `cotizacion_vehiculo_cotizacion` (
   KEY `cotizacion_vehiculo_cotizacion_31609bf9` (`vehiculo_id`) USING BTREE,
   CONSTRAINT `cotizacion_veh_cotizacion_id_4d0b1a5_fk_cotizacion_cotizacion_id` FOREIGN KEY (`cotizacion_id`) REFERENCES `cotizacion_cotizacion` (`id`),
   CONSTRAINT `cotizacion_vehicu_vehiculo_id_711b91f3_fk_cotizacion_vehiculo_id` FOREIGN KEY (`vehiculo_id`) REFERENCES `cotizacion_vehiculo` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -942,7 +942,7 @@ DROP TABLE IF EXISTS `direccion_ciudad`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `direccion_ciudad` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ciudad` varchar(100) COLLATE utf8_bin NOT NULL,
+  `ciudad` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `provincia_id` int(11) NOT NULL,
   `pais_id` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
@@ -951,7 +951,7 @@ CREATE TABLE `direccion_ciudad` (
   KEY `direccion_ciudad_847ec16e` (`pais_id`) USING BTREE,
   CONSTRAINT `direccion_ciudad_pais_id_1d49c071_fk_direccion_pai` FOREIGN KEY (`pais_id`) REFERENCES `direccion_pais` (`id`),
   CONSTRAINT `direccion_ciudad_provincia_id_9d5fb9a_fk_direccion` FOREIGN KEY (`provincia_id`) REFERENCES `direccion_provincia` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=159 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=159 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -973,13 +973,13 @@ DROP TABLE IF EXISTS `direccion_complejidad_inmueble`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `direccion_complejidad_inmueble` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `complejidad` varchar(100) COLLATE utf8_bin NOT NULL,
+  `complejidad` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `factor` decimal(5,2) NOT NULL,
   `valor_ambiente` decimal(9,2) NOT NULL,
   `valor_metrocubico` decimal(9,2) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `complejidad` (`complejidad`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1001,12 +1001,12 @@ DROP TABLE IF EXISTS `direccion_direccion`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `direccion_direccion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `calle` varchar(100) COLLATE utf8_bin NOT NULL,
-  `numero` varchar(100) COLLATE utf8_bin NOT NULL,
-  `piso` varchar(100) COLLATE utf8_bin NOT NULL,
-  `adicional` varchar(250) COLLATE utf8_bin NOT NULL,
-  `zip1` varchar(100) COLLATE utf8_bin NOT NULL,
-  `punto_referencia` varchar(250) COLLATE utf8_bin NOT NULL,
+  `calle` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `numero` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `piso` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `adicional` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `zip1` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `punto_referencia` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `ciudad_id` int(11) NOT NULL,
   `cliente_id` int(11) NOT NULL,
   `pais_id` int(11) NOT NULL,
@@ -1026,7 +1026,7 @@ CREATE TABLE `direccion_direccion` (
   CONSTRAINT `direccion_direccion_cliente_id_396923a4_fk_cliente` FOREIGN KEY (`cliente_id`) REFERENCES `cliente_cliente` (`id`),
   CONSTRAINT `direccion_direccion_pais_id_2416fca5_fk_direccion_pais_id` FOREIGN KEY (`pais_id`) REFERENCES `direccion_pais` (`id`),
   CONSTRAINT `direccion_direccion_zona_id_16fbcf34_fk_direccion_` FOREIGN KEY (`zona_id`) REFERENCES `direccion_zona` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1048,7 +1048,7 @@ DROP TABLE IF EXISTS `direccion_inmueble`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `direccion_inmueble` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `inmueble` varchar(100) COLLATE utf8_bin NOT NULL,
+  `inmueble` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `numero_ambientes` int(11) NOT NULL,
   `pisos` int(11) NOT NULL,
   `pisos_escalera` int(11) NOT NULL,
@@ -1069,7 +1069,7 @@ CREATE TABLE `direccion_inmueble` (
   CONSTRAINT `dir_complejidad_id_44d72601_fk_direccion_complejid` FOREIGN KEY (`complejidad_id`) REFERENCES `direccion_complejidad_inmueble` (`id`),
   CONSTRAINT `direccio_tipo_inmueble_id_250a00ce_fk_direccion_ti` FOREIGN KEY (`tipo_inmueble_id`) REFERENCES `direccion_tipo_inmueble` (`id`),
   CONSTRAINT `direccion_inmueb_direccion_id_50718c56_fk_direccio` FOREIGN KEY (`direccion_id`) REFERENCES `direccion_direccion` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1091,10 +1091,10 @@ DROP TABLE IF EXISTS `direccion_pais`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `direccion_pais` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `pais` varchar(250) COLLATE utf8_bin NOT NULL,
+  `pais` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `pais` (`pais`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=265 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=265 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1103,7 +1103,7 @@ CREATE TABLE `direccion_pais` (
 
 LOCK TABLES `direccion_pais` WRITE;
 /*!40000 ALTER TABLE `direccion_pais` DISABLE KEYS */;
-INSERT INTO `direccion_pais` VALUES (1,'Afghanistan (AF)'),(264,'Aland Islands (AX)'),(2,'Albania (AL)'),(3,'Algeria (DZ)'),(4,'American Samoa (AS)'),(5,'Andorra (AD)'),(6,'Angola (AO)'),(7,'Anguilla (AI)'),(8,'Antarctica (AQ)'),(9,'Antigua and Barbuda (AG)'),(10,'Argentina (AR)'),(11,'Armenia (AM)'),(12,'Aruba (AW)'),(13,'Australia (AU)'),(14,'Austria (AT)'),(15,'Azerbaijan (AZ)'),(16,'Bahamas (BS)'),(17,'Bahrain (BH)'),(18,'Bangladesh (BD)'),(19,'Barbados (BB)'),(20,'Belarus (BY)'),(21,'Belgium (BE)'),(22,'Belize (BZ)'),(23,'Benin (BJ)'),(24,'Bermuda (BM)'),(25,'Bhutan (BT)'),(26,'Bolivia (BO)'),(27,'Bosnia and Herzegovina (BA)'),(28,'Botswana (BW)'),(29,'Bouvet Island (BV)'),(30,'Brazil (BR)'),(31,'British Antarctic Territory (BQ)'),(32,'British Indian Ocean Territory (IO)'),(33,'British Virgin Islands (VG)'),(34,'Brunei (BN)'),(35,'Bulgaria (BG)'),(36,'Burkina Faso (BF)'),(37,'Burundi (BI)'),(60,'C?te d?Ivoire (CI)'),(38,'Cambodia (KH)'),(39,'Cameroon (CM)'),(40,'Canada (CA)'),(41,'Canton and Enderbury Islands (CT)'),(42,'Cape Verde (CV)'),(43,'Cayman Islands (KY)'),(44,'Central African Republic (CF)'),(45,'Chad (TD)'),(46,'Chile (CL)'),(47,'China (CN)'),(48,'Christmas Island (CX)'),(49,'Cocos [Keeling] Islands (CC)'),(50,'Colombia (CO)'),(51,'Comoros (KM)'),(52,'Congo - Brazzaville (CG)'),(53,'Congo - Kinshasa (CD)'),(54,'Cook Islands (CK)'),(55,'Costa Rica (CR)'),(56,'Croatia (HR)'),(57,'Cuba (CU)'),(58,'Cyprus (CY)'),(59,'Czech Republic (CZ)'),(61,'Denmark (DK)'),(62,'Djibouti (DJ)'),(63,'Dominica (DM)'),(64,'Dominican Republic (DO)'),(65,'Dronning Maud Land (NQ)'),(66,'East Germany (DD)'),(67,'Ecuador (EC)'),(68,'Egypt (EG)'),(69,'El Salvador (SV)'),(70,'Equatorial Guinea (GQ)'),(71,'Eritrea (ER)'),(72,'Estonia (EE)'),(73,'Ethiopia (ET)'),(74,'Falkland Islands (FK)'),(75,'Faroe Islands (FO)'),(76,'Fiji (FJ)'),(77,'Finland (FI)'),(78,'France (FR)'),(79,'French Guiana (GF)'),(80,'French Polynesia (PF)'),(81,'French Southern Territories (TF)'),(82,'French Southern and Antarctic Territories (FQ)'),(83,'Gabon (GA)'),(84,'Gambia (GM)'),(85,'Georgia (GE)'),(86,'Germany (DE)'),(87,'Ghana (GH)'),(88,'Gibraltar (GI)'),(89,'Greece (GR)'),(90,'Greenland (GL)'),(91,'Grenada (GD)'),(92,'Guadeloupe (GP)'),(93,'Guam (GU)'),(94,'Guatemala (GT)'),(95,'Guernsey (GG)'),(96,'Guinea (GN)'),(97,'Guinea-Bissau (GW)'),(98,'Guyana (GY)'),(99,'Haiti (HT)'),(100,'Heard Island and McDonald Islands (HM)'),(101,'Honduras (HN)'),(102,'Hong Kong SAR China (HK)'),(103,'Hungary (HU)'),(104,'Iceland (IS)'),(105,'India (IN)'),(106,'Indonesia (ID)'),(107,'Iran (IR)'),(108,'Iraq (IQ)'),(109,'Ireland (IE)'),(110,'Isle of Man (IM)'),(111,'Israel (IL)'),(112,'Italy (IT)'),(113,'Jamaica (JM)'),(114,'Japan (JP)'),(115,'Jersey (JE)'),(116,'Johnston Island (JT)'),(117,'Jordan (JO)'),(118,'Kazakhstan (KZ)'),(119,'Kenya (KE)'),(120,'Kiribati (KI)'),(121,'Kuwait (KW)'),(122,'Kyrgyzstan (KG)'),(123,'Laos (LA)'),(124,'Latvia (LV)'),(125,'Lebanon (LB)'),(126,'Lesotho (LS)'),(127,'Liberia (LR)'),(128,'Libya (LY)'),(129,'Liechtenstein (LI)'),(130,'Lithuania (LT)'),(131,'Luxembourg (LU)'),(132,'Macau SAR China (MO)'),(133,'Macedonia (MK)'),(134,'Madagascar (MG)'),(135,'Malawi (MW)'),(136,'Malaysia (MY)'),(137,'Maldives (MV)'),(138,'Mali (ML)'),(139,'Malta (MT)'),(140,'Marshall Islands (MH)'),(141,'Martinique (MQ)'),(142,'Mauritania (MR)'),(143,'Mauritius (MU)'),(144,'Mayotte (YT)'),(145,'Metropolitan France (FX)'),(146,'Mexico (MX)'),(147,'Micronesia (FM)'),(148,'Midway Islands (MI)'),(149,'Moldova (MD)'),(150,'Monaco (MC)'),(151,'Mongolia (MN)'),(152,'Montenegro (ME)'),(153,'Montserrat (MS)'),(154,'Morocco (MA)'),(155,'Mozambique (MZ)'),(156,'Myanmar [Burma] (MM)'),(157,'Namibia (NA)'),(158,'Nauru (NR)'),(159,'Nepal (NP)'),(160,'Netherlands (NL)'),(161,'Netherlands Antilles (AN)'),(162,'Neutral Zone (NT)'),(163,'New Caledonia (NC)'),(164,'New Zealand (NZ)'),(165,'Nicaragua (NI)'),(166,'Niger (NE)'),(167,'Nigeria (NG)'),(168,'Niue (NU)'),(169,'Norfolk Island (NF)'),(170,'North Korea (KP)'),(171,'North Vietnam (VD)'),(172,'Northern Mariana Islands (MP)'),(173,'Norway (NO)'),(174,'Oman (OM)'),(175,'Pacific Islands Trust Territory (PC)'),(176,'Pakistan (PK)'),(177,'Palau (PW)'),(178,'Palestinian Territories (PS)'),(179,'Panama (PA)'),(180,'Panama Canal Zone (PZ)'),(181,'Papua New Guinea (PG)'),(182,'Paraguay (PY)'),(183,'People\'s Democratic Republic of Yemen (YD)'),(184,'Peru (PE)'),(185,'Philippines (PH)'),(186,'Pitcairn Islands (PN)'),(187,'Poland (PL)'),(188,'Portugal (PT)'),(189,'Puerto Rico (PR)'),(190,'Qatar (QA)'),(194,'R?union (RE)'),(191,'Romania (RO)'),(192,'Russia (RU)'),(193,'Rwanda (RW)'),(227,'S?o Tom? and Pr?ncipe (ST)'),(195,'Saint Barth?lemy (BL)'),(196,'Saint Helena (SH)'),(197,'Saint Kitts and Nevis (KN)'),(198,'Saint Lucia (LC)'),(199,'Saint Martin (MF)'),(200,'Saint Pierre and Miquelon (PM)'),(201,'Saint Vincent and the Grenadines (VC)'),(202,'Samoa (WS)'),(203,'San Marino (SM)'),(204,'Saudi Arabia (SA)'),(205,'Senegal (SN)'),(206,'Serbia (RS)'),(207,'Serbia and Montenegro (CS)'),(208,'Seychelles (SC)'),(209,'Sierra Leone (SL)'),(210,'Singapore (SG)'),(211,'Slovakia (SK)'),(212,'Slovenia (SI)'),(213,'Solomon Islands (SB)'),(214,'Somalia (SO)'),(215,'South Africa (ZA)'),(216,'South Georgia and the South Sandwich Islands (GS)'),(217,'South Korea (KR)'),(218,'Spain (ES)'),(219,'Sri Lanka (LK)'),(220,'Sudan (SD)'),(221,'Suriname (SR)'),(222,'Svalbard and Jan Mayen (SJ)'),(223,'Swaziland (SZ)'),(224,'Sweden (SE)'),(225,'Switzerland (CH)'),(226,'Syria (SY)'),(228,'Taiwan (TW)'),(229,'Tajikistan (TJ)'),(230,'Tanzania (TZ)'),(231,'Thailand (TH)'),(232,'Timor-Leste (TL)'),(233,'Togo (TG)'),(234,'Tokelau (TK)'),(235,'Tonga (TO)'),(236,'Trinidad and Tobago (TT)'),(237,'Tunisia (TN)'),(238,'Turkey (TR)'),(239,'Turkmenistan (TM)'),(240,'Turks and Caicos Islands (TC)'),(241,'Tuvalu (TV)'),(242,'U.S. Minor Outlying Islands (UM)'),(243,'U.S. Miscellaneous Pacific Islands (PU)'),(244,'U.S. Virgin Islands (VI)'),(245,'Uganda (UG)'),(246,'Ukraine (UA)'),(247,'Union of Soviet Socialist Republics (SU)'),(248,'United Arab Emirates (AE)'),(249,'United Kingdom (GB)'),(250,'United States (US)'),(251,'Unknown or Invalid Region (ZZ)'),(252,'Uruguay (UY)'),(253,'Uzbekistan (UZ)'),(254,'Vanuatu (VU)'),(255,'Vatican City (VA)'),(256,'Venezuela (VE)'),(257,'Vietnam (VN)'),(258,'Wake Island (WK)'),(259,'Wallis and Futuna (WF)'),(260,'Western Sahara (EH)'),(261,'Yemen (YE)'),(262,'Zambia (ZM)'),(263,'Zimbabwe (ZW)');
+INSERT INTO `direccion_pais` VALUES (1,'Afghanistan (AF)'),(264,'Aland Islands (AX)'),(2,'Albania (AL)'),(3,'Algeria (DZ)'),(4,'American Samoa (AS)'),(5,'Andorra (AD)'),(6,'Angola (AO)'),(7,'Anguilla (AI)'),(8,'Antarctica (AQ)'),(9,'Antigua and Barbuda (AG)'),(10,'Argentina (AR)'),(11,'Armenia (AM)'),(12,'Aruba (AW)'),(13,'Australia (AU)'),(14,'Austria (AT)'),(15,'Azerbaijan (AZ)'),(16,'Bahamas (BS)'),(17,'Bahrain (BH)'),(18,'Bangladesh (BD)'),(19,'Barbados (BB)'),(20,'Belarus (BY)'),(21,'Belgium (BE)'),(22,'Belize (BZ)'),(23,'Benin (BJ)'),(24,'Bermuda (BM)'),(25,'Bhutan (BT)'),(26,'Bolivia (BO)'),(27,'Bosnia and Herzegovina (BA)'),(28,'Botswana (BW)'),(29,'Bouvet Island (BV)'),(30,'Brazil (BR)'),(31,'British Antarctic Territory (BQ)'),(32,'British Indian Ocean Territory (IO)'),(33,'British Virgin Islands (VG)'),(34,'Brunei (BN)'),(35,'Bulgaria (BG)'),(36,'Burkina Faso (BF)'),(37,'Burundi (BI)'),(60,'C?te d?Ivoire (CI)'),(38,'Cambodia (KH)'),(39,'Cameroon (CM)'),(40,'Canada (CA)'),(41,'Canton and Enderbury Islands (CT)'),(42,'Cape Verde (CV)'),(43,'Cayman Islands (KY)'),(44,'Central African Republic (CF)'),(45,'Chad (TD)'),(46,'Chile (CL)'),(47,'China (CN)'),(48,'Christmas Island (CX)'),(49,'Cocos [Keeling] Islands (CC)'),(50,'Colombia (CO)'),(51,'Comoros (KM)'),(52,'Congo - Brazzaville (CG)'),(53,'Congo - Kinshasa (CD)'),(54,'Cook Islands (CK)'),(55,'Costa Rica (CR)'),(56,'Croatia (HR)'),(57,'Cuba (CU)'),(58,'Cyprus (CY)'),(59,'Czech Republic (CZ)'),(61,'Denmark (DK)'),(62,'Djibouti (DJ)'),(63,'Dominica (DM)'),(64,'Dominican Republic (DO)'),(65,'Dronning Maud Land (NQ)'),(66,'East Germany (DD)'),(67,'Ecuador (EC)'),(68,'Egypt (EG)'),(69,'El Salvador (SV)'),(70,'Equatorial Guinea (GQ)'),(71,'Eritrea (ER)'),(72,'Estonia (EE)'),(73,'Ethiopia (ET)'),(74,'Falkland Islands (FK)'),(75,'Faroe Islands (FO)'),(76,'Fiji (FJ)'),(77,'Finland (FI)'),(78,'France (FR)'),(79,'French Guiana (GF)'),(80,'French Polynesia (PF)'),(82,'French Southern and Antarctic Territories (FQ)'),(81,'French Southern Territories (TF)'),(83,'Gabon (GA)'),(84,'Gambia (GM)'),(85,'Georgia (GE)'),(86,'Germany (DE)'),(87,'Ghana (GH)'),(88,'Gibraltar (GI)'),(89,'Greece (GR)'),(90,'Greenland (GL)'),(91,'Grenada (GD)'),(92,'Guadeloupe (GP)'),(93,'Guam (GU)'),(94,'Guatemala (GT)'),(95,'Guernsey (GG)'),(96,'Guinea (GN)'),(97,'Guinea-Bissau (GW)'),(98,'Guyana (GY)'),(99,'Haiti (HT)'),(100,'Heard Island and McDonald Islands (HM)'),(101,'Honduras (HN)'),(102,'Hong Kong SAR China (HK)'),(103,'Hungary (HU)'),(104,'Iceland (IS)'),(105,'India (IN)'),(106,'Indonesia (ID)'),(107,'Iran (IR)'),(108,'Iraq (IQ)'),(109,'Ireland (IE)'),(110,'Isle of Man (IM)'),(111,'Israel (IL)'),(112,'Italy (IT)'),(113,'Jamaica (JM)'),(114,'Japan (JP)'),(115,'Jersey (JE)'),(116,'Johnston Island (JT)'),(117,'Jordan (JO)'),(118,'Kazakhstan (KZ)'),(119,'Kenya (KE)'),(120,'Kiribati (KI)'),(121,'Kuwait (KW)'),(122,'Kyrgyzstan (KG)'),(123,'Laos (LA)'),(124,'Latvia (LV)'),(125,'Lebanon (LB)'),(126,'Lesotho (LS)'),(127,'Liberia (LR)'),(128,'Libya (LY)'),(129,'Liechtenstein (LI)'),(130,'Lithuania (LT)'),(131,'Luxembourg (LU)'),(132,'Macau SAR China (MO)'),(133,'Macedonia (MK)'),(134,'Madagascar (MG)'),(135,'Malawi (MW)'),(136,'Malaysia (MY)'),(137,'Maldives (MV)'),(138,'Mali (ML)'),(139,'Malta (MT)'),(140,'Marshall Islands (MH)'),(141,'Martinique (MQ)'),(142,'Mauritania (MR)'),(143,'Mauritius (MU)'),(144,'Mayotte (YT)'),(145,'Metropolitan France (FX)'),(146,'Mexico (MX)'),(147,'Micronesia (FM)'),(148,'Midway Islands (MI)'),(149,'Moldova (MD)'),(150,'Monaco (MC)'),(151,'Mongolia (MN)'),(152,'Montenegro (ME)'),(153,'Montserrat (MS)'),(154,'Morocco (MA)'),(155,'Mozambique (MZ)'),(156,'Myanmar [Burma] (MM)'),(157,'Namibia (NA)'),(158,'Nauru (NR)'),(159,'Nepal (NP)'),(160,'Netherlands (NL)'),(161,'Netherlands Antilles (AN)'),(162,'Neutral Zone (NT)'),(163,'New Caledonia (NC)'),(164,'New Zealand (NZ)'),(165,'Nicaragua (NI)'),(166,'Niger (NE)'),(167,'Nigeria (NG)'),(168,'Niue (NU)'),(169,'Norfolk Island (NF)'),(170,'North Korea (KP)'),(171,'North Vietnam (VD)'),(172,'Northern Mariana Islands (MP)'),(173,'Norway (NO)'),(174,'Oman (OM)'),(175,'Pacific Islands Trust Territory (PC)'),(176,'Pakistan (PK)'),(177,'Palau (PW)'),(178,'Palestinian Territories (PS)'),(179,'Panama (PA)'),(180,'Panama Canal Zone (PZ)'),(181,'Papua New Guinea (PG)'),(182,'Paraguay (PY)'),(183,'People\'s Democratic Republic of Yemen (YD)'),(184,'Peru (PE)'),(185,'Philippines (PH)'),(186,'Pitcairn Islands (PN)'),(187,'Poland (PL)'),(188,'Portugal (PT)'),(189,'Puerto Rico (PR)'),(190,'Qatar (QA)'),(194,'R?union (RE)'),(191,'Romania (RO)'),(192,'Russia (RU)'),(193,'Rwanda (RW)'),(227,'S?o Tom? and Pr?ncipe (ST)'),(195,'Saint Barth?lemy (BL)'),(196,'Saint Helena (SH)'),(197,'Saint Kitts and Nevis (KN)'),(198,'Saint Lucia (LC)'),(199,'Saint Martin (MF)'),(200,'Saint Pierre and Miquelon (PM)'),(201,'Saint Vincent and the Grenadines (VC)'),(202,'Samoa (WS)'),(203,'San Marino (SM)'),(204,'Saudi Arabia (SA)'),(205,'Senegal (SN)'),(206,'Serbia (RS)'),(207,'Serbia and Montenegro (CS)'),(208,'Seychelles (SC)'),(209,'Sierra Leone (SL)'),(210,'Singapore (SG)'),(211,'Slovakia (SK)'),(212,'Slovenia (SI)'),(213,'Solomon Islands (SB)'),(214,'Somalia (SO)'),(215,'South Africa (ZA)'),(216,'South Georgia and the South Sandwich Islands (GS)'),(217,'South Korea (KR)'),(218,'Spain (ES)'),(219,'Sri Lanka (LK)'),(220,'Sudan (SD)'),(221,'Suriname (SR)'),(222,'Svalbard and Jan Mayen (SJ)'),(223,'Swaziland (SZ)'),(224,'Sweden (SE)'),(225,'Switzerland (CH)'),(226,'Syria (SY)'),(228,'Taiwan (TW)'),(229,'Tajikistan (TJ)'),(230,'Tanzania (TZ)'),(231,'Thailand (TH)'),(232,'Timor-Leste (TL)'),(233,'Togo (TG)'),(234,'Tokelau (TK)'),(235,'Tonga (TO)'),(236,'Trinidad and Tobago (TT)'),(237,'Tunisia (TN)'),(238,'Turkey (TR)'),(239,'Turkmenistan (TM)'),(240,'Turks and Caicos Islands (TC)'),(241,'Tuvalu (TV)'),(242,'U.S. Minor Outlying Islands (UM)'),(243,'U.S. Miscellaneous Pacific Islands (PU)'),(244,'U.S. Virgin Islands (VI)'),(245,'Uganda (UG)'),(246,'Ukraine (UA)'),(247,'Union of Soviet Socialist Republics (SU)'),(248,'United Arab Emirates (AE)'),(249,'United Kingdom (GB)'),(250,'United States (US)'),(251,'Unknown or Invalid Region (ZZ)'),(252,'Uruguay (UY)'),(253,'Uzbekistan (UZ)'),(254,'Vanuatu (VU)'),(255,'Vatican City (VA)'),(256,'Venezuela (VE)'),(257,'Vietnam (VN)'),(258,'Wake Island (WK)'),(259,'Wallis and Futuna (WF)'),(260,'Western Sahara (EH)'),(261,'Yemen (YE)'),(262,'Zambia (ZM)'),(263,'Zimbabwe (ZW)');
 /*!40000 ALTER TABLE `direccion_pais` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1116,13 +1116,13 @@ DROP TABLE IF EXISTS `direccion_provincia`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `direccion_provincia` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `provincia` varchar(100) COLLATE utf8_bin NOT NULL,
+  `provincia` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `pais_id` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `direccion_provincia_provincia_646a35c1_uniq` (`provincia`,`pais_id`) USING BTREE,
   KEY `direccion_provincia_847ec16e` (`pais_id`) USING BTREE,
   CONSTRAINT `direccion_provincia_pais_id_6fa21912_fk_direccion_` FOREIGN KEY (`pais_id`) REFERENCES `direccion_pais` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1131,7 +1131,7 @@ CREATE TABLE `direccion_provincia` (
 
 LOCK TABLES `direccion_provincia` WRITE;
 /*!40000 ALTER TABLE `direccion_provincia` DISABLE KEYS */;
-INSERT INTO `direccion_provincia` VALUES (1,'Buenos Aires',10),(2,'Buenos Aires-GBA',10),(3,'Capital Federal',10),(4,'Catamarca',10),(5,'Chaco',10),(6,'Chubut',10),(8,'Corrientes',10),(7,'Córdoba',10),(9,'Entre Ríos',10),(10,'Formosa',10),(11,'Jujuy',10),(12,'La Pampa',10),(13,'La Rioja',10),(26,'Lara',256),(14,'Mendoza',10),(15,'Misiones',10),(16,'Neuquén',10),(17,'Río Negro',10),(18,'Salta',10),(19,'San Juan',10),(20,'San Luis',10),(21,'Santa Cruz',10),(22,'Santa Fe',10),(23,'Santiago del Estero',10),(24,'Tierra del Fuego',10),(25,'Tucumán',10);
+INSERT INTO `direccion_provincia` VALUES (1,'Buenos Aires',10),(2,'Buenos Aires-GBA',10),(3,'Capital Federal',10),(4,'Catamarca',10),(5,'Chaco',10),(6,'Chubut',10),(7,'Córdoba',10),(8,'Corrientes',10),(9,'Entre Ríos',10),(10,'Formosa',10),(11,'Jujuy',10),(12,'La Pampa',10),(13,'La Rioja',10),(26,'Lara',256),(14,'Mendoza',10),(15,'Misiones',10),(16,'Neuquén',10),(17,'Río Negro',10),(18,'Salta',10),(19,'San Juan',10),(20,'San Luis',10),(21,'Santa Cruz',10),(22,'Santa Fe',10),(23,'Santiago del Estero',10),(24,'Tierra del Fuego',10),(25,'Tucumán',10);
 /*!40000 ALTER TABLE `direccion_provincia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1144,11 +1144,11 @@ DROP TABLE IF EXISTS `direccion_tipo_direccion`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `direccion_tipo_direccion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `tipo_direccion` varchar(50) COLLATE utf8_bin NOT NULL,
+  `tipo_direccion` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `activo` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `tipo_direccion` (`tipo_direccion`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1170,9 +1170,9 @@ DROP TABLE IF EXISTS `direccion_tipo_inmueble`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `direccion_tipo_inmueble` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `tipo_inmueble` varchar(100) COLLATE utf8_bin NOT NULL,
+  `tipo_inmueble` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1194,7 +1194,7 @@ DROP TABLE IF EXISTS `direccion_zona`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `direccion_zona` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `zona` varchar(100) COLLATE utf8_bin NOT NULL,
+  `zona` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `ciudad_id` int(11) NOT NULL,
   `pais_id` int(11) NOT NULL,
   `provincia_id` int(11) NOT NULL,
@@ -1206,7 +1206,7 @@ CREATE TABLE `direccion_zona` (
   CONSTRAINT `direccion_zona_ciudad_id_222e10ed_fk_direccion_ciu` FOREIGN KEY (`ciudad_id`) REFERENCES `direccion_ciudad` (`id`),
   CONSTRAINT `direccion_zona_pais_id_209d4c37_fk_direccion_pais_` FOREIGN KEY (`pais_id`) REFERENCES `direccion_pais` (`id`),
   CONSTRAINT `direccion_zona_provincia_id_6fb98cf2_fk_direccion_` FOREIGN KEY (`provincia_id`) REFERENCES `direccion_provincia` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1229,10 +1229,10 @@ DROP TABLE IF EXISTS `django_admin_log`;
 CREATE TABLE `django_admin_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `action_time` datetime NOT NULL,
-  `object_id` longtext COLLATE utf8_bin,
-  `object_repr` varchar(200) COLLATE utf8_bin NOT NULL,
+  `object_id` longtext COLLATE utf8_unicode_ci,
+  `object_repr` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `action_flag` smallint(5) unsigned NOT NULL,
-  `change_message` longtext COLLATE utf8_bin NOT NULL,
+  `change_message` longtext COLLATE utf8_unicode_ci NOT NULL,
   `content_type_id` int(11) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
@@ -1240,7 +1240,7 @@ CREATE TABLE `django_admin_log` (
   KEY `django_admin_log_e8701ad4` (`user_id`) USING BTREE,
   CONSTRAINT `django_admin__content_type_id_4e50f396_fk_django_c` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
   CONSTRAINT `django_admin_log_user_id_eccecc5_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1249,7 +1249,7 @@ CREATE TABLE `django_admin_log` (
 
 LOCK TABLES `django_admin_log` WRITE;
 /*!40000 ALTER TABLE `django_admin_log` DISABLE KEYS */;
-INSERT INTO `django_admin_log` VALUES (1,'2015-06-12 18:43:41','2','yusnelvy',2,'Changed user_permissions.',4,1),(2,'2015-08-05 20:47:50','1',' 1',1,'',63,1),(3,'2015-08-19 18:24:36','3',' Armario empotrado - Mediano - Media',2,'Changed ancho, largo, alto and peso.',37,1),(4,'2015-08-19 18:24:55','2',' Armario empotrado - Pequeño - Baja',2,'Changed largo, alto and peso.',37,1),(5,'2015-08-19 18:43:20','3',' Armario empotrado - Mediano - Media',2,'No fields changed.',37,1),(6,'2015-08-25 16:29:21','1','Empresa object',1,'',64,1),(7,'2015-08-25 18:13:19','1','Empresa object',2,'Changed logo.',64,1),(8,'2015-08-25 18:15:18','1','Empresa object',2,'Changed logo.',64,1),(9,'2015-08-25 18:15:40','1','Empresa object',2,'Changed logo.',64,1),(10,'2015-08-25 19:15:42','1','Empresa object',2,'Changed logo.',64,1),(11,'2015-09-02 20:34:34','1',' 1',2,'Changed volmaterial and pesomaterial.',63,1),(12,'2015-09-03 18:55:45','2','yusnelvy',2,'Changed user_permissions.',4,1),(13,'2015-09-03 18:57:23','2','yusnelvy',2,'Changed user_permissions.',4,1);
+INSERT INTO `django_admin_log` VALUES (1,'2015-06-12 18:43:41','2','yusnelvy',2,'Changed user_permissions.',4,1),(2,'2015-08-05 20:47:50','1',' 1',1,'',63,1),(3,'2015-08-19 18:24:36','3',' Armario empotrado - Mediano - Media',2,'Changed ancho, largo, alto and peso.',37,1),(4,'2015-08-19 18:24:55','2',' Armario empotrado - Pequeño - Baja',2,'Changed largo, alto and peso.',37,1),(5,'2015-08-19 18:43:20','3',' Armario empotrado - Mediano - Media',2,'No fields changed.',37,1),(6,'2015-08-25 16:29:21','1','Empresa object',1,'',64,1),(7,'2015-08-25 18:13:19','1','Empresa object',2,'Changed logo.',64,1),(8,'2015-08-25 18:15:18','1','Empresa object',2,'Changed logo.',64,1),(9,'2015-08-25 18:15:40','1','Empresa object',2,'Changed logo.',64,1),(10,'2015-08-25 19:15:42','1','Empresa object',2,'Changed logo.',64,1),(11,'2015-09-02 20:34:34','1',' 1',2,'Changed volmaterial and pesomaterial.',63,1),(12,'2015-09-03 18:55:45','2','yusnelvy',2,'Changed user_permissions.',4,1),(13,'2015-09-03 18:57:23','2','yusnelvy',2,'Changed user_permissions.',4,1),(14,'2015-09-25 15:24:35','1','Mudarte',2,'Changed logo.',64,1);
 /*!40000 ALTER TABLE `django_admin_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1262,11 +1262,11 @@ DROP TABLE IF EXISTS `django_content_type`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `django_content_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `app_label` varchar(100) COLLATE utf8_bin NOT NULL,
-  `model` varchar(100) COLLATE utf8_bin NOT NULL,
+  `app_label` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `model` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `django_content_type_app_label_119dd4ba_uniq` (`app_label`,`model`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1288,11 +1288,11 @@ DROP TABLE IF EXISTS `django_migrations`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `django_migrations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `app` varchar(255) COLLATE utf8_bin NOT NULL,
-  `name` varchar(255) COLLATE utf8_bin NOT NULL,
+  `app` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `applied` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1301,7 +1301,7 @@ CREATE TABLE `django_migrations` (
 
 LOCK TABLES `django_migrations` WRITE;
 /*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
-INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2015-06-18 21:16:03'),(2,'auth','0001_initial','2015-06-18 21:16:13'),(3,'admin','0001_initial','2015-06-18 21:16:16'),(4,'sessions','0001_initial','2015-06-18 21:16:16'),(5,'cliente','0001_initial','2015-06-18 21:19:51'),(6,'direccion','0001_initial','2015-06-18 21:20:26'),(7,'ambiente','0001_initial','2015-06-18 21:20:30'),(8,'mueble','0001_initial','2015-06-18 21:20:46'),(9,'contenido','0001_initial','2015-06-18 21:20:53'),(10,'trabajador','0001_initial','2015-06-18 21:20:54'),(11,'servicio','0001_initial','2015-06-18 21:21:01'),(12,'cotizacion','0001_initial','2015-06-18 21:21:46'),(13,'telefono','0001_initial','2015-06-18 21:21:51'),(14,'ambiente','0002_auto_20150619_1535','2015-06-19 20:05:40'),(15,'cliente','0002_auto_20150619_1535','2015-06-19 20:05:42'),(16,'ambiente','0002_auto_20150619_1555','2015-06-19 20:27:10'),(17,'cliente','0002_auto_20150619_1555','2015-06-19 20:27:12'),(18,'servicio','0002_auto_20150619_1555','2015-06-19 20:27:38'),(19,'cotizacion','0002_auto_20150619_1555','2015-06-19 20:52:54'),(20,'contenido','0002_auto_20150619_1555','2015-06-19 20:53:02'),(21,'mueble','0002_auto_20150619_1555','2015-06-19 20:53:03'),(22,'servicio','0003_material_unidad','2015-06-22 13:57:58'),(23,'cotizacion','0003_auto_20150622_1004','2015-06-22 14:34:08'),(24,'cotizacion','0004_auto_20150622_1005','2015-06-22 14:36:03'),(25,'contenido','0003_auto_20150623_1553','2015-06-23 20:23:27'),(26,'cotizacion','0005_auto_20150623_1602','2015-06-23 20:33:57'),(27,'direccion','0002_auto_20150623_1553','2015-06-23 20:34:09'),(28,'direccion','0003_auto_20150623_1611','2015-06-23 20:42:00'),(29,'direccion','0004_auto_20150626_1546','2015-06-26 20:16:51'),(30,'cotizacion','0006_auto_20150630_1205','2015-06-30 16:35:35'),(31,'contenttypes','0002_remove_content_type_name','2015-07-09 19:31:40'),(32,'auth','0002_alter_permission_name_max_length','2015-07-09 19:31:41'),(33,'auth','0003_alter_user_email_max_length','2015-07-09 19:31:41'),(34,'auth','0004_alter_user_username_opts','2015-07-09 19:31:42'),(35,'auth','0005_alter_user_last_login_null','2015-07-09 19:31:42'),(36,'auth','0006_require_contenttypes_0002','2015-07-09 19:31:43'),(37,'cliente','0003_auto_20150710_0941','2015-07-10 14:12:05'),(38,'cotizacion','0007_auto_20150710_0941','2015-07-10 14:12:16'),(39,'mueble','0003_auto_20150713_1023','2015-07-13 14:53:48'),(40,'servicio','0004_remove_material_volumen','2015-07-13 14:53:49'),(41,'presupuesto','0001_initial','2015-07-13 15:04:19'),(42,'presupuesto','0002_auto_20150715_1648','2015-07-15 21:27:42'),(43,'servicio','0005_complejidad_servicio_factor_tiempo','2015-07-15 21:27:45'),(44,'presupuesto','0003_presupuesto_servicio','2015-07-22 19:59:20'),(45,'contenido','0004_contenido_tipico_predefinido','2015-07-27 16:38:00'),(46,'cotizacion','0008_auto_20150727_1207','2015-07-27 16:38:02'),(47,'presupuesto','0004_presupuesto_detalle_descripcion_contenedor','2015-07-27 16:38:03'),(48,'presupuesto','0005_auto_20150729_1010','2015-07-29 14:40:42'),(49,'presupuesto','0006_presupuesto_servicio_tiempo_aplicado','2015-07-29 14:43:30'),(50,'presupuesto','0007_auto_20150729_1028','2015-07-29 15:02:34'),(51,'presupuesto','0008_auto_20150731_1610','2015-07-31 20:55:26'),(52,'presupuesto','0009_presupuesto_total_volumen_materiales','2015-07-31 20:59:45'),(53,'presupuesto','0010_presupuesto_activo','2015-08-04 14:37:14'),(54,'cotizacion','0009_auto_20150805_1400','2015-08-05 18:31:32'),(55,'mueble','0004_auto_20150805_1400','2015-08-05 18:31:34'),(56,'presupuesto','0011_auto_20150805_1400','2015-08-05 18:32:16'),(57,'servicio','0006_auto_20150805_1400','2015-08-05 18:32:21'),(58,'presupuesto','0012_datosprecargado','2015-08-05 20:43:08'),(59,'presupuesto','0013_auto_20150807_1041','2015-08-07 15:24:47'),(60,'ambiente','0003_auto_20150810_1105','2015-08-10 15:36:05'),(61,'cliente','0004_auto_20150810_1105','2015-08-10 15:36:08'),(62,'contenido','0005_auto_20150810_1105','2015-08-10 15:36:15'),(63,'cotizacion','0010_auto_20150810_1105','2015-08-10 15:36:39'),(64,'direccion','0005_auto_20150810_1105','2015-08-10 15:36:41'),(65,'mueble','0005_auto_20150810_1105','2015-08-10 15:36:49'),(66,'presupuesto','0014_auto_20150810_1105','2015-08-10 15:36:56'),(67,'servicio','0007_auto_20150810_1105','2015-08-10 15:37:03'),(68,'contenido','0006_auto_20150813_1015','2015-08-13 14:46:55'),(69,'cotizacion','0011_auto_20150813_1015','2015-08-13 14:48:22'),(70,'direccion','0006_auto_20150813_1015','2015-08-13 14:48:27'),(71,'mueble','0006_auto_20150813_1015','2015-08-13 14:48:36'),(72,'presupuesto','0015_auto_20150813_1015','2015-08-13 14:49:36'),(73,'servicio','0008_auto_20150813_1015','2015-08-13 14:49:49'),(74,'trabajador','0002_auto_20150813_1015','2015-08-13 14:49:53'),(75,'cotizacion','0012_auto_20150813_1020','2015-08-13 14:50:43'),(76,'servicio','0009_auto_20150813_1555','2015-08-13 20:26:12'),(77,'servicio','0010_auto_20150813_1600','2015-08-13 20:30:30'),(78,'presupuesto','0016_auto_20150818_0923','2015-08-18 13:53:42'),(79,'servicio','0011_auto_20150818_0923','2015-08-18 13:53:43'),(80,'cotizacion','0013_vehiculo_cantidad_ayudante','2015-08-18 14:20:00'),(81,'presupuesto','0017_auto_20150818_1343','2015-08-18 18:14:21'),(82,'presupuesto','0018_auto_20150819_0838','2015-08-19 13:08:22'),(83,'presupuesto','0019_remove_presupuesto_cantidad_persona','2015-08-20 14:03:28'),(85,'presupuesto','0020_presupuesto_detalle_trasladable','2015-08-24 18:20:37'),(86,'premisas','0001_initial','2015-08-25 16:16:54'),(87,'premisas','0002_auto_20150826_1621','2015-08-26 20:51:53'),(88,'presupuesto','0021_auto_20150826_1621','2015-08-26 20:51:56'),(89,'presupuesto','0022_presupuesto_monto_descuesto_regargo','2015-08-27 18:40:18'),(90,'cotizacion','0014_auto_20150909_1153','2015-09-09 16:24:47'),(91,'presupuesto','0023_auto_20150909_1153','2015-09-09 16:24:53'),(92,'presupuesto','0024_presupuesto_monto_recursos_revisado','2015-09-09 19:58:19'),(93,'premisas','0003_fuentepromocion','2015-09-15 14:43:22'),(94,'presupuesto','0025_auto_20150915_1018','2015-09-15 14:50:16'),(95,'presupuesto','0026_auto_20150915_1049','2015-09-15 15:19:30'),(96,'presupuesto','0027_auto_20150915_1153','2015-09-15 16:23:50'),(97,'presupuesto','0028_auto_20150918_1549','2015-09-18 20:32:49');
+INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2015-06-18 21:16:03'),(2,'auth','0001_initial','2015-06-18 21:16:13'),(3,'admin','0001_initial','2015-06-18 21:16:16'),(4,'sessions','0001_initial','2015-06-18 21:16:16'),(5,'cliente','0001_initial','2015-06-18 21:19:51'),(6,'direccion','0001_initial','2015-06-18 21:20:26'),(7,'ambiente','0001_initial','2015-06-18 21:20:30'),(8,'mueble','0001_initial','2015-06-18 21:20:46'),(9,'contenido','0001_initial','2015-06-18 21:20:53'),(10,'trabajador','0001_initial','2015-06-18 21:20:54'),(11,'servicio','0001_initial','2015-06-18 21:21:01'),(12,'cotizacion','0001_initial','2015-06-18 21:21:46'),(13,'telefono','0001_initial','2015-06-18 21:21:51'),(14,'ambiente','0002_auto_20150619_1535','2015-06-19 20:05:40'),(15,'cliente','0002_auto_20150619_1535','2015-06-19 20:05:42'),(16,'ambiente','0002_auto_20150619_1555','2015-06-19 20:27:10'),(17,'cliente','0002_auto_20150619_1555','2015-06-19 20:27:12'),(18,'servicio','0002_auto_20150619_1555','2015-06-19 20:27:38'),(19,'cotizacion','0002_auto_20150619_1555','2015-06-19 20:52:54'),(20,'contenido','0002_auto_20150619_1555','2015-06-19 20:53:02'),(21,'mueble','0002_auto_20150619_1555','2015-06-19 20:53:03'),(22,'servicio','0003_material_unidad','2015-06-22 13:57:58'),(23,'cotizacion','0003_auto_20150622_1004','2015-06-22 14:34:08'),(24,'cotizacion','0004_auto_20150622_1005','2015-06-22 14:36:03'),(25,'contenido','0003_auto_20150623_1553','2015-06-23 20:23:27'),(26,'cotizacion','0005_auto_20150623_1602','2015-06-23 20:33:57'),(27,'direccion','0002_auto_20150623_1553','2015-06-23 20:34:09'),(28,'direccion','0003_auto_20150623_1611','2015-06-23 20:42:00'),(29,'direccion','0004_auto_20150626_1546','2015-06-26 20:16:51'),(30,'cotizacion','0006_auto_20150630_1205','2015-06-30 16:35:35'),(31,'contenttypes','0002_remove_content_type_name','2015-07-09 19:31:40'),(32,'auth','0002_alter_permission_name_max_length','2015-07-09 19:31:41'),(33,'auth','0003_alter_user_email_max_length','2015-07-09 19:31:41'),(34,'auth','0004_alter_user_username_opts','2015-07-09 19:31:42'),(35,'auth','0005_alter_user_last_login_null','2015-07-09 19:31:42'),(36,'auth','0006_require_contenttypes_0002','2015-07-09 19:31:43'),(37,'cliente','0003_auto_20150710_0941','2015-07-10 14:12:05'),(38,'cotizacion','0007_auto_20150710_0941','2015-07-10 14:12:16'),(39,'mueble','0003_auto_20150713_1023','2015-07-13 14:53:48'),(40,'servicio','0004_remove_material_volumen','2015-07-13 14:53:49'),(41,'presupuesto','0001_initial','2015-07-13 15:04:19'),(42,'presupuesto','0002_auto_20150715_1648','2015-07-15 21:27:42'),(43,'servicio','0005_complejidad_servicio_factor_tiempo','2015-07-15 21:27:45'),(44,'presupuesto','0003_presupuesto_servicio','2015-07-22 19:59:20'),(45,'contenido','0004_contenido_tipico_predefinido','2015-07-27 16:38:00'),(46,'cotizacion','0008_auto_20150727_1207','2015-07-27 16:38:02'),(47,'presupuesto','0004_presupuesto_detalle_descripcion_contenedor','2015-07-27 16:38:03'),(48,'presupuesto','0005_auto_20150729_1010','2015-07-29 14:40:42'),(49,'presupuesto','0006_presupuesto_servicio_tiempo_aplicado','2015-07-29 14:43:30'),(50,'presupuesto','0007_auto_20150729_1028','2015-07-29 15:02:34'),(51,'presupuesto','0008_auto_20150731_1610','2015-07-31 20:55:26'),(52,'presupuesto','0009_presupuesto_total_volumen_materiales','2015-07-31 20:59:45'),(53,'presupuesto','0010_presupuesto_activo','2015-08-04 14:37:14'),(54,'cotizacion','0009_auto_20150805_1400','2015-08-05 18:31:32'),(55,'mueble','0004_auto_20150805_1400','2015-08-05 18:31:34'),(56,'presupuesto','0011_auto_20150805_1400','2015-08-05 18:32:16'),(57,'servicio','0006_auto_20150805_1400','2015-08-05 18:32:21'),(58,'presupuesto','0012_datosprecargado','2015-08-05 20:43:08'),(59,'presupuesto','0013_auto_20150807_1041','2015-08-07 15:24:47'),(60,'ambiente','0003_auto_20150810_1105','2015-08-10 15:36:05'),(61,'cliente','0004_auto_20150810_1105','2015-08-10 15:36:08'),(62,'contenido','0005_auto_20150810_1105','2015-08-10 15:36:15'),(63,'cotizacion','0010_auto_20150810_1105','2015-08-10 15:36:39'),(64,'direccion','0005_auto_20150810_1105','2015-08-10 15:36:41'),(65,'mueble','0005_auto_20150810_1105','2015-08-10 15:36:49'),(66,'presupuesto','0014_auto_20150810_1105','2015-08-10 15:36:56'),(67,'servicio','0007_auto_20150810_1105','2015-08-10 15:37:03'),(68,'contenido','0006_auto_20150813_1015','2015-08-13 14:46:55'),(69,'cotizacion','0011_auto_20150813_1015','2015-08-13 14:48:22'),(70,'direccion','0006_auto_20150813_1015','2015-08-13 14:48:27'),(71,'mueble','0006_auto_20150813_1015','2015-08-13 14:48:36'),(72,'presupuesto','0015_auto_20150813_1015','2015-08-13 14:49:36'),(73,'servicio','0008_auto_20150813_1015','2015-08-13 14:49:49'),(74,'trabajador','0002_auto_20150813_1015','2015-08-13 14:49:53'),(75,'cotizacion','0012_auto_20150813_1020','2015-08-13 14:50:43'),(76,'servicio','0009_auto_20150813_1555','2015-08-13 20:26:12'),(77,'servicio','0010_auto_20150813_1600','2015-08-13 20:30:30'),(78,'presupuesto','0016_auto_20150818_0923','2015-08-18 13:53:42'),(79,'servicio','0011_auto_20150818_0923','2015-08-18 13:53:43'),(80,'cotizacion','0013_vehiculo_cantidad_ayudante','2015-08-18 14:20:00'),(81,'presupuesto','0017_auto_20150818_1343','2015-08-18 18:14:21'),(82,'presupuesto','0018_auto_20150819_0838','2015-08-19 13:08:22'),(83,'presupuesto','0019_remove_presupuesto_cantidad_persona','2015-08-20 14:03:28'),(85,'presupuesto','0020_presupuesto_detalle_trasladable','2015-08-24 18:20:37'),(86,'premisas','0001_initial','2015-08-25 16:16:54'),(87,'premisas','0002_auto_20150826_1621','2015-08-26 20:51:53'),(88,'presupuesto','0021_auto_20150826_1621','2015-08-26 20:51:56'),(89,'presupuesto','0022_presupuesto_monto_descuesto_regargo','2015-08-27 18:40:18'),(90,'cotizacion','0014_auto_20150909_1153','2015-09-09 16:24:47'),(91,'presupuesto','0023_auto_20150909_1153','2015-09-09 16:24:53'),(92,'presupuesto','0024_presupuesto_monto_recursos_revisado','2015-09-09 19:58:19'),(93,'premisas','0003_fuentepromocion','2015-09-15 14:43:22'),(94,'presupuesto','0025_auto_20150915_1018','2015-09-15 14:50:16'),(95,'presupuesto','0026_auto_20150915_1049','2015-09-15 15:19:30'),(96,'presupuesto','0027_auto_20150915_1153','2015-09-15 16:23:50'),(97,'presupuesto','0028_auto_20150918_1549','2015-09-18 20:32:49'),(98,'presupuesto','0028_auto_20150918_1751','2015-09-18 22:21:51'),(99,'premisas','0004_auto_20150922_1112','2015-09-22 15:42:54'),(100,'presupuesto','0029_auto_20150922_1112','2015-09-22 15:42:56'),(101,'presupuesto','0030_auto_20150924_1426','2015-09-24 19:00:15'),(102,'presupuesto','0031_auto_20150924_1534','2015-09-24 20:04:40'),(103,'presupuesto','0031_auto_20150924_1626','2015-09-24 20:57:19'),(104,'servicio','0012_auto_20150924_1626','2015-09-24 20:57:21'),(105,'presupuesto','0032_presupuesto_servicio_unidad_material','2015-09-25 18:07:05');
 /*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1313,12 +1313,12 @@ DROP TABLE IF EXISTS `django_session`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `django_session` (
-  `session_key` varchar(40) COLLATE utf8_bin NOT NULL,
-  `session_data` longtext COLLATE utf8_bin NOT NULL,
+  `session_key` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  `session_data` longtext COLLATE utf8_unicode_ci NOT NULL,
   `expire_date` datetime NOT NULL,
   PRIMARY KEY (`session_key`) USING BTREE,
   KEY `django_session_de54fa62` (`expire_date`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1327,7 +1327,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('0wxu967j8qu8w3oozetv8kbxjdq51iky','MTdhYTcwODdiZDBiODU1N2Y4ZTZmOGE0ODEyYjJkMWMyZTMwODU2ODp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiY2NmMWZlNDkyMGI0MGM2ZWJmYWMzMDJjZjAwMzZiMThmODhkMjFlOCIsIl9hdXRoX3VzZXJfaWQiOjF9','2015-07-02 21:28:14'),('3cbhfc05gw9m6lio477e87r51n68nuef','ZDQ3NjY4ZTFmYjA5Y2VjMGQ3ZDZjODYzYmY4ZjdkNWM3NDNiZDk2ODp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MSwiX2F1dGhfdXNlcl9oYXNoIjoiNDg4MzFlZmM4N2RlNjllMWNmMzIyYTlhNzVjY2U5OWMzYmRlNjU1MSJ9','2015-06-03 20:52:23'),('82xu5lfotcl4ph45dvuyjf7tkt50pxgh','OGFmYzM0ZDA4YzRiOTk5MWJlY2IxMDJkNThhY2YwYjljYWQ1MjEyMDp7Il9hdXRoX3VzZXJfaWQiOjEsIl9hdXRoX3VzZXJfaGFzaCI6IjQ4ODMxZWZjODdkZTY5ZTFjZjMyMmE5YTc1Y2NlOTljM2JkZTY1NTEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9','2015-05-26 21:15:45'),('bac4wtx05suh64fzc5cx1i8xkahh8p3g','NWNkMjM3N2M4NzliNzU3MDZmMWE0Y2MyMzc3YThkNDM4MTdlMzVjYTp7fQ==','2015-06-30 15:29:15'),('c8eh3fw9f9t0ogrmqj46oua86la5zaou','MGU1MDVkMjgwNzZhNDdiMjVhMjYzYTUwZDk0MDI5MzE4MGE3ZTY1NTp7Il9hdXRoX3VzZXJfaGFzaCI6IjljMzUyNjY5NTBjNWM0N2ZiNTY2MmY1ZDk0MjNmNDdiN2ZmOTQxOGQiLCJfYXV0aF91c2VyX2lkIjoiMSIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=','2015-09-22 16:14:13'),('corqt3u05xahyphqg4qu4ziy14pbuces','MGU1MDVkMjgwNzZhNDdiMjVhMjYzYTUwZDk0MDI5MzE4MGE3ZTY1NTp7Il9hdXRoX3VzZXJfaGFzaCI6IjljMzUyNjY5NTBjNWM0N2ZiNTY2MmY1ZDk0MjNmNDdiN2ZmOTQxOGQiLCJfYXV0aF91c2VyX2lkIjoiMSIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=','2015-09-23 14:53:11'),('fz9hzi42yqu6b313rsoe6vqhe1v03sa9','NTk4ZTU0MjJkZTAyYzk2Mzc2NDZjOWIyY2I2ZjJiYTliNzk2ZmMzMzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9oYXNoIjoiOWMzNTI2Njk1MGM1YzQ3ZmI1NjYyZjVkOTQyM2Y0N2I3ZmY5NDE4ZCIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=','2015-08-19 20:45:28'),('hdmyi7d7mef5embcmxu6i740hke2dnts','NDY5OTY1YmMyNDA1YTllMGNjMWZkMGI1OTI2ZTliNzNkNGIyMGY3NDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5YzM1MjY2OTUwYzVjNDdmYjU2NjJmNWQ5NDIzZjQ3YjdmZjk0MThkIn0=','2015-09-08 16:22:39'),('hv118jkkrf0qbvrypoadntouilhqbzc8','NTBhNTk5Y2ZiYmI0MTUyYTBjMjg1YTBhMWU5OWI3YTJkMjUwNzY0YTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9oYXNoIjoiY2I1ZGUxYjlmODhiZmIxNTk1NzNhNGI2ZDdmZTc0NzkzY2I0MzUwMiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwid2l6YXJkX2NvbnRhY3Rfd2l6YXJkIjp7InN0ZXBfZmlsZXMiOnt9LCJzdGVwIjpudWxsLCJzdGVwX2RhdGEiOnt9LCJleHRyYV9kYXRhIjp7fX19','2015-08-10 15:19:16'),('mx8i8uwkcy6qq4pmus701zrqb6jgdex6','N2VjYTEyODNhMDJiNTk4ZTMzOTQ2M2M4ZDY2ODUxMTRmZDBjNjg2OTp7Il9hdXRoX3VzZXJfaGFzaCI6IjljMzUyNjY5NTBjNWM0N2ZiNTY2MmY1ZDk0MjNmNDdiN2ZmOTQxOGQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=','2015-09-17 20:26:06'),('ot5hr6mjfaubex9edzkh55983d8nelpe','NWNkMjM3N2M4NzliNzU3MDZmMWE0Y2MyMzc3YThkNDM4MTdlMzVjYTp7fQ==','2015-06-29 21:32:01'),('rvqk6v9meabdf9n7lieh2fcobzu0rq7c','MGU1MDVkMjgwNzZhNDdiMjVhMjYzYTUwZDk0MDI5MzE4MGE3ZTY1NTp7Il9hdXRoX3VzZXJfaGFzaCI6IjljMzUyNjY5NTBjNWM0N2ZiNTY2MmY1ZDk0MjNmNDdiN2ZmOTQxOGQiLCJfYXV0aF91c2VyX2lkIjoiMSIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=','2015-09-23 13:02:06'),('slm6qp5ykqn8reaprslifxkpxb3qialx','ZmI3Mjk2OTg3MzFhN2QxYmQ4MDg1MDhmMDI4YmZmZDY1ZGMyMGE4Njp7Il9hdXRoX3VzZXJfaGFzaCI6ImNiNWRlMWI5Zjg4YmZiMTU5NTczYTRiNmQ3ZmU3NDc5M2NiNDM1MDIiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=','2015-08-12 15:34:19'),('zmvv79azsqq0vc1e5nxo08me65d9vrko','ZWFlNTEwZTM5OTYzMTU3YjhlZWUyMmU1MmYwMDZmODhmY2UzNDBhMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MiwiX2F1dGhfdXNlcl9oYXNoIjoiMWViMjg0ZWViNjNkN2FhOTVkNWY2MDY4NDUyOWE0NTY5Nzk4YTkzMyJ9','2015-07-02 14:56:45');
+INSERT INTO `django_session` VALUES ('0wxu967j8qu8w3oozetv8kbxjdq51iky','MTdhYTcwODdiZDBiODU1N2Y4ZTZmOGE0ODEyYjJkMWMyZTMwODU2ODp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiY2NmMWZlNDkyMGI0MGM2ZWJmYWMzMDJjZjAwMzZiMThmODhkMjFlOCIsIl9hdXRoX3VzZXJfaWQiOjF9','2015-07-02 21:28:14'),('3cbhfc05gw9m6lio477e87r51n68nuef','ZDQ3NjY4ZTFmYjA5Y2VjMGQ3ZDZjODYzYmY4ZjdkNWM3NDNiZDk2ODp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MSwiX2F1dGhfdXNlcl9oYXNoIjoiNDg4MzFlZmM4N2RlNjllMWNmMzIyYTlhNzVjY2U5OWMzYmRlNjU1MSJ9','2015-06-03 20:52:23'),('82xu5lfotcl4ph45dvuyjf7tkt50pxgh','OGFmYzM0ZDA4YzRiOTk5MWJlY2IxMDJkNThhY2YwYjljYWQ1MjEyMDp7Il9hdXRoX3VzZXJfaWQiOjEsIl9hdXRoX3VzZXJfaGFzaCI6IjQ4ODMxZWZjODdkZTY5ZTFjZjMyMmE5YTc1Y2NlOTljM2JkZTY1NTEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9','2015-05-26 21:15:45'),('bac4wtx05suh64fzc5cx1i8xkahh8p3g','NWNkMjM3N2M4NzliNzU3MDZmMWE0Y2MyMzc3YThkNDM4MTdlMzVjYTp7fQ==','2015-06-30 15:29:15'),('c8eh3fw9f9t0ogrmqj46oua86la5zaou','MGU1MDVkMjgwNzZhNDdiMjVhMjYzYTUwZDk0MDI5MzE4MGE3ZTY1NTp7Il9hdXRoX3VzZXJfaGFzaCI6IjljMzUyNjY5NTBjNWM0N2ZiNTY2MmY1ZDk0MjNmNDdiN2ZmOTQxOGQiLCJfYXV0aF91c2VyX2lkIjoiMSIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=','2015-09-22 16:14:13'),('corqt3u05xahyphqg4qu4ziy14pbuces','MGU1MDVkMjgwNzZhNDdiMjVhMjYzYTUwZDk0MDI5MzE4MGE3ZTY1NTp7Il9hdXRoX3VzZXJfaGFzaCI6IjljMzUyNjY5NTBjNWM0N2ZiNTY2MmY1ZDk0MjNmNDdiN2ZmOTQxOGQiLCJfYXV0aF91c2VyX2lkIjoiMSIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=','2015-09-23 14:53:11'),('fz9hzi42yqu6b313rsoe6vqhe1v03sa9','NTk4ZTU0MjJkZTAyYzk2Mzc2NDZjOWIyY2I2ZjJiYTliNzk2ZmMzMzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9oYXNoIjoiOWMzNTI2Njk1MGM1YzQ3ZmI1NjYyZjVkOTQyM2Y0N2I3ZmY5NDE4ZCIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=','2015-08-19 20:45:28'),('hdmyi7d7mef5embcmxu6i740hke2dnts','NDY5OTY1YmMyNDA1YTllMGNjMWZkMGI1OTI2ZTliNzNkNGIyMGY3NDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5YzM1MjY2OTUwYzVjNDdmYjU2NjJmNWQ5NDIzZjQ3YjdmZjk0MThkIn0=','2015-09-08 16:22:39'),('hv118jkkrf0qbvrypoadntouilhqbzc8','NTBhNTk5Y2ZiYmI0MTUyYTBjMjg1YTBhMWU5OWI3YTJkMjUwNzY0YTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9oYXNoIjoiY2I1ZGUxYjlmODhiZmIxNTk1NzNhNGI2ZDdmZTc0NzkzY2I0MzUwMiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwid2l6YXJkX2NvbnRhY3Rfd2l6YXJkIjp7InN0ZXBfZmlsZXMiOnt9LCJzdGVwIjpudWxsLCJzdGVwX2RhdGEiOnt9LCJleHRyYV9kYXRhIjp7fX19','2015-08-10 15:19:16'),('mx8i8uwkcy6qq4pmus701zrqb6jgdex6','N2VjYTEyODNhMDJiNTk4ZTMzOTQ2M2M4ZDY2ODUxMTRmZDBjNjg2OTp7Il9hdXRoX3VzZXJfaGFzaCI6IjljMzUyNjY5NTBjNWM0N2ZiNTY2MmY1ZDk0MjNmNDdiN2ZmOTQxOGQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=','2015-09-17 20:26:06'),('ot5hr6mjfaubex9edzkh55983d8nelpe','NWNkMjM3N2M4NzliNzU3MDZmMWE0Y2MyMzc3YThkNDM4MTdlMzVjYTp7fQ==','2015-06-29 21:32:01'),('rvqk6v9meabdf9n7lieh2fcobzu0rq7c','MGU1MDVkMjgwNzZhNDdiMjVhMjYzYTUwZDk0MDI5MzE4MGE3ZTY1NTp7Il9hdXRoX3VzZXJfaGFzaCI6IjljMzUyNjY5NTBjNWM0N2ZiNTY2MmY1ZDk0MjNmNDdiN2ZmOTQxOGQiLCJfYXV0aF91c2VyX2lkIjoiMSIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=','2015-09-23 13:02:06'),('rvukn97ai6ho5yuhosoj5l89vnuczdkw','NTk4ZTU0MjJkZTAyYzk2Mzc2NDZjOWIyY2I2ZjJiYTliNzk2ZmMzMzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9oYXNoIjoiOWMzNTI2Njk1MGM1YzQ3ZmI1NjYyZjVkOTQyM2Y0N2I3ZmY5NDE4ZCIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=','2015-10-09 14:48:15'),('slm6qp5ykqn8reaprslifxkpxb3qialx','ZmI3Mjk2OTg3MzFhN2QxYmQ4MDg1MDhmMDI4YmZmZDY1ZGMyMGE4Njp7Il9hdXRoX3VzZXJfaGFzaCI6ImNiNWRlMWI5Zjg4YmZiMTU5NTczYTRiNmQ3ZmU3NDc5M2NiNDM1MDIiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=','2015-08-12 15:34:19'),('zmvv79azsqq0vc1e5nxo08me65d9vrko','ZWFlNTEwZTM5OTYzMTU3YjhlZWUyMmU1MmYwMDZmODhmY2UzNDBhMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MiwiX2F1dGhfdXNlcl9oYXNoIjoiMWViMjg0ZWViNjNkN2FhOTVkNWY2MDY4NDUyOWE0NTY5Nzk4YTkzMyJ9','2015-07-02 14:56:45');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1340,10 +1340,10 @@ DROP TABLE IF EXISTS `mueble_densidad`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mueble_densidad` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `descripcion` varchar(100) COLLATE utf8_bin NOT NULL,
+  `descripcion` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `descripcion` (`descripcion`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1365,10 +1365,10 @@ DROP TABLE IF EXISTS `mueble_forma_mueble`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mueble_forma_mueble` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `forma` varchar(100) COLLATE utf8_bin NOT NULL,
+  `forma` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `forma` (`forma`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1390,7 +1390,7 @@ DROP TABLE IF EXISTS `mueble_mueble`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mueble_mueble` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `mueble` varchar(100) COLLATE utf8_bin NOT NULL,
+  `mueble` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `capacidad` decimal(8,3) NOT NULL,
   `trasladable` tinyint(1) NOT NULL,
   `apilable` tinyint(1) NOT NULL,
@@ -1407,7 +1407,7 @@ CREATE TABLE `mueble_mueble` (
   CONSTRAINT `mueble_mueble_forma_id_ed07595_fk_mueble_forma_mueble_id` FOREIGN KEY (`forma_id`) REFERENCES `mueble_forma_mueble` (`id`),
   CONSTRAINT `mueble_mueble_ocupacion_id_384fcfda_fk_mueble_ocupacion_id` FOREIGN KEY (`ocupacion_id`) REFERENCES `mueble_ocupacion` (`id`),
   CONSTRAINT `mueble_mueble_tipo_mueble_id_7755acaa_fk_mueble_tipo_mueble_id` FOREIGN KEY (`tipo_mueble_id`) REFERENCES `mueble_tipo_mueble` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1438,7 +1438,7 @@ CREATE TABLE `mueble_mueble_ambiente` (
   KEY `mueble_mueble_ambiente_49933347` (`mueble_id`) USING BTREE,
   CONSTRAINT `mueble_mueble_ambie_ambiente_id_2800c904_fk_ambiente_ambiente_id` FOREIGN KEY (`ambiente_id`) REFERENCES `ambiente_ambiente` (`id`),
   CONSTRAINT `mueble_mueble_ambiente_mueble_id_493d2911_fk_mueble_mueble_id` FOREIGN KEY (`mueble_id`) REFERENCES `mueble_mueble` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1460,11 +1460,11 @@ DROP TABLE IF EXISTS `mueble_ocupacion`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mueble_ocupacion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `descripcion` varchar(100) COLLATE utf8_bin NOT NULL,
+  `descripcion` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `valor` decimal(5,2) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `descripcion` (`descripcion`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1486,10 +1486,10 @@ DROP TABLE IF EXISTS `mueble_tamano`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mueble_tamano` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `descripcion` varchar(100) COLLATE utf8_bin NOT NULL,
+  `descripcion` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `descripcion` (`descripcion`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1527,7 +1527,7 @@ CREATE TABLE `mueble_tamano_mueble` (
   CONSTRAINT `mueble_tamano_mueble_densidad_id_114fdc64_fk_muebl` FOREIGN KEY (`densidad_id`) REFERENCES `mueble_densidad` (`id`),
   CONSTRAINT `mueble_tamano_mueble_mueble_id_1e5e15ab_fk_mueble_` FOREIGN KEY (`mueble_id`) REFERENCES `mueble_mueble` (`id`),
   CONSTRAINT `mueble_tamano_mueble_tamano_id_7a7219ad_fk_mueble_` FOREIGN KEY (`tamano_id`) REFERENCES `mueble_tamano` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1549,10 +1549,10 @@ DROP TABLE IF EXISTS `mueble_tipo_mueble`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mueble_tipo_mueble` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `tipo_mueble` varchar(100) COLLATE utf8_bin NOT NULL,
+  `tipo_mueble` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `tipo_mueble` (`tipo_mueble`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1574,16 +1574,16 @@ DROP TABLE IF EXISTS `premisas_empresa`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `premisas_empresa` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `empresa` varchar(250) COLLATE utf8_bin NOT NULL,
-  `telefonos` varchar(250) COLLATE utf8_bin NOT NULL,
-  `direccion` varchar(250) COLLATE utf8_bin NOT NULL,
-  `sitio_web` varchar(200) COLLATE utf8_bin NOT NULL,
-  `correo` varchar(254) COLLATE utf8_bin NOT NULL,
-  `responsable` varchar(250) COLLATE utf8_bin DEFAULT NULL,
-  `cuit` varchar(100) COLLATE utf8_bin DEFAULT NULL,
-  `logo` varchar(100) COLLATE utf8_bin NOT NULL,
+  `empresa` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `telefonos` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `direccion` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `sitio_web` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `correo` varchar(254) COLLATE utf8_unicode_ci NOT NULL,
+  `responsable` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cuit` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `logo` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1592,7 +1592,7 @@ CREATE TABLE `premisas_empresa` (
 
 LOCK TABLES `premisas_empresa` WRITE;
 /*!40000 ALTER TABLE `premisas_empresa` DISABLE KEYS */;
-INSERT INTO `premisas_empresa` VALUES (1,'Mudarte','4701 1177','3 de Febrero 3455 | Nuñez Ciudad Autónoma de Buenos Aires, Argentina','http://www.mudarte.com.ar','info@mudarte.com.ar','','','static/image/logo.png');
+INSERT INTO `premisas_empresa` VALUES (1,'Mudarte','4701 1177','3 de Febrero 3455 | Nuñez Ciudad Autónoma de Buenos Aires, Argentina','http://www.mudarte.com.ar','info@mudarte.com.ar','','','static/img/logo_ItmmTKP.png');
 /*!40000 ALTER TABLE `premisas_empresa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1605,9 +1605,9 @@ DROP TABLE IF EXISTS `premisas_fuentepromocion`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `premisas_fuentepromocion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `fuente_promocion` varchar(100) COLLATE utf8_bin NOT NULL,
+  `fuente_promocion` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1629,19 +1629,19 @@ DROP TABLE IF EXISTS `presupuesto_datosprecargado`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `presupuesto_datosprecargado` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `complejidadinmueble` varchar(100) COLLATE utf8_bin NOT NULL,
+  `complejidadinmueble` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `factorcomplejidadinmueble` decimal(5,2) NOT NULL,
   `valorambcompleinmueble` decimal(9,2) NOT NULL,
   `valorm3compleinmueble` decimal(9,2) NOT NULL,
-  `ocupacioninmueble` varchar(100) COLLATE utf8_bin NOT NULL,
+  `ocupacioninmueble` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `valorocupacioninmueble` decimal(5,2) NOT NULL,
   `densidadcontenidomueble` decimal(7,2) NOT NULL,
   `volcontenedormueble` decimal(8,3) NOT NULL,
   `peso_contenedormueble` decimal(9,3) NOT NULL,
   `capvolcontenedormueble` decimal(8,3) NOT NULL,
   `cappesocontenedormueble` decimal(9,3) NOT NULL,
-  `tamanomueble` varchar(100) COLLATE utf8_bin NOT NULL,
-  `densidadmueble` varchar(100) COLLATE utf8_bin NOT NULL,
+  `tamanomueble` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `densidadmueble` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `anchomueble` decimal(7,2) NOT NULL,
   `largomueble` decimal(7,2) NOT NULL,
   `altomueble` decimal(7,2) NOT NULL,
@@ -1650,7 +1650,7 @@ CREATE TABLE `presupuesto_datosprecargado` (
   `volumenmueble` decimal(8,3) NOT NULL,
   `tarifacomplejidadservicio` decimal(9,2) NOT NULL,
   `factortiempocompservicio` decimal(7,2) NOT NULL,
-  `materialservicio` varchar(100) COLLATE utf8_bin NOT NULL,
+  `materialservicio` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `preciomaterial` decimal(9,2) NOT NULL,
   `volmaterial` decimal(8,3) NOT NULL,
   `pesomaterial` decimal(9,3) NOT NULL,
@@ -1661,7 +1661,7 @@ CREATE TABLE `presupuesto_datosprecargado` (
   `rendimiento_unidad` int(10) unsigned NOT NULL,
   `rendimiento_volumen` decimal(8,3) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1746,6 +1746,7 @@ CREATE TABLE `presupuesto_presupuesto` (
   `hora_estimadamudanza` time(6) NOT NULL,
   `telefono_celular` varchar(100) NOT NULL,
   `descuento_recargo` varchar(1) NOT NULL,
+  `comentario` longtext NOT NULL,
   PRIMARY KEY (`id`),
   KEY `presupuesto_presupuesto_cotizador_id_25e7c2c5_fk_auth_user_id` (`cotizador_id`),
   CONSTRAINT `presupuesto_presupuesto_cotizador_id_25e7c2c5_fk_auth_user_id` FOREIGN KEY (`cotizador_id`) REFERENCES `auth_user` (`id`)
@@ -1758,7 +1759,7 @@ CREATE TABLE `presupuesto_presupuesto` (
 
 LOCK TABLES `presupuesto_presupuesto` WRITE;
 /*!40000 ALTER TABLE `presupuesto_presupuesto` DISABLE KEYS */;
-INSERT INTO `presupuesto_presupuesto` VALUES (1,'17308789','yusnel','04140576077','yusnelvy@gmail.com','2015-07-13','2015-07-30','Modelo: Mercedes Benz Sprinter 313 CDI Panel Van - Tarifa $/h: 150.00 - Tarifa $/Km: 15.00 - Capacidad m3: 13.000 - Capacidad Kgs: 1500.000 - Cantidad: 1 - Volumen Total: 13.000 - Total Tarifa $/h: 150.00 - Total Tarifa $/Km: 300.00','Conductor asignado: Chofer tipo 1 al modelo: Mercedes Benz Sprinter 313 CDI Panel Van - Tarifa $/día: 75.00 - Cantidad de conductor: 1 - Total Tarifa $/hrs: 75.00 - Cantidad de ayudantes: 4 - Tarifa $/día: 50.00 - Total Tarifa $/hrs: 200.00',1,2,3,6,30.000,0.002,144.000,2.156,1.500,0.288,3.657,20.00,1.00,0.00,0.00,150.00,300.00,341.00,0.00,0.00,0.00,2,'Servicios cargados',1500.000,0.001,174.003,0.001,'Activado',0.00,0.01,0.10,4,0,1.24,2800.00,511.98,3250.01,3250.01,4.00,341.00,13.000,0.00,0.00,3250.01,0.01,450.00,'Revisado',2800.00,'','','Cliente','01:00:00.000000','01:00:00.000000','','-'),(2,'123456','Maria Perez','12','yusnelvy@gmail.com','2015-09-17','2015-09-23','0','0',0,0,0,0,0.000,0.000,0.000,0.000,0.000,0.000,0.000,20.00,1.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,1,'Iniciado',0.000,0.000,0.000,0.000,'Activado',0.00,0.00,0.00,0,0,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.000,0.00,0.00,0.00,0.00,0.00,'Optimizado',0.00,'','','Referido por cliente','09:55:53.942612','08:00:00.000000','','-');
+INSERT INTO `presupuesto_presupuesto` VALUES (1,'17308789','yusnel','04140576077','yusnelvy@gmail.com','2015-07-13','2015-07-30','Modelo: Mercedes Benz 1418 Atego - Tarifa $/h: 260.00 - Tarifa $/Km: 15.00 - Capacidad m3: 43.000 - Capacidad Kgs: 9230.000 - Cantidad: 1 - Volumen Total: 43.000 - Total Tarifa $/h: 260.00 - Total Tarifa $/Km: 300.00','Conductor asignado: Chofer tipo 1 - Tarifa $/día: 75.00 - Cantidad de conductor: 1 - Total Tarifa $/hrs: 75.00 - Cantidad de ayudantes: 6 - Tarifa $/día: 50.00 - Total Tarifa $/hrs: 300.00 - Cantidad de ayudantes adicionales: 8 - Tarifa $/día: 50.00 - Total Tarifa $/hrs: 400.00',1,2,2,0,0.000,0.002,0.000,39.997,0.000,0.000,39.997,20.00,1.00,0.00,0.00,260.00,300.00,3100.00,0.00,0.00,0.00,2,'Muebles cargados',9230.000,0.000,0.002,0.000,'Activado',0.00,0.00,0.00,6,8,8.89,2800.00,5599.58,6159.58,6159.58,4.00,3333.75,43.000,325.00,0.00,3250.01,0.01,450.00,'Revisado',2800.00,'','','Cliente','01:00:00.000000','01:00:00.000000','','-','1'),(2,'123456','Maria Perez','12','yusnelvy@gmail.com','2015-09-17','2015-09-23','0','0',0,0,0,0,0.000,0.000,0.000,0.000,0.000,0.000,0.000,20.00,1.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,1,'Preparado',0.000,0.000,0.000,0.000,'Activado',0.00,0.00,0.00,0,0,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.000,0.00,0.00,0.00,0.00,0.00,'Optimizado',0.00,'','','Referido por cliente','09:55:53.942612','08:00:00.000000','','-','1');
 /*!40000 ALTER TABLE `presupuesto_presupuesto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1795,9 +1796,9 @@ CREATE TABLE `presupuesto_presupuesto_detalle` (
   `trasladable` tinyint(1) NOT NULL,
   `cantidad` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `presupuest_presupuesto_id_5551e79f_fk_presupuesto_presupuesto_id` (`presupuesto_id`),
-  CONSTRAINT `presupuest_presupuesto_id_5551e79f_fk_presupuesto_presupuesto_id` FOREIGN KEY (`presupuesto_id`) REFERENCES `presupuesto_presupuesto` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+  KEY `presupuest_presupuesto_id_37493617_fk_presupuesto_presupuesto_id` (`presupuesto_id`),
+  CONSTRAINT `presupuest_presupuesto_id_37493617_fk_presupuesto_presupuesto_id` FOREIGN KEY (`presupuesto_id`) REFERENCES `presupuesto_presupuesto` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1806,7 +1807,7 @@ CREATE TABLE `presupuesto_presupuesto_detalle` (
 
 LOCK TABLES `presupuesto_presupuesto_detalle` WRITE;
 /*!40000 ALTER TABLE `presupuesto_presupuesto_detalle` DISABLE KEYS */;
-INSERT INTO `presupuesto_presupuesto_detalle` VALUES (1,'Habitación principal','Cama matrimonial','No definido',150.00,200.00,20.00,'No definida',0.00,0.001,'Vacío',0.00,0,0.000,0.000,0.599,0.001,0.001,0.000,0.000,1,'No definido',1,1),(2,'Habitación principal','Armario empotrado','Mediano',100.00,60.00,200.00,'Media',0.00,0.000,'Medio vacío',0.30,6,0.288,1.500,1.200,25.000,0.200,144.000,30.000,1,'Ropero',0,1),(3,'Cocina','Nevera de varias puertas','No definido',84.00,112.00,165.50,'No definida',0.00,0.001,'Vacío',0.00,0,0.000,0.000,1.557,0.001,0.001,0.000,0.000,1,'No definido',1,1),(4,'Cocina','Alacena','Mediano',100.00,50.00,100.00,'Media',4.00,2.000,'Medio vacío',0.30,4200,0.007,4.200,0.500,0.001,0.001,4.200,4.200,1,'No definido',0,1);
+INSERT INTO `presupuesto_presupuesto_detalle` VALUES (6,'Cocina','Alacena','Mediano',100.00,160.00,100.00,'Media',4.00,2.000,'Medio vacío',0.30,0,0.000,0.000,0.500,0.001,0.001,0.000,0.000,1,'No definido',0,1),(7,'Habitación principal','Cama matrimonial','No definido',137.00,190.00,10.00,'No definida',0.00,0.001,'Vacío',0.00,0,0.000,0.000,1.400,0.001,0.001,0.000,0.000,1,'No definido',1,1),(8,'Cocina','Micro ondas','No definido',43.90,34.00,25.80,'No definida',0.00,0.001,'Vacío',0.00,0,0.000,0.000,38.597,0.001,0.001,0.000,0.000,1,'No definido',1,1);
 /*!40000 ALTER TABLE `presupuesto_presupuesto_detalle` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1842,7 +1843,7 @@ CREATE TABLE `presupuesto_presupuesto_direccion` (
   PRIMARY KEY (`id`),
   KEY `presupuest_presupuesto_id_17f2d8fb_fk_presupuesto_presupuesto_id` (`presupuesto_id`),
   CONSTRAINT `presupuest_presupuesto_id_17f2d8fb_fk_presupuesto_presupuesto_id` FOREIGN KEY (`presupuesto_id`) REFERENCES `presupuesto_presupuesto` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1851,7 +1852,7 @@ CREATE TABLE `presupuesto_presupuesto_direccion` (
 
 LOCK TABLES `presupuesto_presupuesto_direccion` WRITE;
 /*!40000 ALTER TABLE `presupuesto_presupuesto_direccion` DISABLE KEYS */;
-INSERT INTO `presupuesto_presupuesto_direccion` VALUES (1,'Carrera 19 entre 24 y 25, zona centro','Destino','Oficina','Medio vacío',0.30,10,10,0,1,0,0,10,'Media',0.40,1.00,1.00,10,40.00,1,1),(2,'Carrera 18 entre 23 y 24','Origen','Oficina','Medio Lleno',0.60,1,10,0,1,0,0,10,'Media',1.00,1400.00,140.00,10,40.00,1,1);
+INSERT INTO `presupuesto_presupuesto_direccion` VALUES (1,'Carrera 19 entre 24 y 25, zona centro','Destino','Oficina','Medio vacío',0.30,10,10,0,1,0,0,10,'Media',0.40,1.00,1.00,10,40.00,1,1),(2,'Carrera 18 entre 23 y 24','Origen','Oficina','Medio Lleno',0.60,1,10,0,1,0,0,10,'Media',1.00,1400.00,140.00,10,40.00,1,1),(8,'prueba','Origen','Apartamento','Medio Lleno',0.60,1,0,0,0,0,0,0,'Media',1.00,1400.00,140.00,10,40.00,2,1),(10,'prueba 2','Destino','Apartamento','Medio Lleno',0.60,1,0,0,0,0,0,0,'Media',1.00,1400.00,140.00,10,40.00,2,1),(11,'Carrera 19 entre calle 22 y 23','Origen','Oficina','Medio Lleno',0.60,1,2,0,1,0,0,2,'Media',1.00,1400.00,140.00,10,40.00,1,2);
 /*!40000 ALTER TABLE `presupuesto_presupuesto_direccion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1874,10 +1875,11 @@ CREATE TABLE `presupuesto_presupuesto_servicio` (
   `tiempo_aplicado` decimal(7,2) NOT NULL,
   `monto_servicio` decimal(9,2) NOT NULL,
   `precio_material` decimal(9,2) NOT NULL,
+  `unidad_material` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `D76317b5086058f57ff4e5e2c432fbf9` (`detalle_presupuesto_id`),
-  CONSTRAINT `D76317b5086058f57ff4e5e2c432fbf9` FOREIGN KEY (`detalle_presupuesto_id`) REFERENCES `presupuesto_presupuesto_detalle` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  KEY `D5b6e2b09fa0a62e92d4a366351d756a` (`detalle_presupuesto_id`),
+  CONSTRAINT `D5b6e2b09fa0a62e92d4a366351d756a` FOREIGN KEY (`detalle_presupuesto_id`) REFERENCES `presupuesto_presupuesto_detalle` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1886,7 +1888,7 @@ CREATE TABLE `presupuesto_presupuesto_servicio` (
 
 LOCK TABLES `presupuesto_presupuesto_servicio` WRITE;
 /*!40000 ALTER TABLE `presupuesto_presupuesto_servicio` DISABLE KEYS */;
-INSERT INTO `presupuesto_presupuesto_servicio` VALUES (4,'Desarmar',0.00,'No aplica',0.00,0.001,0.001,1,0.10,0.01,0.00);
+INSERT INTO `presupuesto_presupuesto_servicio` VALUES (35,'Corrugado',1.00,'Cintas de embalar',15.00,0.000,0.075,8,38.60,50.00,15.00,'und'),(36,'Corrugado',1.00,'Corrugado',10.00,0.600,0.350,8,38.60,50.00,10.00,'und');
 /*!40000 ALTER TABLE `presupuesto_presupuesto_servicio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1899,10 +1901,10 @@ DROP TABLE IF EXISTS `servicio_complejidad`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `servicio_complejidad` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `descripcion` varchar(100) COLLATE utf8_bin NOT NULL,
+  `descripcion` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `descripcion` (`descripcion`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1934,7 +1936,7 @@ CREATE TABLE `servicio_complejidad_servicio` (
   KEY `servicio_complejidad_servicio_4bb699dc` (`servicio_id`) USING BTREE,
   CONSTRAINT `servicio_comp_complejidad_id_362df05f_fk_servicio_complejidad_id` FOREIGN KEY (`complejidad_id`) REFERENCES `servicio_complejidad` (`id`),
   CONSTRAINT `servicio_complejidad_servicio_id_f87f6e9_fk_servicio_servicio_id` FOREIGN KEY (`servicio_id`) REFERENCES `servicio_servicio` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1956,7 +1958,7 @@ DROP TABLE IF EXISTS `servicio_material`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `servicio_material` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `material` varchar(100) COLLATE utf8_bin NOT NULL,
+  `material` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `precio` decimal(9,2) NOT NULL,
   `peso` decimal(9,3) NOT NULL,
   `recuperable` tinyint(1) NOT NULL,
@@ -1967,11 +1969,13 @@ CREATE TABLE `servicio_material` (
   `contenedor` tinyint(1) NOT NULL,
   `largo` decimal(7,2) NOT NULL,
   `unidad_id` int(11) NOT NULL,
+  `nrovuelta` int(10) unsigned NOT NULL,
+  `solape` decimal(7,2) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `material` (`material`) USING BTREE,
   KEY `servicio_material_d8b8136c` (`unidad_id`) USING BTREE,
   CONSTRAINT `servicio_material_unidad_id_258a6c1f_fk_servicio_unidad_id` FOREIGN KEY (`unidad_id`) REFERENCES `servicio_unidad` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1980,7 +1984,7 @@ CREATE TABLE `servicio_material` (
 
 LOCK TABLES `servicio_material` WRITE;
 /*!40000 ALTER TABLE `servicio_material` DISABLE KEYS */;
-INSERT INTO `servicio_material` VALUES (1,'Pluriball',138.00,6.000,0,10.00,250.00,1.000,1.000,0,10.00,1),(2,'Stretch',178.00,4.000,0,0.01,50.00,0.000,0.000,0,4500.00,1),(3,'Corrugado',70.00,20.000,1,1.00,1.00,1.000,1.000,0,1.00,1),(4,'Cintas de embalar',15.00,0.075,0,0.00,0.00,0.000,0.000,0,0.00,1),(5,'Caja 40',14.00,12.000,0,1.00,1.00,1.000,1.000,1,1.00,1),(6,'Caja grande',19.00,0.200,0,1.00,1.00,1.000,1.000,1,1.00,1),(7,'Canasto',500.00,5.000,1,1.00,1.00,1.000,1.000,1,1.00,1),(8,'Ropero',500.00,5.000,1,100.00,50.00,25.000,0.800,1,50.00,1),(9,'Cordel de nylon 2 mm',10.00,0.100,0,0.00,0.00,0.000,0.000,0,0.00,1),(10,'Papel manteca',10.00,0.100,0,0.01,0.01,0.001,0.001,0,0.01,1);
+INSERT INTO `servicio_material` VALUES (1,'Pluriball',138.00,6.000,0,10.00,250.00,1.000,1.000,0,10.00,1,1,0.20),(2,'Stretch',178.00,4.000,0,0.01,50.00,0.000,0.000,0,4500.00,1,1,0.20),(3,'Corrugado',10.00,0.350,1,50.00,120.00,1.000,1.000,0,100.00,1,1,0.20),(4,'Cintas de embalar',15.00,0.075,0,0.00,0.00,0.000,0.000,0,0.00,1,1,0.20),(5,'Caja 40',14.00,12.000,0,1.00,1.00,1.000,1.000,1,1.00,1,1,0.20),(6,'Caja grande',19.00,0.200,0,1.00,1.00,1.000,1.000,1,1.00,1,1,0.20),(7,'Canasto',500.00,5.000,1,1.00,1.00,1.000,1.000,1,1.00,1,1,0.20),(8,'Ropero',500.00,5.000,1,100.00,50.00,25.000,0.800,1,50.00,1,1,0.20),(9,'Cordel de nylon 2 mm',10.00,0.100,0,0.00,0.00,0.000,0.000,0,0.00,1,1,0.20),(10,'Papel manteca',10.00,0.100,0,0.01,0.01,0.001,0.001,0,0.01,1,1,0.20);
 /*!40000 ALTER TABLE `servicio_material` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1993,10 +1997,10 @@ DROP TABLE IF EXISTS `servicio_servicio`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `servicio_servicio` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `servicio` varchar(100) COLLATE utf8_bin NOT NULL,
+  `servicio` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `servicio` (`servicio`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2021,14 +2025,14 @@ CREATE TABLE `servicio_servicio_material` (
   `cantidad` decimal(7,2) NOT NULL,
   `material_id` int(11) NOT NULL,
   `servicio_id` int(11) NOT NULL,
-  `calculo` varchar(200) COLLATE utf8_bin NOT NULL,
+  `calculo` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `servicio_servicio_material_servicio_id_75f76c93_uniq` (`servicio_id`,`material_id`) USING BTREE,
   KEY `servicio_servicio_material_eb4b9aaa` (`material_id`) USING BTREE,
   KEY `servicio_servicio_material_4bb699dc` (`servicio_id`) USING BTREE,
   CONSTRAINT `servicio_servicio_m_material_id_6a0517d7_fk_servicio_material_id` FOREIGN KEY (`material_id`) REFERENCES `servicio_material` (`id`),
   CONSTRAINT `servicio_servicio_m_servicio_id_336b5873_fk_servicio_servicio_id` FOREIGN KEY (`servicio_id`) REFERENCES `servicio_servicio` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2050,10 +2054,10 @@ DROP TABLE IF EXISTS `servicio_unidad`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `servicio_unidad` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `unidad` varchar(20) COLLATE utf8_bin NOT NULL,
+  `unidad` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `unidad` (`unidad`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2075,7 +2079,7 @@ DROP TABLE IF EXISTS `telefono_telefono`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `telefono_telefono` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `numero` varchar(50) COLLATE utf8_bin NOT NULL,
+  `numero` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `cliente_id` int(11) NOT NULL,
   `tipo_telefono_id` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
@@ -2083,7 +2087,7 @@ CREATE TABLE `telefono_telefono` (
   KEY `telefono_telefono_3fdaa609` (`tipo_telefono_id`) USING BTREE,
   CONSTRAINT `telefono__tipo_telefono_id_65705ef3_fk_telefono_ti` FOREIGN KEY (`tipo_telefono_id`) REFERENCES `telefono_tipo_telefono` (`id`),
   CONSTRAINT `telefono_telefono_cliente_id_23a3a462_fk_cliente_c` FOREIGN KEY (`cliente_id`) REFERENCES `cliente_cliente` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2105,10 +2109,10 @@ DROP TABLE IF EXISTS `telefono_tipo_telefono`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `telefono_tipo_telefono` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `tipo_telefono` varchar(50) COLLATE utf8_bin NOT NULL,
+  `tipo_telefono` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `tipo_telefono` (`tipo_telefono`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2130,13 +2134,13 @@ DROP TABLE IF EXISTS `trabajador_cargo_trabajador`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `trabajador_cargo_trabajador` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cargo` varchar(100) COLLATE utf8_bin NOT NULL,
+  `cargo` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `tarifa_dia` decimal(9,2) NOT NULL,
   `recargo_fin_semana` decimal(9,2) NOT NULL,
   `recargo_nocturno` decimal(9,2) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `cargo` (`cargo`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2150,8 +2154,158 @@ INSERT INTO `trabajador_cargo_trabajador` VALUES (1,'Chofer tipo 1',75.00,0.50,0
 UNLOCK TABLES;
 
 --
+-- Temporary table structure for view `v_presupuestofull`
+--
+
+DROP TABLE IF EXISTS `v_presupuestofull`;
+/*!50001 DROP VIEW IF EXISTS `v_presupuestofull`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `v_presupuestofull` (
+  `id` tinyint NOT NULL,
+  `dni` tinyint NOT NULL,
+  `nombre_cliente` tinyint NOT NULL,
+  `telefono` tinyint NOT NULL,
+  `email` tinyint NOT NULL,
+  `fecha_creacion` tinyint NOT NULL,
+  `fecha_estimadamudanza` tinyint NOT NULL,
+  `descripcion_vehiculo` tinyint NOT NULL,
+  `descripcion_persona` tinyint NOT NULL,
+  `cantidad_vehiculo` tinyint NOT NULL,
+  `cantidad_ambientes` tinyint NOT NULL,
+  `cantidad_muebles` tinyint NOT NULL,
+  `cantidad_contenedores` tinyint NOT NULL,
+  `total_peso_contenedores` tinyint NOT NULL,
+  `total_peso_muebles` tinyint NOT NULL,
+  `total_peso_contenidos` tinyint NOT NULL,
+  `total_volumen_muebles` tinyint NOT NULL,
+  `total_volumen_contenedores` tinyint NOT NULL,
+  `total_volumen_contenidos` tinyint NOT NULL,
+  `total_m3` tinyint NOT NULL,
+  `recorrido_km` tinyint NOT NULL,
+  `tiempo_recorrido` tinyint NOT NULL,
+  `tiempo_carga` tinyint NOT NULL,
+  `tiempo_total` tinyint NOT NULL,
+  `monto_vehiculo_hora` tinyint NOT NULL,
+  `monto_vehiculo_recorrido` tinyint NOT NULL,
+  `monto_personaoptima` tinyint NOT NULL,
+  `monto_sin_impuesto` tinyint NOT NULL,
+  `monto_impuesto` tinyint NOT NULL,
+  `monto_con_impuesto` tinyint NOT NULL,
+  `cotizador_id` tinyint NOT NULL,
+  `estado` tinyint NOT NULL,
+  `total_capacidad_vehiculokg` tinyint NOT NULL,
+  `total_peso_materiales` tinyint NOT NULL,
+  `total_peso_mudanza` tinyint NOT NULL,
+  `total_volumen_materiales` tinyint NOT NULL,
+  `activo` tinyint NOT NULL,
+  `monto_materiales` tinyint NOT NULL,
+  `monto_servicios` tinyint NOT NULL,
+  `tiempo_servicios` tinyint NOT NULL,
+  `cantidad_ayudante` tinyint NOT NULL,
+  `cantidad_ayudanteadicional` tinyint NOT NULL,
+  `duracion_teorica` tinyint NOT NULL,
+  `monto_amb_inmueble` tinyint NOT NULL,
+  `monto_m3_inmueble` tinyint NOT NULL,
+  `monto_mudanza_hrsdirectas` tinyint NOT NULL,
+  `monto_mundanza_hrsoptimas` tinyint NOT NULL,
+  `duracion_optima` tinyint NOT NULL,
+  `monto_personateorica` tinyint NOT NULL,
+  `total_capacidad_vehiculovol` tinyint NOT NULL,
+  `monto_descuento_recargo` tinyint NOT NULL,
+  `monto_materiales_revisado` tinyint NOT NULL,
+  `monto_mundanza_revisada` tinyint NOT NULL,
+  `monto_servicios_revisado` tinyint NOT NULL,
+  `monto_vehiculo_revisado` tinyint NOT NULL,
+  `tipo_calculo` tinyint NOT NULL,
+  `monto_recursos_revisado` tinyint NOT NULL,
+  `cargo_cliente` tinyint NOT NULL,
+  `empresa_cliente` tinyint NOT NULL,
+  `fuente_promocion` tinyint NOT NULL,
+  `hora_creacion` tinyint NOT NULL,
+  `hora_estimadamudanza` tinyint NOT NULL,
+  `telefono_celular` tinyint NOT NULL,
+  `descuento_recargo` tinyint NOT NULL,
+  `comentario` tinyint NOT NULL,
+  `id_dir` tinyint NOT NULL,
+  `direccion` tinyint NOT NULL,
+  `tipo_direccion` tinyint NOT NULL,
+  `tipo_inmueble` tinyint NOT NULL,
+  `ocupacidad_inmueble` tinyint NOT NULL,
+  `valor_ocupacidad` tinyint NOT NULL,
+  `pisos` tinyint NOT NULL,
+  `pisos_escalera` tinyint NOT NULL,
+  `rampa` tinyint NOT NULL,
+  `ascensor` tinyint NOT NULL,
+  `ascensor_servicio` tinyint NOT NULL,
+  `pisos_ascensor_servicio` tinyint NOT NULL,
+  `pisos_ascensor` tinyint NOT NULL,
+  `complejidad` tinyint NOT NULL,
+  `factor_complejidad` tinyint NOT NULL,
+  `valor_ambiente_complejidad` tinyint NOT NULL,
+  `valor_metrocubico_complejiadad` tinyint NOT NULL,
+  `distancia_vehiculo` tinyint NOT NULL,
+  `total_m2` tinyint NOT NULL,
+  `orden` tinyint NOT NULL,
+  `id_det` tinyint NOT NULL,
+  `ambiente` tinyint NOT NULL,
+  `mueble` tinyint NOT NULL,
+  `tamano` tinyint NOT NULL,
+  `ancho` tinyint NOT NULL,
+  `largo` tinyint NOT NULL,
+  `alto` tinyint NOT NULL,
+  `densidad` tinyint NOT NULL,
+  `valor_densidad` tinyint NOT NULL,
+  `peso` tinyint NOT NULL,
+  `ocupacidad` tinyint NOT NULL,
+  `valor_ocupacidad_det` tinyint NOT NULL,
+  `cantidad_contenedor` tinyint NOT NULL,
+  `volumen_contenido` tinyint NOT NULL,
+  `volumen_contenedor` tinyint NOT NULL,
+  `volumen_mueble` tinyint NOT NULL,
+  `capacidad_peso_contenedor` tinyint NOT NULL,
+  `capacidad_volumen_contenedor` tinyint NOT NULL,
+  `peso_contenido` tinyint NOT NULL,
+  `peso_contenedor` tinyint NOT NULL,
+  `descripcion_contenedor` tinyint NOT NULL,
+  `trasladable` tinyint NOT NULL,
+  `cantidad` tinyint NOT NULL,
+  `id_ser` tinyint NOT NULL,
+  `servicio` tinyint NOT NULL,
+  `cantidad_material` tinyint NOT NULL,
+  `material` tinyint NOT NULL,
+  `monto_material` tinyint NOT NULL,
+  `volumen_material` tinyint NOT NULL,
+  `peso_material` tinyint NOT NULL,
+  `detalle_presupuesto_id` tinyint NOT NULL,
+  `tiempo_aplicado` tinyint NOT NULL,
+  `monto_servicio` tinyint NOT NULL,
+  `precio_material` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Dumping events for database 'db_mtvmcotizacion'
 --
+
+--
+-- Final view structure for view `v_presupuestofull`
+--
+
+/*!50001 DROP TABLE IF EXISTS `v_presupuestofull`*/;
+/*!50001 DROP VIEW IF EXISTS `v_presupuestofull`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_unicode_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `v_presupuestofull` AS select `p`.`id` AS `id`,`p`.`dni` AS `dni`,`p`.`nombre_cliente` AS `nombre_cliente`,`p`.`telefono` AS `telefono`,`p`.`email` AS `email`,`p`.`fecha_creacion` AS `fecha_creacion`,`p`.`fecha_estimadamudanza` AS `fecha_estimadamudanza`,`p`.`descripcion_vehiculo` AS `descripcion_vehiculo`,`p`.`descripcion_persona` AS `descripcion_persona`,`p`.`cantidad_vehiculo` AS `cantidad_vehiculo`,`p`.`cantidad_ambientes` AS `cantidad_ambientes`,`p`.`cantidad_muebles` AS `cantidad_muebles`,`p`.`cantidad_contenedores` AS `cantidad_contenedores`,`p`.`total_peso_contenedores` AS `total_peso_contenedores`,`p`.`total_peso_muebles` AS `total_peso_muebles`,`p`.`total_peso_contenidos` AS `total_peso_contenidos`,`p`.`total_volumen_muebles` AS `total_volumen_muebles`,`p`.`total_volumen_contenedores` AS `total_volumen_contenedores`,`p`.`total_volumen_contenidos` AS `total_volumen_contenidos`,`p`.`total_m3` AS `total_m3`,`p`.`recorrido_km` AS `recorrido_km`,`p`.`tiempo_recorrido` AS `tiempo_recorrido`,`p`.`tiempo_carga` AS `tiempo_carga`,`p`.`tiempo_total` AS `tiempo_total`,`p`.`monto_vehiculo_hora` AS `monto_vehiculo_hora`,`p`.`monto_vehiculo_recorrido` AS `monto_vehiculo_recorrido`,`p`.`monto_personaoptima` AS `monto_personaoptima`,`p`.`monto_sin_impuesto` AS `monto_sin_impuesto`,`p`.`monto_impuesto` AS `monto_impuesto`,`p`.`monto_con_impuesto` AS `monto_con_impuesto`,`p`.`cotizador_id` AS `cotizador_id`,`p`.`estado` AS `estado`,`p`.`total_capacidad_vehiculokg` AS `total_capacidad_vehiculokg`,`p`.`total_peso_materiales` AS `total_peso_materiales`,`p`.`total_peso_mudanza` AS `total_peso_mudanza`,`p`.`total_volumen_materiales` AS `total_volumen_materiales`,`p`.`activo` AS `activo`,`p`.`monto_materiales` AS `monto_materiales`,`p`.`monto_servicios` AS `monto_servicios`,`p`.`tiempo_servicios` AS `tiempo_servicios`,`p`.`cantidad_ayudante` AS `cantidad_ayudante`,`p`.`cantidad_ayudanteadicional` AS `cantidad_ayudanteadicional`,`p`.`duracion_teorica` AS `duracion_teorica`,`p`.`monto_amb_inmueble` AS `monto_amb_inmueble`,`p`.`monto_m3_inmueble` AS `monto_m3_inmueble`,`p`.`monto_mudanza_hrsdirectas` AS `monto_mudanza_hrsdirectas`,`p`.`monto_mundanza_hrsoptimas` AS `monto_mundanza_hrsoptimas`,`p`.`duracion_optima` AS `duracion_optima`,`p`.`monto_personateorica` AS `monto_personateorica`,`p`.`total_capacidad_vehiculovol` AS `total_capacidad_vehiculovol`,`p`.`monto_descuento_recargo` AS `monto_descuento_recargo`,`p`.`monto_materiales_revisado` AS `monto_materiales_revisado`,`p`.`monto_mundanza_revisada` AS `monto_mundanza_revisada`,`p`.`monto_servicios_revisado` AS `monto_servicios_revisado`,`p`.`monto_vehiculo_revisado` AS `monto_vehiculo_revisado`,`p`.`tipo_calculo` AS `tipo_calculo`,`p`.`monto_recursos_revisado` AS `monto_recursos_revisado`,`p`.`cargo_cliente` AS `cargo_cliente`,`p`.`empresa_cliente` AS `empresa_cliente`,`p`.`fuente_promocion` AS `fuente_promocion`,`p`.`hora_creacion` AS `hora_creacion`,`p`.`hora_estimadamudanza` AS `hora_estimadamudanza`,`p`.`telefono_celular` AS `telefono_celular`,`p`.`descuento_recargo` AS `descuento_recargo`,`p`.`comentario` AS `comentario`,`dir`.`id` AS `id_dir`,`dir`.`direccion` AS `direccion`,`dir`.`tipo_direccion` AS `tipo_direccion`,`dir`.`tipo_inmueble` AS `tipo_inmueble`,`dir`.`ocupacidad_inmueble` AS `ocupacidad_inmueble`,`dir`.`valor_ocupacidad` AS `valor_ocupacidad`,`dir`.`pisos` AS `pisos`,`dir`.`pisos_escalera` AS `pisos_escalera`,`dir`.`rampa` AS `rampa`,`dir`.`ascensor` AS `ascensor`,`dir`.`ascensor_servicio` AS `ascensor_servicio`,`dir`.`pisos_ascensor_servicio` AS `pisos_ascensor_servicio`,`dir`.`pisos_ascensor` AS `pisos_ascensor`,`dir`.`complejidad` AS `complejidad`,`dir`.`factor_complejidad` AS `factor_complejidad`,`dir`.`valor_ambiente_complejidad` AS `valor_ambiente_complejidad`,`dir`.`valor_metrocubico_complejiadad` AS `valor_metrocubico_complejiadad`,`dir`.`distancia_vehiculo` AS `distancia_vehiculo`,`dir`.`total_m2` AS `total_m2`,`dir`.`orden` AS `orden`,`det`.`id` AS `id_det`,`det`.`ambiente` AS `ambiente`,`det`.`mueble` AS `mueble`,`det`.`tamano` AS `tamano`,`det`.`ancho` AS `ancho`,`det`.`largo` AS `largo`,`det`.`alto` AS `alto`,`det`.`densidad` AS `densidad`,`det`.`valor_densidad` AS `valor_densidad`,`det`.`peso` AS `peso`,`det`.`ocupacidad` AS `ocupacidad`,`det`.`valor_ocupacidad` AS `valor_ocupacidad_det`,`det`.`cantidad_contenedor` AS `cantidad_contenedor`,`det`.`volumen_contenido` AS `volumen_contenido`,`det`.`volumen_contenedor` AS `volumen_contenedor`,`det`.`volumen_mueble` AS `volumen_mueble`,`det`.`capacidad_peso_contenedor` AS `capacidad_peso_contenedor`,`det`.`capacidad_volumen_contenedor` AS `capacidad_volumen_contenedor`,`det`.`peso_contenido` AS `peso_contenido`,`det`.`peso_contenedor` AS `peso_contenedor`,`det`.`descripcion_contenedor` AS `descripcion_contenedor`,`det`.`trasladable` AS `trasladable`,`det`.`cantidad` AS `cantidad`,`ser`.`id` AS `id_ser`,`ser`.`servicio` AS `servicio`,`ser`.`cantidad_material` AS `cantidad_material`,`ser`.`material` AS `material`,`ser`.`monto_material` AS `monto_material`,`ser`.`volumen_material` AS `volumen_material`,`ser`.`peso_material` AS `peso_material`,`ser`.`detalle_presupuesto_id` AS `detalle_presupuesto_id`,`ser`.`tiempo_aplicado` AS `tiempo_aplicado`,`ser`.`monto_servicio` AS `monto_servicio`,`ser`.`precio_material` AS `precio_material` from (((`presupuesto_presupuesto` `p` left join `presupuesto_presupuesto_direccion` `dir` on((`p`.`id` = `dir`.`presupuesto_id`))) left join `presupuesto_presupuesto_detalle` `det` on((`det`.`presupuesto_id` = `p`.`id`))) left join `presupuesto_presupuesto_servicio` `ser` on((`det`.`id` = `ser`.`detalle_presupuesto_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -2162,4 +2316,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-09-18 16:34:14
+-- Dump completed on 2015-09-25 16:39:07
