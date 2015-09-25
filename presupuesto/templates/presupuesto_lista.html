@@ -98,9 +98,7 @@ Eliminar presupuesto
   <th width="100px">DNI</th>
   <th>Nombre del solicitante</th>
   <th>Empresa</th>
-  <th width="80px">Ver ficha</th>
-  <th width="80px">Editar</th>
-  <th width="80px">Eliminar</th>
+  <th width="100px"></th>
 </tr>
 
 {% for i in presupuestos %}
@@ -112,13 +110,8 @@ Eliminar presupuesto
   <td>{{ i.nombre_cliente }}</td>
   <td>{{ i.empresa_cliente }}</td>
   <td>
-    <a width="" href="{% url 'upresupuestos:PresupuestoDetail' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-file" ></a>
-  </td>
-  <td>
-    <a width="50" class="botonmodalDatosPersonales glyphicon glyphicon-edit" data-toggle="modal" data-target="#myModalDatosPersonales" data-opcion="editar/{{i.id}}" data-numero="{{i.id}}" style="cursor: pointer;"></a>
-  </td>
-  <td>
-    <a style="padding:0px 0px 8px 8px;" href="{% url 'upresupuestos:PresupuestoDelete' i.id %}?next={{request.get_full_path}}" onclick="" class="glyphicon glyphicon-remove"></a>
+    <a class="boton-de-accion glyphicon glyphicon-file"  data-placement="left" data-toggle="tooltip" href="{% url 'upresupuestos:PresupuestoDetail' i.id %}?next={{request.get_full_path}}" title="Ver ficha"></a>
+    <a class="boton-de-accion glyphicon glyphicon-remove"  data-placement="left" data-toggletooltip="tooltip" href="{% url 'upresupuestos:PresupuestoDelete' i.id %}?next={{request.get_full_path}}" onclick="" title="Eliminar registro"></a>
   </td>
 </tr>
 

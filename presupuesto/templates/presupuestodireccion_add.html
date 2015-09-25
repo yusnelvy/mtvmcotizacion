@@ -11,7 +11,8 @@
     {{form.as_p}}
 
   </div>
-  <button type="submit" class="btn btn-default">Registrar</button>
+  <button class="btn btn-default" type="submit">Registrar</button>
+  <button class="btn btn-default" data-dismiss="modal" onclick="cerrar();" type="button">Cancelar</button>
 </form>
 
 {% endblock formulario %}
@@ -52,7 +53,7 @@ $(document).ready(function(){
         var modalp = parent.document.getElementById('myModalDireccion');
         var divp = parent.document.getElementsByClassName("modal-backdrop");
         var bodyp = parent.document.getElementById('id_body');
-        var closep = parent.document.getElementById("btn-cerrardir");
+        var closep = parent.document.getElementById("btn-cerrarModal");
         var msj = parent.document.getElementById('msjGuardado');
         if (data.estatus=="ok"){
           $(closep).click();
@@ -60,7 +61,7 @@ $(document).ready(function(){
           $(msj).fadeIn();
           setTimeout(function() {
             parent.location.reload();
-          },400);
+          },1000);
         }
       }
     });

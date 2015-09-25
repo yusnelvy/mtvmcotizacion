@@ -4,11 +4,11 @@
 
             <div class="modal-body">
 
-                {% block validacion_modal %}<p>¿Realmente desea eliminar el registro: <strong id="">
+                {% block validacion_modal %}
 
-                    {{ object }}
+                <p>¿Realmente desea eliminar el registro: <strong id="">{{ object }}</strong>?</p>
 
-                </strong>?</p>{% endblock validacion_modal %}
+                {% endblock validacion_modal %}
 
             </div>
             <div class="modal-footer">
