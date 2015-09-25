@@ -327,3 +327,12 @@ que sobreescribe el diseño Bootstrap
   background: #5CB85C!important;
   opacity: .9;
 }
+
+.btn-blanco {
+  text-align: left!important;
+}
+
+.btn-blanco:hover {
+  background: #fff!important;
+  opacity: .9;
+}
