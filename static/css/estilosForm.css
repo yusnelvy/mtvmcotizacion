@@ -42,7 +42,7 @@
   margin: 4px 0 0!important;
   line-height: normal!important;
   box-sizing: border-box!important;
-  padding: 0px!important;
+  padding:0!important;
   font-family: inherit!important;
   font-size: inherit!important;
   font: inherit!important;
@@ -81,7 +81,7 @@ th {
 
 .divider-vertical-b,.divider-vertical {
   height: 50px;
-  margin: 0px 25px 0px 0px;
+  margin:0 25px00;
   border-right: 1px solid #e7e7e7;
 }
 
@@ -247,7 +247,7 @@ html,body {
 #copyright {
   width:90%;
   margin:auto auto;
-  bottom: 0px;
+  bottom:0;
   position: absolute;
 }
 

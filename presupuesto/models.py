@@ -3,7 +3,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from decimal import Decimal
-from datetime import datetime, date, time
+from datetime import time
 
 
 PISOS_CHOICES = (
@@ -201,50 +201,62 @@ class Presupuesto(models.Model):
         return self.dni
 
     def _get_cantidadobjmudanza(self):
+        """docstring"""
         return self.cantidad_muebles+self.cantidad_contenedores
     cantidadobjmudanza = property(_get_cantidadobjmudanza)
 
     def _get_cantidadpersonaterica(self):
+        """docstring"""
         return self.cantidad_vehiculo+self.cantidad_ayudante
     cantidadpersonaterica = property(_get_cantidadpersonaterica)
 
     def _get_cantidadpersonaoptima(self):
+        """docstring"""
         return self.cantidad_vehiculo+self.cantidad_ayudante + self.cantidad_ayudanteadicional
     cantidadpersonaoptima = property(_get_cantidadpersonaoptima)
 
     def _get_cantidadtotalayudante(self):
+        """docstring"""
         return self.cantidad_ayudante + self.cantidad_ayudanteadicional
     cantidadtotalayudante = property(_get_cantidadtotalayudante)
 
     def _get_porcentajeocupacionkg(self):
+        """docstring"""
         return round((self.total_peso_mudanza / self.total_capacidad_vehiculokg)*100, 2)
     porcentajeocupacionkg = property(_get_porcentajeocupacionkg)
 
     def _get_porcentajeocupacionvol(self):
+        """docstring"""
         return round((self.total_m3 / self.total_capacidad_vehiculovol)*100, 2)
     porcentajeocupacionvol = property(_get_porcentajeocupacionvol)
 
     def _get_maxrecursoteorico(self):
+        """docstring"""
         return max(self.monto_m3_inmueble, self.monto_amb_inmueble, self.monto_personateorica)
     maxrecursoteorico = property(_get_maxrecursoteorico)
 
     def _get_maxrecursooptimo(self):
+        """docstring"""
         return max(self.monto_m3_inmueble, self.monto_amb_inmueble, self.monto_personaoptima)
     maxrecursooptimo = property(_get_maxrecursooptimo)
 
     def _get_vehiculomonto(self):
+        """docstring"""
         return self.monto_vehiculo_hora + self.monto_vehiculo_recorrido
     vehiculomonto = property(_get_vehiculomonto)
 
     def _get_mudanzamontorevisadotoerico(self):
+        """docstring"""
         return self.monto_mudanza_hrsdirectas + self.monto_descuento_recargo
     mudanzamontorevisadotoerico = property(_get_mudanzamontorevisadotoerico)
 
     def _get_mudanzamontorevisadooptimo(self):
+        """docstring"""
         return self.monto_mundanza_hrsoptimas + self.monto_descuento_recargo
     mudanzamontorevisadooptimo = property(_get_mudanzamontorevisadooptimo)
 
     def _get_mudanzamontorevisado(self):
+        """docstring"""
         return self.monto_mundanza_revisada + self.monto_descuento_recargo
     mudanzamontorevisado = property(_get_mudanzamontorevisado)
 
@@ -291,6 +303,7 @@ class Presupuesto_direccion(models.Model):
 
 
 class Presupuesto_Detalle(models.Model):
+    """docstring"""
     presupuesto = models.ForeignKey(Presupuesto, on_delete=models.PROTECT)
     ambiente = models.CharField(max_length=100)
     mueble = models.CharField(max_length=100)
@@ -325,6 +338,7 @@ class Presupuesto_Detalle(models.Model):
 
 
 class Presupuesto_servicio(models.Model):
+    """docstring"""
     detalle_presupuesto = models.ForeignKey(Presupuesto_Detalle, on_delete=models.PROTECT)
     servicio = models.CharField(max_length=100)
     monto_servicio = models.DecimalField(max_digits=9, decimal_places=2,
@@ -344,7 +358,7 @@ class Presupuesto_servicio(models.Model):
                                           blank=True, default='0.00')
 
     def __str__(self):
-        return u' %s - %s' % (self.detalle_presupuesto, self.servicio)
+        return u' %s' % (self.servicio)
 
     class Meta:
         verbose_name = "Servicio"
@@ -353,6 +367,7 @@ class Presupuesto_servicio(models.Model):
 
 
 class DatosPrecargado(models.Model):
+    """docstring"""
     complejidadinmueble = models.CharField(max_length=100)
     factorcomplejidadinmueble = models.DecimalField(max_digits=5, decimal_places=2)
     valorambcompleinmueble = models.DecimalField(max_digits=9, decimal_places=2)

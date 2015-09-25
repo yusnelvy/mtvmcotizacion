@@ -1,11 +1,24 @@
 .controles {
   visibility: hidden;
-  cursor:pointer;
-  padding:0px 0px 5px 5px;
+  cursor: pointer;
+  padding: 0 0 5px 5px;
+}
+
+.boton-servicios {
+  font-size: 10px;
+  color: #777;
+  cursor: pointer;
+}
+
+.boton-de-accion {
+  visibility: hidden;
+  cursor: pointer;
+  padding: 0 0 5px 5px;
 }
 
 .tr-mueble:hover .controles,
-.tr-direccion:hover .controles {
+.tr-direccion:hover .controles,
+tr:hover .boton-de-accion {
   visibility: visible;
 }
 

@@ -56,6 +56,6 @@ a[title=Imprimir] {
 }
 
 .border-none, .panel-default {
-    border: 0px solid #fff !important;
+    border:0 solid #fff !important;
 }
 

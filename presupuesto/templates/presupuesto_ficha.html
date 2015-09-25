@@ -9,8 +9,6 @@
     <span class="glyphicon glyphicon-print"></span>
 </a>
 
-{% if presupuesto.estado != "Terminado cliente" and presupuesto.estado != "Terminado cotizador" %}
-
 <a aria-expanded="false" class="navbar-brand botonmodalFormulario" data-numero="{{ presupuesto.id }}" data-nombre="Editar detalle del presupuesto" data-opcion="{% url 'upresupuestos:PresupuestoUpdate' presupuesto.id %}" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Editar detalles del presupuesto">
     <span class="glyphicon glyphicon-edit"></span>
 </a>
@@ -23,8 +21,6 @@
 <a aria-expanded="false" class="navbar-brand botonmodalFormulario" data-nombre="Agregar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Agregar mueble">
     <span class="glyphicon glyphicon-lamp"></span>
 </a>
-
-{% endif %}
 
 {% endblock acceso_rapido %}
 
@@ -309,9 +305,6 @@
 
                 </td>
                 <td width="10%">
-
-                    {% if presupuesto.estado != "Terminado cliente" and presupuesto.estado != "Terminado cotizador" %}
-
                     <a class="botonmodalFormulario controles edit glyphicon glyphicon-edit" data-nombre="Editar dirección de origen" data-numero="{{ direc_origen.id }}"  data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_origen.id %}?next={{ request.get_full_path }}" data-target="#myModalFormulario"
                     data-toggle="modal" id="{{ direc_origen.id }}" data-toggletooltip="tooltip" title="Editar dirección de origen"></a>
 
@@ -326,9 +319,6 @@
                     {% endif %}
 
                     <a class="botonmodalEliminar controles glyphicon glyphicon-remove" data-nombre="Dirección de origen"  data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_origen.id %}?next={{ request.get_full_path }}" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" title="Eliminar dirección de origen"></a>
-
-                    {% endif %}
-
                 </td>
             </tr>
 
@@ -456,9 +446,6 @@
 
                 </td>
                 <td>
-
-                    {% if presupuesto.estado != "Terminado cliente" and presupuesto.estado != "Terminado cotizador" %}
-
                     <a class="botonmodalFormulario controles edit glyphicon glyphicon-edit" data-nombre="Editar dirección de destino" data-numero="{{ direc_destino.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_destino.id %}?next={{ request.get_full_path }}" data-target="#myModalFormulario" data-toggle="modal" id="{{ direc_destino.id }}" data-toggletooltip="tooltip" title="Editar dirección de destino"></a>
 
                     {% if forloop.first %}
@@ -472,9 +459,6 @@
                     {% endif %}
 
                     <a class="botonmodalEliminar controles glyphicon glyphicon-remove" data-nombre="Dirección de destino" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_destino.id %}?next={{ request.get_full_path }}" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" title="Eliminar dirección de destino"></a>
-
-                    {% endif %}
-
                 </td>
             </tr>
 
@@ -483,8 +467,6 @@
             {% endif %}
 
         </table>
-
-        {% if presupuesto.estado != "Terminado cliente" and presupuesto.estado != "Terminado cotizador" %}
 
         {% if direccion_origen %}
 
@@ -495,8 +477,6 @@
         {% if direccion_destino %}
 
         <a class="botonmodalFormulario btn btn-default hidden-print boton-almedio" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar dirección de destino">Agregar dirección de destino</a>
-
-        {% endif %}
 
         {% endif %}
 
@@ -573,11 +553,7 @@
 
                                         {% if forloop.first %}
 
-                                        {% if presupuesto.estado != "Terminado cliente" and presupuesto.estado != "Terminado cotizador" %}
-
-                                        <a class="hidden-print glyphicon glyphicon-remove botonmodalEliminar" data-nombre="{{ det_servivio.grouper }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioDelete' item.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" style="font-size:10px;color:#777;cursor:pointer;" title="Eliminar {{ det_servivio.grouper }}"></a>
-
-                                        {% endif %}
+                                        <a class="botonmodalEliminar boton-servicios glyphicon glyphicon-remove hidden-print " data-nombre="{{ det_servivio.grouper }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioDelete' item.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" title="Eliminar {{ det_servivio.grouper }}"></a>
 
                                         {% endif %}
 
@@ -591,30 +567,17 @@
                             </div>
                         </td>
                         <td>
-
-                            {% if presupuesto.estado != "Terminado cliente" and presupuesto.estado != "Terminado cotizador" %}
-
-                            <a class="controles glyphicon glyphicon-wrench botonmodalFormulario hidden-print" data-name="{{ mueble.mueble|lower }}" data-nombre="Agregar servicio al mueble {{ mueble.mueble|lower }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{ request.get_full_path }}&pre={{ mueble.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px 0px 5px 5px;" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
-
-                            {% endif %}
+                            <a class="controles glyphicon glyphicon-wrench botonmodalFormulario hidden-print" data-name="{{ mueble.mueble|lower }}" data-nombre="Agregar servicio al mueble {{ mueble.mueble|lower }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{ request.get_full_path }}&pre={{ mueble.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
 
                         </td>
                         <td>
 
-                            {% if presupuesto.estado != "Terminado cliente" and presupuesto.estado != "Terminado cotizador" %}
-
-                            <a class="controles botonmodalFormulario glyphicon glyphicon-edit hidden-print" data-nombre="Editar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleUpdate' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px 0px 5px 5px;" title="Editar {{ mueble.mueble|lower }}"></a>
-
-                            {% endif %}
+                            <a class="controles botonmodalFormulario glyphicon glyphicon-edit hidden-print" data-nombre="Editar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleUpdate' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Editar {{ mueble.mueble|lower }}"></a>
 
                         </td>
                         <td>
 
-                            {% if presupuesto.estado != "Terminado cliente" and presupuesto.estado != "Terminado cotizador" %}
-
-                            <a class="controles botonmodalEliminar glyphicon glyphicon-remove hidden-print" data-nombre="{{ mueble.mueble|lower }}" data-numero="{{ mueble.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleDelete' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px 0px 5px 5px;" title="Eliminar {{ mueble.mueble|lower }}"></a>
-
-                            {% endif %}
+                            <a class="controles botonmodalEliminar glyphicon glyphicon-remove hidden-print" data-nombre="{{ mueble.mueble|lower }}" data-numero="{{ mueble.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleDelete' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Eliminar {{ mueble.mueble|lower }}"></a>
 
                         </td>
                     </tr>
@@ -623,22 +586,20 @@
 
                     {% endfor %}
 
-                    {% if presupuesto.estado != "Terminado cliente" and presupuesto.estado != "Terminado cotizador" %}
-
                     <tr>
                         <td></td>
                         <td colspan="7">
-                            <a class="btn-addmueble botonmodalFormulario hidden-print" data-nombre="Agregar mueble" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble al ambiente {{ ambiente.ambiente }}">Agregar mueble</a>
+                            <a class="btn-addmueble botonmodalFormulario hidden-print" data-nombre="Agregar mueble" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble al ambiente {{ ambiente.ambiente }}">Agregar otro mueble a {{ ambiente.ambiente }}</a>
                         </td>
                     </tr>
-
-                    {% endif %}
-
                 </table>
             </div>
         </div>
 
         {% endfor %}
+
+        <br>
+        <a class="botonmodalFormulario btn btn-default hidden-print boton-almedio" data-nombre="Agregar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar mueble">Agregar mueble</a>
 
     </div>
 
