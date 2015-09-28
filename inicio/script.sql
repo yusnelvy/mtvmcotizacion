@@ -1750,7 +1750,7 @@ CREATE TABLE `presupuesto_presupuesto` (
   PRIMARY KEY (`id`),
   KEY `presupuesto_presupuesto_cotizador_id_25e7c2c5_fk_auth_user_id` (`cotizador_id`),
   CONSTRAINT `presupuesto_presupuesto_cotizador_id_25e7c2c5_fk_auth_user_id` FOREIGN KEY (`cotizador_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1798,7 +1798,7 @@ CREATE TABLE `presupuesto_presupuesto_detalle` (
   PRIMARY KEY (`id`),
   KEY `presupuest_presupuesto_id_37493617_fk_presupuesto_presupuesto_id` (`presupuesto_id`),
   CONSTRAINT `presupuest_presupuesto_id_37493617_fk_presupuesto_presupuesto_id` FOREIGN KEY (`presupuesto_id`) REFERENCES `presupuesto_presupuesto` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1843,7 +1843,7 @@ CREATE TABLE `presupuesto_presupuesto_direccion` (
   PRIMARY KEY (`id`),
   KEY `presupuest_presupuesto_id_17f2d8fb_fk_presupuesto_presupuesto_id` (`presupuesto_id`),
   CONSTRAINT `presupuest_presupuesto_id_17f2d8fb_fk_presupuesto_presupuesto_id` FOREIGN KEY (`presupuesto_id`) REFERENCES `presupuesto_presupuesto` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1879,7 +1879,7 @@ CREATE TABLE `presupuesto_presupuesto_servicio` (
   PRIMARY KEY (`id`),
   KEY `D5b6e2b09fa0a62e92d4a366351d756a` (`detalle_presupuesto_id`),
   CONSTRAINT `D5b6e2b09fa0a62e92d4a366351d756a` FOREIGN KEY (`detalle_presupuesto_id`) REFERENCES `presupuesto_presupuesto_detalle` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
