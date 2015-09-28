@@ -1633,3 +1633,13 @@ def update_presupuesto(request, pk):
     presupuesto = Presupuesto.objects.get(pk=pk)
 
     return(presupuesto)
+
+
+class PresupuestoFinalizadoCliente(View):
+    """Docstring"""
+
+    def get(self, request, *args, **kwargs):
+        cliente = 'buscar nombre del cliente con el pk' + self.pk
+        return render_to_response('presupuesto_finalizado_cliente.html', {
+            'cliente': cliente,
+        })
