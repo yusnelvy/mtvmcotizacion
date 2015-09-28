@@ -107,4 +107,7 @@ urlpatterns = patterns('',
                            name='DatosPrecargadoUpdate'),
                        url(r'^generar_pdf/$',
                            views.generar_pdf,
-                           name='pdf'),)
+                           name='pdf'),
+                       url(r'^finalizar_presupuesto/(?P<pk>\d+)/',
+                           presupuesto_finalizado_cliente.as_view(),
+                           name='presupuesto_finalizado_cliente'))

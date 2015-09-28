@@ -44,7 +44,7 @@
     </a>
 </li>
 <li class="linknav">
-    <a href="#direcciones">Direcciones
+    <a id="link_direcciones" href="#direcciones">Direcciones
 
         {% if direccion_origen and direccion_destino %}
 
@@ -470,13 +470,13 @@
 
         {% if direccion_origen %}
 
-        <a class="botonmodalFormulario btn btn-default hidden-print" data-nombre="Agregar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Origen&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar dirección de origen">Agregar dirección de origen</a>
+        <a class="botonmodalFormulario btn btn-default hidden-print" data-nombre="Agregar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Origen&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar dirección de origen">Agregar más direcciones de origen</a>
 
         {% endif %}
 
         {% if direccion_destino %}
 
-        <a class="botonmodalFormulario btn btn-default hidden-print boton-almedio" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar dirección de destino">Agregar dirección de destino</a>
+        <a class="botonmodalFormulario btn btn-default hidden-print boton-almedio" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar dirección de destino">Agregar más direcciones de destino</a>
 
         {% endif %}
 

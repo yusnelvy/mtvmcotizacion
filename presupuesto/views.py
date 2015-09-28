@@ -310,27 +310,27 @@ class PresupuestoDireccionView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
 
-        tipo_inmueble = Tipo_Inmueble.objects.get(id=request.POST['lista_tipoinmueble'])
-        ocupacidad_inmueble = Ocupacion.objects.get(id=request.POST['lista_ocupacion'])
-        orden = Presupuesto_direccion.objects.filter(presupuesto=request.POST['presupuesto'],
-                                                     tipo_direccion=request.POST['tipo_direccion']).count()
+        tipo_inmueble = Tipo_Inmueble.objects.get(id = request.POST['lista_tipoinmueble'])
+        ocupacidad_inmueble = Ocupacion.objects.get(id = request.POST['lista_ocupacion'])
+        orden = Presupuesto_direccion.objects.filter(presupuesto = request.POST['presupuesto'],
+                                                     tipo_direccion = request.POST['tipo_direccion']).count()
         if form.is_valid():
-            formResult = form.save(commit=False)
+            formResult = form.save(commit = False)
             formResult.tipo_inmueble = tipo_inmueble.tipo_inmueble
             formResult.ocupacidad_inmueble = ocupacidad_inmueble.descripcion
             formResult.valor_ocupacidad = ocupacidad_inmueble.valor
             formResult.orden = orden + 1
             formResult.save()
-            cantOrig = Presupuesto_direccion.objects.filter(presupuesto=request.POST['presupuesto'],
-                                                            tipo_direccion='Origen').count()
-            cantDest = Presupuesto_direccion.objects.filter(presupuesto=request.POST['presupuesto'],
-                                                            tipo_direccion='Destino').count()
+            cantOrig = Presupuesto_direccion.objects.filter(presupuesto = request.POST['presupuesto'],
+                                                            tipo_direccion = 'Origen').count()
+            cantDest = Presupuesto_direccion.objects.filter(presupuesto = request.POST['presupuesto'],
+                                                            tipo_direccion = 'Destino').count()
             if (cantOrig > 0 and cantDest) > 0:
-                updatepresu = Presupuesto.objects.filter(pk=request.POST['presupuesto'])
-                updatepresu.update(estado='Preparado')
+                updatepresu = Presupuesto.objects.filter(pk = request.POST['presupuesto'])
+                updatepresu.update(estado = 'Preparado')
 
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
-            return JsonResponse(mensaje, safe=False)
+            return JsonResponse(mensaje, safe = False)
 
         return render(request, self.template_name, {'form': form})
 
