@@ -40,15 +40,17 @@
 
 <script src="/static/js/presupuestoForm/preDireccion.js"></script>
 <script type="text/javascript">
-$(document).ready(function () {
-  $('#myform').submit(function () {
+
+
+$(document).ready(function() {
+  $('#myform').submit(function() {
     var action = "{% url 'upresupuestos:PresupuestoDireccionView' %}";
     var that = $(this);
-    $.ajax({
+    $.ajax( {
       url: action,
       type: 'POST',
-      data: that.serialize()
-      ,success: function (data) {
+      data: that.serialize(),
+      success: function(data) {
         var modalp = parent.document.getElementById('myModalDireccion');
         var divp = parent.document.getElementsByClassName("modal-backdrop");
         var bodyp = parent.document.getElementById('id_body');
@@ -60,27 +62,27 @@ $(document).ready(function () {
           $(msj).fadeIn();
           setTimeout(function() {
             parent.location.reload();
-          },1000);
+          }, 1000);
         }
       }
     });
     return false;
   });
 });
+
 function refresh () {
   var tipo_direccion = $("#id_tipo_direccion").val();
   var id_presupuesto = $("#id_presupuesto").val();
   var urldir = "";
   var iddiv = "";
-
   if (tipo_direccion == "Origen") {
-    urldir = "/presupuesto/ficha/direccionorigen/"+ id_presupuesto;
+    urldir = "/presupuesto/ficha/direccionorigen/" + id_presupuesto;
     iddiv = 'direccion-origen';
-  }else if(tipo_direccion == "Destino") {
-    urldir = "/presupuesto/ficha/direcciondestino/"+ id_presupuesto;
+  } else if(tipo_direccion == "Destino") {
+    urldir = "/presupuesto/ficha/direcciondestino/" + id_presupuesto;
     iddiv = 'direccion-destino';
   }
-  $.ajax({
+  $.ajax( {
     url: urldir,
     success: function (data) {
       var divs = parent.document.getElementById(iddiv);
