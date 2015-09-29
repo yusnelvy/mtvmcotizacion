@@ -92,8 +92,8 @@
 }
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default {
-  color: #000;
-  background: #eeeeee;
+  color: #fff;
+  background: #337ab7;
 }
 .bootstrap-switch .bootstrap-switch-label {
   text-align: center;

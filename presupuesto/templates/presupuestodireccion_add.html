@@ -19,7 +19,6 @@
 
 {% block style %}
 
-
 <style>
 
 {% if form.tipo_direccion.value = "Destino" %}
@@ -41,21 +40,21 @@
 
 <script src="/static/js/presupuestoForm/preDireccion.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-  $('#myform').submit(function(){
+$(document).ready(function () {
+  $('#myform').submit(function () {
     var action = "{% url 'upresupuestos:PresupuestoDireccionView' %}";
     var that = $(this);
     $.ajax({
       url: action,
       type: 'POST',
       data: that.serialize()
-      ,success: function(data){
+      ,success: function (data) {
         var modalp = parent.document.getElementById('myModalDireccion');
         var divp = parent.document.getElementsByClassName("modal-backdrop");
         var bodyp = parent.document.getElementById('id_body');
         var closep = parent.document.getElementById("btn-cerrarModal");
         var msj = parent.document.getElementById('msjGuardado');
-        if (data.estatus=="ok"){
+        if (data.estatus == "ok") {
           $(closep).click();
           $(msj).text('Guardado con exito');
           $(msj).fadeIn();
@@ -68,73 +67,29 @@ $(document).ready(function(){
     return false;
   });
 });
-function refresh() {
+function refresh () {
   var tipo_direccion = $("#id_tipo_direccion").val();
   var id_presupuesto = $("#id_presupuesto").val();
   var urldir = "";
   var iddiv = "";
 
-  if (tipo_direccion=="Origen"){
+  if (tipo_direccion == "Origen") {
     urldir = "/presupuesto/ficha/direccionorigen/"+ id_presupuesto;
     iddiv = 'direccion-origen';
-  }else if(tipo_direccion=="Destino"){
+  }else if(tipo_direccion == "Destino") {
     urldir = "/presupuesto/ficha/direcciondestino/"+ id_presupuesto;
     iddiv = 'direccion-destino';
   }
   $.ajax({
     url: urldir,
-    success: function(data) {
+    success: function (data) {
       var divs = parent.document.getElementById(iddiv);
       $(divs).html(data);
     }
   });
 }
-function showContent() {
-  element = document.getElementById("id_pisos_ascensor");
-  pisos = $('input:radio[name=pisos_escalera]:checked').val();
-  check = document.getElementById("id_ascensor");
-  label = $('label[for=id_pisos_ascensor_0]');
-  if (check.checked) {
-    $(element).css('display','block');
-    $(label).css('display','block');
-    if (pisos == "0"){
-      $("input[name=pisos_ascensor][value=0]").attr('checked', 'checked');
-      radioColorBlue('pisos_ascensor');
-    }else{
-      $("input[name=pisos_ascensor][value=" + pisos + "]").click();
-      radioColorBlue('pisos_ascensor');
-    }
-  }
-  else {
-    $("input[name=pisos_ascensor][value=0]").click();
-    $(element).css('display','none');
-    $(label).css('display','none');
-  }
-}
-$(document.getElementById("id_pisos_ascensor_servicio")).css('display','none');
-$('label[for=id_pisos_ascensor_servicio_0]').css('display','none');
-function showContent2() {
-  element = document.getElementById("id_pisos_ascensor_servicio");
-  pisos = $('input:radio[name=pisos_escalera]:checked').val();
-  check = document.getElementById("id_ascensor_servicio");
-  label = $('label[for=id_pisos_ascensor_servicio_0]');
-  if (check.checked) {
-    $(element).css('display','block');
-    $(label).css('display','block');
-    if (pisos == "0"){
-      $("input[name=pisos_ascensor_servicio][value=0]").attr('checked', 'checked');
-      radioColorBlue('pisos_ascensor_servicio');
-    }else{
-      $("input[name=pisos_ascensor_servicio][value=" + pisos + "]").click();
-      radioColorBlue('pisos_ascensor_servicio');
-    }
-  }
-  else {
-    $("input[name=pisos_ascensor_servicio][value=0]").click();
-    $(element).css('display','none');
-    $(label).css('display','none');
-  }
-}
+showContent();
+showContent2();
 </script>
 
 {% endblock js_form %}
