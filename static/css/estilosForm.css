@@ -81,7 +81,7 @@ th {
 
 .divider-vertical-b,.divider-vertical {
   height: 50px;
-  margin:0 25px00;
+  margin:0 25px 0 0;
   border-right: 1px solid #e7e7e7;
 }
 
@@ -335,4 +335,12 @@ que sobreescribe el diseño Bootstrap
 .btn-blanco:hover {
   background: #fff!important;
   opacity: .9;
+}
+
+.btn-modalEliminar {
+  float: left!important;
+}
+
+.botonmodalEliminar {
+  cursor: pointer;
 }

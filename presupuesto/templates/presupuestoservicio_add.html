@@ -13,7 +13,7 @@
   </div>
   <span id="seleccion"></span>
   <button class="btn btn-default btn-registrar" type="submit">Registrar</button>
-  <button class="btn btn-default" data-dismiss="modal" onclick="cerrar();" type="button">Cancelar</button>
+  <button class="btn btn-default" data-dismiss="modal" id="btn-cancelar" type="button">Cancelar</button>
 </form>
 <div class="alert alert-danger" id="seleccionServicio" style="display:none;" role="alert"></div>
 
@@ -33,27 +33,27 @@ setTimeout(function() {
 },500);
 $('#id_lista_servicio').multiSelect(
 {
-  afterSelect: function(values){
+  afterSelect: function(values) {
     $("#id_servicio").val(values);
   },
 });
 $(document).ready(function() {
-  $('#myform').submit(function(){
-    if ($('#id_lista_servicio').val() == null){
+  $('#myform').submit(function() {
+    if ($('#id_lista_servicio').val() == null) {
       $("#seleccionServicio").text('Seleccione un servicio');
       $("#seleccionServicio").fadeIn();
       setTimeout(function() {
         $("#seleccionServicio").fadeOut();
-      },3000);
+      }, 3000);
       return false;
-    }else{
+    }else {
       var action = "{% url 'upresupuestos:PresupuestoServicioView' %}";
       var that = $(this);
       $.ajax({
         url: action,
         type: 'POST',
         data: that.serialize()
-        ,success: function(data){
+        ,success: function(data) {
           var modalp = parent.document.getElementById('myModalServicio');
           var divp = parent.document.getElementsByClassName("modal-backdrop");
           var bodyp = parent.document.getElementById('id_body');
@@ -66,13 +66,13 @@ $(document).ready(function() {
             $(guardar).fadeIn();
             setTimeout(function() {
               parent.location.reload();
-            },1000);
-          }else{
+            }, 1000);
+          }else {
             $("#seleccionServicio").text(data.msj);
             $("#seleccionServicio").fadeIn();
             setTimeout(function() {
               $("#seleccionServicio").fadeOut();
-            },3000);
+            }, 3000);
           }
         },
         error: function (ajaxContext) {
@@ -90,11 +90,18 @@ function refresh() {
   $.ajax({
     url: "/presupuesto/detalle/servicio/"+ id_mueble,
     success: function(data) {
-      var divs = parent.document.getElementById('listservi'+id_mueble);
+      var divs = parent.document.getElementById('listservi' + id_mueble);
       $(divs).html(data);
     }
   });
 }
+
+$('#btn-cancelar').click(function() {
+  cerrarModal(
+    parent.document.getElementById('btn-cerrarModal'),
+    parent.document.getElementById('msjEliminado')
+    );
+});
 </script>
 
 {% endblock js_form %}

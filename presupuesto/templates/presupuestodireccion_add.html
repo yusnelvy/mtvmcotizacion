@@ -12,13 +12,12 @@
 
   </div>
   <button class="btn btn-default" type="submit">Registrar</button>
-  <button class="btn btn-default" data-dismiss="modal" onclick="cerrar();" type="button">Cancelar</button>
+  <button class="btn btn-default" data-dismiss="modal" id="btn-cancelar" type="button">Cancelar</button>
 </form>
 
 {% endblock formulario %}
 
 {% block style %}
-
 
 <style>
 
@@ -41,7 +40,6 @@
 
 <script src="/static/js/presupuestoForm/preDireccion.js"></script>
 <script type="text/javascript">
-
 $(document).ready(function() {
   $('#myform').submit(function() {
     var action = "{% url 'upresupuestos:PresupuestoDireccionView' %}";
@@ -70,7 +68,7 @@ $(document).ready(function() {
   });
 });
 
-function refresh() {
+function refresh () {
   var tipo_direccion = $("#id_tipo_direccion").val();
   var id_presupuesto = $("#id_presupuesto").val();
   var urldir = "";
@@ -84,62 +82,18 @@ function refresh() {
   }
   $.ajax( {
     url: urldir,
-    success: function(data) {
+    success: function (data) {
       var divs = parent.document.getElementById(iddiv);
       $(divs).html(data);
     }
   });
 }
 
-function showContent() {
-  element = document.getElementById("id_pisos_ascensor");
-  pisos = $('input:radio[name=pisos_escalera]:checked').val();
-  check = document.getElementById("id_ascensor");
-  label = $('label[for=id_pisos_ascensor_0]');
-  if (check.checked) {
-    $(element).css('display', 'block');
-    $(label).css('display', 'block');
-    if (pisos == "0") {
-      $("input[name=pisos_ascensor][value=0]").attr('checked', 'checked');
-      radioColorBlue('pisos_ascensor');
-    } else {
-      $("input[name=pisos_ascensor][value=" + pisos + "]").click();
-      radioColorBlue('pisos_ascensor');
-    }
-  }
-  else {
-    $("input[name=pisos_ascensor][value=0]").click();
-    $(element).css('display', 'none');
-    $(label).css('display', 'none');
-  }
-}
-
-$(document.getElementById("id_pisos_ascensor_servicio")).css('display','none');
-
-$('label[for=id_pisos_ascensor_servicio_0]').css('display','none');
-
-function showContent2() {
-  element = document.getElementById("id_pisos_ascensor_servicio");
-  pisos = $('input:radio[name=pisos_escalera]:checked').val();
-  check = document.getElementById("id_ascensor_servicio");
-  label = $('label[for=id_pisos_ascensor_servicio_0]');
-  if (check.checked) {
-    $(element).css('display', 'block');
-    $(label).css('display', 'block');
-    if (pisos == "0") {
-      $("input[name=pisos_ascensor_servicio][value=0]").attr('checked', 'checked');
-      radioColorBlue('pisos_ascensor_servicio');
-    } else {
-      $("input[name=pisos_ascensor_servicio][value=" + pisos + "]").click();
-      radioColorBlue('pisos_ascensor_servicio');
-    }
-  }
-  else {
-    $("input[name=pisos_ascensor_servicio][value=0]").click();
-    $(element).css('display', 'none');
-    $(label).css('display', 'none');
-  }
-}
+$('#btn-cancelar').click(function() {
+  cerrarModal(parent.document.getElementById('btn-cerrarModal'),
+    parent.document.getElementById('msjEliminado')
+    );
+});
 </script>
 
 {% endblock js_form %}

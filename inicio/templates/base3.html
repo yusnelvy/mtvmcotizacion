@@ -13,6 +13,7 @@
     <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/fuentes/style.css">
     <link rel="stylesheet" href="/static/css/presupuestoFicha/preFicha.css">
+    <link rel="stylesheet" href="/static/css/presupuestoForm/preRevisar.css">
     <link rel="stylesheet" type="text/css" href="/static/css/imprimir.css" media="print" />
     <link rel="stylesheet" href="/static/css/jquery-ui.css">
     <script src="/static/jquery/jquery-2.1.4.js"></script>
@@ -113,6 +114,8 @@
             </footer>
         </div>
     </div>
+
+    {% include "modalEliminar.html" %}
 
     {% block script %}{% endblock script %}
 

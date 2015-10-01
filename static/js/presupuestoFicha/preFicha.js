@@ -1,23 +1,12 @@
 //Ajusta el tamaño de un iframe al de su contenido interior para evitar scroll
-function autofitIframe(id) {
+function autofitIframe (id) {
+    alert(id);
     if (!window.opera && document.all && document.getElementById) {
         id.style.height = id.contentWindow.document.body.scrollHeight;
     } else if(document.getElementById) {
         id.style.height = id.contentDocument.body.scrollHeight + "px";
     }
 }
-
-window.onload = cerrar;
-
-function cerrar() {
-    $("#cargar").animate({"opacity" : "0"}, 1000, function() {
-        $("#cargar").css("display", "none");
-    });
-}
-
-$("#carga").click(function() {
-    cerrar();
-});
 
 $(".resumenPresupuesto").on('click', function(evento2) {
     evento2.preventDefault();
@@ -28,16 +17,6 @@ $(".resumenPresupuesto").on('click', function(evento2) {
     setTimeout(function() {
         window.location = opcion;
     }, 500);
-});
-
-$(".botonmodalEliminar").on('click', function(evento) {
-    evento.preventDefault();
-    var opcion = $(this).data('opcion');
-    var numero = $(this).data('numero');
-    var nombre = $(this).data('nombre');
-    $('.id_opcionEliminar').attr('src', opcion);
-    $('.id_opcionEliminar').attr('id', numero);
-    $('.nombreEliminar').text(nombre);
 });
 
 $(".botonmodalFormulario").on('click', function(even) {
@@ -82,6 +61,7 @@ $(document).ready(function() {
                 scrollTop: $(strAncla).offset().top - 70
             }, 1000);
         });
+
         $(".botonOrden").on('click', function() {
             var numero = $(this).data('numero');
             var action = $(this).data('opcion');

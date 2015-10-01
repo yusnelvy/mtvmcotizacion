@@ -162,7 +162,7 @@ class PresupuestoDireccionForm(ModelForm):
                     }),
             'pisos_escalera': RadioSelect(
                 attrs={
-                    'class': 'radioselect', 'onclick': 'radioColorBlue(name)'
+                    'class': 'radioselect', 'onclick': 'radioColorBlue(name);'
                     }),
             'total_m2': Select(
                 attrs={

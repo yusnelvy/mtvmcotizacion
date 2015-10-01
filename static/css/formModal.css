@@ -1,0 +1,13 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.msj {
+  position: fixed;
+  width: 400px;
+  top:150px;
+  left: 80px;
+  text-align: center;
+  z-index:6;
+}

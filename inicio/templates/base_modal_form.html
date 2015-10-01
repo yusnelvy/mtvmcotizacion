@@ -2,12 +2,8 @@
 <link rel="stylesheet" href="/static/css/thema-ui.css">
 <link rel="stylesheet" href="/static/css/presupuestoForm/preBuscador.css">
 <link href="/static/css/estilosForm.css" rel="stylesheet">
+<link href="/static/css/formModal.css" rel="stylesheet">
 <link href="/static/css/bootstrap-switch.css" rel="stylesheet">
-<style>
-body {
-    padding: 0;
-}
-</style>
 
 {% block style %}{% endblock style %}
 
@@ -23,5 +19,6 @@ body {
     {% block formulario %}{% endblock formulario %}
 
 </div>
+<div class="alert alert-danger msj" id="msjError" style="display:none;" role="alert">Eliminado</div>
 
 {% block js_form %}{% endblock js_form %}

@@ -22,7 +22,7 @@ setTimeout(function () {
 
     </div>
     <button class="btn btn-default" type="submit">Guardar</button>
-    <button class="btn btn-default" data-dismiss="modal" onclick="cerrar();" type="button">Cancelar</button>
+    <button class="btn btn-default" data-dismiss="modal" id="btn-cancelar" type="button">Cancelar</button>
 </form>
 
 {% endblock formulario %}
@@ -35,7 +35,6 @@ setTimeout(function () {
 
 {% block js_form %}
 
-<script src="/static/js/presupuestoForm/preDatosPersonales.js"></script>
 <script type="text/javascript">
 $('#myform').submit(function(){
     var id = $(parent.document.getElementsByClassName("id_opcionFormulario")).attr('id');
@@ -83,6 +82,12 @@ function asyncChange()
         }
     }
 }
+
+$('#btn-cancelar').click(function() {
+  cerrarModal(parent.document.getElementById('btn-cerrarModal'),
+    parent.document.getElementById('msjEliminado')
+    );
+});
 </script>
 
 {% endblock js_form %}
