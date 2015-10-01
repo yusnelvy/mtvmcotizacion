@@ -1,0 +1,97 @@
+{% extends 'base_ficha.html' %}
+
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'umuebles:lista_mueble' %}">Muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_tipo_mueble' %}">Tipo de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_forma_mueble' %}">Formas de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_tamano' %}">Tipos de tamaños</a></li>
+<li class="linknav"><a href="{% url 'umuebles:buscar_tamano_mueble' 0 %}">Tamaños de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_densidad' %}">Niveles de densidad</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_ocupacion' %}">Niveles de ocupación</a></li>
+<li class="linknav"><a href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}">Muebles por ambiente</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'umuebles:lista_mueble' %}">Muebles</a></li>
+<li><a href="{% url 'umuebles:lista_tipo_mueble' %}">Tipo de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_forma_mueble' %}">Formas de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_tamano' %}">Tipos de tamaños</a></li>
+<li><a href="{% url 'umuebles:buscar_tamano_mueble' 0 %}">Tamaños de muebles</a></li>
+<li><a href="{% url 'umuebles:lista_densidad' %}">Niveles de densidad</a></li>
+<li><a href="{% url 'umuebles:lista_ocupacion' %}">Niveles de ocupación</a></li>
+<li><a href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}">Muebles por ambiente</a></li>
+
+{% endblock footerLink %}
+
+{% block titulo %}
+
+<title>Mueble</title>
+
+{% endblock titulo %}
+
+{% block titulo_ficha %}
+
+<h1>{{ object.mueble }}</h1>
+
+{% endblock titulo_ficha %}
+
+{% block content1 %}
+
+<table class="table table-hover table-bordered">
+  <tr>
+    <td>Tipo de mueble:</td>
+    <td>{{ object.tipo_mueble }}</td>
+  </tr>
+  <tr>
+    <td>Forma del mueble:</td>
+    <td>{{ object.forma }}</td>
+  </tr>
+  <tr>
+    <td>Nivel de ocupación típica:</td>
+    <td>{{ object.ocupacion }}</td>
+  </tr>
+  <tr>
+    <td>% de capacidad interna:</td>
+    <td>{{ object.capacidad }}</td>
+  </tr>
+  <tr>
+    <td colspan="2">{{ object.trasladable|yesno:"Mueble trasladable,Mueble no trasladable" }}</td>
+  </tr>
+  <tr>
+    <td colspan="2">{{ object.apilable|yesno:"Mueble apiladable,Mueble no apiladable" }}</td>
+  </tr>
+  <tr>
+    <td colspan="2">{{ object.capacidad_carga|yesno:"Puede soportar objetos pesados,No puede soportar objetos pesados" }}</td>
+  </tr>
+  <tr>
+    <td colspan="2">{{ object.capacidad_interna|yesno:"Puede contener objetos en su interior,No puede contener objetos en su interior" }}</td>
+  </tr>
+</table>
+
+
+
+
+
+
+
+
+{% endblock content1 %}
+
+{% block content2 %}
+
+
+
+{% endblock content2 %}
+
+{% block ayuda %}
+
+<div class="">
+  <p>Los <strong>Muebles</strong> serán los objetos que se verán afectados durante una mudanza, algunos de ellos recibiendo servicios, otros almacenando contenidos.</p>
+  <p>Los <strong>Muebles</strong>, durante una mudanza, estarán asociados a un <strong>Ambiente</strong> de origen, y podrán ser trasladables o no. En caso de no ser trasladables, el único sentido de registrarlos consiste en la identificación de los <strong>Contenidos</strong> que mantienen, como puede ser el caso de los <i>muebles de cocina empotrada</i> o los <i>armarios empotrados</i> que generarán <strong>Contenedores</strong> pero ellos mismos no formarán parte de la mudanza.</p>
+  <p>Los muebles deben contar con un equilibrio entre lo general y lo específico, de manera que pueda estandarizarse la inmensa diversidad de posibilidades que se encuentra en el mercado, en solo unos pocos <i>muebles representativos</i> del resto.</p>
+</div>
+
+{% endblock ayuda %}

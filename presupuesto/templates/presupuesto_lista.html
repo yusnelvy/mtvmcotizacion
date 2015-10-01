@@ -98,7 +98,8 @@ Eliminar presupuesto
   <th width="100px">DNI</th>
   <th>Nombre del solicitante</th>
   <th>Empresa</th>
-  <th width="100px"></th>
+  <th width="80px">Ficha</th>
+  <th width="80px">Eliminar</th>
 </tr>
 
 {% for i in presupuestos %}
@@ -110,8 +111,10 @@ Eliminar presupuesto
   <td>{{ i.nombre_cliente }}</td>
   <td>{{ i.empresa_cliente }}</td>
   <td>
-    <a class="boton-de-accion glyphicon glyphicon-file"  data-placement="left" data-toggle="tooltip" href="{% url 'upresupuestos:PresupuestoDetail' i.id %}?next={{request.get_full_path}}" title="Ver ficha"></a>
-    <a class="boton-de-accion glyphicon glyphicon-remove"  data-placement="left" data-toggletooltip="tooltip" href="{% url 'upresupuestos:PresupuestoDelete' i.id %}?next={{request.get_full_path}}" onclick="" title="Eliminar registro"></a>
+    <a class="glyphicon glyphicon-file"  data-placement="left" data-toggle="tooltip" href="{% url 'upresupuestos:PresupuestoDetail' i.id %}?next={{request.get_full_path}}" title="Ver ficha"></a>
+  </td>
+  <td>
+    <a class="glyphicon glyphicon-remove"  data-placement="left" data-toggletooltip="tooltip" href="{% url 'upresupuestos:PresupuestoDelete' i.id %}?next={{request.get_full_path}}" onclick="" title="Eliminar registro"></a>
   </td>
 </tr>
 

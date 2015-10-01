@@ -1,3 +1,5 @@
+"""docstring"""
+
 from django.shortcuts import render, render_to_response
 from mueble.models import Tipo_Mueble, Ocupacion,\
     Forma_Mueble, Mueble, Tamano, Tamano_Mueble, \
@@ -14,6 +16,7 @@ import django.db
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
+from django.views.generic.detail import DetailView
 from django.db.models import Count
 
 
@@ -825,3 +828,14 @@ def edit_muebleambiente(request, pk):
     return render_to_response('muebleambiente_edit.html',
                               {'form_edit_muebleambiente': form_edit_muebleambiente, 'create': False},
                               context_instance=RequestContext(request))
+
+
+class FichaMueble(DetailView):
+    """docstring for ficha_mueble"""
+    model = Mueble
+    context_object_name = "mueble"
+    template_name = 'mueble_ficha.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(FichaMueble, self).get_context_data(**kwargs)
+        return context

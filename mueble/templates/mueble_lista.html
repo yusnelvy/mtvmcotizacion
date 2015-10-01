@@ -5,7 +5,7 @@
 <li class="linknav"><a href="{% url 'umuebles:lista_tipo_mueble' %}">Tipo de muebles</a></li>
 <li class="linknav"><a href="{% url 'umuebles:lista_forma_mueble' %}">Formas de muebles</a></li>
 <li class="linknav"><a href="{% url 'umuebles:lista_tamano' %}">Tipos de tamaños</a></li>
-<li class="linknav"><a href="../tamano_mueble/0/">Tamaños de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:buscar_tamano_mueble' 0 %}">Tamaños de muebles</a></li>
 <li class="linknav"><a href="{% url 'umuebles:lista_densidad' %}">Niveles de densidad</a></li>
 <li class="linknav"><a href="{% url 'umuebles:lista_ocupacion' %}">Niveles de ocupación</a></li>
 <li class="linknav"><a href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}">Muebles por ambiente</a></li>
@@ -17,7 +17,7 @@
 <li><a href="{% url 'umuebles:lista_tipo_mueble' %}">Tipo de muebles</a></li>
 <li><a href="{% url 'umuebles:lista_forma_mueble' %}">Formas de muebles</a></li>
 <li><a href="{% url 'umuebles:lista_tamano' %}">Tipos de tamaños</a></li>
-<li><a href="../tamano_mueble/0/">Tamaños de muebles</a></li>
+<li><a href="{% url 'umuebles:buscar_tamano_mueble' 0 %}">Tamaños de muebles</a></li>
 <li><a href="{% url 'umuebles:lista_densidad' %}">Niveles de densidad</a></li>
 <li><a href="{% url 'umuebles:lista_ocupacion' %}">Niveles de ocupación</a></li>
 <li><a href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}">Muebles por ambiente</a></li>
@@ -109,6 +109,7 @@ Eliminar mueble
   <th>Tipo de mueble</th>
   <th>Forma</th>
   <th>Trasladable</th>
+  <th width="80px">Ficha</th>
   <th width="80px">Editar</th>
   <th width="80px">Eliminar</th>
 </tr>
@@ -120,6 +121,9 @@ Eliminar mueble
   <td>{{ i.tipo_mueble }}</td>
   <td>{{ i.forma }}</td>
   <td>{{i.trasladable|yesno:"Si,No"}}</td>
+  <td>
+    <a title="Ver ficha" data-toggle="tooltip" data-placement="right" href="{% url 'umuebles:mueble_ficha' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-file"></a>
+  </td>
   <td>
     <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'umuebles:edit_mueble' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
   </td>
