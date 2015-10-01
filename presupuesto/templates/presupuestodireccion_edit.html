@@ -12,7 +12,7 @@
 
   </div>
   <button class="btn btn-default" type="submit">Guardar</button>
-  <button class="btn btn-default" data-dismiss="modal" onclick="cerrar();" type="button">Cancelar</button>
+  <button class="btn btn-default" data-dismiss="modal" id="btn-cancelar" type="button">Cancelar</button>
 </form>
 
 {% endblock formulario %}
@@ -40,26 +40,26 @@
 
 <script src="/static/js/presupuestoForm/preDireccion.js"></script>
 <script>
-$(document).ready(function(){
-  showContent();
-  showContent2();
-  $('#myform').submit(function(){
+$(document).ready(function() {
+  $('#myform').submit(function() {
     var id = $(parent.document.getElementsByClassName("id_opcionFormulario")).attr('id');
-    var action = "/presupuesto/direccion/"+id+"/";
+    var action = "/presupuesto/direccion/" + id + "/";
     var that = $(this)
     var closep = parent.document.getElementById("btn-cerrarModal");
     $.ajax({
       url: action,
       type: 'POST',
-      data: that.serialize()
-      ,success: function(data){
-        if (data.estatus=="ok"){
+      data: that.serialize(),
+      success: function (data) {
+        if (data.estatus=="ok") {
           var closep = parent.document.getElementById("btn-cerrarModal");
           var msj = parent.document.getElementById('msjGuardado');
           $(closep).click();
           $(msj).text('Guardado con éxito');
           $(msj).fadeIn();
-          setTimeout(function() {$(msj).fadeOut();}, 3000);
+          setTimeout(function() {
+            $(msj).fadeOut();
+          }, 3000);
           parent.location.reload();
         }
       }
@@ -67,12 +67,12 @@ $(document).ready(function(){
     return false;
   });
 });
+
 function refresh() {
   var tipo_direccion = $("#id_tipo_direccion").val();
   var id_presupuesto = $("#id_presupuesto").val();
   var urldir = "";
   var iddiv = "";
-
   if (tipo_direccion=="Origen"){
     urldir = "/presupuesto/ficha/direccionorigen/"+ id_presupuesto;
     iddiv = 'direccion-origen';
@@ -82,12 +82,19 @@ function refresh() {
   }
   $.ajax({
     url: urldir,
-    success: function(data) {
+    success: function (data) {
       var divs = parent.document.getElementById(iddiv);
       $(divs).html(data);
     }
   });
 }
+
+$('#btn-cancelar').click(function() {
+  cerrarModal(
+    parent.document.getElementById('btn-cerrarModal'),
+    parent.document.getElementById('msjEliminado')
+    );
+});
 </script>
 
 {% endblock js_form %}

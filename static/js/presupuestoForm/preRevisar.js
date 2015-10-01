@@ -22,6 +22,7 @@ $(document).ready(function () {
         $("#recargo").attr("checked","checked");
         descuentoRecargoj();
     }
+
     $('#basico').click(function(){
         radioColorBlue();
         checkBasico();
@@ -32,6 +33,7 @@ $(document).ready(function () {
         DisableRevisadoInput();
         descuentoRecargoj();
     });
+
     $('#optimizado').click(function(){
         radioColorBlue();
         checkOptimizado();
@@ -42,6 +44,7 @@ $(document).ready(function () {
         DisableRevisadoInput();
         descuentoRecargoj();
     });
+
     $('#revisado').click(function(){
         EnableRevisadoInput();
         radioColorBlue();
@@ -50,7 +53,9 @@ $(document).ready(function () {
         descuentoRecargoj();
         proponerMontoTotalRecurso();
     });
+
     proponerMontoTotalRecurso();
+
     $('#m3').click(function(){
         $('#id_monto_recursos_revisado').val(parseFloat($('#montom3inmueble').text().replace(',','')).toFixed(2));
         totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
@@ -60,6 +65,7 @@ $(document).ready(function () {
         $("#porc_descuento").val(porc_descuento);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
+
     $('#amb').click(function(){
         $('#id_monto_recursos_revisado').val(parseFloat($('#montoambinmueble').text().replace(',','')).toFixed(2));
         totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
@@ -69,6 +75,7 @@ $(document).ready(function () {
         $("#porc_descuento").val(porc_descuento);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
+
     $('#rrhh').click(function(){
         $('#id_monto_recursos_revisado').val(parseFloat($('#montopersonateorica').text().replace(',','')).toFixed(2));
         totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
@@ -78,6 +85,7 @@ $(document).ready(function () {
         $("#porc_descuento").val(porc_descuento);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
+
     $('#rrhha').click(function(){
         $('#id_monto_recursos_revisado').val(parseFloat($('#montopersonaoptima').text().replace(',','')).toFixed(2));
         totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
@@ -87,6 +95,7 @@ $(document).ready(function () {
         $("#porc_descuento").val(porc_descuento);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
+
     $('#descuento').click(function(){
         $('#id_descuento_recargo').val($('#descuento').val());
         totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#id_monto_descuento_recargo').val(), $('#id_descuento_recargo').val());
@@ -96,6 +105,7 @@ $(document).ready(function () {
         $("#mudanzamontorevisadooptimo").val(totalmudanzarevisadooptmo);
         $("#mudanzamontorevisadotoerico").val(totalmudanzarevisadobasico);
     });
+
     $('#recargo').click(function(){
         $('#id_descuento_recargo').val($('#recargo').val());
         totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#id_monto_descuento_recargo').val(), $('#id_descuento_recargo').val());
@@ -105,6 +115,7 @@ $(document).ready(function () {
         $("#mudanzamontorevisadooptimo").val(totalmudanzarevisadooptmo);
         $("#mudanzamontorevisadotoerico").val(totalmudanzarevisadobasico);
     });
+
     $('#id_monto_recursos_revisado').on('keyup', function(){
         limpiar('totalRecurso',0);
         radioTotal();
@@ -116,6 +127,7 @@ $(document).ready(function () {
         $("#porc_descuento").val(porc_descuento);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
+
     $('#id_monto_vehiculo_revisado').on('keyup', function(){
         totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
         porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuento_recargo").val());
@@ -124,6 +136,7 @@ $(document).ready(function () {
         $("#porc_descuento").val(porc_descuento);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
+
     $('#id_monto_servicios_revisado').on('keyup', function(){
         totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
         porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuento_recargo").val());
@@ -132,6 +145,7 @@ $(document).ready(function () {
         $("#porc_descuento").val(porc_descuento);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
+
     $('#id_monto_materiales_revisado').on('keyup', function(){
         totalmudanza = calcular_totalmudanza($("#id_monto_recursos_revisado").val(), $("#id_monto_vehiculo_revisado").val(), $("#id_monto_servicios_revisado").val(), $("#id_monto_materiales_revisado").val());
         porc_descuento = calcular_porcdescuentorecargo(totalmudanza, $("#id_monto_descuento_recargo").val());
@@ -140,18 +154,21 @@ $(document).ready(function () {
         $("#porc_descuento").val(porc_descuento);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
+
     $('#id_monto_descuento_recargo').on('keyup', function(){
         porc_descuento = calcular_porcdescuentorecargo($("#id_monto_mundanza_revisada").val(), $("#id_monto_descuento_recargo").val());
         totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#id_monto_descuento_recargo').val(), $('#id_descuento_recargo').val());
         $("#porc_descuento").val(porc_descuento);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
+
     $('#porc_descuento').on('keyup', function(){
         descuentorecargo = calcular_descuentorecargo($("#id_monto_mundanza_revisada").val(), $("#porc_descuento").val());
         totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), descuentorecargo, $('#id_descuento_recargo').val());
         $("#id_monto_descuento_recargo").val(descuentorecargo);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
+
     $('#descuento_recargooptimo').on('keyup', function(){
         porc_descuento = calcular_porcdescuentorecargo($("#id_monto_mundanza_revisada").val(), $("#descuento_recargooptimo").val());
         totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_recargooptimo').val(), $('#id_descuento_recargo').val());
@@ -161,6 +178,7 @@ $(document).ready(function () {
         $("#id_monto_descuento_recargo").val($('#descuento_recargooptimo').val());
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
+
     $('#porc_descuentooptimo').on('keyup', function(){
         descuentorecargo = calcular_descuentorecargo($("#id_monto_mundanza_revisada").val(), $("#porc_descuentooptimo").val());
         totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), descuentorecargo, $('#id_descuento_recargo').val());
@@ -170,6 +188,7 @@ $(document).ready(function () {
         $("#id_monto_descuento_recargo").val(descuentorecargo);
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
+
     $('#descuento_regargobasico').on('keyup', function(){
         porc_descuento = calcular_porcdescuentorecargo($("#id_monto_mundanza_revisada").val(), $("#descuento_regargobasico").val());
         totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), $('#descuento_regargobasico').val(), $('#id_descuento_recargo').val());
@@ -179,6 +198,7 @@ $(document).ready(function () {
         $("#id_monto_descuento_recargo").val($('#descuento_regargobasico').val());
         $("#mudanzamontorevisado").val(totalmudanzarevisado);
     });
+
     $('#porc_descuentobasico').on('keyup', function(){
         descuentorecargo = calcular_descuentorecargo($("#id_monto_mundanza_revisada").val(), $("#porc_descuentobasico").val());
         totalmudanzarevisado = calcular_totalmudanzarevisado($("#id_monto_mundanza_revisada").val(), descuentorecargo, $('#id_descuento_recargo').val());
@@ -198,6 +218,7 @@ function calcular_totalmudanza(valorrecurso,valorvehiculo,valorservicio,valormat
     }
     return resultado.toFixed(2);
 }
+
 function calcular_porcdescuentorecargo(totalmudanza, descuentorecargo){
     var resultado=0;
     resultado=(descuentorecargo/totalmudanza)*100;
@@ -206,6 +227,7 @@ function calcular_porcdescuentorecargo(totalmudanza, descuentorecargo){
     }
     return resultado.toFixed(2);
 }
+
 function calcular_descuentorecargo(totalmudanza, porcdescuentorecargo){
     var resultado=0;
     resultado=(totalmudanza*porcdescuentorecargo)/100;
@@ -214,6 +236,7 @@ function calcular_descuentorecargo(totalmudanza, porcdescuentorecargo){
     }
     return resultado.toFixed(2);
 }
+
 function calcular_totalmudanzarevisado(totalmudanza, descuentorecargo, operador){
     var resultado = 0;
     resultado=eval(parseFloat(totalmudanza) + operador +  parseFloat(descuentorecargo));
@@ -222,6 +245,7 @@ function calcular_totalmudanzarevisado(totalmudanza, descuentorecargo, operador)
     }
     return resultado.toFixed(2);
 }
+
 function proponerMontoTotalRecurso () {
     var montoRecursoRevisado = $('#id_monto_recursos_revisado').val();
     var montoM3 = parseFloat($('#montom3inmueble').text().replace(',','')).toFixed(2);
@@ -241,18 +265,22 @@ function proponerMontoTotalRecurso () {
         $('#montopersonaoptima').click();
     }
 }
+
 function radioColorBlue () {
     $("td:has(input[name=enviarPresupuesto])").removeClass('checkedBlue');
     $("td:has(input[name=enviarPresupuesto]:checked)").addClass('checkedBlue');
 }
+
 function radioTotal () {
     $("td:has(input[name=totalRecurso])").removeClass('checkedBlue');
     $("td:has(input[name=totalRecurso]:checked)").addClass('checkedBlue');
 }
+
 function descuentoRecargoj () {
     $("td:has(input[name=descuentoRecargo])").removeClass('checkedBlue');
     $("td:has(input[name=descuentoRecargo]:checked)").addClass('checkedBlue');
 }
+
 function limpiar (cual, accion) {
     var f = document.formulario;
     for (var i=0; i<f.elements.length; i++){
@@ -263,18 +291,21 @@ function limpiar (cual, accion) {
         }
     }
 }
+
 function radioBdisabled () {
     document.getElementById("m3").disabled = true;
     document.getElementById("amb").disabled = true;
     document.getElementById("rrhh").disabled = true;
     document.getElementById("rrhha").disabled = true;
 }
+
 function radioBenable () {
     document.getElementById("m3").disabled = false;
     document.getElementById("amb").disabled = false;
     document.getElementById("rrhh").disabled = false;
     document.getElementById("rrhha").disabled = false;
 }
+
 function RecargodisabledBasico () {
     document.getElementById("descuento_regargobasico").disabled = true;
     document.getElementById("porc_descuentobasico").disabled = true;
@@ -283,10 +314,12 @@ function RecargodisabledBasico () {
     document.getElementById("descuento_regargobasico").value = 0;
     document.getElementById("porc_descuentobasico").value = 0;
 }
+
 function RecargoEnableBasico ()  {
     document.getElementById("descuento_regargobasico").disabled = false;
     document.getElementById("porc_descuentobasico").disabled = false;
 }
+
 function RecargodisabledOptimo () {
     document.getElementById("descuento_recargooptimo").disabled = true;
     document.getElementById("porc_descuentooptimo").disabled = true;
@@ -295,12 +328,15 @@ function RecargodisabledOptimo () {
     document.getElementById("descuento_recargooptimo").value = 0;
     document.getElementById("porc_descuentooptimo").value = 0;
 }
+
 document.getElementById("descuento_recargooptimo").value = 0;
 document.getElementById("porc_descuentooptimo").value = 0;
+
 function RecargoEnableOptimo () {
     document.getElementById("descuento_recargooptimo").disabled = false;
     document.getElementById("porc_descuentooptimo").disabled = false;
 }
+
 function RecargodisabledRevisado () {
     document.getElementById("id_monto_descuento_recargo").disabled = true;
     document.getElementById("porc_descuento").disabled = true;
@@ -309,27 +345,33 @@ function RecargodisabledRevisado () {
     document.getElementById("id_monto_descuento_recargo").value = 0;
     document.getElementById("porc_descuento").value = 0;
 }
+
 function RecargoEnableRevisado () {
     document.getElementById("id_monto_descuento_recargo").disabled = false;
     document.getElementById("porc_descuento").disabled = false;
 }
+
 function DisableRevisadoInput () {
     document.getElementById("id_monto_recursos_revisado").disabled = true;
     document.getElementById("id_monto_vehiculo_revisado").disabled = true;
     document.getElementById("id_monto_servicios_revisado").disabled = true;
     document.getElementById("id_monto_materiales_revisado").disabled = true;
 }
+
 DisableRevisadoInput();
+
 function EnableRevisadoInput () {
     document.getElementById("id_monto_recursos_revisado").disabled = false;
     document.getElementById("id_monto_vehiculo_revisado").disabled = false;
     document.getElementById("id_monto_servicios_revisado").disabled = false;
     document.getElementById("id_monto_materiales_revisado").disabled = false;
 }
+
 $('#id_monto_recursos_revisado').css('background', 'none');
 $('#id_monto_vehiculo_revisado').css('background', 'none');
 $('#id_monto_servicios_revisado').css('background', 'none');
 $('#id_monto_materiales_revisado').css('background', 'none');
+
 function checkBasico () {
     $('.check').addClass('selec');
     $('.check2').removeClass('selec');
@@ -353,6 +395,7 @@ function checkBasico () {
     $('#descuento_regargobasico').removeClass('input-re-no-border');
     $('#porc_descuentobasico').removeClass('input-re-no-border');
 }
+
 function checkOptimizado () {
     $('.check').removeClass('selec');
     $('.check3').removeClass('selec');
@@ -376,6 +419,7 @@ function checkOptimizado () {
     $('#descuento_recargooptimo').removeClass('input-re-no-border');
     $('#porc_descuentooptimo').removeClass('input-re-no-border');
 }
+
 function checkRevisado () {
     $('.check3').addClass('selec');
     $('.check2').removeClass('selec');
@@ -399,6 +443,7 @@ function checkRevisado () {
     $('#mudanzamontorevisado').addClass('input-re-no-border');
     $('#id_monto_mundanza_revisada').addClass('input-re-no-border');
 }
+
 $('#myform').submit(function () {
     EnableRevisadoInput();
 });

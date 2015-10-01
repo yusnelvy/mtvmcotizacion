@@ -779,7 +779,7 @@ class PresupuestoDelete(DeleteView):
     def delete(self, request, *args, **kwargs):
         self.obj = self.get_object()
         self.obj.activo = 'Anulado'
-        self.obj.save()
+        self.obj.delete()
 
         mensaje = {'estatus': 'ok', 'msj': 'Registro eliminado'}
         return JsonResponse(mensaje, safe=False)

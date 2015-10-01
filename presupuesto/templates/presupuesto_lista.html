@@ -111,42 +111,14 @@ Eliminar presupuesto
   <td>{{ i.nombre_cliente }}</td>
   <td>{{ i.empresa_cliente }}</td>
   <td>
-    <a class="glyphicon glyphicon-file"  data-placement="left" data-toggle="tooltip" href="{% url 'upresupuestos:PresupuestoDetail' i.id %}?next={{request.get_full_path}}" title="Ver ficha"></a>
+    <a class="glyphicon glyphicon-file"  data-placement="left" data-toggletooltip="tooltip" href="{% url 'upresupuestos:PresupuestoDetail' i.id %}?next={{request.get_full_path}}" title="Ver ficha"></a>
   </td>
   <td>
-    <a class="glyphicon glyphicon-remove"  data-placement="left" data-toggletooltip="tooltip" href="{% url 'upresupuestos:PresupuestoDelete' i.id %}?next={{request.get_full_path}}" onclick="" title="Eliminar registro"></a>
+    <a class="glyphicon glyphicon-remove botonmodalEliminar" data-nombre="presupuesto N° {{ i.id }}" data-numero="{{ i.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDelete' i.id %}" data-target=".eliminar" data-toggle="modal" data-placement="left" data-toggletooltip="tooltip" title="Eliminar registro {{ i.id }}"></a>
   </td>
 </tr>
 
 {% endfor %}
-
-<!-- Modal editar datos personales-->
-<div class="modal fade" id="myModalDatosPersonales" tabindex="-1" role="dialog" aria-labelledby="myModalLabel44">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn-cerrarDatosPersonales">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title" id="myModalLabel4">Editar datos personales</h4>
-      </div>
-      <div class="modal-body">
-        <iframe class="id_opcionDatosPersonales" id="" src="" width="100%" height="340" scrolling="auto" frameborder="0" seamless>
-          <p>Texto alternativo para navegadores que no aceptan iframes.</p>
-        </iframe>
-      </div>
-    </div>
-  </div>
-</div>
-<script>
-$(".botonmodalDatosPersonales").on('click',function(even){
-  even.preventDefault();
-  var numero = $(this).data('numero');
-  var opcion = $(this).data('opcion');
-  $('.id_opcionDatosPersonales').attr('src', opcion);
-  $('.id_opcionDatosPersonales').attr('id', numero);
-});
-</script>
 
 {% endblock cuerpo_tabla %}
 

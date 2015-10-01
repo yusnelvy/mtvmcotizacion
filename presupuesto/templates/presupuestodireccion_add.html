@@ -12,7 +12,7 @@
 
   </div>
   <button class="btn btn-default" type="submit">Registrar</button>
-  <button class="btn btn-default" data-dismiss="modal" onclick="cerrar();" type="button">Cancelar</button>
+  <button class="btn btn-default" data-dismiss="modal" id="btn-cancelar" type="button">Cancelar</button>
 </form>
 
 {% endblock formulario %}
@@ -40,8 +40,6 @@
 
 <script src="/static/js/presupuestoForm/preDireccion.js"></script>
 <script type="text/javascript">
-
-
 $(document).ready(function() {
   $('#myform').submit(function() {
     var action = "{% url 'upresupuestos:PresupuestoDireccionView' %}";
@@ -90,8 +88,12 @@ function refresh () {
     }
   });
 }
-showContent();
-showContent2();
+
+$('#btn-cancelar').click(function() {
+  cerrarModal(parent.document.getElementById('btn-cerrarModal'),
+    parent.document.getElementById('msjEliminado')
+    );
+});
 </script>
 
 {% endblock js_form %}

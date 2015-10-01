@@ -8,7 +8,6 @@
 <a aria-expanded="false" class="navbar-brand" onclick="window.print();" role="button" title="Imprimir">
     <span class="glyphicon glyphicon-print"></span>
 </a>
-
 <a aria-expanded="false" class="navbar-brand botonmodalFormulario" data-numero="{{ presupuesto.id }}" data-nombre="Editar detalle del presupuesto" data-opcion="{% url 'upresupuestos:PresupuestoUpdate' presupuesto.id %}" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Editar detalles del presupuesto">
     <span class="glyphicon glyphicon-edit"></span>
 </a>
@@ -130,9 +129,17 @@
 
 {% endblock link_navegacion %}
 
-{% block titulo %}<title>Presupuesto</title>{% endblock titulo %}
+{% block titulo %}
 
-{% block col1 %}class="col-md-10"{% endblock col1 %}
+<title>Presupuesto</title>
+
+{% endblock titulo %}
+
+{% block col1 %}
+
+class="col-md-10"
+
+{% endblock col1 %}
 
 {% block content1 %}
 
@@ -164,13 +171,7 @@
             <td colspan="4"><b>Observaciones:</b> {{ presupuesto.comentario }}</td>
         </tr>
     </table>
-
-    {% if presupuesto.estado != "Terminado cliente" and presupuesto.estado != "Terminado cotizador" %}
-
     <a class="btn btn-default botonmodalFormulario hidden-print" data-numero="{{ presupuesto.id }}" data-nombre="Editar detalles del presupuesto" data-opcion="{% url 'upresupuestos:PresupuestoUpdate' presupuesto.id %}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Editar detalles del presupuesto">Editar detalles del presupuesto</a>
-
-    {% endif %}
-
 </div><!--Fin de Panel de Detalles del presupuesto-->
 <br>
 <div class="panel panel-color1" id="direcciones"><!--Panel de Direcciones-->
@@ -181,7 +182,10 @@
             {% if not direccion_origen %}
 
             <tr>
-                <td><a class="botonmodalFormulario btn btn-success hidden-print" data-nombre="Agregar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Origen&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar dirección de origen">Agregar dirección de origen</a></td>
+                <td>
+                    <a class="botonmodalFormulario btn btn-success hidden-print" data-nombre="Agregar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Origen&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar dirección de origen">Agregar dirección de origen
+                    </a>
+                </td>
             </tr>
 
             {% else %}
@@ -329,7 +333,10 @@
             {% if not direccion_destino %}
 
             <tr>
-                <td><a class="botonmodalFormulario btn btn-success hidden-print boton-almedio" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar dirección de destino">Agregar dirección de destino</a></td>
+                <td>
+                    <a class="botonmodalFormulario btn btn-success hidden-print boton-almedio" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar dirección de destino">Agregar dirección de destino
+                    </a>
+                </td>
             </tr>
 
             {% else %}
@@ -568,17 +575,12 @@
                         </td>
                         <td>
                             <a class="controles glyphicon glyphicon-wrench botonmodalFormulario hidden-print" data-name="{{ mueble.mueble|lower }}" data-nombre="Agregar servicio al mueble {{ mueble.mueble|lower }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{ request.get_full_path }}&pre={{ mueble.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
-
                         </td>
                         <td>
-
                             <a class="controles botonmodalFormulario glyphicon glyphicon-edit hidden-print" data-nombre="Editar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleUpdate' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Editar {{ mueble.mueble|lower }}"></a>
-
                         </td>
                         <td>
-
                             <a class="controles botonmodalEliminar glyphicon glyphicon-remove hidden-print" data-nombre="{{ mueble.mueble|lower }}" data-numero="{{ mueble.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleDelete' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Eliminar {{ mueble.mueble|lower }}"></a>
-
                         </td>
                     </tr>
 
@@ -609,22 +611,6 @@
 
 </div><!--fin acordion-->
 <div style="display:block;height:600px;width:100%;"></div>
-<!--modal eliminar-->
-<div aria-labelledby="mySmallModalLabel" class="modal fade eliminar" role="dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button aria-label="Close" class="close" data-dismiss="modal" id="cerrarEliminar" type="button"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">
-                    Eliminar <span class="nombreEliminar"></span>
-                </h4>
-            </div>
-            <iframe class="id_opcionEliminar" frameborder="0" height="200" id="" scrolling="no"  seamless src="" width="100%">
-                <p>ESTE NAVEGADOR NO ACEPTA IFRAMES. UTILICE OPERA, MOZILLA FIREFOX O CHROME</p>
-            </iframe>
-        </div>
-    </div>
-</div>
 <!-- Modal Formularios-->
 <div aria-labelledby="myModalLabelFormulario" class="modal fade" id="myModalFormulario" role="dialog">
     <div class="modal-dialog" role="document">
@@ -682,13 +668,15 @@
         </div>
     </div>
 </div>
-<div class="alert alert-danger msj" id="msjEliminado" style="display:none;" role="alert">Eliminado</div>
 <div class="alert alert-success msj" id="msjGuardado" style="display:none;" role="alert">Guardado</div>
-<script src="/static/js/presupuestoFicha/preFicha.js"></script>
-<script>
-</script>
 
 {% endblock content1 %}
+
+{% block js_inf %}
+
+<script src="/static/js/presupuestoFicha/preFicha.js"></script>
+
+{% endblock js_inf %}
 
 {% block ayuda %}
 

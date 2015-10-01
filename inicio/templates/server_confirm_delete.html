@@ -6,19 +6,10 @@
 
                 {% block validacion_modal %}
 
-                <p>¿Realmente desea eliminar el registro: <strong id="">{{ object }}</strong>?</p>
+                <p>¿Desea eliminar el registro: <strong id="objeto">{{ object }}</strong>?</p>
 
                 {% endblock validacion_modal %}
 
-            </div>
-            <div class="modal-footer">
-                <form method="post" id="myform">
-
-                    {% csrf_token %}
-
-                    <a onclick="cerrar();" class="btn btn-default">No</a>
-                    <input type="submit" class="btn btn-default" value="Si" />
-                </form>
             </div>
 
 {% endblock formulario %}
@@ -26,42 +17,45 @@
 {% block js_form %}
 
 <script>
-$('#myform').submit(function(){
+var object = $(parent.document.getElementsByClassName("nombreEliminar")).text();
+var myform = $(parent.document.getElementById("myform"));
+$('#objeto').text(object);
+myform.submit(function () {
     var id = $(parent.document.getElementsByClassName("id_opcionEliminar")).attr('src');
     var action = id;
     var that = $(this);
     $.ajax({
         url: action,
         type: 'POST',
-        data: that.serialize()
-        ,success: function(data){
-            var modalp = parent.document.getElementById('myModalAmbiente');
-            var divp = parent.document.getElementsByClassName("modal-backdrop");
-            var bodyp = parent.document.getElementById('id_body');
+        data: that.serialize(),
+        success: function (data) {
             var closep = parent.document.getElementById("cerrarEliminar");
             var eliminar = parent.document.getElementById("msjEliminado");
-
-          if (data.estatus=="ok"){
-            cerrar();
-            setTimeout(function() {
+          if (data.estatus=="ok") {
+            cerrarModal(closep, eliminar);
+            setTimeout(function () {
             parent.location.reload();
-            },1000);
-            $(eliminar).text('Eliminado');
+            }, 1000);
+            $(eliminar).text(object + ' eliminado');
             $(eliminar).fadeIn();
           }else{
-            alert('no se elimino '+data.estatus);
-            cerrar();
+            alert('no se elimino ' + data.estatus);
+            cerrarModal(closep, eliminar);
           }
-
         },
         error: function (ajaxContext) {
-        alert('No se puede eliminar por que tiene servicios asociado.');
-        setTimeout(function() {cerrar();},0);
+        setTimeout(function() {
+            cerrarModal(closep, eliminar);
+        }, 1000);
+        $(eliminar).text('No se puede eliminar ' + object);
+        $(eliminar).fadeIn();
+        setTimeout(function() {
+            $(eliminar).fadeOut();
+        }, 3000);
     }
     });
     return false;
 });
-function cerrar() {var closep = parent.document.getElementById("cerrarEliminar");$(closep).click();};
 </script>
 
 {% endblock js_form %}

@@ -51,94 +51,99 @@ $('p:has(input[id=id_factor_complejidad])').css('display', 'none');
 $('p:has(input[id=id_valor_ambiente_complejidad])').css('display', 'none');
 $('p:has(input[id=id_valor_metrocubico_complejiadad])').css('display', 'none');
 
-function proponerPisosAscensor () {
-  element = document.getElementById("id_pisos_ascensor");
-  pisos = $('input:radio[name=pisos_escalera]:checked').val();
-  check = document.getElementById("id_ascensor");
-  label = $('label[for=id_pisos_ascensor_0]');
-  msj = document.getElementById("msjError");
+function proponerPisos (pisos, check, msj, name ) {
   if (check.checked) {
     if (pisos == "0") {
-      $("input[name=pisos_ascensor][value=0]").attr('checked', 'checked');
-      radioColorBlue('pisos_ascensor');
-      $('#id_ascensor').click();
-      $(msj).text('Seleccione cantidad de pisos a recorrer por escaleras.');
+      $("input[name=" + name + "][value=" + 0 + "]").click();
+      radioColorBlue(name);
+      $(msj).text(
+        'Seleccione cantidad de pisos a recorrer por escaleras para agregar ascensor.'
+        );
       $(msj).fadeIn();
-      setTimeout(function() {
+      setTimeout(function () {
          $(msj).fadeOut();
-      }, 3000);
-    }else{
-      $("input[name=pisos_ascensor][value=" + pisos + "]").click();
-      radioColorBlue('pisos_ascensor');
+      }, 4000);
+      check.click();
+    }else {
+      $("input[name=" + name + "][value=" + pisos + "]").click();
+      radioColorBlue(name);
     }
   }else {
-    $("input[name=pisos_ascensor][value=0]").click();
+    $("input[name=" + name + "][value=" + pisos + "]").click();
 }
 }
 
-function proponerPisosAscensorServicio () {
-  element = document.getElementById("id_pisos_ascensor_servicio");
-  pisos = $('input:radio[name=pisos_escalera]:checked').val();
-  check = document.getElementById("id_ascensor_servicio");
-  label = $('label[for=id_pisos_ascensor_servicio_0]');
-  msj = document.getElementById("msjError");
-  if (check.checked) {
-    if (pisos == "0") {
-      $("input[name=pisos_ascensor_servicio][value=0]").attr('checked', 'checked');
-      radioColorBlue('pisos_ascensor_servicio');
-      $('#id_ascensor_servicio').click();
-      $(msj).text('Seleccione cantidad de pisos a recorrer por escaleras.');
-      $(msj).fadeIn();
-      setTimeout(function() {
-         $(msj).fadeOut();
-      }, 3000);
-    }
-    else {
-      $("input[name=pisos_ascensor_servicio][value=" + pisos + "]").click();
-      radioColorBlue('pisos_ascensor_servicio');
-    }
-  }
-  else {
-    $("input[name=pisos_ascensor_servicio][value=0]").click();
-}
-}
-
-function showContent () {
-  element = document.getElementById("id_pisos_ascensor");
-  pisos = $('input:radio[name=pisos_escalera]:checked').val();
-  check = document.getElementById("id_ascensor");
-  label = $('label[for=id_pisos_ascensor_0]');
+function showContent (element, check, label ) {
   if (check.checked) {
     $(element).fadeIn('fast');
     $(label).fadeIn('fast');
   }
   else {
-    $("input[name=pisos_ascensor][value=0]").click();
     $(element).fadeOut('fast');
     $(label).fadeOut('fast');
   }
 }
 
-function showContent2 () {
-  element = document.getElementById("id_pisos_ascensor_servicio");
-  pisos = $('input:radio[name=pisos_escalera]:checked').val();
-  check = document.getElementById("id_ascensor_servicio");
-  label = $('label[for=id_pisos_ascensor_servicio_0]');
-  if (check.checked) {
-    $(element).fadeIn('fast');
-    $(label).fadeIn('fast');
-  }
-  else {
-    $("input[name=pisos_ascensor_servicio][value=0]").click();
-    $(element).fadeOut('fast');
-    $(label).fadeOut('fast');
-  }
-}
 $('input[name="ascensor"]').on('switchChange.bootstrapSwitch', function(event, state) {
-showContent();
-proponerPisosAscensor();
+
+showContent(
+  document.getElementById("id_pisos_ascensor"),
+  document.getElementById("id_ascensor"),
+  $('label[for=id_pisos_ascensor_0]')
+    );
+
+proponerPisos(
+  $('input:radio[name=pisos_escalera]:checked').val(),
+  document.getElementById("id_ascensor"),
+  document.getElementById("msjError"),
+  $("input[name=pisos_ascensor]").attr('name')
+  );
+
 });
+
 $('input[name="ascensor_servicio"]').on('switchChange.bootstrapSwitch', function(event, state) {
-showContent2();
-proponerPisosAscensorServicio();
+
+showContent(
+  document.getElementById("id_pisos_ascensor_servicio"),
+  document.getElementById("id_ascensor_servicio"),
+  $('label[for=id_pisos_ascensor_servicio_0]')
+   );
+
+proponerPisos(
+  $('input:radio[name=pisos_escalera]:checked').val(),
+  document.getElementById("id_ascensor_servicio"),
+  document.getElementById("msjError"),
+  $("input[name=pisos_ascensor_servicio]").attr('name')
+  );
+
 });
+
+$('input:radio[name=pisos_escalera]').click(function () {
+
+  proponerPisos(
+  $('input:radio[name=pisos_escalera]:checked').val(),
+  document.getElementById("id_ascensor"),
+  document.getElementById("msjError"),
+  $("input[name=pisos_ascensor]").attr('name')
+  );
+
+  proponerPisos(
+  $('input:radio[name=pisos_escalera]:checked').val(),
+  document.getElementById("id_ascensor_servicio"),
+  document.getElementById("msjError"),
+  $("input[name=pisos_ascensor_servicio]").attr('name')
+  );
+
+});
+
+showContent(
+  document.getElementById("id_pisos_ascensor"),
+  document.getElementById("id_ascensor"),
+  $('label[for=id_pisos_ascensor_0]')
+   );
+
+showContent(
+  document.getElementById("id_pisos_ascensor_servicio"),
+  document.getElementById("id_ascensor_servicio"),
+  $('label[for=id_pisos_ascensor_servicio_0]')
+   );

@@ -336,3 +336,11 @@ que sobreescribe el diseño Bootstrap
   background: #fff!important;
   opacity: .9;
 }
+
+.btn-modalEliminar {
+  float: left!important;
+}
+
+.botonmodalEliminar {
+  cursor: pointer;
+}
