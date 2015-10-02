@@ -312,19 +312,11 @@ class="col-md-10"
                     <label class="label1" for="recargo">Recargo</label>
                 </td>
                 <td align="center" class="check">
-                    <input class="input-descuento-recargo check" id="descuento_regargobasico" name="monto_descuento_recargo" step="0.01" style="text-align:left;" type="number" value="
-
-                    {{ presupuesto.monto_descuento_recargo }}
-
-                    ">
+                    <input class="input-descuento-recargo check" id="descuento_regargobasico" name="monto_descuento_recargo" step="0.01" style="text-align:left;" type="number" value="{{ presupuesto.monto_descuento_recargo }}">
                     <input class="input-descuento-recargo check" id="porc_descuentobasico" onkeypress="return justNumbers(event);" style="text-align:right;" type="text" value=""><span>%</span>
                 </td>
                 <td align="center" class="check2">
-                    <input class="input-descuento-recargo check2" id="descuento_recargooptimo" name="monto_descuento_recargo" step="0.01" style="text-align:left;" type="number" value="
-
-                    {{ presupuesto.monto_descuento_recargo }}
-
-                    ">
+                    <input class="input-descuento-recargo check2" id="descuento_recargooptimo" name="monto_descuento_recargo" step="0.01" style="text-align:left;" type="number" value="{{ presupuesto.monto_descuento_recargo }}">
                     <input class="input-descuento-recargo check2" id="porc_descuentooptimo" onkeypress="return justNumbers(event);" style="text-align:right;" type="text" value=""><span>%</span>
                 </td>
                 <td align="center" class="check3">
@@ -337,37 +329,13 @@ class="col-md-10"
             <tr style="border-top: 2px solid #ddd;">
                 <td colspan="4">Valor total mudanza revisado</td>
                 <td align="center" class="check">
-                    <input class="input-re check input-re-no-border" id="mudanzamontorevisadotoerico" readonly type="text" value="
-
-                    {{ presupuesto.mudanzamontorevisadotoerico }}
-
-                    ">
+                    <input class="input-re check input-re-no-border" id="mudanzamontorevisadotoerico" readonly type="text" value="{{ presupuesto.mudanzamontorevisadotoerico }}">
                 </td>
                 <td align="center" class="check2">
-                    <input class="input-re check2 input-re-no-border" id="mudanzamontorevisadooptimo" readonly type="text" value="
-
-                    {{ presupuesto.mudanzamontorevisadooptimo }}
-
-                    ">
+                    <input class="input-re check2 input-re-no-border" id="mudanzamontorevisadooptimo" readonly type="text" value="{{ presupuesto.mudanzamontorevisadooptimo }}">
                 </td>
                 <td align="center" class="check3">
-                    <input class="input-re check3 input-re-no-border" id="mudanzamontorevisado"  readonly type="text" value="
-
-                    {% if form.tipo_calculo == 'Revisado' %}
-
-                    {{ presupuesto.mudanzamontorevisado|floatformat:"2" }}
-
-                    {% elif form.tipo_calculo == 'Optimizado' %}
-
-                    {{ presupuesto.mudanzamontorevisadooptimo|floatformat:"2" }}
-
-                    {% else %}
-
-                    {{ presupuesto.mudanzamontorevisadotoerico|floatformat:"2" }}
-
-                    {% endif %}
-
-                    ">
+                    <input class="input-re check3 input-re-no-border" id="mudanzamontorevisado"  readonly type="text" value="{% if form.tipo_calculo == 'Revisado' %}{{ presupuesto.mudanzamontorevisado|floatformat:"2" }}{% elif form.tipo_calculo == 'Optimizado' %}{{ presupuesto.mudanzamontorevisadooptimo|floatformat:"2" }}{% else %}{{ presupuesto.mudanzamontorevisadotoerico|floatformat:"2" }}{% endif %}">
                 </td>
             </tr>
         </table>
