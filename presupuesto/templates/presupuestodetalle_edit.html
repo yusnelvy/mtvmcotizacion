@@ -10,10 +10,15 @@
 
     {{form.as_p}}
 
+    <input type="text" id="capacidadmueble" value={{capacidadmueble}}>
+    <input type="text" id="volmaterial" value={{vol_contenedor}}>
+    <input type="text" id="pesomaterial" value={{peso_contenedor}}>
+    <p id="msjcontenedor"></p>
+
   </div>
 
-  <button type="submit" class="btn btn-default">Guardar</button>
-  <button class="btn btn-default" data-dismiss="modal" onclick="cerrar();" type="button">Cancelar</button>
+  <button type="submit" class="btn btn-default">{{nombre_btn}}</button>
+  <button class="btn btn-default" data-dismiss="modal" id="btn-cancelar" type="button">Cancelar</button>
   <br>
 </form>
 
@@ -30,178 +35,342 @@
 <script src="/static/js/presupuestoForm/preDetalle.js"></script>
 <script>
 
+var densidadBaja = 0
+var densidadMedia = 0
+var densidadAlta = 0
+var densidadMuyAlta = 0
+
+
 $('#id_lista_ocupacion li label').addClass('btn-radio');
+
 $('#id_lista_tamano li label').addClass('btn-radio');
-$('input[name=lista_ocupacion]').click(function(){
+
+$('input[name=lista_ocupacion]').click(function() {
   radioColorOcupacion()
 });
+
 radioColorOcupacion()
-$('input[name=lista_tamano]').click(function(){
+
+$('input[name=lista_tamano]').click(function() {
   radioColorTamano()
 });
+
 radioColorTamano()
-$(document).ready(function(){
-  $("#id_lista_ambiente").on("change", function(){
+
+$(document).ready(function() {
+  descripcionmensaje();
+
+  $("#id_lista_ambiente").on("change", function() {
     id_lista_ambiente = $("#id_lista_ambiente").val();
     $("#id_ambiente").val(id_lista_ambiente);
     $.get('/presupuesto/detalle/nuevo',
       {id_lista_ambiente: id_lista_ambiente},
-      function(data){
+      function(data) {
         $("#id_ambiente").val(data[0].ambiente);
       });
   });
 
-  $("#id_lista_mueble").on("change", function(){
+  $("#id_lista_mueble").on("change", function() {
     id_lista_mueble = $("#id_lista_mueble").val();
     $.get('/presupuesto/detalle/nuevo',
       {id_lista_mueble: id_lista_mueble},
-      function(data){
+      function(data) {
         $("#id_mueble").val(data[0].mueble);
         $("#id_ocupacidad").val(data[0].descripocupacion);
         $("#id_valor_ocupacidad").val(data[0].valorocupacion);
         $("#id_lista_ocupacion").val(data[0].ocupacion);
         $("#capacidadmueble").val(data[0].capacidadmueble);
-        $("#densidadcontenido").val(data[0].densidadcontenido);
         $("#volmaterial").val(data[0].vol_contenedor);
         $("#id_capacidad_volumen_contenedor").val(data[0].capacidadvolcontenedor);
         $("#id_capacidad_peso_contenedor").val(data[0].capacidadpesocontenedor);
         $("#id_descripcion_contenedor").val(data[0].descripcioncontenedor);
         $("#pesomaterial").val(data[0].peso_contenedor);
-
+        $("#id_tamano").val(data[0].tamano);
+        $("#id_descripcion_contenido").val(data[0].descripcioncontenido);
+        densidadBaja = (data[0].densidadbajacontenido);
+        densidadMedia = (data[0].densidadmediacontenido);
+        densidadAlta = (data[0].densidadaltacontenido);
+        densidadMuyAlta = (data[0].densidadmuyaltacontenido);
+        $("#id_densidadcontenido").val(densidadMedia);
+        $("#id_descripcion_densidadcontenido").val('Media');
         lista_ocupacion = $("input[name=lista_ocupacion]");
-        for(var i=0; i<lista_ocupacion.length; i++){
-          if (data[0].ocupacion==lista_ocupacion[i].value){
+        for(var i=0; i<lista_ocupacion.length; i++) {
+          if (data[0].ocupacion == lista_ocupacion[i].value) {
             $(lista_ocupacion[i]).attr("checked","checked");
             radioColorOcupacion()
           }
         }
+        if (data[0].trasladable == true) {
+          document.getElementById("id_trasladable").checked = true;
+        } else {
+          document.getElementById("id_trasladable").checked = false;
+        }
 
+        lista_tamano = $("input[name=lista_tamano]");
+        for(var i=0; i<lista_tamano.length; i++){
+          if (data[0].lista_tamano == lista_tamano[i].value) {
+            $('#id_lista_tamano_' + i).click();
+            volumen = calcular_volumen($("#id_ancho").val(), $(
+            "#id_largo").val(), $("#id_alto").val(), $("#id_cantidad").val());
+            $("#id_volumen_mueble").val(volumen);
+            radioColorTamano()
+          }
+        }
       });
-
-});
-
-$("#id_lista_tamano").on("change", function(){
-  id_lista_tamano = $('input[name=lista_tamano]:checked').val();
-  id_lista_mueble = $("#id_lista_mueble").val();
-  $.get('/presupuesto/detalle/nuevo',
-    {id_lista_tamano: id_lista_tamano, id_lista_mueble: id_lista_mueble},
-    function(data){
-      $("#id_tamano").val(data[0].tamano);
-      $("#id_ancho").val(data[0].ancho);
-      $("#id_largo").val(data[0].largo);
-      $("#id_alto").val(data[0].alto);
-      $("#id_densidad").val(data[0].densidad);
-      $("#id_peso").val(data[0].peso);
-      $("#id_valor_densidad").val(data[0].valor_densidad);
-      $("#id_volumen_mueble").val(data[0].volumen_mueble);
-
-      volcontenido = calcular_volcontenido($("#capacidadmueble").val(),$("#id_volumen_mueble").val(),$("#id_valor_ocupacidad").val());
-
-      $("#id_volumen_contenido").val(volcontenido);
-
-      peso_contenido = calcular_pesocontenido($("#id_volumen_contenido").val(),$("#densidadcontenido").val());
-      $("#id_peso_contenido").val(peso_contenido);
-
-      cant_contenedor = calcular_cantidadcontenedor($("#id_volumen_contenido").val(),$("#id_capacidad_volumen_contenedor").val(),$("#id_peso_contenido").val(),$("#id_capacidad_peso_contenedor").val());
-
-      $("#id_cantidad_contenedor").val(cant_contenedor);
-
-      volcontenedor = calcular_volcontenedor($("#id_cantidad_contenedor").val(),$("#volmaterial").val());
-      $("#id_volumen_contenedor").val(volcontenedor);
-
-      pesocontenedor = calcular_pesocontenedor($("#id_cantidad_contenedor").val(),$("#pesomaterial").val());
-      $("#id_peso_contenedor").val(pesocontenedor);
-
-    });
-});
-
-$("input[name=lista_ocupacion]").click(function () {
-  id_ocupacion = $('input[name=lista_ocupacion]:checked').val();
-  $.get('/presupuesto/detalle/nuevo',
-    {id_ocupacion: id_ocupacion},
-    function(data){
-      $("#id_ocupacidad").val(data[0].ocupacion);
-      $("#id_valor_ocupacidad").val(data[0].valorocupacion);
-      volcontenido = calcular_volcontenido($("#capacidadmueble").val(),$("#id_volumen_mueble").val(),$("#id_valor_ocupacidad").val());
-
-      $("#id_volumen_contenido").val(volcontenido);
-
-      peso_contenido = calcular_pesocontenido($("#id_volumen_contenido").val(),$("#densidadcontenido").val());
-      $("#id_peso_contenido").val(peso_contenido);
-
-      cant_contenedor = calcular_cantidadcontenedor($("#id_volumen_contenido").val(),$("#id_capacidad_volumen_contenedor").val(),$("#id_peso_contenido").val(),$("#id_capacidad_peso_contenedor").val());
-
-      $("#id_cantidad_contenedor").val(cant_contenedor);
-
-      volcontenedor = calcular_volcontenedor($("#id_cantidad_contenedor").val(),$("#volmaterial").val());
-      $("#id_volumen_contenedor").val(volcontenedor);
-
-      pesocontenedor = calcular_pesocontenedor($("#id_cantidad_contenedor").val(),$("#pesomaterial").val());
-      $("#id_peso_contenedor").val(pesocontenedor);
-    });
-});
-$('#id_ancho').on('change', function(){
-  densidad = calcular_densidad($("#id_peso").val(),$(this).val(),$("#id_largo").val(),$("#id_alto").val());
-  volumen = calcular_volumen($(this).val(),$("#id_largo").val(),$("#id_alto").val());
-  $("#id_valor_densidad").val(densidad);
-  $("#id_volumen_mueble").val(volumen);
-
-});
-
-$('#id_largo').on('change', function(){
-  densidad = calcular_densidad($("#id_peso").val(),$("#id_ancho").val(),$(this).val(),$("#id_alto").val());
-  volumen = calcular_volumen($("#id_ancho").val(),$(this).val(),$("#id_alto").val());
-  $("#id_valor_densidad").val(densidad);
-  $("#id_volumen_mueble").val(volumen);
-});
-
-$('#id_alto').on('change', function(){
-  densidad = calcular_densidad($("#id_peso").val(),$("#id_ancho").val(),$("#id_largo").val(),$(this).val());
-  volumen = calcular_volumen($("#id_ancho").val(),$("#id_largo").val(),$(this).val());
-  $("#id_valor_densidad").val(densidad);
-  $("#id_volumen_mueble").val(volumen);
-});
-
-});
-$('#myform').submit(function(){
-  document.getElementById('id_lista_ambiente').disabled = false;
-  var id = $(parent.document.getElementsByClassName("id_opcionFormulario")).attr('src');
-  var action = id;
-  var that = $(this);
-  $.ajax({
-    url: action,
-    type: 'POST',
-    data: that.serialize(),
-    beforeSend: function(data) {
-      $('#carga').css('display','block');
-    }
-    ,success: function(data){
-      var modalp = parent.document.getElementById('myModalAmbiente');
-      var divp = parent.document.getElementsByClassName("modal-backdrop");
-      var bodyp = parent.document.getElementById('id_body');
-      var closep = parent.document.getElementById("btn-cerrarModal");
-      var guardar = parent.document.getElementById("msjGuardado");
-      if (data.estatus=="ok"){
-        $(closep).click();
-        $(guardar).css('width','300px');
-        $(guardar).text('Mueble guardado con exito');
-        $(guardar).fadeIn();
-        setTimeout(function() {
-          parent.location.reload();
-        },500);
-      }
-    }
   });
-  return false;
-});
+
+  $("#id_lista_tamano").on("change", function() {
+    id_lista_tamano = $('input[name=lista_tamano]:checked').val();
+    id_lista_mueble = $("#id_lista_mueble").val();
+    $.get('/presupuesto/detalle/nuevo',
+      {id_lista_tamano: id_lista_tamano, id_lista_mueble: id_lista_mueble},
+      function(data) {
+        $("#id_tamano").val(data[0].tamano);
+        $("#id_ancho").val(data[0].ancho);
+        $("#id_largo").val(data[0].largo);
+        $("#id_alto").val(data[0].alto);
+        volumen = calcular_volumen($("#id_ancho").val(),
+          $("#id_largo").val(),
+          $("#id_alto").val(),
+          $("#id_cantidad").val());
+        $("#id_volumen_mueble").val(volumen);
+        calculoscontenido();
+        descripcionmensaje();
+      });
+  });
+
+  $("input[name=lista_ocupacion]").click(function () {
+    id_ocupacion = $('input[name=lista_ocupacion]:checked').val();
+    $.get('/presupuesto/detalle/nuevo',
+      {id_ocupacion: id_ocupacion},
+      function(data) {
+        $("#id_ocupacidad").val(data[0].ocupacion);
+        $("#id_valor_ocupacidad").val(data[0].valorocupacion);
+        calculoscontenido();
+        descripcionmensaje();
+      });
+  });
+
+  $('#id_ancho').on('change', function() {
+    volumen = calcular_volumen($(
+      this).val(),$("#id_largo").val(), $(
+      "#id_alto").val(), $("#id_cantidad").val());
+    $("#id_volumen_mueble").val(volumen);
+    calculoscontenido();
+    descripcionmensaje();
+  });
+
+  $('#id_largo').on('change', function() {
+    volumen = calcular_volumen($(
+      "#id_ancho").val(), $(
+      this).val(), $(
+      "#id_alto").val(), $("#id_cantidad").val());
+    $("#id_volumen_mueble").val(volumen);
+    calculoscontenido();
+    descripcionmensaje();
+  });
+
+  $('#id_alto').on('change', function() {
+    volumen = calcular_volumen($(
+      "#id_ancho").val(), $(
+      "#id_largo").val(), $(
+      this).val(), $("#id_cantidad").val())
+    $("#id_volumen_mueble").val(volumen);
+    calculoscontenido();
+    descripcionmensaje();
+  });
+
+  $("#id_cantidad").on('change', function() {
+    // al cambiar la cantidad de muebles se recalcula el volumen del contenido y todo los calculos posteriores al él
+    volumen = calcular_volumen($(
+      "#id_ancho").val(), $(
+      "#id_largo").val(), $('#id_alto').val(), $("#id_cantidad").val())
+    $("#id_volumen_mueble").val(volumen);
+    calculoscontenido();
+    descripcionmensaje();
+  });
+
+  $("#id_descripcion_contenido").change(function() {
+    id_descripcion_contenido = $("#id_descripcion_contenido").val();
+    $.get('/presupuesto/detalle/nuevo',
+      {id_descripcion_contenido: id_descripcion_contenido},
+      function(data) {
+        densidadBaja = (data[0].densidadbajacontenido);
+        densidadMedia = (data[0].densidadmediacontenido);
+        densidadAlta = (data[0].densidadaltacontenido);
+        densidadMuyAlta = (data[0].densidadmuyaltacontenido);
+        $("#id_densidadcontenido").val(densidadMedia);
+        $("#id_descripcion_densidadcontenido").val('Media');
+        calculoscontenido();
+        descripcionmensaje();
+      });
+  });
+
+  $('#id_descripcion_densidadcontenido').change(function() {
+    if ($('#id_descripcion_densidadcontenido').val() == 'Baja') {
+      $("#id_densidadcontenido").val(densidadBaja)
+    } else if ($('#id_descripcion_densidadcontenido').val() == 'Media') {
+      $("#id_densidadcontenido").val(densidadMedia);
+    } else if ($('#id_descripcion_densidadcontenido').val() == 'Alta') {
+      $("#id_densidadcontenido").val(densidadAlta);
+    } else if ($('#id_descripcion_densidadcontenido').val() == 'Muy alta'){
+      $("#id_densidadcontenido").val(densidadMuyAlta);
+    }
+    calculoscontenido();
+    descripcionmensaje();
+  });
+
+//obj = document.getElementById("id_descripcion_contenedor");
+
+ $("#id_descripcion_contenedor").change(function() {
+    id_descripcion_contenedor = $("#id_descripcion_contenedor").val();
+    $.get('/presupuesto/detalle/nuevo',
+      {id_descripcion_contenedor: id_descripcion_contenedor},
+      function(data) {
+        $("#volmaterial").val(data[0].vol_contenedor);
+        $("#pesomaterial").val(data[0].peso_contenedor);
+        $("#id_capacidad_volumen_contenedor").val(data[0].capacidadvolcontenedor);
+        $("#id_capacidad_peso_contenedor").val(data[0].capacidadpesocontenedor);
+      });
+      calculoscontenido();
+      descripcionmensaje();
+  });
+  // ev = document.createEvent('Event');
+  // ev.initEvent('change', true, false);
+  // obj.dispatchEvent(ev);
+
+  $("#id_descripcion_contenedor").on("focusout", function() {
+    calculoscontenido();
+    descripcionmensaje();
+  });
+
+  $('#myform').submit(function() {
+    document.getElementById('id_lista_ambiente').disabled = false;
+    var id = $(parent.document.getElementsByClassName(
+      "id_opcionFormulario")).attr('src');
+    var action = id;
+    var that = $(this);
+    $.ajax( {
+      url: action,
+      type: 'POST',
+      data: that.serialize(),
+      beforeSend: function(data) {
+        $('#carga').css('display','block');
+      }
+      ,success: function(data) {
+        var modalp = parent.document.getElementById('myModalAmbiente');
+        var divp = parent.document.getElementsByClassName("modal-backdrop");
+        var bodyp = parent.document.getElementById('id_body');
+        var closep = parent.document.getElementById("btn-cerrarModal");
+        var guardar = parent.document.getElementById("msjGuardado");
+        if (data.estatus=="ok") {
+          $(closep).click();
+          $(guardar).css('width','300px');
+          $(guardar).text('Mueble guardado con exito');
+          $(guardar).fadeIn();
+          setTimeout(function() {
+            parent.location.reload();
+          }, 500);
+        }
+      }
+    });
+    return false;
+  });
+
+  function descripcionmensaje() {
+    $("#msjcontenedor").text("Peso del contenido: " +
+      $("#id_peso_contenido").val() +
+      "kg número de contenedores " +
+      $("#id_cantidad_contenedor").val());
+  }
+
+  function calculoscontenido() {
+    volcontenido = calcular_volcontenido($(
+      "#capacidadmueble").val(), $(
+      "#id_volumen_mueble").val(), $(
+      "#id_valor_ocupacidad").val(), $(
+      "#id_cantidad").val());
+    $("#id_volumen_contenido").val(volcontenido);
+
+    peso_contenido = calcular_pesocontenido($(
+      "#id_volumen_contenido").val(), $(
+      "#id_densidadcontenido").val());
+    $("#id_peso_contenido").val(peso_contenido);
+
+    cant_contenedor = calcular_cantidadcontenedor($(
+      "#id_volumen_contenido").val(), $(
+      "#id_capacidad_volumen_contenedor").val(), $(
+      "#id_peso_contenido").val(), $(
+      "#id_capacidad_peso_contenedor").val());
+    $("#id_cantidad_contenedor").val(cant_contenedor);
+
+    volcontenedor = calcular_volcontenedor($(
+      "#id_cantidad_contenedor").val(), $(
+      "#volmaterial").val());
+    $("#id_volumen_contenedor").val(volcontenedor);
+
+    pesocontenedor = calcular_pesocontenedor($(
+      "#id_cantidad_contenedor").val(),$(
+      "#pesomaterial").val());
+    $("#id_peso_contenedor").val(pesocontenedor);
+  }
+
+  $('#btn-cancelar').click(function() {
+    cerrarModal(parent.document.getElementById('btn-cerrarModal'),
+      parent.document.getElementById('msjEliminado')
+      );
+  });
+
+}); // end del document
 </script>
-
 <script>
-function calcular_densidad(peso,ancho,largo,alto){
-    var resultado;
-    resultado= ((ancho*largo*alto)/peso);
+function calcular_volumen(ancho, largo, alto, cantidadmueble) {
+  var resultado = 0;
+  resultado= (ancho*largo*alto)/1000000;
+  resultado = resultado * cantidadmueble;
+  return resultado.toFixed(3);
+}
 
-  return resultado.toFixed(2);
+function calcular_volcontenido(cap_mueble, vol_mueble, ocupacidad, cantidadmueble) {
+  var resultado = 0;
+  resultado= (cap_mueble*vol_mueble*ocupacidad*cantidadmueble);
+  return resultado.toFixed(3);
+}
+
+function calcular_pesocontenido(vol_contenido, densidadcontenido) {
+  var resultado = 0;
+  resultado= (vol_contenido*densidadcontenido)
+  return resultado.toFixed(3);
+}
+
+function calcular_cantidadcontenedor(vol_contenido, cap_volcontenedor, peso_contenido, cap_pesocontenedor) {
+  var resultado = 0;
+  var cant_volumen = 0;
+  var cant_peso = 0;
+
+  cant_volumen = (vol_contenido/cap_volcontenedor);
+  cant_volumen = Math.ceil(cant_volumen);
+  cant_peso = (peso_contenido/ cap_pesocontenedor);
+  cant_peso = Math.ceil(cant_peso);
+
+  if (cant_volumen > cant_peso) {
+    resultado = cant_volumen;
+  } else {
+    resultado = cant_peso;
+  }
+  return resultado;
+}
+
+function calcular_volcontenedor(cant_contenedor, vol_material) {
+  var resultado = 0;
+  resultado= (cant_contenedor*vol_material);
+  return resultado.toFixed(3);
+}
+
+function calcular_pesocontenedor(cant_contenedor, peso_material) {
+  var resultado = 0;
+  resultado= (cant_contenedor*peso_material)
+  return resultado.toFixed(3);
 }
 </script>
 

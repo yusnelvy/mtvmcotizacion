@@ -8,9 +8,10 @@ from django.core.exceptions import NON_FIELD_ERRORS
 from mueble.models import Ocupacion, Tamano_Mueble, Mueble, Tamano
 from direccion.models import Tipo_Inmueble
 from ambiente.models import Ambiente
-from servicio.models import Servicio
+from servicio.models import Servicio, Material
 from django import forms
 from premisas.models import FuentePromocion
+from contenido.models import Contenido
 
 
 class PresupuestoDetalleForm1(forms.Form):
@@ -188,6 +189,29 @@ class PresupuestoDetalleForm(ModelForm):
     lista_tamano = ModelChoiceField(Tamano.objects, widget=RadioSelect, empty_label=None, label='Tamaño del mueble:')
     lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=RadioSelect, empty_label=None, label='Ocupación del mueble:')
 
+    contenido_choices = [(contenido.contenido, contenido.contenido) for contenido in Contenido.objects.all()]
+    descripcion_contenido = forms.ChoiceField(
+        widget=Select(attrs={'class': 'width50'}),
+        label='Descripción del contenido',
+        choices=contenido_choices)
+
+    DENSIDAD_CHOICES = (
+        ('Baja', 'Baja'),
+        ('Media', 'Media'),
+        ('Alta', 'Alta'),
+        ('Muy alta', 'Muy alta'),
+    )
+    descripcion_densidadcontenido = forms.ChoiceField(
+        widget=Select(attrs={'class': 'width50'}),
+        label='Densidad del contenido',
+        choices=DENSIDAD_CHOICES)
+
+    contenedor_choices = [(contenedor.material, contenedor.material) for contenedor in Material.objects.filter(contenedor=True)]
+    descripcion_contenedor = forms.ChoiceField(
+        widget=Select(attrs={'class': 'width50'}),
+        label='Descripción del contenedor',
+        choices=contenedor_choices)
+
     class Meta:
         model = Presupuesto_Detalle
         fields = 'lista_ambiente', \
@@ -202,13 +226,13 @@ class PresupuestoDetalleForm(ModelForm):
             'ancho', \
             'largo', \
             'alto', \
-            'densidad', \
-            'valor_densidad', \
-            'peso', \
+            'descripcion_contenido', \
+            'descripcion_densidadcontenido', \
+            'densidadcontenido', \
+            'volumen_contenido', \
             'ocupacidad', \
             'valor_ocupacidad', \
             'cantidad_contenedor', \
-            'volumen_contenido', \
             'volumen_contenedor', \
             'volumen_mueble', \
             'capacidad_peso_contenedor', \
@@ -217,10 +241,13 @@ class PresupuestoDetalleForm(ModelForm):
             'peso_contenedor', \
             'descripcion_contenedor', \
             'trasladable'
+
         labels = {
             'ancho': ('Ancho del mueble (cms)'),
             'largo': ('Largo del mueble (cms)'),
             'alto': ('Alto del mueble (cms)'),
+            'densidadcontenido': ('Densidad del contenido (kg/m3)'),
+            'volumen_contenido': ('Volumen del contenido (m3)')
             }
         widgets = {
             'ancho': TextInput(

@@ -13,7 +13,7 @@ from direccion.models import Complejidad_Inmueble, Tipo_Inmueble
 from mueble.models import Ocupacion, Mueble, Tamano_Mueble, Tamano
 from ambiente.models import Ambiente
 from servicio.models import Servicio, Complejidad_Servicio, Material, Servicio_Material
-from contenido.models import Contenido_Tipico, Contenido_Servicio
+from contenido.models import Contenido_Tipico, Contenido_Servicio, Contenido
 from cotizacion.models import Vehiculo
 from trabajador.models import Cargo_trabajador
 from premisas.models import Empresa
@@ -33,6 +33,8 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import Table
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import permission_required
 
 import sys
 import traceback
@@ -214,16 +216,16 @@ class PresupuestoServicioList(ListView):
         return Presupuesto_servicio.objects.filter(detalle_presupuesto=self.detallepresupuesto).values('servicio', 'detalle_presupuesto', 'monto_servicio').annotate(tcount=Count('servicio')).order_by('servicio')
 
 
+# @permission_required('presupuesto.add_presupuesto')
 class PresupuestoView(View):
     form_class = PresupuestoForm
     template_name = 'presupuesto_add.html'
 
     def get(self, request, *args, **kwargs):
-
+        """docstring"""
         data = {
-                'cotizador': self.request.user
+            'cotizador': self.request.user
         }
-
         form = self.form_class(initial=data)
         return render(request, self.template_name, {'form': form})
 
@@ -243,7 +245,7 @@ class PresupuestoDireccionView(View):
     template_name = 'presupuestodireccion_add.html'
 
     def get(self, request, *args, **kwargs):
-
+        """docstring"""
         if self.request.is_ajax():
             ocupacion_id = self.request.GET.get('id_ocupacion')
             tipoinmueble_id = self.request.GET.get('id_tipoinmueble')
@@ -341,47 +343,71 @@ class PresupuestoDetalleView(View):
 
     def get(self, request, *args, **kwargs):
 
-        precargado = DatosPrecargado.objects.all()
+        precargado = DatosPrecargado.objects.values('volcontenedormueble',
+                                                    'peso_contenedormueble',
+                                                    'capvolcontenedormueble',
+                                                    'cappesocontenedormueble',
+                                                    'tamanomueble',
+                                                    'anchomueble',
+                                                    'largomueble',
+                                                    'altomueble',
+                                                    'descripcioncontenedor',
+                                                    'descripcioncontenido',
+                                                    'densidadbajacontenidomueble',
+                                                    'densidadmediacontenidomueble',
+                                                    'densidadaltacontenidomueble',
+                                                    'densidadmuyaltacontenidomueble'
+                                                    )
         if precargado:
-            densidadcontenido = precargado[0].densidadcontenidomueble
-            vol_contenedor = precargado[0].volcontenedormueble
-            peso_contenedor = precargado[0].peso_contenedormueble
-            capacidadvolcontenedor = precargado[0].capvolcontenedormueble
-            capacidadpesocontenedor = precargado[0].cappesocontenedormueble
-            descripcioncontenedor = 'No definido'
-            tamano = precargado[0].tamanomueble
-            densidad = precargado[0].densidadmueble
-            ancho = precargado[0].anchomueble
-            largo = precargado[0].largomueble
-            alto = precargado[0].altomueble
-            peso = precargado[0].pesomueble
-            valor_densidad = precargado[0].valordensidadmueble
-            volumen_mueble = precargado[0].volumenmueble
+            densidadbajacontenido = precargado[0]['densidadbajacontenidomueble']
+            densidadmediacontenido = precargado[0]['densidadmediacontenidomueble']
+            densidadaltacontenido = precargado[0]['densidadaltacontenidomueble']
+            densidadmuyaltacontenido = precargado[0]['densidadmuyaltacontenidomueble']
+            vol_contenedor = precargado[0]['volcontenedormueble']
+            peso_contenedor = precargado[0]['peso_contenedormueble']
+            capacidadvolcontenedor = precargado[0]['capvolcontenedormueble']
+            capacidadpesocontenedor = precargado[0]['cappesocontenedormueble']
+            descripcioncontenedor = precargado[0]['descripcioncontenedor']
+            tamano = precargado[0]['tamanomueble']
+            ancho = precargado[0]['anchomueble']
+            largo = precargado[0]['largomueble']
+            alto = precargado[0]['altomueble']
+            descripcioncontenido = precargado[0]['descripcioncontenido']
 
         if self.request.is_ajax():
             ambiente_id = self.request.GET.get('id_lista_ambiente')
             mueble_id = self.request.GET.get('id_lista_mueble')
             tamano_id = self.request.GET.get('id_lista_tamano')
             ocupacion_id = self.request.GET.get('id_ocupacion')
+            descripcion_contenido = self.request.GET.get('id_descripcion_contenido')
+            descripcion_contenedor = self.request.GET.get('id_descripcion_contenedor')
 
             if (mueble_id and tamano_id is None):
                 mueble = Mueble.objects.get(id=mueble_id)
                 contenido = Contenido_Tipico.objects.filter(mueble=mueble_id,
                                                             predefinido=True)[:1]
-
                 if contenido:
-                    densidadcontenido = contenido[0].contenido.densidad_media
+                    densidadbajacontenido = contenido[0].contenido.densidad_baja
+                    densidadmediacontenido = contenido[0].contenido.densidad_media
+                    densidadaltacontenido = contenido[0].contenido.densidad_alta
+                    densidadmuyaltacontenido = contenido[0].contenido.densidad_superalta
+                    descripcioncontenido = contenido[0].contenido.contenido
                     contenidoservicio = Contenido_Servicio.objects.filter(contenido=contenido[0].contenido_id,
                                                                           predefinido=True)
                     if contenidoservicio:
-                        contenedor = Material.objects.filter(servicio_material__servicio_id=contenidoservicio[0].servicio_id,
+                        contenedor = Material.objects.filter(servicio_material__servicio_id=
+                                                             contenidoservicio[0].servicio_id,
                                                              contenedor=True)[:1]
-
                         vol_contenedor = contenedor[0].volumen
                         peso_contenedor = contenedor[0].peso
-                        capacidadvolcontenedor = contenedor[0].capacidadvolm3
+                        capacidadvolcontenedor = contenedor[0].capacidad_volumen
                         capacidadpesocontenedor = contenedor[0].capacidad_peso
                         descripcioncontenedor = contenedor[0].material
+
+                tamanomueble = Tamano.objects.filter(descripcion='Mediano')
+                if tamanomueble:
+                    tamano = tamanomueble[0].descripcion
+                    lista_tamano = tamanomueble[0].id
 
                 if mueble:
                     mueble = [{
@@ -391,12 +417,18 @@ class PresupuestoDetalleView(View):
                         'descripocupacion': mueble.ocupacion.descripcion,
                         'valorocupacion': mueble.ocupacion.valor,
                         'capacidadmueble': mueble.capacidad,
-                        'densidadcontenido': densidadcontenido,
+                        'densidadbajacontenido': densidadbajacontenido,
+                        'densidadmediacontenido': densidadmediacontenido,
+                        'densidadaltacontenido': densidadaltacontenido,
+                        'densidadmuyaltacontenido': densidadmuyaltacontenido,
                         'vol_contenedor': round(vol_contenedor, 3),
                         'peso_contenedor': round(peso_contenedor, 3),
                         'capacidadvolcontenedor': capacidadvolcontenedor,
                         'capacidadpesocontenedor': capacidadpesocontenedor,
-                        'descripcioncontenedor': descripcioncontenedor
+                        'descripcioncontenedor': descripcioncontenedor,
+                        'lista_tamano': lista_tamano,
+                        'tamano': tamano,
+                        'descripcioncontenido': descripcioncontenido
                     }]
 
                 return JsonResponse(mueble, safe=False)
@@ -414,23 +446,18 @@ class PresupuestoDetalleView(View):
                                                             mueble_id=mueble_id)[:1]
                 if tamanomueble:
                     tamano = tamanomueble[0].tamano.descripcion
-                    densidad = tamanomueble[0].densidad.descripcion
                     ancho = tamanomueble[0].ancho
                     largo = tamanomueble[0].largo
                     alto = tamanomueble[0].alto
-                    peso = tamanomueble[0].peso
-                    valor_densidad = tamanomueble[0].densidad_valor
-                    volumen_mueble = tamanomueble[0].volumenmueble
+                else:
+                    tamanomueble = Tamano.objects.filter(id=tamano_id)
+                    tamano = tamanomueble[0].descripcion
 
                 tamano = [{
                     'tamano': tamano,
-                    'densidad': densidad,
                     'ancho': ancho,
                     'largo': largo,
                     'alto': alto,
-                    'peso': peso,
-                    'valor_densidad': round(valor_densidad, 2),
-                    'volumen_mueble': round(volumen_mueble, 3),
                 }]
                 return JsonResponse(tamano, safe=False)
 
@@ -443,6 +470,30 @@ class PresupuestoDetalleView(View):
                     }]
 
                 return JsonResponse(ocupacion, safe=False)
+
+            if descripcion_contenido:
+                contenido = Contenido.objects.filter(contenido=descripcion_contenido)
+
+                if contenido:
+                    contenido = [{
+                        'densidadbajacontenido': contenido[0].densidad_baja,
+                        'densidadmediacontenido': contenido[0].densidad_media,
+                        'densidadaltacontenido': contenido[0].densidad_alta,
+                        'densidadmuyaltacontenido': contenido[0].densidad_superalta
+                    }]
+
+                return JsonResponse(contenido, safe=False)
+
+            if descripcion_contenedor:
+                contenedor = Material.objects.filter(material=descripcion_contenedor)
+                if contenedor:
+                    contenedor = [{
+                        'vol_contenedor': round(contenedor[0].volumen, 3),
+                        'peso_contenedor': round(contenedor[0].peso, 3),
+                        'capacidadvolcontenedor': contenedor[0].capacidad_volumen,
+                        'capacidadpesocontenedor': contenedor[0].capacidad_peso,
+                    }]
+                return JsonResponse(contenedor, safe=False)
 
         if self.request.GET.get('amb'):
             lista_ambiente = Ambiente.objects.get(ambiente=self.request.GET.get('amb'))
@@ -520,13 +571,14 @@ class PresupuestoServicioView(View):
         try:
 
             try:
-                existeservicio = Presupuesto_servicio.objects.filter(detalle_presupuesto=self.request.POST.get('detalle_presupuesto'))
+                existeservicio = Presupuesto_servicio.objects.filter(detalle_presupuesto=
+                                                                     self.request.POST.get('detalle_presupuesto'))
             except Presupuesto_servicio.DoesNotExist:
                 existeservicio = None
 
             if existeservicio:
-                Presupuesto_servicio.objects.filter(detalle_presupuesto=self.request.POST.get('detalle_presupuesto')).delete()
-
+                Presupuesto_servicio.objects.filter(detalle_presupuesto=
+                                                    self.request.POST.get('detalle_presupuesto')).delete()
             for i in servicios:
                 idservicio = i
 
@@ -543,11 +595,16 @@ class PresupuestoServicioView(View):
                 if materiales:
                     for material in materiales:
 
-                        cantidadmaterial = CalculoCantMaterial(mueble.ancho, mueble.largo,
-                                                               mueble.alto, material.material.ancho,
-                                                               material.calculo, material.cantidad,
+                        cantidadmaterial = CalculoCantMaterial(mueble.ancho,
+                                                               mueble.largo,
+                                                               mueble.alto,
+                                                               material.material.ancho,
+                                                               material.calculo,
+                                                               material.cantidad,
                                                                material.material.nrovuelta,
-                                                               material.material.solape)
+                                                               material.material.solape,
+                                                               mueble.cantidad)
+
                         if material.calculo == '3':
                             montomaterial = Decimal(round((cantidadmaterial *
                                                            material.material.precio), 2))
@@ -574,34 +631,45 @@ class PresupuestoServicioView(View):
                             tiempoaplicado = Decimal(round((factor_tiempo *
                                                             mueble.volumen_mueble), 2))
 
-                        agregar = Presupuesto_servicio.objects.create(servicio=servicio.servicio,
-                                                                      monto_servicio=tarifa,
-                                                                      material=material.material.material,
+                        # se multiplicaron todo los totales por la cantidad de muebles
+                        agregar = Presupuesto_servicio.objects.create(servicio=
+                                                                      servicio.servicio,
+                                                                      monto_servicio=
+                                                                      (tarifa * mueble.cantidad),
+                                                                      material=
+                                                                      material.material.material,
                                                                       cantidad_material=cantidadmaterial,
-                                                                      precio_material=material.material.precio,
+                                                                      precio_material=
+                                                                      material.material.precio,
                                                                       monto_material=montomaterial,
                                                                       volumen_material=volmaterial,
                                                                       peso_material=pesomaterial,
-                                                                      detalle_presupuesto_id=self.request.POST.get('detalle_presupuesto'),
-                                                                      tiempo_aplicado=tiempoaplicado,
-                                                                      unidad_material=material.material.unidad.unidad)
+                                                                      detalle_presupuesto_id=
+                                                                      self.request.POST.get('detalle_presupuesto'),
+                                                                      tiempo_aplicado=
+                                                                      (tiempoaplicado * mueble.cantidad),
+                                                                      unidad_material=
+                                                                      material.material.unidad.unidad)
                         agregar.save()
                 else:
                     agregar = Presupuesto_servicio.objects.create(servicio=servicio.servicio,
-                                                                  monto_servicio=tarifa,
+                                                                  monto_servicio=(tarifa * mueble.cantidad),
                                                                   material=materialservicio,
                                                                   cantidad_material=cantidadmaterial,
                                                                   precio_material=preciomaterial,
                                                                   monto_material=montomaterial,
                                                                   volumen_material=volmaterial,
                                                                   peso_material=pesomaterial,
-                                                                  detalle_presupuesto_id=self.request.POST.get('detalle_presupuesto'),
-                                                                  tiempo_aplicado=factor_tiempo,
+                                                                  detalle_presupuesto_id=
+                                                                  self.request.POST.get('detalle_presupuesto'),
+                                                                  tiempo_aplicado=
+                                                                  (factor_tiempo * mueble.cantidad),
                                                                   unidad_material='')
                     agregar.save()
 
-                #updatepresu = Presupuesto.objects.filter(presupuesto_detalle__id=request.POST['detalle_presupuesto'])
-                #updatepresu.update(estado='Servicios cargados')
+                updatepresu = Presupuesto.objects.filter(presupuesto_detalle__id=
+                                                         request.POST['detalle_presupuesto'])
+                updatepresu.update(estado='Servicios cargados')
 
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
             return JsonResponse(mensaje, safe=False)
@@ -700,6 +768,38 @@ class PresupuestoDetalleUpdate(UpdateView):
     form_class = PresupuestoDetalleForm
     model = Presupuesto_Detalle
 
+    def get_context_data(self, **kwargs):
+        # Obtenemos el contexto de la clase base
+        context = super().get_context_data(**kwargs)
+        # añadimos nuevas variables de contexto al diccionario
+        precargado = DatosPrecargado.objects.values('volcontenedormueble',
+                                                    'peso_contenedormueble')
+        if precargado:
+            vol_contenedor = precargado[0]['volcontenedormueble']
+            peso_contenedor = precargado[0]['peso_contenedormueble']
+
+        lista_mueble = Mueble.objects.get(mueble=self.object.mueble)
+        contenido = Contenido_Tipico.objects.filter(mueble=lista_mueble.id,
+                                                    predefinido=True)[:1]
+        if contenido:
+            densidadcontenido = contenido[0].contenido.densidad_media
+            contenidoservicio = Contenido_Servicio.objects.filter(contenido=contenido[0].contenido_id,
+                                                                  predefinido=True)
+            if contenidoservicio:
+                contenedor = Material.objects.filter(servicio_material__servicio_id=contenidoservicio[0].servicio_id,
+                                                     contenedor=True)[:1]
+                vol_contenedor = contenedor[0].volumen
+                peso_contenedor = contenedor[0].peso
+
+        context['capacidadmueble'] = lista_mueble.capacidad
+        context['vol_contenedor'] = vol_contenedor
+        context['peso_contenedor'] = peso_contenedor
+
+        context['nombre_btn'] = 'Guardar'
+
+        # devolvemos el contexto
+        return context
+
     def get_initial(self):
         super(PresupuestoDetalleUpdate, self).get_initial()
         lista_ambiente = Ambiente.objects.get(ambiente=self.object.ambiente)
@@ -723,8 +823,8 @@ class PresupuestoDetalleUpdate(UpdateView):
                 "lista_mueble": lista_mueble.id,
                 "lista_ambiente": lista_ambiente.id,
                 "lista_ocupacion": lista_ocupacion.id
-            }
 
+            }
         return self.initial
 
     def form_valid(self, form):
@@ -871,23 +971,51 @@ class PresupuestoDetailResumen(DetailView):
                                                                            tipo_direccion="Origen")
         context['direccion_destino'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk,
                                                                             tipo_direccion="Destino")
-        context['servicio'] = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto=self.object.pk).values('servicio',
-                                                                                                                          'detalle_presupuesto',
-                                                                                                                          'monto_servicio',
-                                                                                                                          'tiempo_aplicado').annotate(tcount=Count('servicio')).order_by('servicio')
+        servicio = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto=
+                                                       self.object.pk).values('servicio',
+                                                                              'detalle_presupuesto',
+                                                                              'monto_servicio',
+                                                                              'tiempo_aplicado').annotate(tcount=Count('servicio')).order_by('servicio')
+        servicio2 = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto=
+                                                        self.object.pk).values('servicio',
+                                                                               'material',
+                                                                               'precio_material',
+                                                                               'unidad_material').annotate(tcount=Count('servicio'),
+                                                                                                           smontomat=Sum('monto_material'),
+                                                                                                           scantmat=Sum('cantidad_material'),
+                                                                                                           svolmat=Sum('volumen_material'),
+                                                                                                           spesomat=Sum('peso_material'),
+                                                                                                           stiempoa=Sum('tiempo_aplicado'),
+                                                                                                           smontoserv=Sum('monto_servicio')).order_by('servicio')
+        montoservicio = 0
+        tiemposervicio = 0
+        for i in range(len(servicio)):
+            montoservicio = montoservicio + servicio[i]['monto_servicio']
+            tiemposervicio = tiemposervicio + servicio[i]['tiempo_aplicado']
+
+        totalmontomateriales = 0
+        totalpesomateriales = 0
+        totalvolumenmateriales = 0
+
+        for i in range(len(servicio2)):
+            totalmontomateriales = totalmontomateriales + servicio2[i]['smontomat']
+            totalpesomateriales = totalpesomateriales + servicio2[i]['spesomat']
+            totalvolumenmateriales = totalvolumenmateriales + servicio2[i]['svolmat']
+
+        totales = {'montoservicio': montoservicio,
+                   'tiemposervicio': tiemposervicio,
+                   'totalmontomateriales': totalmontomateriales,
+                   'totalpesomateriales': totalpesomateriales,
+                   'totalvolumenmateriales': totalvolumenmateriales
+                   }
+
+        context['servicio'] = servicio
+        context['totales'] = totales
         context['empresa'] = Empresa.objects.get(id=1)
         context['now'] = timezone.now()
-        context['servicio2'] = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto=
-                                                                   self.object.pk).values('servicio',
-                                                                                          'material',
-                                                                                          'precio_material').annotate(tcount=Count('servicio'),
-                                                                                                                      smontomat=Sum('monto_material'),
-                                                                                                                      scantmat=Sum('cantidad_material'),
-                                                                                                                      svolmat=Sum('volumen_material'),
-                                                                                                                      spesomat=Sum('peso_material'),
-                                                                                                                      stiempoa=Sum('tiempo_aplicado'),
-                                                                                                                      smontoserv=Sum('monto_servicio')).order_by('servicio')
-        context['pagesize'] = 'A4'
+        context['servicio2'] = servicio2
+
+        #context['pagesize'] = 'A4'
 
         #pdf = render_to_pdf('presupuesto_resumen_email.html', context)
         #pdf = hola_pdf(self.request)
@@ -999,18 +1127,33 @@ class PresupuestoRevisarUpdateView(UpdateView):
             return render_to_response(self.template_name, self.get_context_data())
 
 
-def ajax_tamano_request(request):
-    # Expect an auto 'type' to be passed in via Ajax and POST
-    if request.is_ajax() and request.method == 'POST':
-        mueble = Mueble.objects.filter(id=request.POST.get('mueble', ''))
-        tamanos = mueble.Tamano_Mueble.all()
-        # get all the colors for this type of auto.
-        mensaje = {'tamanos': tamanos}
-        return JsonResponse(mensaje, safe=False)
+def redondeo(cantidad, redondear):
+    """docstring"""
+    #Parte entera con o sin signo
+    entero = int(cantidad)
+    #Parte decimal
+    residuo = abs(cantidad) - abs(int(cantidad))
+    if residuo == 0:
+        residuof = 0
+    else:
+        if (residuo/redondear) > 1:
+            cant1 = Decimal(round((residuo / redondear), 2))
+            cant2 = cant1 % 1
+            if cant2 > 0:
+                resto = 1
+            else:
+                resto = 0
+            cant3 = int(residuo/redondear)
+            residuof = (cant3 + resto) * redondear
+        else:
+            residuof = redondear
+    cantidad = entero + residuof
+    return Decimal(round(cantidad, 2))
 
 
 def CalculoCantMaterial(muebleancho, mueblelargo, mueblealto,
-                        materialancho, calculo, cantidadmat, nrovuelta, solape):
+                        materialancho, calculo, cantidadmat,
+                        nrovuelta, solape, mueblecantidad):
 
     cantidadmaterial = 0
     muebleancho = muebleancho/100  # en mts
@@ -1020,95 +1163,23 @@ def CalculoCantMaterial(muebleancho, mueblelargo, mueblealto,
 
     if calculo == '1':  # materiales inelastico
         try:
-            cantidad = (2 * (Decimal((muebleancho * mueblelargo) +
+            cantidad = ((2 * (Decimal((muebleancho * mueblelargo) +
                                      (muebleancho * mueblealto) +
                                      (mueblelargo * mueblealto))) *
-                        (1 + solape)) / materialancho
-
+                        (1 + solape)) / materialancho) * mueblecantidad
         except ZeroDivisionError:
             cantidad = 0
-
-        #Parte entera con o sin signo
-        entero = int(cantidad)
-        #Parte decimal
-        residuo = abs(cantidad) - abs(int(cantidad))
-        redondear = Decimal(0.5)
-
-        if residuo == 0:
-            residuof = 0
-        else:
-            if (residuo/redondear) > 1:
-                cant1 = Decimal(round((residuo / redondear), 2))
-                cant2 = cant1 % 1
-                if cant2 > 0:
-                    resto = 1
-                else:
-                    resto = 0
-                cant3 = int(residuo/redondear)
-                residuof = (cant3 + resto) * redondear
-            else:
-                residuof = redondear
-        cantidadmaterial = entero + residuof
+        cantidadmaterial = redondeo(cantidad, Decimal(0.5))
 
     elif calculo == '2':
         cantidad1 = ((mueblealto*(1 + solape)) / materialancho)
-        redondear = 1
-        entero = int(cantidad1)
-        residuo = abs(cantidad1) - abs(int(cantidad1))
-
-        if residuo == 0:
-            residuof = 0
-        else:
-            if (residuo/redondear) > 1:
-                if (round((residuo/redondear), 2) % 1) > 0:
-                    resto = 1
-                else:
-                    resto = 0
-                residuof = (int((residuo/redondear)) + resto) * redondear
-            else:
-                residuof = redondear
-
-        cantidad = nrovuelta * 2 * (muebleancho+mueblelargo) * (entero+residuof)
-        entero = int(cantidad)
-        residuo = abs(cantidad) - abs(int(cantidad))
-
-        if residuo == 0:
-            residuof = 0
-        else:
-            if (residuo/redondear) > 1:
-                if (round((residuo/redondear), 2) % 1) > 0:
-                    resto = 1
-                else:
-                    resto = 0
-                residuof = (int((residuo/redondear)) + resto) * redondear
-            else:
-                residuof = redondear
-
-        cantidadmaterial = entero + residuof
+        cantidad1 = redondeo(cantidad1, 1)
+        cantidad = (nrovuelta * 2 * (muebleancho+mueblelargo) * cantidad1) * mueblecantidad
+        cantidadmaterial = redondeo(cantidad, 1)
 
     elif calculo == '3':
-        cantidad = Decimal(round((muebleancho * mueblealto * mueblelargo), 3)) * cantidadmat
-        #Parte entera con o sin signo
-        entero = int(cantidad)
-        #Parte decimal
-        residuo = abs(cantidad) - abs(int(cantidad))
-        redondear = 1
-
-        if residuo == 0:
-            residuof = 0
-        else:
-            if (residuo/redondear) > 1:
-                cant1 = Decimal(round((residuo / redondear), 2))
-                cant2 = cant1 % 1
-                if cant2 > 0:
-                    resto = 1
-                else:
-                    resto = 0
-                cant3 = int(residuo/redondear)
-                residuof = (cant3 + resto) * redondear
-            else:
-                residuof = redondear
-        cantidadmaterial = entero + residuof
+        cantidad = (Decimal(round((muebleancho * mueblealto * mueblelargo), 3)) * cantidadmat) * mueblecantidad
+        cantidadmaterial = redondeo(cantidad, 1)
 
     return Decimal(round(cantidadmaterial, 2))
 
@@ -1116,18 +1187,20 @@ def CalculoCantMaterial(muebleancho, mueblelargo, mueblealto,
 def update_presupuesto(request, pk):
 
     #actualizar valores de canti_ambiente y cant_mueble en presupuesto
-    precargado = DatosPrecargado.objects.all()
+    precargado = DatosPrecargado.objects.values('rendimiento_volumen',
+                                                'rendimiento_unidad',
+                                                'duracion_optimamudanza')
     if precargado:
-        rendimiento_peso = precargado[0].rendimiento_peso
-        rendimiento_volumen = precargado[0].rendimiento_volumen
-        rendimiento_unidad = precargado[0].rendimiento_unidad
-        duracion_optimamudanza = precargado[0].duracion_optimamudanza
+        rendimiento_volumen = precargado[0]['rendimiento_volumen']
+        rendimiento_unidad = precargado[0]['rendimiento_unidad']
+        duracion_optimamudanza = precargado[0]['duracion_optimamudanza']
 
-    direccion = Presupuesto_direccion.objects.filter(presupuesto=pk,
-                                                     tipo_direccion='Origen')
+    direccion = Presupuesto_direccion.objects.values('valor_metrocubico_complejiadad',
+                                                     'valor_ambiente_complejidad').filter(presupuesto=pk,
+                                                                                          tipo_direccion='Origen')
     if direccion:
-        tarifa_m3 = direccion[0].valor_metrocubico_complejiadad
-        tarifa_amb = direccion[0].valor_ambiente_complejidad
+        tarifa_m3 = direccion[0]['valor_metrocubico_complejiadad']
+        tarifa_amb = direccion[0]['valor_ambiente_complejidad']
 
     presu = Presupuesto_Detalle.objects.filter(presupuesto=pk)
     materiales = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto_id=pk)
@@ -1144,7 +1217,8 @@ def update_presupuesto(request, pk):
         volumen_materiales = 0
         monto_materiales = 0
 
-    materialserv = materiales.values('servicio', 'detalle_presupuesto',
+    materialserv = materiales.values('servicio',
+                                     'detalle_presupuesto',
                                      'monto_servicio').annotate(tcount=
                                                                 Count('servicio')).order_by('servicio')
     if materialserv:
@@ -1159,20 +1233,17 @@ def update_presupuesto(request, pk):
         tiempo_servicio = 0
 
     cant_ambiente = Presupuesto_Detalle.objects.filter(presupuesto=
-                                                       pk).values('ambiente').annotate(acount=Count('ambiente')).order_by('ambiente')
-    detallemueble = Presupuesto_Detalle.objects.filter(presupuesto=pk, trasladable=True)
+                                                       pk).values('ambiente').annotate(acount=
+                                                                                       Count('ambiente')).order_by('ambiente')
+    detallemueble = Presupuesto_Detalle.objects.values('presupuesto').filter(presupuesto=pk,
+                                                                             trasladable=True).annotate(cantmueble=Sum('cantidad')).order_by('presupuesto')
     if detallemueble:
-        cant_mueble = detallemueble.count()
+        cant_mueble = detallemueble[0]['cantmueble']
         volumen_muebles = detallemueble.aggregate(vol_mueble=Sum('volumen_mueble'))
-        peso_muebles = detallemueble.aggregate(pes_mueble=Sum('peso'))
-
-        volumen_muebles = volumen_muebles['vol_mueble']
-        peso_muebles = peso_muebles['pes_mueble']
-
+        volumen_muebles = volumen_muebles['vol_mueble'] * cant_mueble
     else:
         cant_mueble = 0
         volumen_muebles = 0
-        peso_muebles = 0
 
     cant_contenedor = presu.aggregate(cant_contenedor=Sum('cantidad_contenedor'))
     peso_contenedores = presu.aggregate(pes_contenedor=Sum('peso_contenedor'))
@@ -1187,7 +1258,6 @@ def update_presupuesto(request, pk):
     updatepresu.update(cantidad_muebles=cant_mueble)
     updatepresu.update(cantidad_contenedores=cant_contenedor['cant_contenedor'])
     updatepresu.update(total_peso_contenedores=round(peso_contenedores['pes_contenedor'], 3))
-    updatepresu.update(total_peso_muebles=round(peso_muebles, 3))
     updatepresu.update(total_peso_contenidos=round(peso_contenidos['pes_contenido'], 3))
     updatepresu.update(total_volumen_muebles=round(volumen_muebles, 3))
     updatepresu.update(total_volumen_contenedores=round(volumen_contenedores['vol_contenedor'], 3))
@@ -1206,13 +1276,6 @@ def update_presupuesto(request, pk):
         + presupuesto.total_volumen_materiales
         )
 
-    totalpesomudanza = (
-        presupuesto.total_peso_muebles
-        + presupuesto.total_peso_contenidos
-        + presupuesto.total_peso_contenedores
-        + presupuesto.total_peso_materiales
-        )
-
     objmudanza = presupuesto.cantidadobjmudanza
     tiemposervicio = presupuesto.tiempo_servicios
     cant_amb = presupuesto.cantidad_ambientes
@@ -1220,17 +1283,6 @@ def update_presupuesto(request, pk):
     montomaterial = presupuesto.monto_materiales
     recorridokm = presupuesto.recorrido_km
     tiemporecorrido = presupuesto.tiempo_recorrido
-
-    cant_vehiculokg = 0
-    descripcion_vehkg = ""
-    montoveh_hrskg = 0
-    montoveh_kmkg = 0
-    cap_vehiculovolkg = 0
-    cap_vehiculovolkg2 = 0
-    cant_ayudantekg = 0
-    descripcion_perskg = ""
-    montopers_kg = 0
-    montochoferkg = 0
 
     cant_vehiculovol = 0
     descripcion_vehvol = ""
@@ -1262,140 +1314,8 @@ def update_presupuesto(request, pk):
 
     # for para obtener el arreglo por capacidad m3
     array_capacidadm3 = []
-    array_capacidadpeso = []
-
-    j = -1
-    vrestopeso = totalpesomudanza
     vrestom3 = totalm3mudanza
 
-    for i in range(len(vehiculos)):
-        sw = 0
-
-        entero = int(vrestopeso / vehiculos[i].capacidad_peso)
-        vrestopeso = vrestopeso - entero * vehiculos[i].capacidad_peso
-        if entero > 0:
-            j += 1
-            sw = 1
-            array_capacidadpeso.append([j]*10)
-            array_capacidadpeso[j][0] = entero
-            array_capacidadpeso[j][1] = Decimal(round((vehiculos[i].capacidad_peso * array_capacidadpeso[j][0]), 3))
-            array_capacidadpeso[j][2] = Decimal(round((vehiculos[i].tarifa_hora * array_capacidadpeso[j][0] * tiemporecorrido), 2))
-            array_capacidadpeso[j][3] = Decimal(round((vehiculos[i].tarifa_recorrido * array_capacidadpeso[j][0] * recorridokm), 2))
-            array_capacidadpeso[j][4] = 'Modelo: ' + vehiculos[i].modelo + \
-                                        ' - Tarifa $/h: ' + str(vehiculos[i].tarifa_hora) + \
-                                        ' - Tarifa $/Km: ' + str(vehiculos[i].tarifa_recorrido) + \
-                                        ' - Capacidad m3: ' + str(vehiculos[i].capacidad_volumen) + \
-                                        ' - Capacidad Kgs: ' + str(vehiculos[i].capacidad_peso) + \
-                                        ' - Cantidad: ' + str(array_capacidadpeso[j][0]) + \
-                                        ' - Volumen Total: ' + str(array_capacidadpeso[j][1]) + \
-                                        ' - Total Tarifa $/h: ' + str(array_capacidadpeso[j][2]) + \
-                                        ' - Total Tarifa $/Km: ' + str(array_capacidadpeso[j][3])
-            array_capacidadpeso[j][9] = Decimal(round((vehiculos[i].capacidad_volumen * array_capacidadpeso[j][0]), 3))
-            array_capacidadpeso[j][5] = vehiculos[i].cantidad_ayudante * array_capacidadpeso[j][0]
-            array_capacidadpeso[j][6] = Decimal(round((array_capacidadpeso[j][5] * ayudante.tarifa_dia), 2))
-            cargo = Cargo_trabajador.objects.get(pk=vehiculos[i].cargo.id)
-
-            array_capacidadpeso[j][7] = Decimal(round((cargo.tarifa_dia * array_capacidadpeso[j][0]), 2))
-            array_capacidadpeso[j][8] = 'Conductor asignado: ' + cargo.cargo  + \
-                                        ' - Tarifa $/día: ' + str(cargo.tarifa_dia) + \
-                                        ' - Cantidad de conductor: ' + str(array_capacidadpeso[j][0]) + \
-                                        ' - Total Tarifa $/día: ' + str(array_capacidadpeso[j][7]) + \
-                                        ' - Cantidad de ayudantes: ' + str(array_capacidadpeso[j][5]) + \
-                                        ' - Tarifa $/día: ' + str(ayudante.tarifa_dia) + \
-                                        ' - Total Tarifa $/día: ' + str(array_capacidadpeso[j][6])
-
-        if vrestopeso > 0:
-            if i == len(vehiculos)-1:
-                j += 1
-                array_capacidadpeso.append([j]*10)
-                array_capacidadpeso[j][0] = 1
-                array_capacidadpeso[j][1] = Decimal(round((vehiculos[i].capacidad_peso * array_capacidadpeso[j][0]), 3))
-                array_capacidadpeso[j][2] = Decimal(round((vehiculos[i].tarifa_hora * array_capacidadpeso[j][0] * tiemporecorrido), 2))
-                array_capacidadpeso[j][3] = Decimal(round((vehiculos[i].tarifa_recorrido * array_capacidadpeso[j][0] * recorridokm), 2))
-                array_capacidadpeso[j][4] = 'Modelo: ' + vehiculos[i].modelo + \
-                                            ' - Tarifa $/h: ' + str(vehiculos[i].tarifa_hora) + \
-                                            ' - Tarifa $/Km: ' + str(vehiculos[i].tarifa_recorrido) + \
-                                            ' - Capacidad m3: ' + str(vehiculos[i].capacidad_volumen) + \
-                                            ' - Capacidad Kgs: ' + str(vehiculos[i].capacidad_peso) + \
-                                            ' - Cantidad: ' + str(array_capacidadpeso[j][0]) + \
-                                            ' - Volumen Total: ' + str(array_capacidadpeso[j][1]) + \
-                                            ' - Total Tarifa $/h: ' + str(array_capacidadpeso[j][2]) + \
-                                            ' - Total Tarifa $/Km: ' + str(array_capacidadpeso[j][3])
-                array_capacidadpeso[j][9] = Decimal(round((vehiculos[i].capacidad_volumen * array_capacidadpeso[j][0]), 3))
-                array_capacidadpeso[j][5] = vehiculos[i].cantidad_ayudante * array_capacidadpeso[j][0]
-                array_capacidadpeso[j][6] = Decimal(round((array_capacidadpeso[j][5] * ayudante.tarifa_dia), 2))
-                cargo = Cargo_trabajador.objects.get(pk=vehiculos[i].cargo.id)
-
-                array_capacidadpeso[j][7] = Decimal(round((cargo.tarifa_dia * array_capacidadpeso[j][0]), 2))
-                array_capacidadpeso[j][8] = 'Conductor asignado: ' + cargo.cargo  + \
-                                            ' - Tarifa $/día: ' + str(cargo.tarifa_dia) + \
-                                            ' - Cantidad de conductor: ' + str(array_capacidadpeso[j][0]) + \
-                                            ' - Total Tarifa $/hrs: ' + str(array_capacidadpeso[j][7]) + \
-                                            ' - Cantidad de ayudantes: ' + str(array_capacidadpeso[j][5]) + \
-                                            ' - Tarifa $/día: ' + str(ayudante.tarifa_dia) + \
-                                            ' - Total Tarifa $/hrs: ' + str(array_capacidadpeso[j][6])
-
-                vrestopeso = vrestopeso - array_capacidadpeso[j][1]
-
-            elif (vrestopeso > vehiculos[i+1].capacidad_peso):
-                if sw == 0:
-                    j += 1
-                    sw = 1
-                    array_capacidadpeso.append([j]*10)
-
-                array_capacidadpeso[j][0] = array_capacidadpeso[j][0] + 1
-                array_capacidadpeso[j][1] = Decimal(round((vehiculos[i].capacidad_peso * array_capacidadpeso[j][0]), 3))
-                array_capacidadpeso[j][2] = Decimal(round((vehiculos[i].tarifa_hora * array_capacidadpeso[j][0] * tiemporecorrido), 2))
-                array_capacidadpeso[j][3] = Decimal(round((vehiculos[i].tarifa_recorrido * array_capacidadpeso[j][0] * recorridokm), 2))
-                array_capacidadpeso[j][4] = 'Modelo: ' + vehiculos[i].modelo + \
-                                            ' - Tarifa $/h: ' + str(vehiculos[i].tarifa_hora) + \
-                                            ' - Tarifa $/Km: ' + str(vehiculos[i].tarifa_recorrido) + \
-                                            ' - Capacidad m3: ' + str(vehiculos[i].capacidad_volumen) + \
-                                            ' - Capacidad Kgs: ' + str(vehiculos[i].capacidad_peso) + \
-                                            ' - Cantidad: ' + str(array_capacidadpeso[j][0]) + \
-                                            ' - Volumen Total: ' + str(array_capacidadpeso[j][1]) + \
-                                            ' - Total Tarifa $/h: ' + str(array_capacidadpeso[j][2]) + \
-                                            ' - Total Tarifa $/Km: ' + str(array_capacidadpeso[j][3])
-                array_capacidadpeso[j][9] = Decimal(round((vehiculos[i].capacidad_volumen * array_capacidadpeso[j][0]), 3))
-                array_capacidadpeso[j][5] = vehiculos[i].cantidad_ayudante * array_capacidadpeso[j][0]
-                array_capacidadpeso[j][6] = Decimal(round((array_capacidadpeso[j][5] * ayudante.tarifa_dia), 2))
-                cargo = Cargo_trabajador.objects.get(pk=vehiculos[i].cargo.id)
-
-                array_capacidadpeso[j][7] = Decimal(round((cargo.tarifa_dia * array_capacidadpeso[j][0]), 2))
-                array_capacidadpeso[j][8] = 'Conductor asignado: ' + cargo.cargo  + \
-                                            ' - Tarifa $/día: ' + str(cargo.tarifa_dia) + \
-                                            ' - Cantidad de conductor: ' + str(array_capacidadpeso[j][0]) + \
-                                            ' - Total Tarifa $/hrs: ' + str(array_capacidadpeso[j][7]) + \
-                                            ' - Cantidad de ayudantes: ' + str(array_capacidadpeso[j][5]) + \
-                                            ' - Tarifa $/día: ' + str(ayudante.tarifa_dia) + \
-                                            ' - Total Tarifa $/hrs: ' + str(array_capacidadpeso[j][6])
-
-                vrestopeso = vrestopeso - array_capacidadpeso[j][1]
-        if vrestopeso <= 0:
-            break
-
-    for i in range(len(array_capacidadpeso)):
-
-        cant_vehiculokg = cant_vehiculokg + array_capacidadpeso[i][0]
-        cap_vehiculovolkg = cap_vehiculovolkg + array_capacidadpeso[i][1]
-        montoveh_hrskg = montoveh_hrskg + array_capacidadpeso[i][2]
-        montoveh_kmkg = montoveh_kmkg + array_capacidadpeso[i][3]
-        cant_ayudantekg = cant_ayudantekg + array_capacidadpeso[i][5]
-        montopers_kg = montopers_kg + array_capacidadpeso[i][6]
-        montochoferkg = montochoferkg + array_capacidadpeso[i][7]
-        cap_vehiculovolkg2 = cap_vehiculovolkg2 + array_capacidadpeso[i][9]
-
-        if descripcion_vehkg == '':
-            descripcion_vehkg = array_capacidadpeso[i][4]
-        else:
-            descripcion_vehkg = descripcion_vehkg + ', ' + array_capacidadpeso[i][4]
-
-        if descripcion_perskg == '':
-            descripcion_perskg = array_capacidadpeso[i][8]
-        else:
-            descripcion_perskg = descripcion_perskg + ', ' + array_capacidadpeso[i][8]
-
-    # for para obtener el arreglo por capacidad m3
     j = -1
     for i in range(len(vehiculos)):
         sw = 0
@@ -1414,12 +1334,11 @@ def update_presupuesto(request, pk):
                                       ' - Tarifa $/h: ' + str(vehiculos[i].tarifa_hora) + \
                                       ' - Tarifa $/Km: ' + str(vehiculos[i].tarifa_recorrido) + \
                                       ' - Capacidad m3: ' + str(vehiculos[i].capacidad_volumen) + \
-                                      ' - Capacidad Kgs: ' + str(vehiculos[i].capacidad_peso) + \
                                       ' - Cantidad: ' + str(array_capacidadm3[j][0]) + \
                                       ' - Volumen Total: ' + str(array_capacidadm3[j][1]) + \
                                       ' - Total Tarifa $/h: ' + str(array_capacidadm3[j][2]) + \
                                       ' - Total Tarifa $/Km: ' + str(array_capacidadm3[j][3])
-            array_capacidadm3[j][9] = Decimal(round((vehiculos[i].capacidad_peso * array_capacidadm3[j][0]), 3))
+            array_capacidadm3[j][9] = 0  # Decimal(round((vehiculos[i].capacidad_peso * array_capacidadm3[j][0]), 3))
             array_capacidadm3[j][5] = vehiculos[i].cantidad_ayudante * array_capacidadm3[j][0]
             array_capacidadm3[j][6] = Decimal(round((array_capacidadm3[j][5] * ayudante.tarifa_dia), 2))
             cargo = Cargo_trabajador.objects.get(pk=vehiculos[i].cargo.id)
@@ -1444,18 +1363,17 @@ def update_presupuesto(request, pk):
                                           ' - Tarifa $/h: ' + str(vehiculos[i].tarifa_hora) + \
                                           ' - Tarifa $/Km: ' + str(vehiculos[i].tarifa_recorrido) + \
                                           ' - Capacidad m3: ' + str(vehiculos[i].capacidad_volumen) + \
-                                          ' - Capacidad Kgs: ' + str(vehiculos[i].capacidad_peso) + \
                                           ' - Cantidad: ' + str(array_capacidadm3[j][0]) + \
                                           ' - Volumen Total: ' + str(array_capacidadm3[j][1]) + \
                                           ' - Total Tarifa $/h: ' + str(array_capacidadm3[j][2]) + \
                                           ' - Total Tarifa $/Km: ' + str(array_capacidadm3[j][3])
-                array_capacidadm3[j][9] = Decimal(round((vehiculos[i].capacidad_peso * array_capacidadm3[j][0]), 3))
+                array_capacidadm3[j][9] = 0  # Decimal(round((vehiculos[i].capacidad_peso * array_capacidadm3[j][0]), 3))
                 array_capacidadm3[j][5] = vehiculos[i].cantidad_ayudante * array_capacidadm3[j][0]
                 array_capacidadm3[j][6] = Decimal(round((array_capacidadm3[j][5] * ayudante.tarifa_dia), 2))
                 cargo = Cargo_trabajador.objects.get(pk=vehiculos[i].cargo.id)
 
                 array_capacidadm3[j][7] = Decimal(round((cargo.tarifa_dia * array_capacidadm3[j][0]), 2))
-                array_capacidadm3[j][8] = 'Conductor asignado: ' + cargo.cargo  + \
+                array_capacidadm3[j][8] = 'Conductor asignado: ' + cargo.cargo + \
                                           ' - Tarifa $/día: ' + str(cargo.tarifa_dia) + \
                                           ' - Cantidad de conductor: ' + str(array_capacidadm3[j][0]) + \
                                           ' - Total Tarifa $/hrs: ' + str(array_capacidadm3[j][7]) + \
@@ -1477,12 +1395,11 @@ def update_presupuesto(request, pk):
                                           ' - Tarifa $/h: ' + str(vehiculos[i].tarifa_hora) + \
                                           ' - Tarifa $/Km: ' + str(vehiculos[i].tarifa_recorrido) + \
                                           ' - Capacidad m3: ' + str(vehiculos[i].capacidad_volumen) + \
-                                          ' - Capacidad Kgs: ' + str(vehiculos[i].capacidad_peso) + \
                                           ' - Cantidad: ' + str(array_capacidadm3[j][0]) + \
                                           ' - Volumen Total: ' + str(array_capacidadm3[j][1]) + \
                                           ' - Total Tarifa $/h: ' + str(array_capacidadm3[j][2]) + \
                                           ' - Total Tarifa $/Km: ' + str(array_capacidadm3[j][3])
-                array_capacidadm3[j][9] = Decimal(round((vehiculos[i].capacidad_peso * array_capacidadm3[j][0]), 3))
+                array_capacidadm3[j][9] = 0  # Decimal(round((vehiculos[i].capacidad_peso * array_capacidadm3[j][0]), 3))
                 array_capacidadm3[j][5] = vehiculos[i].cantidad_ayudante * array_capacidadm3[j][0]
                 array_capacidadm3[j][6] = Decimal(round((array_capacidadm3[j][5] * ayudante.tarifa_dia), 2))
                 cargo = Cargo_trabajador.objects.get(pk=vehiculos[i].cargo.id)
@@ -1521,35 +1438,20 @@ def update_presupuesto(request, pk):
         else:
             descripcion_persvol = descripcion_persvol + ', ' + array_capacidadm3[i][8]
 
-    if cant_vehiculokg > cant_vehiculovol:
-        cant_vehiculo = cant_vehiculokg
-        descripcion_veh = descripcion_vehkg
-        montoveh_hrs = Decimal(round(montoveh_hrskg, 2))
-        montoveh_km = Decimal(round(montoveh_kmkg, 2))
-        cap_vehiculo = Decimal(round(cap_vehiculovolkg, 3))
-        cap_vehiculo2 = Decimal(round(cap_vehiculovolkg2, 3))
-        cant_ayudante = cant_ayudantekg
-        descripcion_pers = descripcion_perskg
-        montopers = Decimal(round(montopers_kg, 2))
-        montochofer = Decimal(round(montochoferkg, 2))
+    cant_vehiculo = cant_vehiculovol
+    descripcion_veh = descripcion_vehvol
+    montoveh_hrs = Decimal(round(montoveh_hrsvol, 2))
+    montoveh_km = Decimal(round(montoveh_kmvol, 2))
+    cap_vehiculo2 = Decimal(round(cap_vehiculovol2, 3))
+    cant_ayudante = cant_ayudantevol
+    descripcion_pers = descripcion_persvol
+    montopers = Decimal(round(montopers_vol, 2))
+    montochofer = Decimal(round(montochofervol, 2))
 
-    else:
-        cant_vehiculo = cant_vehiculovol
-        descripcion_veh = descripcion_vehvol
-        montoveh_hrs = Decimal(round(montoveh_hrsvol, 2))
-        montoveh_km = Decimal(round(montoveh_kmvol, 2))
-        cap_vehiculo = Decimal(round(cap_vehiculovol22, 3))
-        cap_vehiculo2 = Decimal(round(cap_vehiculovol2, 3))
-        cant_ayudante = cant_ayudantevol
-        descripcion_pers = descripcion_persvol
-        montopers = Decimal(round(montopers_vol, 2))
-        montochofer = Decimal(round(montochofervol, 2))
-
-    demandapeso = Decimal(totalpesomudanza/rendimiento_peso)*2 + tiemposervicio
     demandavolumen = Decimal(totalm3mudanza/rendimiento_volumen)*2 + tiemposervicio
     demandaunidad = Decimal(objmudanza/rendimiento_unidad)*2 + tiemposervicio
 
-    demanda = max(demandapeso, demandavolumen, demandaunidad)
+    demanda = max(demandavolumen, demandaunidad)
 
     duracionteorica = Decimal(round((demanda/cant_ayudante), 2))
 
@@ -1560,28 +1462,7 @@ def update_presupuesto(request, pk):
     elif duracionteorica > duracion_optimamudanza:
         tiempocarga = duracionteorica - duracion_optimamudanza
         cantidad = (tiempocarga/duracion_optimamudanza) * cant_ayudante
-
-        #Parte entera con o sin signo
-        entero = int(cantidad)
-        #Parte decimal
-        residuo = abs(cantidad) - abs(int(cantidad))
-        redondear = 1
-
-        if (residuo == 0):
-            residuof = 0
-        else:
-            if (residuo/redondear) > 1:
-                cant1 = round((residuo / redondear), 2)
-                cant2 = cant1 % 1
-                if cant2 > 0:
-                    resto = 1
-                else:
-                    resto = 0
-                cant3 = int(residuo/redondear)
-                residuof = (cant3 + resto) * redondear
-            else:
-                residuof = redondear
-        cant_ayudanteadic = entero + residuof
+        cant_ayudanteadic = redondeo(cantidad, 1)
         montopersadic = cant_ayudanteadic*ayudante.tarifa_dia
 
         descripcion_pers = descripcion_pers + \
@@ -1614,7 +1495,6 @@ def update_presupuesto(request, pk):
     updatepresu.update(cantidad_vehiculo=cant_vehiculo)
     updatepresu.update(monto_vehiculo_hora=montoveh_hrs)
     updatepresu.update(monto_vehiculo_recorrido=montoveh_km)
-    updatepresu.update(total_capacidad_vehiculokg=cap_vehiculo)
     updatepresu.update(total_capacidad_vehiculovol=cap_vehiculo2)
     updatepresu.update(descripcion_persona=descripcion_pers)
     updatepresu.update(cantidad_ayudante=cant_ayudante)
@@ -1627,9 +1507,9 @@ def update_presupuesto(request, pk):
     updatepresu.update(monto_mundanza_hrsoptimas=round(montooptimomudanza, 2))
     updatepresu.update(monto_m3_inmueble=round((totalm3mudanza*tarifa_m3), 2))
     updatepresu.update(monto_amb_inmueble=round((cant_amb*tarifa_amb), 2))
-    updatepresu.update(total_peso_mudanza=round(totalpesomudanza, 3))
     updatepresu.update(total_m3=round(totalm3mudanza, 3))
 
     presupuesto = Presupuesto.objects.get(pk=pk)
 
     return(presupuesto)
+
