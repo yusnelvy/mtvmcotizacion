@@ -79,8 +79,8 @@ TIEMPO_RECORRIDO = (
     )
 
 HORAS_CHOICES = (
-    (time(8, 00), '8:00 am o antes'),
-    (time(9, 00), '9:00 am'),
+    (time(8, 00), '08:00 am o antes'),
+    (time(9, 00), '09:00 am'),
     (time(10, 00), '10:00 am'),
     (time(11, 00), '11:00 am'),
     (time(12, 00), '12:00 pm'),

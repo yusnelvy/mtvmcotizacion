@@ -147,7 +147,13 @@ class="col-md-10"
     <h2>Detalles del presupuesto</h2>
     <table class="table table-hover table-bordered" id="myDatosPersonales">
         <tr>
-            <td><b>Cotizador:</b> {{ presupuesto.cotizador }}</td>
+            <td><b>Cotizador:</b>
+
+                {{ presupuesto.cotizador.first_name }}
+
+                {{ presupuesto.cotizador.last_name }}
+
+            </td>
             <td><b>Fecha de registro:</b> {{ presupuesto.fecha_creacion|date:"d/m/Y" }}</td>
             <td><b>Hora de registro:</b> {{ presupuesto.hora_creacion|time:"h:i a" }}</td>
             <td><b>N° de presupuesto:</b> {{ presupuesto.id }}</td>
@@ -183,7 +189,7 @@ class="col-md-10"
 
             <tr>
                 <td>
-                    <a class="botonmodalFormulario btn btn-success hidden-print" data-nombre="Agregar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Origen&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar dirección de origen">Agregar dirección de origen
+                    <a class="botonmodalFormulario btn btn-success hidden-print" data-nombre="Agregar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Origen&pre={{ presupuesto.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar dirección de origen">Agregar dirección de origen
                     </a>
                 </td>
             </tr>
@@ -334,7 +340,7 @@ class="col-md-10"
 
             <tr>
                 <td>
-                    <a class="botonmodalFormulario btn btn-success hidden-print boton-almedio" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar dirección de destino">Agregar dirección de destino
+                    <a class="botonmodalFormulario btn btn-success hidden-print boton-almedio" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar dirección de destino">Agregar dirección de destino
                     </a>
                 </td>
             </tr>
@@ -477,13 +483,13 @@ class="col-md-10"
 
         {% if direccion_origen %}
 
-        <a class="botonmodalFormulario btn btn-default hidden-print" data-nombre="Agregar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Origen&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar dirección de origen">Agregar más direcciones de origen</a>
+        <a class="botonmodalFormulario btn btn-default hidden-print" data-nombre="Agregar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Origen&pre={{ presupuesto.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar dirección de origen">Agregar más direcciones de origen</a>&nbsp;
 
         {% endif %}
 
         {% if direccion_destino %}
 
-        <a class="botonmodalFormulario btn btn-default hidden-print boton-almedio" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar dirección de destino">Agregar más direcciones de destino</a>
+        <a class="botonmodalFormulario btn btn-default hidden-print boton-almedio" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar dirección de destino">Agregar más direcciones de destino</a>&nbsp;
 
         {% endif %}
 
@@ -500,7 +506,7 @@ class="col-md-10"
 
     {% if not lista_ambiente %}
 
-    <a class="btn btn-success botonmodalFormulario hidden-print" data-numero="ambienteFocus" data-nombre="Agregar muebles" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar mueble">Agregar muebles</a>
+    <a class="btn btn-success botonmodalFormulario hidden-print" data-numero="ambienteFocus" data-nombre="Agregar muebles" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble">Agregar muebles</a>
 
     {% else %}
 
@@ -591,7 +597,7 @@ class="col-md-10"
                     <tr>
                         <td></td>
                         <td colspan="7">
-                            <a class="btn-addmueble botonmodalFormulario hidden-print" data-nombre="Agregar mueble" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble al ambiente {{ ambiente.ambiente }}">Agregar otro mueble a {{ ambiente.ambiente }}</a>
+                            <a class="btn-addmueble botonmodalFormulario hidden-print" data-nombre="Agregar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble al ambiente {{ ambiente.ambiente }}">Agregar otro mueble a {{ ambiente.ambiente }}</a>
                         </td>
                     </tr>
                 </table>
@@ -601,7 +607,7 @@ class="col-md-10"
         {% endfor %}
 
         <br>
-        <a class="botonmodalFormulario btn btn-default hidden-print boton-almedio" data-nombre="Agregar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-target="#myModalFormulario" data-toggle="modal" title="Agregar mueble">Agregar mueble</a>
+        <a class="botonmodalFormulario btn btn-default hidden-print boton-almedio" data-nombre="Agregar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble">Agregar mueble</a>
 
     </div>
 
