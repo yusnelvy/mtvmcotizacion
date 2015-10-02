@@ -6,7 +6,11 @@
 {% block titulo %}
 <title>Presupuesto</title>
 {% endblock titulo %}
-
+{% block link_navegacion %}
+<li class="linknav">
+    <a onClick="location='{% url 'upresupuestos:PresupuestoDetail' presupuesto.id %}'">Volver a la ficha</a>
+</li>
+{% endblock link_navegacion %}
 {% block content1 %}
 {% comment %}
         <a href="{% url 'upresupuestos:pdf' %}">
@@ -14,6 +18,7 @@
     </a>
 {% endcomment %}
 <div class="panel panel-default">
+
     <table class="table table-hover">
         <tr>
             <td align="center" width="20%">
@@ -206,7 +211,7 @@
                             <tr align="center">
                                 <td>Muebles</td>
                                 <td>{{ presupuesto.cantidad_muebles}}</td>
-                                <td>{{ presupuesto.total_peso_muebles|floatformat:"2"}}</td>
+                                <td>-</td>
                                 <td>{{ presupuesto.total_volumen_muebles|floatformat:"2"}}</td>
                             </tr>
                             <tr align="center">
@@ -248,27 +253,23 @@
                                 <td width="40%">
                                     Cantidad: {{ presupuesto.cantidad_vehiculo}}
                                 </td>
-                                <td width="30%">Peso Kg</td>
                                 <td width="30%">Vol. m<sup>3</sup></td>
 
                             </tr>
                             <tr align="center">
                                 <td>Disponible</td>
-                                <td>{{presupuesto.total_capacidad_vehiculokg|floatformat:"2"}}</td>
                                 <td>{{ presupuesto.total_capacidad_vehiculovol|floatformat:"2"}}</td>
                             </tr>
                             <tr align="center">
                                 <td>Utilizado</td>
                                 <td>{{presupuesto.total_m3|floatformat:"2"}}</td>
-                                <td>{{presupuesto.total_peso_mudanza|floatformat:"2"}}</td>
                             </tr>
                             <tr align="center">
                                 <td>% ocupación: </td>
                                 <td>{{presupuesto.porcentajeocupacionvol|floatformat:"2"}}% </td>
-                                <td>{{presupuesto.porcentajeocupacionkg|floatformat:"2"}}% </td>
                             </tr>
                             <tr>
-                                <td colspan="3" >
+                                <td colspan="2" >
                                     <strong> Descripción: </strong>{{ presupuesto.descripcion_vehiculo}}
                                 </td>
                             </tr>
@@ -347,8 +348,27 @@
                                 {% endif %}
                             </td>
                             <td>
+                                {% if presupuesto.tipo_calculo == 'Optimizado' %}
+
                                 {% if presupuesto.maxrecursooptimo == presupuesto.monto_m3_inmueble %}
                                 {{presupuesto.maxrecursooptimo}}
+                                {% endif %}
+
+                                {% else %}
+
+                                    {% if presupuesto.monto_m3_inmueble == presupuesto.monto_recursos_revisado %}
+
+                                    {{presupuesto.monto_recursos_revisado}}
+
+                                    {% else %}
+
+                                    {% if  presupuesto.monto_m3_inmueble != presupuesto.monto_recursos_revisado and presupuesto.monto_amb_inmueble != presupuesto.monto_recursos_revisado and presupuesto.monto_personateorica != presupuesto.monto_recursos_revisado and presupuesto.monto_personaoptima != presupuesto.monto_recursos_revisado %}
+
+                                    {{presupuesto.monto_recursos_revisado}}
+
+                                    {% endif %}
+
+                                    {% endif %}
                                 {% endif %}
                             </td>
                         </tr>
@@ -368,8 +388,18 @@
                                 {% endif %}
                             </td>
                             <td>
+                                {% if presupuesto.tipo_calculo == 'Optimizado' %}
+
                                 {% if presupuesto.maxrecursooptimo == presupuesto.monto_amb_inmueble %}
                                 {{presupuesto.maxrecursooptimo}}
+                                {% endif %}
+                                {% else %}
+
+                                    {% if presupuesto.monto_amb_inmueble == presupuesto.monto_recursos_revisado %}
+
+                                    {{presupuesto.monto_recursos_revisado}}
+
+                                    {% endif %}
                                 {% endif %}
                             </td>
                         </tr>
@@ -384,13 +414,27 @@
                                 {% endif %}
                             </td>
                             <td>
-                                {% if presupuesto.maxrecursooptimo == presupuesto.monto_personateorica %}
+                                {% if presupuesto.tipo_calculo == 'Optimizado' %}
+
+                                {% if presupuesto.maxrecursooptimo == presupuesto.monto_personaoptima %}
                                 {{presupuesto.maxrecursooptimo}}
+                                {% endif %}
+
                                 {% endif %}
                             </td>
                             <td>
-                                {% if presupuesto.maxrecursooptimo == presupuesto.monto_personateorica %}
+                                {% if presupuesto.tipo_calculo == 'Optimizado' %}
+
+                                {% if presupuesto.maxrecursooptimo == presupuesto.monto_personaoptima %}
                                 {{presupuesto.maxrecursooptimo}}
+                                {% endif %}
+                                {% else %}
+
+                                    {% if presupuesto.monto_personateorica == presupuesto.monto_recursos_revisado %}
+
+                                    {{presupuesto.monto_recursos_revisado}}
+
+                                    {% endif %}
                                 {% endif %}
                             </td>
                         </tr>
@@ -410,9 +454,20 @@
                                 {% endif %}
                             </td>
                             <td>
+                                {% if presupuesto.tipo_calculo == 'Optimizado' %}
+
                                 {% if presupuesto.maxrecursooptimo == presupuesto.monto_personaoptima %}
                                 {{presupuesto.maxrecursooptimo}}
                                 {% endif %}
+                                {% else %}
+
+                                    {% if presupuesto.monto_personaoptima == presupuesto.monto_recursos_revisado %}
+
+                                    {{presupuesto.monto_recursos_revisado}}
+
+                                    {% endif %}
+                                {% endif %}
+
                             </td>
                         </tr>
 
@@ -461,7 +516,11 @@
                             <td align="center">{{presupuesto.monto_mundanza_hrsoptimas}}</td>
                             <td align="center">
 
-                                {{presupuesto.monto_mundanza_revisada}}
+                                {% if presupuesto.monto_mundanza_revisada == 0 %}
+                                    {{presupuesto.monto_mundanza_hrsoptimas}}
+                                {% else %}
+                                    {{presupuesto.monto_mundanza_revisada}}
+                                {% endif %}
 
                             </td>
                         </tr>
@@ -486,20 +545,22 @@
 
                             </td>
                             <td align="center">
-
-                                {% if presupuesto.tipo_calculo == 'Revisado' %}
-                                    {{presupuesto.monto_descuento_recargo}}
-                                {% else %}
-                                 0.00
-                                {% endif %}
-
+                                {{presupuesto.monto_descuento_recargo}}
                             </td>
                         </tr>
                         <tr style="border-top: 2px solid #ddd;">
                             <td colspan="4">Valor total mudanza revisado</td>
                             <td align="center">{{presupuesto.mudanzamontorevisadotoerico}}</td>
                             <td align="center">{{presupuesto.mudanzamontorevisadooptimo}}</td>
-                            <td align="center">{{presupuesto.mudanzamontorevisado}}</td>
+                            <td align="center">
+
+                                {% if presupuesto.mudanzamontorevisado == 0 %}
+                                    {{presupuesto.mudanzamontorevisadooptimo}}
+                                {% else %}
+                                    {{presupuesto.mudanzamontorevisado}}
+                                {% endif %}
+
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -519,6 +580,7 @@
                             <h4>{{ambiente.ambiente}}</h4>
                             <table class="table table-hover table-condensed table-bordered" align="center">
                                 <tr>
+                                    <th width="80px">Cantidad</th>
                                     <th width="250px">Mueble</th>
                                     <th width="100px">Tamaño</th>
                                     <th width="100px">Ocupación</th>
@@ -526,7 +588,6 @@
 
                                     {% if perms.presupuesto_detalle.see_detallepresupuestoitem %}
 
-                                    <th width="60px">Peso (Kg)</th>
                                     <th width="60px">Vol. (m<sup>3</sup>)</th>
                                     <th width="100px">Contenedores</th>
                                     <th width="60px">Trasl.</th>
@@ -538,6 +599,9 @@
                                 {% for det_mueble in detalle_list %}
                                 {% if ambiente.ambiente = det_mueble.ambiente %}
                                 <tr align="center">
+                                    <td>
+                                        {{ det_mueble.cantidad }}
+                                    </td>
                                     <td>
                                         {{ det_mueble.mueble }}
                                     </td>
@@ -563,10 +627,9 @@
 
                                     {% if perms.presupuesto_detalle.see_detallepresupuestoitem %}
 
-                                    <td>{{ det_mueble.peso|floatformat:"0"}}</td>
-                                    <td>{{det_mueble.volumen_mueble|floatformat:"0"}}</td>
+                                    <td>{{det_mueble.volumen_mueble|floatformat:"2"}}</td>
                                     <td>{{ det_mueble.cantidad_contenedor }} {{ det_mueble.descripcion_contenedor}} <br>
-                                        {{ det_mueble.peso_contenedor|floatformat:"0"}} Kg
+                                        {{ det_mueble.peso_contenedor|floatformat:"2"}} Kg
                                     </td>
                                     <td>
                                         {{ det_mueble.trasladable|yesno:"Si,No" }}
@@ -594,15 +657,15 @@
                 <h4>Detalles de los servicios</h4>
                 <table class="table table-hover table-condensed table-bordered" align="center">
                     <tr>
-                        <th width="26%">Servicio</th>
-                        <th width="8%">Monto ($)</th>
-                        <th width="8%">Duración</th>
-                        <th width="26%">Material</th>
-                        <th width="8%">Vol. (m <sup>3</sup>)</th>
-                        <th width="8%">Peso (Kg)</th>
-                        <th width="8%">Cantidad</th>
-                        <th width="8%">Precio</th>
-                        <th width="8%">Monto</th>
+                        <th width="23%">Servicio</th>
+                        <th width="7%">Monto ($)</th>
+                        <th width="9%">Duración</th>
+                        <th width="22%">Material</th>
+                        <th width="7%">Peso (Kg)</th>
+                        <th width="7%">Vol. (m <sup>3</sup>)</th>
+                        <th width="7%">Cantidad</th>
+                        <th width="7%">Precio</th>
+                        <th width="7%">Monto ($)</th>
                     </tr>
 
                     {% regroup servicio2 by servicio as servicio_list %}
@@ -628,10 +691,10 @@
                             {{ item.material }}
                         </td>
                         <td>
-                            {{ item.svolmat|floatformat:"2" }}
+                            {{ item.spesomat|floatformat:"2" }}
                         </td>
                         <td>
-                            {{ item.spesomat|floatformat:"2" }}
+                            {{ item.svolmat|floatformat:"2" }}
                         </td>
                         <td>
                             {{ item.scantmat }} {{item.unidad_material}}
@@ -646,16 +709,16 @@
 
                     {% endfor %}
                     {% endfor %}
-                    <tr>
+                    <tr align="center" style="border-top: 2px solid #ddd;">
                         <td>Totales</td>
+                        <td>{{totales.montoservicio}}</td>
+                        <td>{% calular_horas totales.tiemposervicio %}</td>
+                        <td></td>
+                        <td>{{totales.totalpesomateriales|floatformat:"2"}}</td>
+                        <td>{{totales.totalvolumenmateriales|floatformat:"2"}}</td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{totales.totalmontomateriales|floatformat:"2"}}</td>
                     </tr>
 
                 </table>

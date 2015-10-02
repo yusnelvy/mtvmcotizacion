@@ -220,10 +220,10 @@ class Presupuesto(models.Model):
         return self.cantidad_ayudante + self.cantidad_ayudanteadicional
     cantidadtotalayudante = property(_get_cantidadtotalayudante)
 
-    def _get_porcentajeocupacionkg(self):
-        """docstring"""
-        return round((self.total_peso_mudanza / self.total_capacidad_vehiculokg)*100, 2)
-    porcentajeocupacionkg = property(_get_porcentajeocupacionkg)
+    # def _get_porcentajeocupacionkg(self):
+    #     """docstring"""
+    #     return round((self.total_peso_mudanza / self.total_capacidad_vehiculokg)*100, 2)
+    # porcentajeocupacionkg = property(_get_porcentajeocupacionkg)
 
     def _get_porcentajeocupacionvol(self):
         """docstring"""
@@ -334,9 +334,6 @@ class Presupuesto_Detalle(models.Model):
     ancho = models.DecimalField(max_digits=7, decimal_places=2)
     largo = models.DecimalField(max_digits=7, decimal_places=2)
     alto = models.DecimalField(max_digits=7, decimal_places=2)
-    densidad = models.CharField(max_length=100)
-    valor_densidad = models.DecimalField(max_digits=9, decimal_places=2)
-    peso = models.DecimalField(max_digits=9, decimal_places=3)
     ocupacidad = models.CharField(max_length=100)
     valor_ocupacidad = models.DecimalField(max_digits=5, decimal_places=2)
     cantidad_contenedor = models.IntegerField()
@@ -349,6 +346,9 @@ class Presupuesto_Detalle(models.Model):
     peso_contenedor = models.DecimalField(max_digits=9, decimal_places=3)
     descripcion_contenedor = models.CharField(max_length=100)
     trasladable = models.BooleanField(default=None)
+    descripcion_contenido = models.CharField(max_length=100)
+    densidadcontenido = models.DecimalField(max_digits=7, decimal_places=2)
+    descripcion_densidadcontenido = models.CharField(max_length=100)
 
     def __str__(self):
         return u' %s - %s - %s' % (self.presupuesto, self.ambiente, self.mueble)
@@ -397,18 +397,18 @@ class DatosPrecargado(models.Model):
     valorm3compleinmueble = models.DecimalField(max_digits=9, decimal_places=2)
     ocupacioninmueble = models.CharField(max_length=100)
     valorocupacioninmueble = models.DecimalField(max_digits=5, decimal_places=2)
-    densidadcontenidomueble = models.DecimalField(max_digits=7, decimal_places=2)
+    densidadbajacontenidomueble = models.DecimalField(max_digits=7, decimal_places=2)
+    densidadmediacontenidomueble = models.DecimalField(max_digits=7, decimal_places=2)
+    densidadaltacontenidomueble = models.DecimalField(max_digits=7, decimal_places=2)
+    densidadmuyaltacontenidomueble = models.DecimalField(max_digits=7, decimal_places=2)
     volcontenedormueble = models.DecimalField(max_digits=8, decimal_places=3)
     peso_contenedormueble = models.DecimalField(max_digits=9, decimal_places=3)
     capvolcontenedormueble = models.DecimalField(max_digits=8, decimal_places=3)
     cappesocontenedormueble = models.DecimalField(max_digits=9, decimal_places=3)
     tamanomueble = models.CharField(max_length=100)
-    densidadmueble = models.CharField(max_length=100)
     anchomueble = models.DecimalField(max_digits=7, decimal_places=2)
     largomueble = models.DecimalField(max_digits=7, decimal_places=2)
     altomueble = models.DecimalField(max_digits=7, decimal_places=2)
-    pesomueble = models.DecimalField(max_digits=9, decimal_places=3)
-    valordensidadmueble = models.DecimalField(max_digits=5, decimal_places=2)
     volumenmueble = models.DecimalField(max_digits=8, decimal_places=3)
     tarifacomplejidadservicio = models.DecimalField(max_digits=9, decimal_places=2)
     factortiempocompservicio = models.DecimalField(max_digits=7, decimal_places=2)
@@ -422,6 +422,8 @@ class DatosPrecargado(models.Model):
     rendimiento_volumen = models.DecimalField(max_digits=8, decimal_places=3)
     rendimiento_unidad = models.PositiveIntegerField()
     duracion_optimamudanza = models.DecimalField(max_digits=7, decimal_places=2)
+    descripcioncontenedor = models.CharField(max_length=100)
+    descripcioncontenido = models.CharField(max_length=100)
 
     def __str__(self):
         return u' %s' % (self.pk)

@@ -115,19 +115,13 @@ class Tamano_Mueble(models.Model):
 
     tamano = models.ForeignKey(Tamano, on_delete=models.PROTECT)
     mueble = models.ForeignKey(Mueble, on_delete=models.PROTECT)
-    densidad = models.ForeignKey(Densidad, on_delete=models.PROTECT)
     ancho = models.DecimalField(max_digits=7, decimal_places=2)
     largo = models.DecimalField(max_digits=7, decimal_places=2)
     alto = models.DecimalField(max_digits=7, decimal_places=2)
-    peso = models.DecimalField(max_digits=9, decimal_places=3)
     predefinido = models.BooleanField(default=None)
 
     def __str__(self):
-        return u' %s - %s - %s' % (self.mueble, self.tamano, self.densidad)
-
-    def _get_densidad_valor(self):
-        return round(self.peso/((self.ancho*self.alto*self.largo)/1000000), 2)
-    densidad_valor = property(_get_densidad_valor)
+        return u' %s - %s' % (self.mueble, self.tamano)
 
     def _get_volumenmueble(self):
         return round((self.ancho*self.alto*self.largo)/1000000, 3)
@@ -136,8 +130,8 @@ class Tamano_Mueble(models.Model):
     class Meta:
         verbose_name = "Tamano del mueble"
         verbose_name_plural = "Tamanos del mueble"
-        ordering = ['mueble', 'tamano', 'densidad']
-        unique_together = (("tamano", "mueble", "densidad"),)
+        ordering = ['mueble', 'tamano']
+        unique_together = (("tamano", "mueble"),)
 
 
 class Mueble_Ambiente(models.Model):

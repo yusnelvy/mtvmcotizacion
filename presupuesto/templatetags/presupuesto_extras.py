@@ -16,7 +16,7 @@ def calular_horas(hora):
 
         if minuto < 60:
             if minuto > 0:
-                horas = horas + ' con ' + str(minuto) + ' min'
+                horas = horas + ' ' + str(minuto) + ' min'
         else:
             horas = str(entero + 1) + ' h'
     else:

@@ -794,11 +794,8 @@ def edit_tamanomueble(request, pk):
         # formulario inicial
         form_edit_tamanomueble = TamanoMuebleForm(instance=tamanomueble)
 
-#como obtener el valor calculado en el model para saber la densidad de un mueble
-    valor = tamanomueble.densidad_valor
-
     return render_to_response('tamanomueble_edit.html',
-                              {'form_edit_tamanomueble': form_edit_tamanomueble, 'create': False, 'valor': valor},
+                              {'form_edit_tamanomueble': form_edit_tamanomueble, 'create': False},
                               context_instance=RequestContext(request))
 
 

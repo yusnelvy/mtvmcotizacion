@@ -145,11 +145,9 @@ class="col-md-7"
       </div>
       <table class="table table-hover table-condensed table-bordere" style="text-align: center;">
         <tr>
-          <th>Densidad</th>
           <th>Ancho</th>
           <th>Largo</th>
           <th>Alto</th>
-          <th>Peso</th>
           <th>Predefinido</th>
           <th></th>
         </tr>
@@ -163,14 +161,12 @@ class="col-md-7"
         {% if d.mueble.id = im.id %}
 
         <tr>
-          <td>{{ d.densidad }}</td>
           <td>{{ d.ancho }} m</td>
           <td>{{ d.largo }} m</td>
           <td>{{ d.alto }} m</td>
-          <td>{{ d.peso }} Kg</td>
           <td>{{ d.predefinido|yesno:"Si,No" }}</td>
           <td width="80px">
-            <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{d.id}}" data-name="la densidad: {{ d.densidad }} Tamaño: {{ d.tamano }} del Mueble: {{d.mueble}}"></a>
+            <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{d.id}}" data-name="Tamaño: {{ d.tamano }} del Mueble: {{d.mueble}}"></a>
           </td>
         </tr>
 

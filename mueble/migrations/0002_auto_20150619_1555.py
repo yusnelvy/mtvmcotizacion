@@ -21,6 +21,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='tamano_mueble',
-            unique_together=set([('tamano', 'mueble', 'densidad')]),
+            unique_together=set([('tamano', 'mueble')]),
         ),
     ]
