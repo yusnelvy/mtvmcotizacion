@@ -146,6 +146,30 @@ $(document).ready(function() {
       function(data) {
         $("#id_ocupacidad").val(data[0].ocupacion);
         $("#id_valor_ocupacidad").val(data[0].valorocupacion);
+        $("#volmaterial").val(data[0].vol_contenedor);
+        $("#id_capacidad_volumen_contenedor").val(data[0].capacidadvolcontenedor);
+        $("#id_capacidad_peso_contenedor").val(data[0].capacidadpesocontenedor);
+        $("#id_descripcion_contenedor").val(data[0].descripcioncontenedor);
+        $("#pesomaterial").val(data[0].peso_contenedor);
+        $("#id_descripcion_contenido").val(data[0].descripcioncontenido);
+        densidadBaja = (data[0].densidadbajacontenido);
+        densidadMedia = (data[0].densidadmediacontenido);
+        densidadAlta = (data[0].densidadaltacontenido);
+        densidadMuyAlta = (data[0].densidadmuyaltacontenido);
+
+        if ($('#id_descripcion_densidadcontenido').val() == 'Baja') {
+          $("#id_densidadcontenido").val(densidadBaja)
+        } else if ($('#id_descripcion_densidadcontenido').val() == 'Media') {
+          $("#id_densidadcontenido").val(densidadMedia);
+        } else if ($('#id_descripcion_densidadcontenido').val() == 'Alta') {
+          $("#id_densidadcontenido").val(densidadAlta);
+        } else if ($('#id_descripcion_densidadcontenido').val() == 'Muy alta'){
+          $("#id_densidadcontenido").val(densidadMuyAlta);
+        }
+
+        if (data[0].ocupacion == 'Vacío') {
+          $("#id_descripcion_contenido").val('Sin contenido');
+        }
         calculoscontenido();
         descripcionmensaje();
       });
@@ -191,19 +215,9 @@ $(document).ready(function() {
   });
 
   $("#id_descripcion_contenido").change(function() {
-    id_descripcion_contenido = $("#id_descripcion_contenido").val();
-    $.get('/presupuesto/detalle/nuevo',
-      {id_descripcion_contenido: id_descripcion_contenido},
-      function(data) {
-        densidadBaja = (data[0].densidadbajacontenido);
-        densidadMedia = (data[0].densidadmediacontenido);
-        densidadAlta = (data[0].densidadaltacontenido);
-        densidadMuyAlta = (data[0].densidadmuyaltacontenido);
-        $("#id_densidadcontenido").val(densidadMedia);
-        $("#id_descripcion_densidadcontenido").val('Media');
-        calculoscontenido();
-        descripcionmensaje();
-      });
+    cargarinformacioncontenido();
+    calculoscontenido();
+    descripcionmensaje();
   });
 
   $('#id_descripcion_densidadcontenido').change(function() {
@@ -276,7 +290,19 @@ $(document).ready(function() {
     });
     return false;
   });
-
+  function cargarinformacioncontenido(){
+    id_descripcion_contenido = $("#id_descripcion_contenido").val();
+    $.get('/presupuesto/detalle/nuevo',
+      {id_descripcion_contenido: id_descripcion_contenido},
+      function(data) {
+        densidadBaja = (data[0].densidadbajacontenido);
+        densidadMedia = (data[0].densidadmediacontenido);
+        densidadAlta = (data[0].densidadaltacontenido);
+        densidadMuyAlta = (data[0].densidadmuyaltacontenido);
+        $("#id_densidadcontenido").val(densidadMedia);
+        $("#id_descripcion_densidadcontenido").val('Media');
+      });
+  }
   function descripcionmensaje() {
     $("#msjcontenedor").text("Peso del contenido: " +
       $("#id_peso_contenido").val() +

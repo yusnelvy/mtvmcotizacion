@@ -312,23 +312,23 @@ class PresupuestoDireccionView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
 
-        tipo_inmueble = Tipo_Inmueble.objects.get(id = request.POST['lista_tipoinmueble'])
-        ocupacidad_inmueble = Ocupacion.objects.get(id = request.POST['lista_ocupacion'])
-        orden = Presupuesto_direccion.objects.filter(presupuesto = request.POST['presupuesto'],
-                                                     tipo_direccion = request.POST['tipo_direccion']).count()
+        tipo_inmueble = Tipo_Inmueble.objects.get(id=request.POST['lista_tipoinmueble'])
+        ocupacidad_inmueble = Ocupacion.objects.get(id=request.POST['lista_ocupacion'])
+        orden = Presupuesto_direccion.objects.filter(presupuesto=request.POST['presupuesto'],
+                                                     tipo_direccion=request.POST['tipo_direccion']).count()
         if form.is_valid():
-            formResult = form.save(commit = False)
+            formResult = form.save(commit=False)
             formResult.tipo_inmueble = tipo_inmueble.tipo_inmueble
             formResult.ocupacidad_inmueble = ocupacidad_inmueble.descripcion
             formResult.valor_ocupacidad = ocupacidad_inmueble.valor
             formResult.orden = orden + 1
             formResult.save()
-            cantOrig = Presupuesto_direccion.objects.filter(presupuesto = request.POST['presupuesto'],
-                                                            tipo_direccion = 'Origen').count()
-            cantDest = Presupuesto_direccion.objects.filter(presupuesto = request.POST['presupuesto'],
-                                                            tipo_direccion = 'Destino').count()
+            cantOrig = Presupuesto_direccion.objects.filter(presupuesto=request.POST['presupuesto'],
+                                                            tipo_direccion='Origen').count()
+            cantDest = Presupuesto_direccion.objects.filter(presupuesto=request.POST['presupuesto'],
+                                                            tipo_direccion='Destino').count()
             if (cantOrig > 0 and cantDest) > 0:
-                updatepresu = Presupuesto.objects.filter(pk = request.POST['presupuesto'])
+                updatepresu = Presupuesto.objects.filter(pk=request.POST['presupuesto'])
                 updatepresu.update(estado = 'Preparado')
 
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
@@ -382,7 +382,7 @@ class PresupuestoDetalleView(View):
             descripcion_contenido = self.request.GET.get('id_descripcion_contenido')
             descripcion_contenedor = self.request.GET.get('id_descripcion_contenedor')
 
-            if (mueble_id and tamano_id is None):
+            if (mueble_id and tamano_id is None and ocupacion_id is None):
                 mueble = Mueble.objects.get(id=mueble_id)
                 contenido = Contenido_Tipico.objects.filter(mueble=mueble_id,
                                                             predefinido=True)[:1]
@@ -463,10 +463,40 @@ class PresupuestoDetalleView(View):
 
             if ocupacion_id:
                 ocupacion = Ocupacion.objects.get(id=ocupacion_id)
+                contenido = Contenido_Tipico.objects.filter(mueble=mueble_id,
+                                                            predefinido=True)[:1]
+                if contenido:
+                    densidadbajacontenido = contenido[0].contenido.densidad_baja
+                    densidadmediacontenido = contenido[0].contenido.densidad_media
+                    densidadaltacontenido = contenido[0].contenido.densidad_alta
+                    densidadmuyaltacontenido = contenido[0].contenido.densidad_superalta
+                    descripcioncontenido = contenido[0].contenido.contenido
+                    contenidoservicio = Contenido_Servicio.objects.filter(contenido=contenido[0].contenido_id,
+                                                                          predefinido=True)
+                    if contenidoservicio:
+                        contenedor = Material.objects.filter(servicio_material__servicio_id=
+                                                             contenidoservicio[0].servicio_id,
+                                                             contenedor=True)[:1]
+                        vol_contenedor = contenedor[0].volumen
+                        peso_contenedor = contenedor[0].peso
+                        capacidadvolcontenedor = contenedor[0].capacidad_volumen
+                        capacidadpesocontenedor = contenedor[0].capacidad_peso
+                        descripcioncontenedor = contenedor[0].material
+
                 if ocupacion:
                     ocupacion = [{
                         'ocupacion': ocupacion.descripcion,
-                        'valorocupacion': ocupacion.valor
+                        'valorocupacion': ocupacion.valor,
+                        'densidadbajacontenido': densidadbajacontenido,
+                        'densidadmediacontenido': densidadmediacontenido,
+                        'densidadaltacontenido': densidadaltacontenido,
+                        'densidadmuyaltacontenido': densidadmuyaltacontenido,
+                        'descripcioncontenido': descripcioncontenido,
+                        'vol_contenedor': round(vol_contenedor, 3),
+                        'peso_contenedor': round(peso_contenedor, 3),
+                        'capacidadvolcontenedor': capacidadvolcontenedor,
+                        'capacidadpesocontenedor': capacidadpesocontenedor,
+                        'descripcioncontenedor': descripcioncontenedor,
                     }]
 
                 return JsonResponse(ocupacion, safe=False)
@@ -1240,7 +1270,7 @@ def update_presupuesto(request, pk):
     if detallemueble:
         cant_mueble = detallemueble[0]['cantmueble']
         volumen_muebles = detallemueble.aggregate(vol_mueble=Sum('volumen_mueble'))
-        volumen_muebles = volumen_muebles['vol_mueble'] * cant_mueble
+        volumen_muebles = volumen_muebles['vol_mueble']
     else:
         cant_mueble = 0
         volumen_muebles = 0
