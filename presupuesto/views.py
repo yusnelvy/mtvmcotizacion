@@ -1329,7 +1329,6 @@ def update_presupuesto(request, pk):
     descripcion_veh = ""
     montoveh_hrs = 0
     montoveh_km = 0
-    cap_vehiculo = 0
     cap_vehiculo2 = 0
     cant_ayudante = 0
     descripcion_pers = ""
@@ -1374,7 +1373,7 @@ def update_presupuesto(request, pk):
             cargo = Cargo_trabajador.objects.get(pk=vehiculos[i].cargo.id)
 
             array_capacidadm3[j][7] = Decimal(round((cargo.tarifa_dia * array_capacidadm3[j][0]), 2))
-            array_capacidadm3[j][8] = 'Conductor asignado: ' + cargo.cargo  + \
+            array_capacidadm3[j][8] = 'Conductor asignado: ' + cargo.cargo + \
                                       ' - Tarifa $/día: ' + str(cargo.tarifa_dia) + \
                                       ' - Cantidad de conductor: ' + str(array_capacidadm3[j][0]) + \
                                       ' - Total Tarifa $/hrs: ' + str(array_capacidadm3[j][7]) + \
@@ -1544,11 +1543,13 @@ def update_presupuesto(request, pk):
     return(presupuesto)
 
 
-class PresupuestoFinalizadoCliente(View):
+class PresupuestoFinalizadoCliente(UpdateView):
     """Docstring"""
+    model = Presupuesto
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.obj.estado = 'Terminado cliente'
+        self.obj.save()
 
-    def get(self, request, *args, **kwargs):
-        cliente = 'buscar nombre del cliente con el pk' + self.pk
-        return render_to_response('presupuesto_finalizado_cliente.html', {
-            'cliente': cliente,
-        })
+        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+        return JsonResponse(mensaje, safe=False)
