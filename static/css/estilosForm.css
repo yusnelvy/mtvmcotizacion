@@ -323,7 +323,7 @@ que sobreescribe el diseño Bootstrap
   text-align: left!important;
 }
 
-.btn-verde:hover {
+.btn-verde:hover, .btn-verde:focus {
   background: #5CB85C!important;
   opacity: .9;
 }

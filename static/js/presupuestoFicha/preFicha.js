@@ -35,10 +35,10 @@ $(document).ready(function() {
     });
     document.getElementById('id_body').setAttribute('data-spy', 'scroll');
     document.getElementById('id_body').setAttribute('data-target', '#navbar-example');
-    document.getElementById('id_body').setAttribute('data-offset', '70');
+    document.getElementById('id_body').setAttribute('data-offset', '90');
     $(function() {
         //clic en un enlace de la lista
-        $('.linknav a').on('click', function(e) {
+        $('.scrollSpy').on('click', function(e) {
             e.preventDefault();
             //obtenemos el id del elemento en el que debemos posicionarnos
             var strAncla = $(this).attr('href');
@@ -47,18 +47,7 @@ $(document).ready(function() {
                 //realizamos la animacion hacia el ancla
                 //-126 indica que baja el scroll 126px que es la altura de la cabecera
                 //para que se coloque correctamente
-                scrollTop: $(strAncla).offset().top - 70
-            }, 1000);
-        });
-        $('.modal-footer a').on('click', function(e) {
-            e.preventDefault();
-            //obtenemos el id del elemento en el que debemos posicionarnos
-            var strAncla = $(this).attr('href');
-            //utilizamos body y html, ya que dependiendo del navegador uno u otro no funciona
-            $('body,html').stop(true, true).animate( {
-                //realizamos la animacion hacia el ancla
-                //-126 indica que baja el scroll 126px que es la altura de la cabecera para que se coloque correctamente
-                scrollTop: $(strAncla).offset().top - 70
+                scrollTop: $(strAncla).offset().top - 60
             }, 1000);
         });
 
