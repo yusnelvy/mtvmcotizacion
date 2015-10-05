@@ -28,7 +28,7 @@
 {% block link_navegacion %}
 
 <li class="linknav">
-    <a href="#datos-personales">Datos del cliente
+    <a class="scrollSpy" href="#datos-personales">Datos del cliente
 
         {% if presupuesto.dni %}
 
@@ -43,7 +43,7 @@
     </a>
 </li>
 <li class="linknav">
-    <a id="link_direcciones" href="#direcciones">Direcciones
+    <a class="scrollSpy" id="link_direcciones" href="#direcciones">Direcciones
 
         {% if direccion_origen and direccion_destino %}
 
@@ -58,7 +58,7 @@
     </a>
 </li>
 <li class="linknav">
-    <a href="#ambientes">Ambientes y muebles
+    <a class="scrollSpy" href="#ambientes">Ambientes y muebles
 
         {% if lista_ambiente %}
 
@@ -665,7 +665,7 @@ class="col-md-10"
 
                 {% else %}
 
-                <a class="btn btn-default" data-dismiss="modal" href="#ambientes" type="button">Sí</a>
+                <a class="btn btn-default scrollSpy" data-dismiss="modal" href="#ambientes" type="button">Sí</a>
                 <a class="btn btn-default resumenPresupuesto" data-dismiss="modal" data-opcion="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}" href="" type="button">No</a>
 
                 {% endif %}
@@ -677,12 +677,6 @@ class="col-md-10"
 <div class="alert alert-success msj" id="msjGuardado" style="display:none;" role="alert">Guardado</div>
 
 {% endblock content1 %}
-
-{% block js_inf %}
-
-<script src="/static/js/presupuestoFicha/preFicha.js"></script>
-
-{% endblock js_inf %}
 
 {% block ayuda %}
 
