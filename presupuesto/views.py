@@ -1543,13 +1543,21 @@ def update_presupuesto(request, pk):
     return(presupuesto)
 
 
-class PresupuestoFinalizadoCliente(UpdateView):
+def PresupuestoCambiarEstado(request, pk, estado=None):
     """Docstring"""
-    model = Presupuesto
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.obj.estado = 'Terminado cliente'
-        self.obj.save()
+    presupuesto = Presupuesto.objects.filter(pk=pk)
+    presupuesto.update(estado=estado)
+    mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+    return (mensaje)
 
-        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+
+def PresupuestoFinalizadoCliente(request, pk):
+    if request.method == "GET" and request.is_ajax():
+        estado = request.GET['estado']
+        nexturl = request.GET.get('nexturl', '')
+
+        presupuesto = Presupuesto.objects.filter(pk=pk)
+        presupuesto.update(estado=estado)
+
+        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado', 'nexturl': nexturl}
         return JsonResponse(mensaje, safe=False)

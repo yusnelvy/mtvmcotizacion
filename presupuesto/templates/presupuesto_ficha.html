@@ -75,7 +75,7 @@
 
 {% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente %}
 
-{% if servicio %}
+{% if presupuesto.estado != 'Muebles cargados'  %}
 
 <li class="linknav">
     <a onClick="location='{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}'">Ver resumen</a>
@@ -96,7 +96,7 @@
 {% if presupuesto.estado = "Servicios cargados" %}
 
 <li>
-    <a class="btn btn-default btn-blanco" type="button">Finalizar solicitud</a>
+    <a class="btn btn-default btn-blanco botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado=Terminado cliente">Finalizar solicitud</a>
 </li>
 
 {% endif %}
@@ -320,7 +320,15 @@ class="col-md-10"
 
                     {% if forloop.first %}
 
+                    {% if direccion_origen.count > 1 %}
+
                     <a class="btn controles glyphicon glyphicon-arrow-down botonOrden" data-numero="{{ direc_origen.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_origen.id %}?presupuesto={{ presupuesto.id }}&tipo=Origen&posicion=bajar" data-toggletooltip="tooltip" title="Dirección de origen"></a>
+
+                    {% else %}
+
+                    <a class="btn controles glyphicon glyphicon-arrow-down botonOrden disabled" data-numero="{{ direc_origen.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_origen.id %}?presupuesto={{ presupuesto.id }}&tipo=Origen&posicion=bajar" data-toggletooltip="tooltip" title="Dirección de origen"></a>
+
+                    {% endif %}
 
                     {% else %}
 
@@ -463,7 +471,15 @@ class="col-md-10"
 
                     {% if forloop.first %}
 
+                    {% if direccion_destino.count > 1 %}
+
                     <a class="btn controles glyphicon glyphicon-arrow-down botonOrden" data-numero="{{ direc_destino.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_destino.id %}?presupuesto={{ presupuesto.id }}&tipo=destino&posicion=bajar" data-toggletooltip="tooltip" title="Dirección de destino"></a>
+
+                    {% else %}
+
+                    <a class="btn controles glyphicon glyphicon-arrow-down botonOrden disabled" data-numero="{{ direc_destino.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_destino.id %}?presupuesto={{ presupuesto.id }}&tipo=destino&posicion=bajar" data-toggletooltip="tooltip" title="Dirección de destino"></a>
+
+                    {% endif %}
 
                     {% else %}
 
@@ -640,35 +656,18 @@ class="col-md-10"
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                <button id="btn-cerrarModalServ" aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="gridSystemModalLabel">Resumen del presupuesto</h4>
             </div>
             <div class="modal-body">
 
-                {% if servicio %}
-
-                ¿Desea contratar más servicios para los muebles?
-
-                {% else %}
-
                 ¿Desea contratar servicios para los muebles?
-
-                {% endif %}
 
             </div>
             <div class="modal-footer">
 
-                {% if servicio %}
-
-                <a class="btn btn-default" data-dismiss="modal" href="#ambientes" type="button">Sí</a>
-                <a class="btn btn-default resumenPresupuesto" data-dismiss="modal" data-opcion="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}">No</a>
-
-                {% else %}
-
                 <a class="btn btn-default scrollSpy" data-dismiss="modal" href="#ambientes" type="button">Sí</a>
-                <a class="btn btn-default resumenPresupuesto" data-dismiss="modal" data-opcion="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}" href="" type="button">No</a>
-
-                {% endif %}
+                <a class="btn btn-default botonFinalizar" data-dismiss="modal" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado=Servicios cargados&nexturl={% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}" href="" type="button">No</a>
 
             </div>
         </div>

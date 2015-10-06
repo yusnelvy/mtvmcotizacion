@@ -1,5 +1,5 @@
 .input-re {
-    width: 60%;
+    width: 90%;
     text-align: center;
 }
 
@@ -35,6 +35,11 @@
 }
 
 .input-descuento-recargo {
-    width: 40%;
+    width: 70%;
     text-align: center;
+}
+
+.td-porcentaje-decuento {
+    border-right: hidden !important;
+
 }

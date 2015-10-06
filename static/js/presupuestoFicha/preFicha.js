@@ -73,5 +73,44 @@ $(document).ready(function() {
             });
             return false;
         });
+
+        $(".botonFinalizar").on('click', function() {
+            var action = $(this).data('opcion');
+            var numero = $(this).data('numero');
+            $.ajax( {
+                url: action,
+                type: 'GET',
+                data: numero,
+                success: function(data) {
+                    if (data.estatus == "ok") {
+                        if (data.nexturl !=""){
+                            var closep = document.getElementById("btn-cerrarModalServ");
+                            $(closep).click();
+                            $('#msjGuardado').css('width', '300px');
+                            $('#msjGuardado').fadeIn();
+                            $('#msjGuardado').text('Cargando resumen del presupuesto');
+                            setTimeout(function() {
+                                window.location = data.nexturl;
+                            }, 500);
+
+                        } else  {
+
+                            setTimeout(function() {
+                                parent.location.reload();
+                            }, 1000);
+
+                        }
+
+                    } else {
+                        alert('Ocurrio un error ' + data.estatus);
+                    }
+                },
+                error: function (ajaxContext) {
+                    alert('No se puede finalizar el presupuesto.');
+                }
+            });
+            return false;
+        });
     });
+
 });

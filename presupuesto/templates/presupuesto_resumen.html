@@ -315,9 +315,36 @@
                             <td width="100px">Cantidad</td>
                             <td width="100px">Tarifa</td>
                             <td width="100px">Total recurso</td>
-                            <td width="100px">Básico</td>
-                            <td width="100px">Optimizado</td>
-                            <td width="100px">Revisado</td>
+                            <td width="100px">
+
+                                {% if presupuesto.tipo_calculo == 'Basico' %}
+
+                                <a class="glyphicon glyphicon-ok"></a>
+
+                                {% endif %}
+
+                                Básico
+                            </td>
+                            <td width="100px">
+
+                                {% if presupuesto.tipo_calculo == 'Optimizado' %}
+
+                                <a class="glyphicon glyphicon-ok"></a>
+
+                                {% endif %}
+
+                                Optimizado
+                            </td>
+                            <td width="100px">
+
+                                {% if presupuesto.tipo_calculo == 'Revisado' %}
+
+                                <a class="glyphicon glyphicon-ok"></a>
+
+                                {% endif %}
+
+                                Revisado
+                            </td>
                         </tr>
                         <tr align="center">
                             <td>Tiempo de mudanza </td>
@@ -476,14 +503,14 @@
                             <td></td>
                             <td></td>
                             <td>{{presupuesto.monto_vehiculo_hora}}</td>
-                            <td rowspan="2">
+                            <td rowspan="2" style="vertical-align: middle;">
                                 {{presupuesto.vehiculomonto}}
                             </td>
-                            <td rowspan="2">
+                            <td rowspan="2" style="vertical-align: middle;">
                                 {{presupuesto.vehiculomonto}}
                             </td>
-                            <td rowspan="2">
-                                {{presupuesto.vehiculomonto}}
+                            <td rowspan="2" style="vertical-align: middle;">
+                                {{presupuesto.monto_vehiculo_revisado}}
                             </td>
                         </tr>
                         <tr align="center">
@@ -499,7 +526,7 @@
                             <td></td>
                             <td>{{presupuesto.monto_servicios}}</td>
                             <td>{{presupuesto.monto_servicios}}</td>
-                            <td>{{presupuesto.monto_servicios}}</td>
+                            <td>{{presupuesto.monto_servicios_revisado}}</td>
                         </tr>
                         <tr align="center">
                             <td>Materiales utilizados</td>
@@ -508,7 +535,9 @@
                             <td></td>
                             <td>{{presupuesto.monto_materiales}}</td>
                             <td>{{presupuesto.monto_materiales}}</td>
-                            <td>{{presupuesto.monto_materiales}}</td>
+                            <td>
+                                {{presupuesto.monto_materiales_revisado}}
+                            </td>
                         </tr>
                         <tr style="border-top: 2px solid #ddd;">
                             <td colspan="4">Valor total mudanza</td>
@@ -525,7 +554,19 @@
                             </td>
                         </tr>
                         <tr style="border-top: 2px solid #ddd;">
-                            <td colspan="4">Descuento / recargo</td>
+                            <td colspan="4">
+
+                                {% if presupuesto.descuento_recargo == '-' %}
+
+                                    Descuento
+
+                                {% else %}
+
+                                Recargo
+
+                                {% endif %}
+
+                            </td>
                             <td align="center">
 
                                 {% if presupuesto.tipo_calculo == 'Basico' %}
