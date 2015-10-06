@@ -33,3 +33,10 @@ $('#btn-cancelarEliminar').click(function() {
     document.getElementById('msjEliminado')
     );
 });
+
+function disabledBtn(boton) {
+    $(boton).attr('disabled', 'disabled');
+    setTimeout(function() {
+            $(boton).removeAttr('disabled', 'disabled');
+          }, 4000);
+}
