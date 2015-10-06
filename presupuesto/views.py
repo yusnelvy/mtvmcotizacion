@@ -34,7 +34,7 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import Table
 from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import permission_required, login_required
 
 import sys
 import traceback
@@ -216,11 +216,11 @@ class PresupuestoServicioList(ListView):
         return Presupuesto_servicio.objects.filter(detalle_presupuesto=self.detallepresupuesto).values('servicio', 'detalle_presupuesto', 'monto_servicio').annotate(tcount=Count('servicio')).order_by('servicio')
 
 
-# @permission_required('presupuesto.add_presupuesto')
 class PresupuestoView(View):
     form_class = PresupuestoForm
     template_name = 'presupuesto_add.html'
 
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         """docstring"""
         data = {

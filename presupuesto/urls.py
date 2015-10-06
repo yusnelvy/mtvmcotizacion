@@ -15,11 +15,12 @@ from presupuesto.views import PresupuestoView, PresupuestoList, PresupuestoDetai
 from presupuesto import views
 from presupuesto.forms import PresupuestoDetalleForm1, PresupuestoDetalleForm2, \
     PresupuestoDetalleForm3
+from django.contrib.auth.decorators import permission_required
 
 
 urlpatterns = patterns('',
-                       url(r'^$',
-                           PresupuestoList.as_view(),
+                       url(r'^$', permission_required('presupuesto.list_presupuesto')
+                          (PresupuestoList.as_view()),
                            name='PresupuestoList'),
                        url(r'^nuevo',
                            PresupuestoView.as_view(),
