@@ -21,7 +21,7 @@ setTimeout(function () {
         {{form.as_p}}
 
     </div>
-    <button class="btn btn-default" type="submit">Guardar</button>
+    <button class="btn btn-default registrar" type="submit">Guardar</button>
     <button class="btn btn-default" data-dismiss="modal" id="btn-cancelar" type="button">Cancelar</button>
 </form>
 
@@ -37,6 +37,7 @@ setTimeout(function () {
 
 <script type="text/javascript">
 $('#myform').submit(function(){
+    disabledBtn($('.registrar'));
     var id = $(parent.document.getElementsByClassName("id_opcionFormulario")).attr('id');
     var action = "../../editar/" + id + "/";
     var that = $(this)

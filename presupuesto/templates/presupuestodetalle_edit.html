@@ -17,7 +17,7 @@
 
   </div>
 
-  <button type="submit" class="btn btn-default">{{nombre_btn}}</button>
+  <button type="submit" class="btn btn-default registrar">{{nombre_btn}}</button>
   <button class="btn btn-default" data-dismiss="modal" id="btn-cancelar" type="button">Cancelar</button>
   <br>
 </form>
@@ -40,25 +40,13 @@ var densidadMedia = 0
 var densidadAlta = 0
 var densidadMuyAlta = 0
 
-
 $('#id_lista_ocupacion li label').addClass('btn-radio');
 
 $('#id_lista_tamano li label').addClass('btn-radio');
 
-$('input[name=lista_ocupacion]').click(function() {
-  radioColorOcupacion()
-});
-
-radioColorOcupacion()
-
-$('input[name=lista_tamano]').click(function() {
-  radioColorTamano()
-});
-
-radioColorTamano()
-
 $(document).ready(function() {
   descripcionmensaje();
+  ocupacidadVacia();
 
   $("#id_lista_ambiente").on("change", function() {
     id_lista_ambiente = $("#id_lista_ambiente").val();
@@ -93,11 +81,20 @@ $(document).ready(function() {
         densidadMuyAlta = (data[0].densidadmuyaltacontenido);
         $("#id_densidadcontenido").val(densidadMedia);
         $("#id_descripcion_densidadcontenido").val('Media');
+
+        lista_descripcionDensidadContenido = $('input[name=descripcion_densidadcontenido]');
+        for(var i=0; i<lista_descripcionDensidadContenido.length; i++) {
+          if (lista_descripcionDensidadContenido[i].value == 'Media') {
+            $(lista_descripcionDensidadContenido[i]).attr("checked","checked");
+            radioColor('descripcion_densidadcontenido');
+          }
+        }
+
         lista_ocupacion = $("input[name=lista_ocupacion]");
         for(var i=0; i<lista_ocupacion.length; i++) {
           if (data[0].ocupacion == lista_ocupacion[i].value) {
             $(lista_ocupacion[i]).attr("checked","checked");
-            radioColorOcupacion()
+            radioColor('lista_ocupacion');
           }
         }
         if (data[0].trasladable == true) {
@@ -113,9 +110,11 @@ $(document).ready(function() {
             volumen = calcular_volumen($("#id_ancho").val(), $(
             "#id_largo").val(), $("#id_alto").val(), $("#id_cantidad").val());
             $("#id_volumen_mueble").val(volumen);
-            radioColorTamano()
+            radioColor('lista_tamano');
+            inputContenido('ocultar');
           }
         }
+        ocupacidadVacia();
       });
   });
 
@@ -170,6 +169,9 @@ $(document).ready(function() {
         if (data[0].ocupacion == 'Vacío') {
           $("#id_descripcion_contenido").val('Sin contenido');
           cargarinformacioncontenido();
+          inputContenido('ocultar');
+        } else {
+          inputContenido('mostrar');
         }
         calculoscontenido();
         descripcionmensaje();
@@ -219,16 +221,24 @@ $(document).ready(function() {
     cargarinformacioncontenido();
     calculoscontenido();
     descripcionmensaje();
+    if ($("#id_descripcion_contenido").val() == 'Sin contenido') {
+      $('label[for=id_lista_ocupacion_0]').click();
+      radioColor('lista_ocupacion');
+      inputContenido('ocultar');
+
+    } else {
+      inputContenido('mostrar');
+    }
   });
 
-  $('#id_descripcion_densidadcontenido').change(function() {
-    if ($('#id_descripcion_densidadcontenido').val() == 'Baja') {
+  $('input[name=descripcion_densidadcontenido]').change(function() {
+    if ($('input[name=descripcion_densidadcontenido]:checked').val() == 'Baja') {
       $("#id_densidadcontenido").val(densidadBaja)
-    } else if ($('#id_descripcion_densidadcontenido').val() == 'Media') {
+    } else if ($('input[name=descripcion_densidadcontenido]:checked').val() == 'Media') {
       $("#id_densidadcontenido").val(densidadMedia);
-    } else if ($('#id_descripcion_densidadcontenido').val() == 'Alta') {
+    } else if ($('input[name=descripcion_densidadcontenido]:checked').val() == 'Alta') {
       $("#id_densidadcontenido").val(densidadAlta);
-    } else if ($('#id_descripcion_densidadcontenido').val() == 'Muy alta'){
+    } else if ($('input[name=descripcion_densidadcontenido]:checked').val() == 'Muy alta'){
       $("#id_densidadcontenido").val(densidadMuyAlta);
     }
     calculoscontenido();
@@ -260,6 +270,7 @@ $(document).ready(function() {
   });
 
   $('#myform').submit(function() {
+    disabledBtn($('.registrar'));
     document.getElementById('id_lista_ambiente').disabled = false;
     var id = $(parent.document.getElementsByClassName(
       "id_opcionFormulario")).attr('src');
@@ -291,6 +302,17 @@ $(document).ready(function() {
     });
     return false;
   });
+
+function ocupacidadVacia() {
+  if ($("#id_ocupacidad").val() == 'Vacío') {
+    $("#id_descripcion_contenido").val('Sin contenido');
+    cargarinformacioncontenido();
+    inputContenido('ocultar');
+  } else {
+    inputContenido('mostrar');
+  }
+}
+
   function cargarinformacioncontenido(){
     id_descripcion_contenido = $("#id_descripcion_contenido").val();
     $.get('/presupuesto/detalle/nuevo',

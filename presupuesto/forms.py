@@ -146,7 +146,7 @@ class PresupuestoDireccionForm(ModelForm):
             'pisos_escalera': ('Cantidad de pisos a recorrer por escaleras'),
             'pisos_ascensor': ('Cantidad de pisos a recorrer por el ascensor'),
             'pisos_ascensor_servicio': (
-                'Cantidad de pisos a recorrer por el ascensor de servicio'),
+            'Cantidad de pisos a recorrer por el ascensor de servicio'),
             }
         widgets = {
             'pisos_ascensor': RadioSelect(
@@ -202,7 +202,7 @@ class PresupuestoDetalleForm(ModelForm):
         ('Muy alta', 'Muy alta'),
     )
     descripcion_densidadcontenido = forms.ChoiceField(
-        widget=Select(attrs={'class': 'width50'}),
+        widget=RadioSelect(attrs={'class': 'radioselect', 'onclick': 'radioColor(name)'}),
         label='Densidad del contenido',
         choices=DENSIDAD_CHOICES)
 
@@ -217,15 +217,15 @@ class PresupuestoDetalleForm(ModelForm):
         fields = 'lista_ambiente', \
             'lista_mueble', \
             'lista_tamano', \
-            'lista_ocupacion', \
             'presupuesto', \
             'ambiente', \
             'mueble', \
             'tamano', \
-            'cantidad', \
             'ancho', \
             'largo', \
             'alto', \
+            'cantidad', \
+            'lista_ocupacion', \
             'descripcion_contenido', \
             'descripcion_densidadcontenido', \
             'densidadcontenido', \
@@ -268,6 +268,14 @@ class PresupuestoDetalleForm(ModelForm):
                     'type': 'number',
                     'step': '1.00'
                     }),
+            'densidadcontenido': TextInput(
+                attrs={
+                    'class': 'width50',
+                    }),
+            'volumen_contenido': TextInput(
+                attrs={
+                    'class': 'width50',
+                    })
         }
 
 

@@ -12,7 +12,7 @@
 
   </div>
   <span id="seleccion"></span>
-  <button class="btn btn-default btn-registrar" type="submit">Registrar</button>
+  <button class="btn btn-default btn-registrar registrar" type="submit">Registrar</button>
   <button class="btn btn-default" data-dismiss="modal" id="btn-cancelar" type="button">Cancelar</button>
 </form>
 <div class="alert alert-danger" id="seleccionServicio" style="display:none;" role="alert"></div>
@@ -39,6 +39,7 @@ $('#id_lista_servicio').multiSelect(
 });
 $(document).ready(function() {
   $('#myform').submit(function() {
+    disabledBtn($('.registrar'));
     if ($('#id_lista_servicio').val() == null) {
       $("#seleccionServicio").text('Seleccione un servicio');
       $("#seleccionServicio").fadeIn();
