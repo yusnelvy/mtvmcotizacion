@@ -1,9 +1,0 @@
-listar regitros relacionados a una tabla
-{% for i in lista_obj %}
-
-   {% for detail in i.tamano_mueble_set.all %}
-     {{detail.tamano}}
-     {{detail.mueble}}<br/> 
-   {% endfor %}
-
-{% endfor %}

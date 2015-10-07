@@ -1,20 +1,17 @@
 {% extends "base3.html" %}
 
-{% block content %}{% endblock content %}
-
 {% block acceso_rapido %}
-
-<a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
-<a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
+    <a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
+    <a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
+{% endblock acceso_rapido %}
 
 {% block acceso_rapido_adicional%}{% endblock acceso_rapido_adicional%}
-
-{% endblock acceso_rapido %}
 
 {% block navegacion %}
 
 <div class="col-md-2">
     <div class="barra-vertical hidden-print" id="navbar-example" style="">
+        <h3>{% block menu_navegacion %}Menú{% endblock menu_navegacion %}</h3>
         <ul class="nav_l nav nav-pills nav-stacked" role="tablist">
 
             {% block link_navegacion %}{% endblock link_navegacion %}
@@ -89,15 +86,10 @@
 $("#addClass").click(function () {
     $('.btn-colapsable').addClass('in');
     $('.btn-colapsable').css('height','auto');
-    $("#removeClass").css('display','inline-block');
-    $("#addClass").css('display','none');
 });
 $("#removeClass").click(function () {
     $('.btn-colapsable').removeClass('in');
     $('.btn-colapsable').css('height','auto');
-    $("#removeClass").css('display','none');
-    $("#addClass").css('display','inline-block');;
-
 });
 
 </script>

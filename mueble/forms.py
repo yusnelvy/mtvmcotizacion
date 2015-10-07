@@ -87,11 +87,9 @@ class TamanoMuebleForm(ModelForm):
         labels = {
             'tamano': ('Nombre del tamaño del mueble'),
             'mueble': ('Nombre del mueble'),
-            'densidad': ('Tipo de densidad del mueble'),
             'ancho': ('Ancho del mueble en cms'),
             'largo': ('Largo  del mueble en cms'),
             'alto': ('Alto  del mueble en cms'),
-            'peso': ('Peso del mueble en kgs'),
             'predefinido': ('Marcar si este es el tamaño predefinido para este mueble'),
         }
 

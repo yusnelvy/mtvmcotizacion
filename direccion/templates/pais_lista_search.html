@@ -1,0 +1,82 @@
+{% if lista_pais %}
+
+{% block cantidad_tabla %}
+
+<h6>Cantidad de Países encontrados:
+  <span class="badge" id="count_reg">
+
+    {{ lista_pais.count }}
+
+  </span>
+</h6>
+
+{% endblock cantidad_tabla %}
+<nav class="nav-pagination hidden-print">
+<ul class="pagination" >
+{% block pagination %}
+
+{% if paises.has_previous %}
+
+<li>
+  <a href="?page={{ paises.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ paises.number }}
+
+    de
+
+    {{ paises.paginator.num_pages }}
+
+    Desde el pais
+
+    {{ paises.start_index }}
+
+    hasta el pais
+
+    {{ paises.end_index }}
+
+  </a>
+</li>
+
+{% if paises.has_next %}
+
+<li>
+  <a href="?page={{ paises.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+   </ul>
+            </nav>
+{% block cuerpo_tabla %}
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr class="active">
+  <th>Pais</th>
+  <th width="80px">Editar</th>
+  <th width="80px">Eliminar</th>
+</tr>
+
+{% for i in paises %}
+
+<tr id="tr{{i.pk}}">
+  <td>
+
+    {{ i.pais }}
+
+  </td>
+  <td width="80px"><a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'udirecciones:edit_pais' i.pk %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a></td>
+  <td width="80px">
+    <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.pk}}" data-name="{{i.pais}}"></a>
+  </td>
+</tr>
+
+{% endfor %}
+</table>
+{% endblock cuerpo_tabla %}
+{% endif %}

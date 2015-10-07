@@ -4,7 +4,7 @@ Docstring Documentación pendiente
 
 from django.conf.urls import patterns, url
 from mueble import views
-from mueble.views import MuebleListView, TamanoMuebleListView
+from mueble.views import MuebleListView, TamanoMuebleListView, FichaMueble
 
 urlpatterns = patterns('',
                        url(r'^mueble1/$',
@@ -22,6 +22,9 @@ urlpatterns = patterns('',
                        url(r'^editar/(?P<pk>\d+)/$',
                            views.edit_mueble,
                            name='edit_mueble'),
+                       url(r'^mueble_ficha/(?P<pk>\d+)/$',
+                           FichaMueble.as_view(),
+                           name='mueble_ficha'),
                        url(r'^buscar/(?P<idtipomueble>\d+)/$',
                            views.buscar_mueble,
                            name='buscar_mueble'),

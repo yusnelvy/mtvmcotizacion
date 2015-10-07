@@ -2,14 +2,14 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="{% url 'uambientes:lista_ambiente' %}" style="color:#777;">Ambientes</a></li>
-<li class="linknav"><a href="{% url 'umuebles:lista_mueble' %}" style="color:#777;">Muebles</a></li>
-<li class="linknav"><a href="{% url 'umuebles:lista_tipo_mueble' %}" style="color:#777;">Tipo de muebles</a></li>
-<li class="linknav"><a href="{% url 'umuebles:lista_forma_mueble' %}" style="color:#777;">Formas de muebles</a></li>
-<li class="linknav"><a href="{% url 'umuebles:lista_tamano' %}" style="color:#777;">Tipos de tamaños</a></li>
-<li class="linknav"><a href="../tamano_mueble/0/" style="color:#777;">Tamaños de muebles</a></li>
-<li class="linknav"><a href="{% url 'umuebles:lista_densidad' %}" style="color:#777;">Niveles de densidad</a></li>
-<li class="linknav"><a href="{% url 'umuebles:lista_ocupacion' %}" style="color:#777;">Niveles de ocupación</a></li>
+<li class="linknav"><a href="{% url 'uambientes:lista_ambiente' %}">Ambientes</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_mueble' %}">Muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_tipo_mueble' %}">Tipo de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_forma_mueble' %}">Formas de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_tamano' %}">Tipos de tamaños</a></li>
+<li class="linknav"><a href="{% url 'umuebles:buscar_tamano_mueble' 0 %}">Tamaños de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_densidad' %}">Niveles de densidad</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_ocupacion' %}">Niveles de ocupación</a></li>
 
 {% endblock link_navegacion %}
 
@@ -20,7 +20,7 @@
 <li><a href="{% url 'umuebles:lista_tipo_mueble' %}">Tipo de muebles</a></li>
 <li><a href="{% url 'umuebles:lista_forma_mueble' %}">Formas de muebles</a></li>
 <li><a href="{% url 'umuebles:lista_tamano' %}">Tipos de tamaños</a></li>
-<li><a href="../tamano_mueble/0/">Tamaños de muebles</a></li>
+<li><a href="{% url 'umuebles:buscar_tamano_mueble' 0 %}">Tamaños de muebles</a></li>
 <li><a href="{% url 'umuebles:lista_densidad' %}">Niveles de densidad</a></li>
 <li><a href="{% url 'umuebles:lista_ocupacion' %}">Niveles de ocupación</a></li>
 
@@ -28,7 +28,7 @@
 
 {% block acceso_rapido_adicional%}
 
-<a id="addClass" style="cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
+<a id="addClass" style="cursor: pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
 <a id="removeClass" style="display:none;cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
 
 {% endblock acceso_rapido_adicional%}
@@ -122,7 +122,7 @@ class="col-md-6"
   {% for im in muebleambientes %}
 
   <div class="panel panel-default">
-    <div style="cursor:pointer;" class="panel-heading" role="tab" id="heading{{im.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
+    <div style="cursor: pointer;" class="panel-heading" role="tab" id="heading{{im.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
       <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
 

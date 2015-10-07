@@ -32,7 +32,6 @@ document.getElementById('id_descripcion').focus()
 <table class="table" style="text-align: center;">
 <tr class="">
     <th>Mueble</th>
-    <th>Densidad</th>
     <th></th>
 </tr>
 
@@ -40,7 +39,6 @@ document.getElementById('id_descripcion').focus()
 
 <tr id="tr{{det.id}}">
     <td>{{ det.mueble }}</td>
-    <td>{{ det.densidad }}</td>
     <td>
       <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'umuebles:edit_tamanomueble' det.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
 

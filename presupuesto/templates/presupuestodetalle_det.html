@@ -43,11 +43,11 @@
 
                             {% if servicio %}
 
-                            {% for det_servivio in servicio %}
+                            {% for det_servicio in servicio %}
 
-                            {% if det_servivio.detalle_presupuesto = mueble.id %}
+                            {% if det_servicio.detalle_presupuesto = mueble.id %}
 
-                            {{ det_servivio.servicio }}
+                            {{ det_servicio.servicio }}
 
                             {% if forloop.last %}
 

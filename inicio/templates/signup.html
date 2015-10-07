@@ -2,23 +2,23 @@
 
 {% block acceso_rapido %}
 
-        <a title="Volver" class="navbar-brand" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
+<a class="navbar-brand" href="javascript:history.back();" title="Volver"><span class="glyphicon glyphicon-chevron-left"></span></a>
 
 {% endblock acceso_rapido %}
 
 {% block navegacion %}
 
-        <div class="col-md-2">
-            <div class="barra-vertical hidden-print" style="">
-            <ul class="nav_l">
+<div class="col-md-2">
+    <div class="barra-vertical hidden-print">
+        <ul class="nav_l">
 
-                {% block link_navegacion %}{% endblock link_navegacion %}
+            {% block link_navegacion %}{% endblock link_navegacion %}
 
-            </ul>
-            </div>
-            <br>
-            <br>
-        </div>
+        </ul>
+    </div>
+    <br>
+    <br>
+</div>
 
 {% endblock navegacion %}
 
@@ -104,8 +104,8 @@
                     document.getElementById('id_username').focus()
                     </script>
                 </div>
-                <input type="submit" class="btn btn-default" value="registrar"/>
-                <a href="javascript:history.back();" class="btn btn-default">Cancelar</a>
+                <input class="btn btn-success" type="submit" value="Registrar"/>
+                <a class="btn btn-default" href="javascript:history.back();">Cancelar</a>
             </form>
         </div>
         <div class="col-md-4"></div>

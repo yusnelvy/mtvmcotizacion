@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack',
     'ambiente',
     'cliente',
     'contenido',
@@ -62,6 +63,13 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
 )
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
 
 # CONFIGURACIÓN DE TEMPLATES:
 # Es una secuencia de valores agrupados llamados procesadores
@@ -108,8 +116,6 @@ TEMPLATES = [
     },
 ]
 
-TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 
 ROOT_URLCONF = 'mtvmcotizacion.urls'
@@ -152,12 +158,20 @@ USE_THOUSAND_SEPARATOR = True
 NUMBER_GROUPING = 3
 
 DATE_INPUT_FORMATS = (
-    '%d-%m-%Y', '%d/%m/%Y',              # '25-10-2006', '25/10/2006'
-    '%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y',  # '2006-10-25', '10/25/2006', '10/25/06'
-    '%b %d %Y', '%b %d, %Y',             # 'Oct 25 2006', 'Oct 25, 2006'
-    '%d %b %Y', '%d %b, %Y',             # '25 Oct 2006', '25 Oct, 2006'
-    '%B %d %Y', '%B %d, %Y',             # 'October 25 2006', 'October 25, 2006'
-    '%d %B %Y', '%d %B, %Y',             # '25 October 2006', '25 October, 2006'
+    '%Y-%m-%d',     # '2006-10-25'
+    '%m/%d/%Y',     # '10/25/2006'
+    '%m/%d/%y',     # '10/25/06'
+    '%d-%m-%Y',     # '25-10-2006'
+    '%d/%m/%Y',     # '25/10/2006'
+    '%Y/%m/%d',     # '2006/10/25'
+    '%b %d %Y',     # 'Oct 25 2006'
+    '%b %d, %Y',    # 'Oct 25, 2006'
+    '%d %b %Y',     # '25 Oct 2006'
+    '%d %b, %Y',    # '25 Oct, 2006'
+    '%B %d %Y',     # 'October 25 2006'
+    '%B %d, %Y',    # 'October 25, 2006'
+    '%d %B %Y',     # '25 October 2006'
+    '%d %B, %Y',    # '25 October, 2006'
 )
 
 DATETIME_INPUT_FORMATS = (
@@ -165,10 +179,10 @@ DATETIME_INPUT_FORMATS = (
     '%d-%m-%Y %H:%M:%S.%f',  # '25-10-2006 14:30:59.000200'
     '%d-%m-%Y %H:%M',        # '25-10-2006 14:30'
     '%d-%m-%Y,'              # '25-10-2006'
-    '%Y-%m-%d %H:%M:%S',     # '25/10/2006 14:30:59'
-    '%Y-%m-%d %H:%M:%S.%f',  # '25/10/2006 14:30:59.000200'
-    '%Y-%m-%d %H:%M',        # '25/10/2006 14:30'
-    '%Y-%m-%d',              # '25/10/2006'
+    '%Y-%m-%d %H:%M:%S',     # '25-10-2006 14:30:59'
+    '%Y-%m-%d %H:%M:%S.%f',  # '25-10-2006 14:30:59.000200'
+    '%Y-%m-%d %H:%M',        # '25-10-2006 14:30'
+    '%Y-%m-%d',              # '25-10-2006'
     '%Y-%m-%d %H:%M:%S',     # '2006-10-25 14:30:59'
     '%Y-%m-%d %H:%M:%S.%f',  # '2006-10-25 14:30:59.000200'
     '%Y-%m-%d %H:%M',        # '2006-10-25 14:30'
@@ -183,8 +197,16 @@ DATETIME_INPUT_FORMATS = (
     '%m/%d/%y',              # '10/25/06'
 )
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.7/howto/static-files/
+# Configuración de email
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_HOST_USER = 'yusnelvy@gmail.com'
+
+EMAIL_HOST_PASSWORD = 'yuny5832'
+
+EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = ''

@@ -2,12 +2,12 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="{% url 'uservicios:lista_material' %}" style="color:#777;">Materiales</a></li>
-<li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}" style="color:#777;">Servicios</a></li>
-<li class="linknav"><a href="{% url 'uservicios:lista_unidad' %}" style="color:#777;">Unidades</a></li>
-<li class="linknav"><a href="{% url 'uservicios:buscar_complejidad_servicio' 0 0 %}" style="color:#777;">Niveles de complejidad para el servicio
+<li class="linknav"><a href="{% url 'uservicios:lista_material' %}">Materiales</a></li>
+<li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}">Servicios</a></li>
+<li class="linknav"><a href="{% url 'uservicios:lista_unidad' %}">Unidades</a></li>
+<li class="linknav"><a href="{% url 'uservicios:buscar_complejidad_servicio' 0 0 %}">Niveles de complejidad para el servicio
 </a></li>
-<li class="linknav"><a href="{% url 'uservicios:buscar_servicio_material' 0 0 %}" style="color:#777;">Servicios con sus materiales relacionados</a></li>
+<li class="linknav"><a href="{% url 'uservicios:buscar_servicio_material' 0 0 %}">Servicios con sus materiales relacionados</a></li>
 
 {% endblock link_navegacion %}
 

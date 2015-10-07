@@ -33,13 +33,13 @@
 
         {% block titulo_form %}{% endblock titulo_form %}
 
-        <form action="" method="post">
+        <form action="" method="post" id="myformEdit">
 
             {% csrf_token %}
 
             {% block cuerpo_form %}{% endblock cuerpo_form %}
 
-            <button type="submit" class="btn btn-default">Registrar</button>
+            <button type="submit" class="btn btn-default registrar">Registrar</button>
             <br>
 
         </form>
@@ -57,5 +57,10 @@
     {% block ayuda %}{% endblock ayuda %}
 
 </div>
+<script>
+    $('#myformEdit').submit(function(){
+    disabledBtn($('.registrar'));
+});
+</script>
 
 {% endblock content %}

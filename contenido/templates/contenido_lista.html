@@ -2,8 +2,11 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="{% url 'ucontenidos:buscar_contenidoservicio' 0 %}" style="color:#777; text-decoration: none;">Servicios típicos para contenidos</a></li>
-<li class="linknav"><a href="{% url 'ucontenidos:buscar_contenidotipico' 0 %}" style="color:#777; text-decoration: none;">Contenidos típicos por mueble</a></li>
+<li class="linknav"><a href="{% url 'ucontenidos:buscar_contenidoservicio' 0 %}">Servicios típicos para contenidos</a></li>
+<li class="linknav"><a href="{% url 'ucontenidos:buscar_contenidotipico' 0 %}">Contenidos típicos por mueble</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_mueble' %}">Muebles</a></li>
+<li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}">Servicios</a></li>
+
 
 {% endblock link_navegacion %}
 
@@ -11,6 +14,8 @@
 
 <li><a href="{% url 'ucontenidos:buscar_contenidoservicio' 0 %}">Servicios típicos para contenidos</a></li>
 <li><a href="{% url 'ucontenidos:buscar_contenidotipico' 0 %}">Contenidos típicos por mueble</a></li>
+<li><a href="{% url 'umuebles:lista_mueble' %}">Muebles</a></li>
+<li><a href="{% url 'uservicios:lista_servicio' %}">Servicios</a></li>
 
 {% endblock footerLink %}
 
@@ -31,25 +36,6 @@ Eliminar tipo de contenido
 <p>¿Realmente desea eliminar el registro: <strong id="modal_name"></strong>?</p>
 
 {% endblock validacion_modal %}
-
-{% block link %}
-
-<ul class="nav navbar-nav">
-  <li>
-    <a href="contenido_tipico/0/" class="btn">Contenidos típicos</a>
-  </li>
-  <li>
-    <a href="/contenido/contenido_servicio/0/" class="btn">Servicios típicos</a>
-  </li>
-  <li>
-    <a href="/mueble/" class="btn">Muebles</a>
-  </li>
-  <li>
-    <a href="/servicio/" class="btn">Servicios</a>
-  </li>
-</ul>
-
-{% endblock link %}
 
 {% block titulo_tabla %}
 
@@ -123,7 +109,7 @@ Eliminar tipo de contenido
   <th width="120px">Baja</th>
   <th width="120px">Media</th>
   <th width="120px">Alta</th>
-  <th width="120px">Super-alta</th>
+  <th width="120px">Muy alta</th>
 </tr>
 
 {% for i in contenidos %}

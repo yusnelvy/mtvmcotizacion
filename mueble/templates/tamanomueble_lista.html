@@ -2,12 +2,12 @@
 
 {% block link_navegacion %}
 
-<li class="linknav"><a href="{% url 'umuebles:lista_mueble' %}" style="color:#777;">Muebles</a></li>
-<li class="linknav"><a href="{% url 'umuebles:lista_tipo_mueble' %}" style="color:#777;">Tipo de muebles</a></li>
-<li class="linknav"><a href="{% url 'umuebles:lista_forma_mueble' %}" style="color:#777;">Formas de muebles</a></li>
-<li class="linknav"><a href="{% url 'umuebles:lista_tamano' %}" style="color:#777;">Tipos de tamaños</a></li>
-<li class="linknav"><a href="{% url 'umuebles:lista_densidad' %}" style="color:#777;">Niveles de densidad</a></li>
-<li class="linknav"><a href="{% url 'umuebles:lista_ocupacion' %}" style="color:#777;">Niveles de ocupación</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_mueble' %}">Muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_tipo_mueble' %}">Tipo de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_forma_mueble' %}">Formas de muebles</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_tamano' %}">Tipos de tamaños</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_densidad' %}">Niveles de densidad</a></li>
+<li class="linknav"><a href="{% url 'umuebles:lista_ocupacion' %}">Niveles de ocupación</a></li>
 
 {% endblock link_navegacion %}
 
@@ -24,8 +24,8 @@
 
 {% block acceso_rapido_adicional%}
 
-<a id="addClass" style="cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
-<a id="removeClass" style="display:none;cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
+<a id="addClass" style="cursor: pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
+<a id="removeClass" style="display: none; cursor: pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
 
 {% endblock acceso_rapido_adicional%}
 
@@ -117,7 +117,7 @@ class="col-md-7"
   {% for im in lista_muebles %}
 
   <div class="panel panel-default">
-    <div style="cursor:pointer;" class="panel-heading" role="tab" id="heading{{im.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
+    <div style="cursor: pointer;" class="panel-heading" role="tab" id="heading{{im.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
       <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.id}}" aria-expanded="false" aria-controls="collapse{{im.id}}">
 
@@ -145,11 +145,9 @@ class="col-md-7"
       </div>
       <table class="table table-hover table-condensed table-bordere" style="text-align: center;">
         <tr>
-          <th>Densidad</th>
           <th>Ancho</th>
           <th>Largo</th>
           <th>Alto</th>
-          <th>Peso</th>
           <th>Predefinido</th>
           <th></th>
         </tr>
@@ -163,14 +161,12 @@ class="col-md-7"
         {% if d.mueble.id = im.id %}
 
         <tr>
-          <td>{{ d.densidad }}</td>
           <td>{{ d.ancho }} m</td>
           <td>{{ d.largo }} m</td>
           <td>{{ d.alto }} m</td>
-          <td>{{ d.peso }} Kg</td>
           <td>{{ d.predefinido|yesno:"Si,No" }}</td>
           <td width="80px">
-            <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{d.id}}" data-name="la densidad: {{ d.densidad }} Tamaño: {{ d.tamano }} del Mueble: {{d.mueble}}"></a>
+            <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{d.id}}" data-name="Tamaño: {{ d.tamano }} del Mueble: {{d.mueble}}"></a>
           </td>
         </tr>
 

@@ -1,0 +1,45 @@
+.input-re {
+    width: 90%;
+    text-align: center;
+}
+
+.input-re::-webkit-inner-spin-button,
+.input-re::-webkit-outer-spin-button,
+.input-descuento-recargo::-webkit-inner-spin-button,
+.input-descuento-recargo::-webkit-outer-spin-button  {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+.input-re-no-border {
+    border-color: transparent;
+}
+
+.label1 {
+    width: 80%;
+    height: 90%;
+    cursor: pointer;
+    font-family: inherit;
+    font: inherit;
+}
+
+.selec {
+    background: #e8e8e8;
+}
+
+.checkedBlue {
+    background: #337ab7;
+    color:#fff;
+}
+
+.input-descuento-recargo {
+    width: 70%;
+    text-align: center;
+}
+
+.td-porcentaje-decuento {
+    border-right: hidden !important;
+
+}

@@ -7,6 +7,7 @@ from django.forms import ModelForm, TextInput
 from direccion.models import Pais, Provincia, Ciudad, \
     Zona, Tipo_direccion, Direccion, Tipo_Inmueble, \
     Complejidad_Inmueble, Inmueble
+from haystack.forms import SearchForm
 
 
 class PaisForm(ModelForm):
@@ -32,6 +33,7 @@ class ProvinciaForm(ModelForm):
             'provincia': ('Provincia'),
             'pais': ('País')
         }
+
 
 class CiudadForm(ModelForm):
     """
@@ -60,6 +62,7 @@ class ZonaForm(ModelForm):
             'provincia': ('Provincia'),
             'pais': ('País')
         }
+
 
 class DireccionForm(ModelForm):
     """
@@ -145,3 +148,10 @@ class InmuebleForm(ModelForm):
             'complejidad': ('Nivel de complejidad del inmueble'),
             'distancia_vehiculo': ('Distancia desde el inmueble al vehículo de carga'),
         }
+
+
+#formularios de busqueda
+class SearchForm(SearchForm):
+
+    def no_query_found(self):
+        return self.searchqueryset.all()

@@ -1,237 +1,697 @@
 {% extends 'base_ficha.html' %}
 
+{% block acceso_rapido %}
+
+<a aria-expanded="false" class="navbar-brand" href="{% url 'upresupuestos:PresupuestoList' %}" role="button" title="Volver">
+    <span class="glyphicon glyphicon-chevron-left"></span>
+</a>
+<a aria-expanded="false" class="navbar-brand" onclick="window.print();" role="button" title="Imprimir">
+    <span class="glyphicon glyphicon-print"></span>
+</a>
+<a aria-expanded="false" class="navbar-brand botonmodalFormulario" data-numero="{{ presupuesto.id }}" data-nombre="Editar detalle del presupuesto" data-opcion="{% url 'upresupuestos:PresupuestoUpdate' presupuesto.id %}" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Editar detalles del presupuesto">
+    <span class="glyphicon glyphicon-edit"></span>
+</a>
+<a aria-expanded="false" class="navbar-brand botonmodalFormulario" data-nombre="Agregar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Origen&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Agregar dirección de origen" >
+    <span class="glyphicon glyphicon-export"></span>
+</a>
+<a aria-expanded="false" class="navbar-brand botonmodalFormulario" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Agregar dirección de destino" >
+    <span class="glyphicon glyphicon-import"></span>
+</a>
+<a aria-expanded="false" class="navbar-brand botonmodalFormulario" data-nombre="Agregar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Agregar mueble">
+    <span class="glyphicon glyphicon-lamp"></span>
+</a>
+
+{% endblock acceso_rapido %}
+
+{% block acceso_rapido_adicional %}{% endblock acceso_rapido_adicional %}
+
+{% block link_navegacion %}
+
+<li class="linknav">
+    <a class="scrollSpy" href="#datos-personales">Datos básicos del presupuesto
+
+        {% if presupuesto.dni %}
+
+        <span class="glyphicon glyphicon-ok"></span>
+
+        {% else %}
+
+        <span class="glyphicon glyphicon-minus"></span>
+
+        {% endif %}
+
+    </a>
+</li>
+<li class="linknav">
+    <a class="scrollSpy" id="link_direcciones" href="#direcciones">Direcciones
+
+        {% if direccion_origen and direccion_destino %}
+
+        <span class="glyphicon glyphicon-ok"></span>
+
+        {% else %}
+
+        <span class="glyphicon glyphicon-minus"></span>
+
+        {% endif %}
+
+    </a>
+</li>
+<li class="linknav">
+    <a class="scrollSpy" href="#ambientes">Muebles a mudar
+
+        {% if lista_ambiente %}
+
+        <span class="glyphicon glyphicon-ok"></span>
+
+        {% else %}
+
+        <span class="glyphicon glyphicon-minus"></span>
+
+        {% endif %}
+
+    </a>
+</li>
+
+{% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente %}
+
+{% if presupuesto.estado != 'Muebles cargados'  %}
+
+<li class="linknav">
+    <a onClick="location='{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}'">Ver resumen</a>
+</li>
+
+{% else %}
+
+<li class="linknav">
+    <a data-target=".resumen" data-toggle="modal" type="button">Ver resumen</a>
+</li>
+
+{% endif %}
+
+{% endif %}
+
+{% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente %}
+
+{% if presupuesto.estado = "Servicios cargados" %}
+
+<li>
+    <a class="btn btn-default btn-blanco botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado=Terminado cliente">Finalizar solicitud</a>
+</li>
+
+{% endif %}
+
+{% endif %}
+
+{% if presupuesto.estado = "Terminado cliente" %}
+
+<li>
+    <a class="btn btn-success btn-verde" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
+</li>
+
+{% endif %}
+
+{% if presupuesto.estado = "Terminado cotizador" %}
+
+<li>
+    <a class="btn btn-default btn-blanco" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
+</li>
+
+{% endif %}
+
+{% if presupuesto.estado = "Terminado cotizador" %}
+
+<li>
+    <a class="btn btn-success btn-verde" href="#" type="button">Enviar correo</a>
+</li>
+
+{% endif %}
+
+{% endblock link_navegacion %}
+
 {% block titulo %}
 
 <title>Presupuesto</title>
 
 {% endblock titulo %}
 
+{% block col1 %}
+
+class="col-md-10"
+
+{% endblock col1 %}
 
 {% block content1 %}
 
+<div id="datos-personales"><!--Panel de Detalles del presupuesto-->
+    <h2>Datos básicos del presupuesto</h2>
+    <table class="table table-hover table-bordered" id="myDatosPersonales">
+        <tr>
+            <td><b>Cotizador:</b>
 
-<div class="panel panel-default">
-  <p>Hoy es: {{ now|date }}</p>
-  <p>
-    {% if direccion_origen and direccion_destino and detalle_list %}
+                {{ presupuesto.cotizador.first_name }}
 
-    <a data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}" style="float:right;" class="">ver resumen</a></p>
+                {{ presupuesto.cotizador.last_name }}
+
+            </td>
+            <td><b>Fecha de registro:</b> {{ presupuesto.fecha_creacion|date:"d/m/Y" }}</td>
+            <td><b>Hora de registro:</b> {{ presupuesto.hora_creacion|time:"h:i a" }}</td>
+            <td><b>N° de presupuesto:</b> {{ presupuesto.id }}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><b>Solicitante:</b> {{ presupuesto.nombre_cliente }}</td>
+            <td><b>Teléfono celular:</b> {{ presupuesto.telefono_celular }}</td>
+            <td><b>Teléfono fijo:</b> {{ presupuesto.telefono }}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><b>e-mail:</b> {{ presupuesto.email }}</td>
+            <td><b>Empresa:</b> {{ presupuesto.empresa_cliente }}</td>
+            <td><b>Cargo:</b> {{ presupuesto.cargo_cliente }}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><b>Medio de contacto:</b> {{ presupuesto.fuente_promocion }}</td>
+            <td><b>Fecha de mudanza:</b> {{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}</td>
+            <td><b>Hora de mudanza:</b> {{ presupuesto.hora_estimadamudanza|time:"h:i a" }}</td>
+        </tr>
+        <tr>
+            <td colspan="4"><b>Observaciones:</b> {{ presupuesto.comentario }}</td>
+        </tr>
+    </table>
+    <a class="btn btn-default botonmodalFormulario hidden-print" data-numero="{{ presupuesto.id }}" data-nombre="Editar detalles del presupuesto" data-opcion="{% url 'upresupuestos:PresupuestoUpdate' presupuesto.id %}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Editar detalles del presupuesto">Editar detalles del presupuesto</a>
+</div><!--Fin de Panel de Detalles del presupuesto-->
+<br>
+<div class="panel panel-color1" id="direcciones"><!--Panel de Direcciones-->
+    <h2>Direcciones</h2>
+    <div class="panel-body">
+        <table class="table table-condensed table-hover table-bordered">
+
+            {% if not direccion_origen %}
+
+            <tr>
+                <td>
+                    <a class="botonmodalFormulario btn btn-success hidden-print" data-nombre="Agregar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Origen&pre={{ presupuesto.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar dirección de origen">Agregar dirección de origen
+                    </a>
+                </td>
+            </tr>
+
+            {% else %}
+
+
+            {% for direc_origen in direccion_origen %}
+
+            <tr class="tr-direccion">
+                <td width="40%">
+                    <h4>{{ direc_origen.tipo_direccion }} {{ direc_origen.orden }}</h4>
+                    <p>{{ direc_origen.direccion }}</p>
+                </td>
+                <td width="25%">
+
+                    {{ direc_origen.tipo_inmueble }}
+
+                    {{ direc_origen.total_m2|floatformat:"0" }}
+
+                    m<sup>2</sup> en
+
+                    {{ direc_origen.pisos }}
+
+                    {% if direc_origen.pisos > 1 %}
+
+                    pisos
+
+                    {% else %}
+
+                    piso
+
+                    {% endif %}
+
+                    <br>
+                    Ocupación:
+
+                    {{ direc_origen.ocupacidad_inmueble }}
+
+                    <br>
+                    Distancia del vehículo:
+
+                    {% if direc_origen.distancia_vehiculo = 70 %}
+
+                    Más de
+
+                    {% endif %}
+
+                    {{ direc_origen.distancia_vehiculo }} metros
+
+                </td>
+                <td width="25%">
+
+                    {% if direc_origen.pisos_escalera = 0 %}
+
+                    Sin escaleras
+
+                    {% else %}
+
+                    Con escaleras
+
+                    ({{ direc_origen.pisos_escalera }}
+
+                    {% if direc_origen.pisos_escalera > 1 %}
+
+                    pisos)
+
+                    {% else %}
+
+                    piso)
+
+                    {% endif %}
+
+                    {% endif %}
+
+                    <br>
+
+                    {% if direc_origen.pisos_ascensor = 0 %}
+
+                    Sin ascensor
+
+                    {% else %}
+
+                    Con ascensor
+
+                    ({{ direc_origen.pisos_ascensor }}
+
+                    {% if direc_origen.pisos_ascensor = 10 %}
+
+                    o más pisos)
+
+                    {% else %}
+
+                    pisos)
+
+                    {% endif %}
+
+                    {% endif %}
+
+                    <br>
+
+                    {{ direc_origen.ascensor_servicio|yesno:"Con ascensor de servicio,Sin ascensor de servicio" }}
+
+                    {% if direc_origen.ascensor_servicio %}
+
+                    ({{ direc_origen.pisos_ascensor_servicio }}
+
+                    {% if direc_origen.pisos_ascensor_servicio > 1 %}
+
+                    pisos)
+
+                    {% else %}
+
+                    piso)
+
+                    {% endif %}
+
+                    {% endif %}
+
+                    <br>
+
+                    {{ direc_origen.rampa|yesno:"Con rampa,Sin rampa" }}
+
+                </td>
+                <td width="10%">
+                    <a class="botonmodalFormulario controles edit glyphicon glyphicon-edit" data-nombre="Editar dirección de origen" data-numero="{{ direc_origen.id }}"  data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_origen.id %}?next={{ request.get_full_path }}" data-target="#myModalFormulario"
+                    data-toggle="modal" id="{{ direc_origen.id }}" data-toggletooltip="tooltip" title="Editar dirección de origen"></a>
+
+                    {% if forloop.first %}
+
+                    {% if direccion_origen.count > 1 %}
+
+                    <a class="btn controles glyphicon glyphicon-arrow-down botonOrden" data-numero="{{ direc_origen.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_origen.id %}?presupuesto={{ presupuesto.id }}&tipo=Origen&posicion=bajar" data-toggletooltip="tooltip" title="Dirección de origen"></a>
+
+                    {% else %}
+
+                    <a class="btn controles glyphicon glyphicon-arrow-down botonOrden disabled" data-numero="{{ direc_origen.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_origen.id %}?presupuesto={{ presupuesto.id }}&tipo=Origen&posicion=bajar" data-toggletooltip="tooltip" title="Dirección de origen"></a>
+
+                    {% endif %}
+
+                    {% else %}
+
+                    <a class="btn controles glyphicon glyphicon-arrow-up botonOrden" data-numero="{{ direc_origen.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_origen.id %}?presupuesto={{ presupuesto.id }}&tipo=Origen&posicion=subir" data-toggletooltip="tooltip" title="Dirección de origen"></a>
+
+                    {% endif %}
+
+                    <a class="botonmodalEliminar controles glyphicon glyphicon-remove" data-nombre="Dirección de origen"  data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_origen.id %}?next={{ request.get_full_path }}" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" title="Eliminar dirección de origen"></a>
+                </td>
+            </tr>
+
+            {% endfor %}
+
+            {% endif %}
+
+            {% if not direccion_destino %}
+
+            <tr>
+                <td>
+                    <a class="botonmodalFormulario btn btn-success hidden-print boton-almedio" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar dirección de destino">Agregar dirección de destino
+                    </a>
+                </td>
+            </tr>
+
+            {% else %}
+
+            {% for direc_destino in direccion_destino %}
+
+            <tr class="tr-direccion">
+                <td>
+                    <h4>{{ direc_destino.tipo_direccion }} {{ direc_destino.orden }}</h4>
+                    <p>{{ direc_destino.direccion }}</p>
+
+                </td>
+                <td>
+
+                    {{ direc_destino.tipo_inmueble }}
+
+                    de
+
+                    {{ direc_destino.pisos }}
+
+                    {% if direc_destino.pisos > 1 %}
+
+                    pisos
+
+                    {% else %}
+
+                    piso
+
+                    {% endif %}
+
+                    <br>
+                    Distancia del vehículo:
+
+                    {% if direc_destino.distancia_vehiculo = 70 %}
+
+                    Más de
+
+                    {% endif %}
+
+                    {{ direc_destino.distancia_vehiculo }} metros
+
+                </td>
+                <td>
+
+                    {% if direc_destino.pisos_escalera = 0 %}
+
+                    Sin escaleras
+
+                    {% else %}
+
+                    Con escaleras
+
+                    ({{ direc_destino.pisos_escalera }}
+
+                    {% if direc_destino.pisos_escalera > 1 %}
+
+                    pisos)
+
+                    {% else %}
+
+                    piso)
+
+                    {% endif %}
+
+                    {% endif %}
+
+                    <br>
+
+                    {% if direc_destino.pisos_ascensor = 0 %}
+
+                    Sin ascensor
+
+                    {% else %}
+
+                    Con ascensor
+
+                    ({{ direc_destino.pisos_ascensor }}
+
+                    {% if direc_destino.pisos_ascensor = 10 %}
+
+                    o más pisos)
+
+                    {% else %}
+
+                    pisos)
+
+                    {% endif %}
+
+                    {% endif %}
+
+                    <br>
+
+                    {{ direc_destino.ascensor_servicio|yesno:"Con ascensor de servicio,Sin ascensor de servicio" }}
+
+                    {% if direc_destino.ascensor_servicio %}
+
+                    ({{ direc_destino.pisos_ascensor_servicio }}
+
+                    {% if direc_destino.pisos_ascensor_servicio > 1 %}
+
+                    pisos)
+
+                    {% else %}
+
+                    piso)
+
+                    {% endif %}
+
+                    {% endif %}
+
+                    <br>
+
+                    {{ direc_destino.rampa|yesno:"Con rampa,Sin rampa" }}
+
+                </td>
+                <td>
+                    <a class="botonmodalFormulario controles edit glyphicon glyphicon-edit" data-nombre="Editar dirección de destino" data-numero="{{ direc_destino.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_destino.id %}?next={{ request.get_full_path }}" data-target="#myModalFormulario" data-toggle="modal" id="{{ direc_destino.id }}" data-toggletooltip="tooltip" title="Editar dirección de destino"></a>
+
+                    {% if forloop.first %}
+
+                    {% if direccion_destino.count > 1 %}
+
+                    <a class="btn controles glyphicon glyphicon-arrow-down botonOrden" data-numero="{{ direc_destino.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_destino.id %}?presupuesto={{ presupuesto.id }}&tipo=destino&posicion=bajar" data-toggletooltip="tooltip" title="Dirección de destino"></a>
+
+                    {% else %}
+
+                    <a class="btn controles glyphicon glyphicon-arrow-down botonOrden disabled" data-numero="{{ direc_destino.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_destino.id %}?presupuesto={{ presupuesto.id }}&tipo=destino&posicion=bajar" data-toggletooltip="tooltip" title="Dirección de destino"></a>
+
+                    {% endif %}
+
+                    {% else %}
+
+                    <a class="btn controles glyphicon glyphicon-arrow-up botonOrden" data-numero="{{ direc_destino.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDireccionOrden' direc_destino.id %}?presupuesto={{ presupuesto.id }}&tipo=destino&posicion=subir" title="Dirección de destino"></a>
+
+                    {% endif %}
+
+                    <a class="botonmodalEliminar controles glyphicon glyphicon-remove" data-nombre="Dirección de destino" data-placement="left" data-opcion="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_destino.id %}?next={{ request.get_full_path }}" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" title="Eliminar dirección de destino"></a>
+                </td>
+            </tr>
+
+            {% endfor %}
+
+            {% endif %}
+
+        </table>
+
+        {% if direccion_origen %}
+
+        <a class="botonmodalFormulario btn btn-default hidden-print" data-nombre="Agregar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Origen&pre={{ presupuesto.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar dirección de origen">Agregar más direcciones de origen</a>&nbsp;
+
+        {% endif %}
+
+        {% if direccion_destino %}
+
+        <a class="botonmodalFormulario btn btn-default hidden-print boton-almedio" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar dirección de destino">Agregar más direcciones de destino</a>&nbsp;
+
+        {% endif %}
+
+    </div>
+</div><!--fin de Panel de Direcciones-->
+<div class="panel" id="ambientes"> <!--Panel Detalle de muebles-->
+
+    {% if direccion_origen and direccion_destino %}
+
+    <h2>Muebles a mudar
+        <a class="caretExpandirContraer glyphicon glyphicon-menu-down" data-placement="left" data-toggletooltip="tooltip" id="addClass" title="Expandir"></a>
+        <a class="caretExpandirContraer glyphicon glyphicon-menu-up" data-placement="left" data-toggletooltip="tooltip" id="removeClass" title="Contraer" ></a>
+    </h2>
+
+    {% if not lista_ambiente %}
+
+    <a class="btn btn-success botonmodalFormulario hidden-print" data-numero="ambienteFocus" data-nombre="Agregar muebles" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble">Agregar muebles</a>
+
+    {% else %}
+
+    <div aria-multiselectable="true" class="panel-group" id="accordion" role="tablist">
+
+        {% for ambiente in lista_ambiente %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="padding:0px 5px!important;" id="headingOne{{ forloop.counter }}" role="tab">
+                <h4 class="panel-title">
+                    <a aria-controls="collapseOne{{ forloop.counter }}" aria-expanded="true" class="t-ambiente" data-parent="#accordion" data-toggle="collapse" href="#collapseOne{{ forloop.counter }}" role="button">{{ambiente.ambiente|upper}}</a>
+                </h4>
+            </div>
+            <div aria-labelledby="headingOne{{ forloop.counter }}" class="panel-collapse collapse btn-colapsable in{% if forloop.first %} {% endif %}" id="collapseOne{{ forloop.counter }}" role="tabpanel">
+                <table class="table table-hover">
+                    <tr>
+                        <td width="7%"><strong>&nbsp; &nbsp;Cant.</strong></td>
+                        <td width="30%" style="margin-left:20px;">
+                            <strong>Mueble</strong>
+                        </td>
+                        <td width="15%">
+                            <strong>Tamaño/Ocupación</strong>
+                        </td>
+                        <td width="10%">
+                            <strong>Dimensiones</strong>
+                        </td>
+                        <td width="27%">
+                            <strong>Servicios</strong>
+                        </td>
+                        <td width="3.3333333%"></td>
+                        <td width="3.3333333%"></td>
+                        <td width="3.3333333%"></td>
+                    </tr>
+
+                    {% for mueble in detalle_list %}
+
+                    {% if ambiente.ambiente = mueble.ambiente %}
+
+                    <tr class="tr-mueble">
+                        <td>&nbsp; &nbsp;{{ mueble.cantidad }}</td>
+                        <td>{{ mueble.mueble }}</td>
+                        <td>{{ mueble.tamano }} / {{ mueble.ocupacidad }}</td>
+                        <td>{{ mueble.ancho|floatformat:"0" }}x{{ mueble.largo|floatformat:"0" }}x{{ mueble.alto|floatformat:"0" }}</td>
+                        <td>
+                            <div>
+                                <span id="listservi{{ mueble.id }}">
+
+                                    {% regroup mueble.presupuesto_servicio_set.all by servicio as servicio_list %}
+
+                                    {% for det_servicio in servicio_list %}
+
+                                    <span class="{% if servicio %}servicioStyle{% endif %}">
+
+                                        {{ det_servicio.grouper }}
+
+                                        {% for item in det_servicio.list %}
+
+                                        {% if forloop.first %}
+
+                                        <a class="botonmodalEliminar boton-servicios glyphicon glyphicon-remove hidden-print " data-nombre="{{ det_servicio.grouper }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioDelete' item.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" title="Eliminar {{ det_servicio.grouper }}"></a>
+
+                                        {% endif %}
+
+                                        {% endfor %}
+
+                                    </span>
+
+                                    {% endfor %}
+
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <a class="controles glyphicon glyphicon-wrench botonmodalFormulario hidden-print" data-name="{{ mueble.mueble|lower }}" data-nombre="Agregar servicio al mueble {{ mueble.mueble|lower }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{ request.get_full_path }}&pre={{ mueble.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
+                        </td>
+                        <td>
+                            <a class="controles botonmodalFormulario glyphicon glyphicon-edit hidden-print" data-nombre="Editar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleUpdate' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Editar {{ mueble.mueble|lower }}"></a>
+                        </td>
+                        <td>
+                            <a class="controles botonmodalEliminar glyphicon glyphicon-remove hidden-print" data-nombre="{{ mueble.mueble|lower }}" data-numero="{{ mueble.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleDelete' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Eliminar {{ mueble.mueble|lower }}"></a>
+                        </td>
+                    </tr>
+
+                    {% endif %}
+
+                    {% endfor %}
+
+                    <tr>
+                        <td></td>
+                        <td colspan="7">
+                            <a class="btn-addmueble botonmodalFormulario hidden-print" data-nombre="Agregar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble al ambiente {{ ambiente.ambiente }}">Agregar otro mueble a {{ ambiente.ambiente }}</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        {% endfor %}
+
+        <br>
+        <a class="botonmodalFormulario btn btn-default hidden-print boton-almedio" data-nombre="Agregar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble">Agregar mueble</a>
+
+    </div>
 
     {% endif %}
-  <table class="table table-hover">
 
-    <tr>
-      <td>
-        <strong>Nro presupuesto: </strong>
-        {{ presupuesto.id }}
-        <strong>DNI: </strong>
+    {% endif %}
 
-        {{ presupuesto.dni }}
-
-        <strong> Nombre: </strong>
-
-        {{ presupuesto.nombre_cliente }}
-
-        <p>
-          <span style="">
-            <strong>Teléfonos: </strong>
-
-            {{ presupuesto.telefono }}
-          </span>
-        </p>
-        <p>
-        </span>
-        <strong>Email: </strong>
-
-        {{ presupuesto.email }}
-      </span>
-
-    </p>
-    <p>
-    </span>
-    <strong>Fecha estimada de la mudanza: </strong>
-
-    {{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}
-
-  </span>
-</p>
-</td>
-<td colspan="2">
-</td>
-<td>
-  <a title="Editar cliente" data-toggle="tooltip" data-placement="right" href="../../editar/{{presupuesto.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-</td>
-</tr>
-<tr>
-  <td class="">
-    <strong>Dirección de Origen: </strong><br>
-
-    {% for direc_origen in direccion_origen %}
-    {{ direc_origen.direccion }}
-    <p>
-      <span style="">
-        <strong>Descripción del inmueble: </strong>
-
-        {{ direc_origen.tipo_inmueble }}
-        <br>
-        m2 del inmueble: {{ direc_origen.total_m2 }}<br>
-        distancia entre el vehiculo y el inmueble:{{ direc_origen.distancia_vehiculo }}<br>
-        ocupacidad: {{ direc_origen.ocupacidad_inmueble }}<br>
-        valor de la ocupacidad: {{ direc_origen.valor_ocupacidad }}<br>
-        pisos del inmueble: {{ direc_origen.pisos }}<br>
-        pisos por escalera: {{ direc_origen.pisos_escalera }}<br>
-        Tiene rampa: {{ direc_origen.rampa|yesno:"Si,No" }}<br>
-        Tiene ascensor: {{ direc_origen.ascensor|yesno:"Si,No" }} -
-        pisos por ascensor:{{ direc_origen.pisos_ascensor }}<br>
-        Tiene ascensor de servicio: {{ direc_origen.ascensor_servicio|yesno:"Si,No" }} -
-        pisos por ascensor de servicio:{{ direc_origen.pisos_ascensor_servicio }}<br>
-        Complejidad: {{ direc_origen.complejidad }}<br>
-        factor de complejidad: {{ direc_origen.factor_complejidad }}<br>
-        valor de complejidad por ambiente: {{ direc_origen.valor_ambiente_complejidad }}<br>
-        valor de complejidad por m3:{{ direc_origen.valor_metrocubico_complejiadad }}<br>
-      </span>
-    </p>
-
-    <small>
-      <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_origen.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-      <a style="padding:0px 0px 8px 8px;" href="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_origen.id %}?next={{request.get_full_path}}" onclick="" class="glyphicon glyphicon-remove"></a>
-    </small>
-  </p>
-  {% endfor %}
-
-</td>
-<td width="80px"></td>
-<td width="80px"></td>
-<td width="80px">
-  <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Origen&pre={{presupuesto.id}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-</td>
-</tr>
-<tr>
-  <td class="">
-    <strong>Dirección de Destino: </strong><br>
-
-    {% for direc_destino in direccion_destino %}
-    {{ direc_destino.direccion }}
-    <p>
-      <span style="">
-        <strong>Descripción del inmueble: </strong>
-
-        {{ direc_destino.tipo_inmueble }}
-        <br>
-        m2 del inmueble: {{ direc_destino.total_m2 }}<br>
-        distancia entre el vehiculo y el inmueble:{{ direc_destino.distancia_vehiculo }}<br>
-        ocupacidad: {{ direc_destino.ocupacidad_inmueble }}<br>
-        valor de la ocupacidad: {{ direc_destino.valor_ocupacidad }}<br>
-        pisos del inmueble: {{ direc_destino.pisos }}<br>
-        pisos por escalera: {{ direc_destino.pisos_escalera }}<br>
-        Tiene rampa: {{ direc_destino.rampa|yesno:"Si,No" }}<br>
-        Tiene ascensor: {{ direc_destino.ascensor|yesno:"Si,No" }} -
-        pisos por ascensor:{{ direc_destino.pisos_ascensor }}<br>
-        Tiene ascensor de servicio: {{ direc_destino.ascensor_servicio|yesno:"Si,No" }} -
-        pisos por ascensor de servicio:{{ direc_destino.pisos_ascensor_servicio }}<br>
-        Complejidad: {{ direc_destino.complejidad }}<br>
-        factor de complejidad: {{ direc_destino.factor_complejidad }}<br>
-        valor de complejidad por ambiente: {{ direc_destino.valor_ambiente_complejidad }}<br>
-        valor de complejidad por m3:{{ direc_destino.valor_metrocubico_complejiadad }}<br>
-      </span>
-    </p>
-    <small>
-      <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDireccionUpdate' direc_destino.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-      <a style="padding:0px 0px 8px 8px;" href="{% url 'upresupuestos:PresupuestoDireccionDelete' direc_destino.id %}?next={{request.get_full_path}}"  class="glyphicon glyphicon-remove"></a>
-    </small>
-    <a href="{{ direc_destino.get_absolute_url }}">editar</a>
-  </p>
-  {% endfor %}
-
-</td>
-<td width="80px"></td>
-<td width="80px"></td>
-<td width="80px">
-  <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{request.get_full_path}}&tipo=Destino&pre={{presupuesto.id}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-</td>
-</tr>
-<tr>
-  <td class="">
-    <strong>Descripcion objetos a mudar </strong><br>
-
-    {% for det_mueble in detalle_list %}
-    ambiente: {{ det_mueble.ambiente }}<br>
-    <p>
-      <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ det_mueble.ambiente }}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-      <span style="">
-        <strong>mueble: </strong>
-        {{ det_mueble.mueble }}<br>
-        tamaño: {{ det_mueble.tamano }}<br>
-        ancho: {{ det_mueble.ancho }}<br>
-        largo: {{ det_mueble.largo }}<br>
-        alto: {{ det_mueble.alto }}<br>
-        densidad: {{ det_mueble.densidad }}<br>
-        valor densidad: {{ det_mueble.valor_densidad }}<br>
-        peso: {{ det_mueble.peso }}<br>
-        ocupacidad: {{ det_mueble.ocupacidad }}<br>
-        valor ocupacidad: {{ det_mueble.valor_ocupacidad }}<br>
-        cantidad_contenedor: {{ det_mueble.cantidad_contenedor }}<br>
-        volumen contenido: {{ det_mueble.volumen_contenido }}<br>
-        volumen contenedor: {{ det_mueble.volumen_contenedor }}<br>
-        volumen_mueble: {{ det_mueble.volumen_mueble }}<br>
-        capacidad_peso_contenedor: {{ det_mueble.capacidad_peso_contenedor }}<br>
-        capacidad_volumen_contenedor: {{ det_mueble.capacidad_volumen_contenedor }}<br>
-        peso_contenido: {{ det_mueble.peso_contenido }}<br>
-        peso_contenedor: {{ det_mueble.peso_contenedor }}<br>
-
-      </span>
-    </p>
-    <p>
-      <small>
-        <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoDetalleUpdate' det_mueble.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-        <a style="padding:0px 0px 8px 8px;" href="{% url 'upresupuestos:PresupuestoDetalleDelete' det_mueble.id %}?next={{request.get_full_path}}"  class="glyphicon glyphicon-remove"></a>
-      </small>
-    </p>
-    <strong>Descripcion servicios y materiales </strong>
-    <a href="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ det_mueble.id }}">Agregar servicio</a>
-    <br>
-    {% for det_servivio in det_mueble.presupuesto_servicio_set.all %}
-    servicio: {{ det_servivio.servicio }}<br>
-    tarifa: {{ det_servivio.monto_servicio }}
-    <p>
-      <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&serv={{ det_servivio.servicio }}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-      <span style="">
-        <strong>material: </strong>
-        {{ det_servivio.material }}<br>
-        monto: {{ det_servivio.monto_material }}<br>
-        volumen: {{ det_servivio.volumen_material }}<br>
-        peso: {{ det_servivio.peso_material }}<br>
-      </span>
-    </p>
-    <p>
-      <small>
-        <a style="padding:0px 0px 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'upresupuestos:PresupuestoServicioUpdate' det_servivio.id %}?next={{request.get_full_path}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-        <a style="padding:0px 0px 8px 8px;" href="{% url 'upresupuestos:PresupuestoServicioDelete' det_servivio.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-remove"></a>
-
-      </small>
-    </p>
-
-    {% endfor %}
-    {% endfor %}
-
-  </td>
-  <td width="80px"></td>
-  <td width="80px"></td>
-  <td width="80px">
-    <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
-  </td>
-</tr>
-
-</table>
+</div><!--fin acordion-->
+<div style="display:block;height:600px;width:100%;"></div>
+<!-- Modal Formularios-->
+<div aria-labelledby="myModalLabelFormulario" class="modal fade" id="myModalFormulario" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" class="close" data-dismiss="modal" id="btn-cerrarModal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title nombre" id="myModalLabelFormulario"><span class="nombreTitulo"></span></h4>
+            </div>
+            <div class="modal-body">
+                <iframe class="id_opcionFormulario" frameborder="0" height="500" id="" scrolling="auto" src="" width="100%">
+                    <p>ESTE NAVEGADOR NO ACEPTA IFRAMES. UTILICE OPERA, MOZILLA FIREFOX O CHROME.</p>
+                </iframe>
+            </div>
+        </div>
+    </div>
 </div>
+<!-- Modal resumen de presupuesto-->
+<div aria-labelledby="resumen" class="modal fade resumen" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="btn-cerrarModalServ" aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="gridSystemModalLabel">Resumen del presupuesto</h4>
+            </div>
+            <div class="modal-body">
+
+                ¿Desea contratar servicios para los muebles?
+
+            </div>
+            <div class="modal-footer">
+
+                <a class="btn btn-default scrollSpy" data-dismiss="modal" href="#ambientes" type="button">Sí</a>
+                <a class="btn btn-default botonFinalizar" data-dismiss="modal" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado=Servicios cargados&nexturl={% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}" href="" type="button">No</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="alert alert-success msj" id="msjGuardado" style="display:none;" role="alert">Guardado</div>
 
 {% endblock content1 %}
 
 {% block ayuda %}
 
-<div class="well well-lg">
-  <p>La <strong>Cotizacion</strong>  es la acción y efecto de cotizar, poner precio a algo, estimar a alguien o algo en relación con un fin. el documento informa y establece el valor del servicios.</p>
+<div>
+    <p>
+        Se llama <strong>presupuesto</strong> al cálculo y negociación anticipado del ingreso y egreso de una actividad económica.  Es un plan de acción dirigido a cumplir una meta prevista, expresada en valores y términos financieros que debe cumplirse en determinado tiempo y bajo ciertas condiciones previstas.
+    </p>
+    <p>
+        Puede solicitar su presupuesto con 3 simples  pasos.
+        <ul>
+            <li>Paso 1 complete los datos personales y fecha de la mudanza.</li>
+            <li>Paso 2 complete las direcciones y datos de los inmuebles.</li>
+            <li>Paso 3 complete los ambientes y muebles a trasladar con sus servicios.</li>
+        </ul>
+        Luego presione finalizar presupuesto para calcular los datos y enviarle un correo con el presupuesto.
+    </p>
 </div>
 
 {% endblock ayuda %}
-

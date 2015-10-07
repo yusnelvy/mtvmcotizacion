@@ -1,0 +1,32 @@
+.zelect,
+.custom-combobox-input {
+  box-sizing: border-box;
+  border-radius: 6px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  font-size: 18px;
+  height: 46px;
+  line-height: 1.33333;
+  padding: 10px 16px;
+  display:block;
+  background-color: #FFF;
+  background-image: none;
+  border: 1px solid #CCC;
+  color: #555;
+  font-family: inherit;
+  font: inherit;
+  margin: 0;
+  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  width: 100%;
+}
+
+.zelect {
+  width: 50%;
+}
+
+.ul-list {
+  list-style: none;
+}
+
+.errorlist {
+  display: none;
+}

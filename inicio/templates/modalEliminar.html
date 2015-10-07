@@ -1,0 +1,28 @@
+<div class="alert alert-danger msj" id="msjEliminado" style="display:none;" role="alert">
+    Eliminado
+</div>
+<!--modal eliminar-->
+<div aria-labelledby="mySmallModalLabel" class="modal fade eliminar" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" class="close" data-dismiss="modal" id="cerrarEliminar" type="button"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">
+                    Eliminar <span class="nombreEliminar"></span>
+                </h4>
+            </div>
+            <iframe class="id_opcionEliminar" frameborder="0" height="80" id="" scrolling="auto"  seamless src="" width="100%">
+                <p>ESTE NAVEGADOR NO ACEPTA IFRAMES. UTILICE OPERA, MOZILLA FIREFOX O CHROME</p>
+            </iframe>
+            <div class="modal-footer">
+                <form method="post" id="myform">
+
+                    {% csrf_token %}
+
+                    <input type="submit" class="btn btn-danger btn-modalEliminar" value="Si">
+                    <a class="btn btn-default btn-modalEliminar" id="btn-cancelarEliminar">No</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
