@@ -28,7 +28,7 @@
 {% block link_navegacion %}
 
 <li class="linknav">
-    <a class="scrollSpy" href="#datos-personales">Datos del cliente
+    <a class="scrollSpy" href="#datos-personales">Datos básicos del presupuesto
 
         {% if presupuesto.dni %}
 
@@ -58,7 +58,7 @@
     </a>
 </li>
 <li class="linknav">
-    <a class="scrollSpy" href="#ambientes">Ambientes y muebles
+    <a class="scrollSpy" href="#ambientes">Muebles a mudar
 
         {% if lista_ambiente %}
 
@@ -144,7 +144,7 @@ class="col-md-10"
 {% block content1 %}
 
 <div id="datos-personales"><!--Panel de Detalles del presupuesto-->
-    <h2>Detalles del presupuesto</h2>
+    <h2>Datos básicos del presupuesto</h2>
     <table class="table table-hover table-bordered" id="myDatosPersonales">
         <tr>
             <td><b>Cotizador:</b>
