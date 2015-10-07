@@ -10,15 +10,17 @@ from presupuesto.views import PresupuestoView, PresupuestoList, PresupuestoDetai
     PresupuestoServicioList, PresupuestoDetalleServicioDetail, \
     PresupuestoDetalleDetail2, PresupuestoDireccionOrigenDetail, \
     PresupuestoDireccionDestinoDetail, DatosPrecargadoUpdate, \
-    PresupuestoDatosPersonales, PresupuestoRevisarUpdateView, PresupuestoFinalizadoCliente
+    PresupuestoDatosPersonales, PresupuestoRevisarUpdateView,\
+    PresupuestoFinalizadoCliente
 from presupuesto import views
 from presupuesto.forms import PresupuestoDetalleForm1, PresupuestoDetalleForm2, \
     PresupuestoDetalleForm3
+from django.contrib.auth.decorators import permission_required
 
 
 urlpatterns = patterns('',
-                       url(r'^$',
-                           PresupuestoList.as_view(),
+                       url(r'^$', permission_required('presupuesto.list_presupuesto')
+                          (PresupuestoList.as_view()),
                            name='PresupuestoList'),
                        url(r'^nuevo',
                            PresupuestoView.as_view(),
@@ -106,5 +108,5 @@ urlpatterns = patterns('',
                            views.generar_pdf,
                            name='pdf'),
                        url(r'^finalizar_presupuesto/(?P<pk>\d+)/',
-                           PresupuestoFinalizadoCliente.as_view(),
-                           name='presupuesto_finalizado_cliente'))
+                           views.PresupuestoFinalizadoCliente,
+                           name='presupuesto_finalizado_cliente'),)

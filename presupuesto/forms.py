@@ -347,8 +347,7 @@ class PresupuestoRevisarForm(ModelForm):
             'monto_descuento_recargo': TextInput(
                 attrs={
                     'required': 'True',
-                    'class': 'input-descuento-recargo check3',
-                    'style': 'text-align:left;',
+                    'class': 'input-re check3',
                     'type': 'number',
                     'step': '0.01'}
                 ),

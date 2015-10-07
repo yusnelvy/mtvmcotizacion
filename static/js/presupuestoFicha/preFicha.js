@@ -35,10 +35,10 @@ $(document).ready(function() {
     });
     document.getElementById('id_body').setAttribute('data-spy', 'scroll');
     document.getElementById('id_body').setAttribute('data-target', '#navbar-example');
-    document.getElementById('id_body').setAttribute('data-offset', '70');
+    document.getElementById('id_body').setAttribute('data-offset', '90');
     $(function() {
         //clic en un enlace de la lista
-        $('.linknav a').on('click', function(e) {
+        $('.scrollSpy').on('click', function(e) {
             e.preventDefault();
             //obtenemos el id del elemento en el que debemos posicionarnos
             var strAncla = $(this).attr('href');
@@ -47,18 +47,7 @@ $(document).ready(function() {
                 //realizamos la animacion hacia el ancla
                 //-126 indica que baja el scroll 126px que es la altura de la cabecera
                 //para que se coloque correctamente
-                scrollTop: $(strAncla).offset().top - 70
-            }, 1000);
-        });
-        $('.modal-footer a').on('click', function(e) {
-            e.preventDefault();
-            //obtenemos el id del elemento en el que debemos posicionarnos
-            var strAncla = $(this).attr('href');
-            //utilizamos body y html, ya que dependiendo del navegador uno u otro no funciona
-            $('body,html').stop(true, true).animate( {
-                //realizamos la animacion hacia el ancla
-                //-126 indica que baja el scroll 126px que es la altura de la cabecera para que se coloque correctamente
-                scrollTop: $(strAncla).offset().top - 70
+                scrollTop: $(strAncla).offset().top - 60
             }, 1000);
         });
 
@@ -84,5 +73,44 @@ $(document).ready(function() {
             });
             return false;
         });
+
+        $(".botonFinalizar").on('click', function() {
+            var action = $(this).data('opcion');
+            var numero = $(this).data('numero');
+            $.ajax( {
+                url: action,
+                type: 'GET',
+                data: numero,
+                success: function(data) {
+                    if (data.estatus == "ok") {
+                        if (data.nexturl !=""){
+                            var closep = document.getElementById("btn-cerrarModalServ");
+                            $(closep).click();
+                            $('#msjGuardado').css('width', '300px');
+                            $('#msjGuardado').fadeIn();
+                            $('#msjGuardado').text('Cargando resumen del presupuesto');
+                            setTimeout(function() {
+                                window.location = data.nexturl;
+                            }, 500);
+
+                        } else  {
+
+                            setTimeout(function() {
+                                parent.location.reload();
+                            }, 1000);
+
+                        }
+
+                    } else {
+                        alert('Ocurrio un error ' + data.estatus);
+                    }
+                },
+                error: function (ajaxContext) {
+                    alert('No se puede finalizar el presupuesto.');
+                }
+            });
+            return false;
+        });
     });
+
 });

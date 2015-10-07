@@ -34,7 +34,7 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import Table
 from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import permission_required, login_required
 
 import sys
 import traceback
@@ -216,11 +216,11 @@ class PresupuestoServicioList(ListView):
         return Presupuesto_servicio.objects.filter(detalle_presupuesto=self.detallepresupuesto).values('servicio', 'detalle_presupuesto', 'monto_servicio').annotate(tcount=Count('servicio')).order_by('servicio')
 
 
-# @permission_required('presupuesto.add_presupuesto')
 class PresupuestoView(View):
     form_class = PresupuestoForm
     template_name = 'presupuesto_add.html'
 
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         """docstring"""
         data = {
@@ -1329,7 +1329,6 @@ def update_presupuesto(request, pk):
     descripcion_veh = ""
     montoveh_hrs = 0
     montoveh_km = 0
-    cap_vehiculo = 0
     cap_vehiculo2 = 0
     cant_ayudante = 0
     descripcion_pers = ""
@@ -1374,7 +1373,7 @@ def update_presupuesto(request, pk):
             cargo = Cargo_trabajador.objects.get(pk=vehiculos[i].cargo.id)
 
             array_capacidadm3[j][7] = Decimal(round((cargo.tarifa_dia * array_capacidadm3[j][0]), 2))
-            array_capacidadm3[j][8] = 'Conductor asignado: ' + cargo.cargo  + \
+            array_capacidadm3[j][8] = 'Conductor asignado: ' + cargo.cargo + \
                                       ' - Tarifa $/día: ' + str(cargo.tarifa_dia) + \
                                       ' - Cantidad de conductor: ' + str(array_capacidadm3[j][0]) + \
                                       ' - Total Tarifa $/hrs: ' + str(array_capacidadm3[j][7]) + \
@@ -1544,11 +1543,21 @@ def update_presupuesto(request, pk):
     return(presupuesto)
 
 
-class PresupuestoFinalizadoCliente(View):
+def PresupuestoCambiarEstado(request, pk, estado=None):
     """Docstring"""
+    presupuesto = Presupuesto.objects.filter(pk=pk)
+    presupuesto.update(estado=estado)
+    mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+    return (mensaje)
 
-    def get(self, request, *args, **kwargs):
-        cliente = 'buscar nombre del cliente con el pk' + self.pk
-        return render_to_response('presupuesto_finalizado_cliente.html', {
-            'cliente': cliente,
-        })
+
+def PresupuestoFinalizadoCliente(request, pk):
+    if request.method == "GET" and request.is_ajax():
+        estado = request.GET['estado']
+        nexturl = request.GET.get('nexturl', '')
+
+        presupuesto = Presupuesto.objects.filter(pk=pk)
+        presupuesto.update(estado=estado)
+
+        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado', 'nexturl': nexturl}
+        return JsonResponse(mensaje, safe=False)
