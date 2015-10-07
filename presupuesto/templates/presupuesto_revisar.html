@@ -81,7 +81,7 @@ class="col-md-10"
             </tr>
             <tr style="border-top: 2px solid #ddd;">
                 <td>Metros cúbicos del inmueble</td>
-                <td align="center">
+                <td align="center" style="text-align: right; padding-right: 26px;">
 
                     {{ direccion_origen.0.valor_metrocubico_complejiadad }}
 
@@ -164,7 +164,7 @@ class="col-md-10"
             </tr>
             <tr>
                 <td>Valor por ambiente </td>
-                <td align="center">
+                <td align="center" style="text-align: right; padding-right: 26px;">
 
                     {{ direccion_origen.0.valor_ambiente_complejidad }}
 
@@ -327,21 +327,21 @@ class="col-md-10"
                     <label class="label1" for="recargo">Recargo</label>
                 </td>
                 <td align="center" class="check td-porcentaje-decuento" style="width:120px;">
-                    <input class="input-descuento-recargo check" id="porc_descuentobasico" onkeypress="return justNumbers(event);" style="text-align:right;" type="text" value=""><span>%</span>
+                    <input class="input-descuento-recargo check" id="porc_descuentobasico" type="number" style="text-align:right;" step="0.01" value=""><span>%</span>
                 </td>
                 <td align="center" class="check">
                     <input class="input-re check" id="descuento_regargobasico" name="monto_descuento_recargo" step="0.01" style="text-align: right; padding-right: 10px;" type="number" value="{{ presupuesto.monto_descuento_recargo }}">
 
                 </td>
                 <td align="center" class="check2 td-porcentaje-decuento" style="width:120px;">
-                    <input class="input-descuento-recargo check2" id="porc_descuentooptimo" onkeypress="return justNumbers(event);" style="text-align:right;" type="text" value=""><span>%</span>
+                    <input class="input-descuento-recargo check2" id="porc_descuentooptimo" step="0.01" style="text-align:right;" type="number" value=""><span>%</span>
                 </td>
                 <td align="center" class="check2">
                     <input class="input-re check2" id="descuento_recargooptimo" name="monto_descuento_recargo" step="0.01" style="text-align: right; padding-right: 10px;" type="number" value="{{ presupuesto.monto_descuento_recargo }}">
 
                 </td>
                 <td align="center" class="check3 td-porcentaje-decuento" style="width:120px;">
-                    <input class="input-descuento-recargo check3" id="porc_descuento" onkeypress="return justNumbers(event);" style="text-align:right;" type="text" value="0"><span>%</span>
+                    <input class="input-descuento-recargo check3" id="porc_descuento" step="0.01" style="text-align:right;" type="number" value="0"><span>%</span>
                 </td>
                 <td align="center" class="check3">
 
