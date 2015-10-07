@@ -314,42 +314,53 @@ class PresupuestoRevisarForm(ModelForm):
                     'readonly': 'readonly',
                     'class': 'input-re check3 input-re-no-border',
                     'type': 'number',
-                    'step': '0.01'
+                    'step': '0.01',
+                    'style': 'text-align: right; padding-right: 10px;'
                     }),
             'monto_recursos_revisado': TextInput(
                 attrs={
                     'required': 'True',
                     'class': 'input-re check3',
                     'type': 'number',
-                    'step': '0.01'}
+                    'step': '0.01',
+                    'style': 'text-align: right; padding-right: 10px;'
+                    }
                 ),
             'monto_vehiculo_revisado': TextInput(
                 attrs={
                     'required': 'True',
                     'class': 'input-re check3',
                     'type': 'number',
-                    'step': '0.01'}
+                    'step': '0.01',
+                    'style': 'text-align: right; padding-right: 10px;'
+                    }
                 ),
             'monto_servicios_revisado': TextInput(
                 attrs={
                     'required': 'True',
                     'class': 'input-re check3',
                     'type': 'number',
-                    'step': '0.01'}
+                    'step': '0.01',
+                    'style': 'text-align: right; padding-right: 10px;'
+                    }
                 ),
             'monto_materiales_revisado': TextInput(
                 attrs={
                     'required': 'True',
                     'class': 'input-re check3',
                     'type': 'number',
-                    'step': '0.01'}
+                    'step': '0.01',
+                    'style': 'text-align: right; padding-right: 10px;'
+                    }
                 ),
             'monto_descuento_recargo': TextInput(
                 attrs={
                     'required': 'True',
                     'class': 'input-re check3',
                     'type': 'number',
-                    'step': '0.01'}
+                    'step': '0.01',
+                    'style': 'text-align: right; padding-right: 10px;'
+                    }
                 ),
             'descuento_recargo': TextInput(
                 attrs={

@@ -93,14 +93,14 @@ class="col-md-10"
                 </td>
                 <td align="center">
                     <input disabled="disabled" id="m3" name="totalRecurso" onclick="radioTotal();" type="radio">
-                    <label class="label1" for="m3" id="montom3inmueble">
+                    <label class="label1" for="m3" id="montom3inmueble" style="vertical-align: middle; text-align: right; padding-right: 20px;">
 
                         {{ presupuesto.monto_m3_inmueble }}
 
                     </label>
                 </td>
                 <td align="center" class="check td-porcentaje-decuento" rowspan="4"></td>
-                <td align="center" class="check" id="montorecursobasico" rowspan="4" style="vertical-align: middle;">
+                <td align="center" class="check" id="montorecursobasico" rowspan="4" style="vertical-align: middle; text-align: right; padding-right: 26px;">
 
                     {% if presupuesto.maxrecursoteorico == presupuesto.monto_m3_inmueble %}
 
@@ -128,7 +128,7 @@ class="col-md-10"
 
                 </td>
                 <td align="center" class="check2 td-porcentaje-decuento" rowspan="4"></td>
-                <td align="center" class="check2"  id="montorecursooptimo" rowspan="4" style="vertical-align: middle;">
+                <td align="center" class="check2"  id="montorecursooptimo" rowspan="4" style="vertical-align: middle; text-align: right; padding-right: 26px;">
 
                     {% if presupuesto.maxrecursooptimo == presupuesto.monto_m3_inmueble %}
 
@@ -156,7 +156,7 @@ class="col-md-10"
 
                 </td>
                 <td align="center" class="check3 td-porcentaje-decuento" rowspan="4"></td>
-                <td align="center" class="check3" rowspan="4" style="vertical-align: middle;">
+                <td align="center" class="check3" rowspan="4">
 
                     {{ form.monto_recursos_revisado }}
 
@@ -176,7 +176,7 @@ class="col-md-10"
                 </td>
                 <td align="center">
                     <input disabled="disabled" id="amb" name="totalRecurso" onclick="radioTotal();" type="radio" >
-                    <label class="label1" for="amb" id="montoambinmueble" style="text-align:center;">
+                    <label class="label1" for="amb" id="montoambinmueble" style="vertical-align: middle; text-align: right; padding-right: 20px;">
 
                         {{ presupuesto.monto_amb_inmueble }}
 
@@ -208,7 +208,7 @@ class="col-md-10"
                 </td>
                 <td align="center">
                     <input disabled="disabled" id="rrhha" name="totalRecurso" onclick="radioTotal();" type="radio">
-                    <label class="label1" for="rrhha" id="montopersonaoptima" style="text-align:center;">
+                    <label class="label1" for="rrhha" id="montopersonaoptima" style="vertical-align: middle; text-align: right; padding-right: 20px;">
 
                         {{ presupuesto.monto_personaoptima }}
 
@@ -217,7 +217,7 @@ class="col-md-10"
             </tr>
             <tr style="border-top: 2px solid #ddd;">
                 <td colspan="3">Valor de vehículos por hrs</td>
-                <td align="center">
+                <td align="center" style="text-align: right; padding-right: 26px;">
                     <label class="label1" style="cursor:default;">
 
                         {{ presupuesto.monto_vehiculo_hora }}
@@ -225,13 +225,13 @@ class="col-md-10"
                     </label>
                 </td>
                 <td align="center" class="check td-porcentaje-decuento" rowspan="2"></td>
-                <td align="center" class="check" id="vehiculomontobasico" rowspan="2" style="vertical-align: middle;">
+                <td align="center" class="check" id="vehiculomontobasico" rowspan="2" style="vertical-align: middle; text-align: right; padding-right: 26px;">
 
                     {{ presupuesto.vehiculomonto }}
 
                 </td>
                 <td align="center" class="check2 td-porcentaje-decuento" rowspan="2"></td>
-                <td align="center" class="check2" id="vehiculomontooptima" rowspan="2" style="vertical-align: middle;">
+                <td align="center" class="check2" id="vehiculomontooptima" rowspan="2" style="vertical-align: middle; text-align: right; padding-right: 26px;">
 
                     {{ presupuesto.vehiculomonto }}
 
@@ -245,7 +245,7 @@ class="col-md-10"
             </tr>
             <tr>
                 <td colspan="3">Valor de vehículos por km</td>
-                <td align="center">
+                <td align="center" style="text-align: right; padding-right: 26px;">
                     <label class="label1" style="cursor:default;">
 
                         {{ presupuesto.monto_vehiculo_recorrido }}
@@ -256,13 +256,13 @@ class="col-md-10"
             <tr style="border-top: 2px solid #ddd;">
                 <td colspan="4">Servicios aplicados</td>
                 <td align="center" class="check td-porcentaje-decuento"></td>
-                <td align="center" class="check" id="montoserviciosbasico">
+                <td align="center" class="check" id="montoserviciosbasico"  style="text-align: right; padding-right: 26px;">
 
                     {{ presupuesto.monto_servicios }}
 
                 </td>
                 <td align="center" class="check2 td-porcentaje-decuento"></td>
-                <td align="center" class="check2" id="montoserviciosoptima">
+                <td align="center" class="check2" id="montoserviciosoptima"  style="text-align: right; padding-right: 26px;">
 
                     {{ presupuesto.monto_servicios }}
 
@@ -277,13 +277,13 @@ class="col-md-10"
             <tr style="border-top: 2px solid #ddd;">
                 <td colspan="4">Materiales utilizados</td>
                 <td align="center" class="check td-porcentaje-decuento"></td>
-                <td align="center" class="check" id="montomaterialesbasico">
+                <td align="center" class="check" id="montomaterialesbasico"  style="text-align: right; padding-right: 26px;">
 
                     {{ presupuesto.monto_materiales }}
 
                 </td>
                 <td align="center" class="check2 td-porcentaje-decuento"></td>
-                <td align="center" class="check2" id="montomaterialesoptima">
+                <td align="center" class="check2" id="montomaterialesoptima"  style="text-align: right; padding-right: 26px;">
 
                     {{ presupuesto.monto_materiales }}
 
@@ -298,13 +298,13 @@ class="col-md-10"
             <tr style="border-top: 2px solid #ddd;">
                 <td colspan="4">Valor total mudanza</td>
                 <td align="center" class="check td-porcentaje-decuento"></td>
-                <td align="center" class="check" id="montomudanzahrsdirectas">
+                <td align="center" class="check" id="montomudanzahrsdirectas"  style="text-align: right; padding-right: 26px;">
 
                     {{ presupuesto.monto_mudanza_hrsdirectas }}
 
                 </td>
                 <td align="center" class="check2 td-porcentaje-decuento"></td>
-                <td align="center" class="check2" id="montomundanzahrsoptimas">
+                <td align="center" class="check2" id="montomundanzahrsoptimas"  style="text-align: right; padding-right: 26px;">
 
                     {{ presupuesto.monto_mundanza_hrsoptimas }}
 
@@ -330,14 +330,14 @@ class="col-md-10"
                     <input class="input-descuento-recargo check" id="porc_descuentobasico" onkeypress="return justNumbers(event);" style="text-align:right;" type="text" value=""><span>%</span>
                 </td>
                 <td align="center" class="check">
-                    <input class="input-re check" id="descuento_regargobasico" name="monto_descuento_recargo" step="0.01" style="text-align:left;" type="number" value="{{ presupuesto.monto_descuento_recargo }}">
+                    <input class="input-re check" id="descuento_regargobasico" name="monto_descuento_recargo" step="0.01" style="text-align: right; padding-right: 10px;" type="number" value="{{ presupuesto.monto_descuento_recargo }}">
 
                 </td>
                 <td align="center" class="check2 td-porcentaje-decuento" style="width:120px;">
                     <input class="input-descuento-recargo check2" id="porc_descuentooptimo" onkeypress="return justNumbers(event);" style="text-align:right;" type="text" value=""><span>%</span>
                 </td>
                 <td align="center" class="check2">
-                    <input class="input-re check2" id="descuento_recargooptimo" name="monto_descuento_recargo" step="0.01" style="text-align:left;" type="number" value="{{ presupuesto.monto_descuento_recargo }}">
+                    <input class="input-re check2" id="descuento_recargooptimo" name="monto_descuento_recargo" step="0.01" style="text-align: right; padding-right: 10px;" type="number" value="{{ presupuesto.monto_descuento_recargo }}">
 
                 </td>
                 <td align="center" class="check3 td-porcentaje-decuento" style="width:120px;">
@@ -353,15 +353,15 @@ class="col-md-10"
                 <td colspan="4">Valor total mudanza revisado</td>
                 <td align="center" class="check td-porcentaje-decuento"></td>
                 <td align="center" class="check">
-                    <input class="input-re check input-re-no-border" id="mudanzamontorevisadotoerico" readonly type="text" value="{{ presupuesto.mudanzamontorevisadotoerico }}">
+                    <input class="input-re check input-re-no-border" id="mudanzamontorevisadotoerico" readonly type="text" value="{{ presupuesto.mudanzamontorevisadotoerico }}" style="text-align: right; padding-right: 10px;">
                 </td>
                 <td align="center" class="check2 td-porcentaje-decuento"></td>
                 <td align="center" class="check2">
-                    <input class="input-re check2 input-re-no-border" id="mudanzamontorevisadooptimo" readonly type="text" value="{{ presupuesto.mudanzamontorevisadooptimo }}">
+                    <input class="input-re check2 input-re-no-border" id="mudanzamontorevisadooptimo" readonly type="text" value="{{ presupuesto.mudanzamontorevisadooptimo }}" style="text-align: right; padding-right: 10px;">
                 </td>
                 <td align="center" class="check3 td-porcentaje-decuento"></td>
                 <td align="center" class="check3">
-                    <input class="input-re check3 input-re-no-border" id="mudanzamontorevisado"  readonly type="text" value="{% if form.tipo_calculo == 'Revisado' %}{{ presupuesto.mudanzamontorevisado|floatformat:"2" }}{% elif form.tipo_calculo == 'Optimizado' %}{{ presupuesto.mudanzamontorevisadooptimo|floatformat:"2" }}{% else %}{{ presupuesto.mudanzamontorevisadotoerico|floatformat:"2" }}{% endif %}">
+                    <input class="input-re check3 input-re-no-border" id="mudanzamontorevisado"  readonly type="text" value="{% if form.tipo_calculo == 'Revisado' %}{{ presupuesto.mudanzamontorevisado|floatformat:"2" }}{% elif form.tipo_calculo == 'Optimizado' %}{{ presupuesto.mudanzamontorevisadooptimo|floatformat:"2" }}{% else %}{{ presupuesto.mudanzamontorevisadotoerico|floatformat:"2" }}{% endif %}" style="text-align: right; padding-right: 10px;">
                 </td>
             </tr>
         </table>
