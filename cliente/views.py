@@ -12,12 +12,36 @@ from django.core.exceptions import ObjectDoesNotExist
 from cotizacion.models import Cotizacion
 import simplejson as json
 import django.db
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from mtvmcotizacion.views import get_query
 
 
 # Create your views here.
 # lista
 def lista_sexo(request):
     """docstring"""
+
+    lista_sexo = Sexo.objects.all()
+    paginator = Paginator(lista_sexo, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        sexos = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        sexos = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        sexos = paginator.page(paginator.num_pages)
+
+    context = {'lista_sexo': lista_sexo, 'sexos': sexos}
+
+    return render(request, 'sexo_lista.html', context)
+
+
+def search_sexo(request):
+    """docstring"""
+
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -39,15 +63,54 @@ def lista_sexo(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_sexo = Sexo.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['sexo', ])
+            lista_sexo = Sexo.objects.filter(entry_query)
+        else:
+            lista_sexo = Sexo.objects.all()
 
-    context = {'lista_sexo': lista_sexo}
+    paginator = Paginator(lista_sexo, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        sexos = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        sexos = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        sexos = paginator.page(paginator.num_pages)
 
-    return render(request, 'sexo_lista.html', context)
+    context = {'lista_sexo': lista_sexo, 'sexos': sexos}
+    return render_to_response('sexo_lista_search.html', context)
 
 
 def lista_estadocivil(request):
     """docstring"""
+
+    lista_estadocivil = Estado_civil.objects.all()
+
+    paginator = Paginator(lista_estadocivil, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        estadoscivil = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        estadoscivil = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        estadoscivil = paginator.page(paginator.num_pages)
+
+    context = {'lista_estadocivil': lista_estadocivil, 'estadoscivil': estadoscivil}
+
+    return render(request, 'estadocivil_lista.html', context)
+
+
+def search_estadocivil(request):
+    """docstring"""
+
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -69,14 +132,51 @@ def lista_estadocivil(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_estadocivil = Estado_civil.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['estado_civil', ])
+            lista_estadocivil = Estado_civil.objects.filter(entry_query)
+        else:
+            lista_estadocivil = Estado_civil.objects.all()
 
-    context = {'lista_estadocivil': lista_estadocivil}
+    paginator = Paginator(lista_estadocivil, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        estadoscivil = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        estadoscivil = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        estadoscivil = paginator.page(paginator.num_pages)
 
-    return render(request, 'estadocivil_lista.html', context)
+    context = {'lista_estadocivil': lista_estadocivil, 'estadoscivil': estadoscivil}
+    return render_to_response('estadocivil_lista_search.html', context)
 
 
 def lista_cliente(request):
+    """docstring"""
+
+    lista_cliente = Cliente.objects.all()
+
+    paginator = Paginator(lista_cliente, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        clientes = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        clientes = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        clientes = paginator.page(paginator.num_pages)
+
+    context = {'lista_cliente': lista_cliente, 'clientes': clientes}
+    return render(request, 'cliente_lista.html', context)
+
+
+def search_cliente(request):
     """docstring"""
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -99,12 +199,27 @@ def lista_cliente(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_cliente = Cliente.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['nombre_principal', 'dni', 'sexo__sexo', ])
+            lista_cliente = Cliente.objects.filter(entry_query)
+        else:
+            lista_cliente = Cliente.objects.all()
 
-    context = {
-        'lista_cliente': lista_cliente
-    }
-    return render(request, 'cliente_lista.html', context)
+    paginator = Paginator(lista_cliente, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        clientes = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        clientes = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        clientes = paginator.page(paginator.num_pages)
+
+    context = {'lista_cliente': lista_cliente, 'clientes': clientes}
+    return render_to_response('cliente_lista_search.html', context)
 
 
 def lista_email(request, id_cli):

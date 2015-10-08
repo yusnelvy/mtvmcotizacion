@@ -18,6 +18,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.db.models import Count
+from mtvmcotizacion.views import get_query
 
 
 class Muebleclass():
@@ -86,6 +87,25 @@ class TamanoMuebleListView(MuebleListView, ListView):
 def lista_mueble(request):
     """docstring"""
 
+    lista_mueble = Mueble.objects.all()
+    paginator = Paginator(lista_mueble, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        muebles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        muebles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        muebles = paginator.page(paginator.num_pages)
+    context = {'lista_mueble': lista_mueble, 'muebles': muebles}
+    return render(request, 'mueble_lista.html', context)
+
+
+def search_mueble(request):
+    """docstring"""
+
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -107,7 +127,13 @@ def lista_mueble(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_mueble = Mueble.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['mueble', 'tipo_mueble__tipo_mueble', 'forma__forma'])
+            lista_mueble = Mueble.objects.filter(entry_query)
+        else:
+            lista_mueble = Mueble.objects.all()
+
     paginator = Paginator(lista_mueble, 25)
     # Show 25 contacts per page
     page = request.GET.get('page')
@@ -120,7 +146,7 @@ def lista_mueble(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         muebles = paginator.page(paginator.num_pages)
     context = {'lista_mueble': lista_mueble, 'muebles': muebles}
-    return render(request, 'mueble_lista.html', context)
+    return render_to_response('mueble_lista_search.html', context)
 
 
 def buscar_mueble(request, idtipomueble):
@@ -177,6 +203,26 @@ def edit_mueble(request, pk):
 
 def lista_tipo_mueble(request):
     """docstring"""
+    lista_tipomueble = Tipo_Mueble.objects.all()
+
+    paginator = Paginator(lista_tipomueble, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        tipomuebles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        tipomuebles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        tipomuebles = paginator.page(paginator.num_pages)
+
+    context = {'lista_tipomueble': lista_tipomueble, 'tipomuebles': tipomuebles}
+    return render(request, 'tipomueble_lista.html', context)
+
+
+def search_tipo_mueble(request):
+    """docstring"""
 
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -199,7 +245,12 @@ def lista_tipo_mueble(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_tipomueble = Tipo_Mueble.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['tipo_mueble', ])
+            lista_tipomueble = Tipo_Mueble.objects.filter(entry_query)
+        else:
+            lista_tipomueble = Tipo_Mueble.objects.all()
 
     paginator = Paginator(lista_tipomueble, 25)
     # Show 25 contacts per page
@@ -214,10 +265,31 @@ def lista_tipo_mueble(request):
         tipomuebles = paginator.page(paginator.num_pages)
 
     context = {'lista_tipomueble': lista_tipomueble, 'tipomuebles': tipomuebles}
-    return render(request, 'tipomueble_lista.html', context)
+    return render_to_response('tipomueble_lista_search.html', context)
 
 
 def lista_ocupacion(request):
+    """docstring"""
+
+
+    lista_ocupacion = Ocupacion.objects.all()
+
+    paginator = Paginator(lista_ocupacion, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        ocupaciones = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        ocupaciones = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        ocupaciones = paginator.page(paginator.num_pages)
+    context = {'lista_ocupacion': lista_ocupacion, 'ocupaciones': ocupaciones}
+    return render(request, 'ocupacion_lista.html', context)
+
+
+def search_ocupacion(request):
     """docstring"""
 
     if request.method == "POST":
@@ -241,7 +313,12 @@ def lista_ocupacion(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_ocupacion = Ocupacion.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['descripcion', ])
+            lista_ocupacion = Ocupacion.objects.filter(entry_query)
+        else:
+            lista_ocupacion = Ocupacion.objects.all()
 
     paginator = Paginator(lista_ocupacion, 25)
     # Show 25 contacts per page
@@ -254,11 +331,33 @@ def lista_ocupacion(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         ocupaciones = paginator.page(paginator.num_pages)
+
     context = {'lista_ocupacion': lista_ocupacion, 'ocupaciones': ocupaciones}
-    return render(request, 'ocupacion_lista.html', context)
+    return render_to_response('ocupacion_lista_search.html', context)
 
 
 def lista_forma_mueble(request):
+    """docstring"""
+
+    lista_formamueble = Forma_Mueble.objects.all()
+
+    paginator = Paginator(lista_formamueble, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        formamuebles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        formamuebles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        formamuebles = paginator.page(paginator.num_pages)
+
+    context = {'lista_formamueble': lista_formamueble, 'formamuebles': formamuebles}
+    return render(request, 'formamueble_lista.html', context)
+
+
+def search_forma_mueble(request):
     """docstring"""
 
     if request.method == "POST":
@@ -282,7 +381,12 @@ def lista_forma_mueble(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_formamueble = Forma_Mueble.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['forma', ])
+            lista_formamueble = Forma_Mueble.objects.filter(entry_query)
+        else:
+            lista_formamueble = Forma_Mueble.objects.all()
 
     paginator = Paginator(lista_formamueble, 25)
     # Show 25 contacts per page
@@ -297,10 +401,32 @@ def lista_forma_mueble(request):
         formamuebles = paginator.page(paginator.num_pages)
 
     context = {'lista_formamueble': lista_formamueble, 'formamuebles': formamuebles}
-    return render(request, 'formamueble_lista.html', context)
+
+    return render_to_response('formamueble_lista_search.html', context)
 
 
 def lista_tamano(request):
+    """docstring"""
+
+    lista_tamano = Tamano.objects.all()
+
+    paginator = Paginator(lista_tamano, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        tamanos = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        tamanos = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        tamanos = paginator.page(paginator.num_pages)
+
+    context = {'lista_tamano': lista_tamano, 'tamanos': tamanos}
+    return render(request, 'tamano_lista.html', context)
+
+
+def search_tamano(request):
     """docstring"""
 
     if request.method == "POST":
@@ -324,7 +450,12 @@ def lista_tamano(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_tamano = Tamano.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['descripcion', ])
+            lista_tamano = Tamano.objects.filter(entry_query)
+        else:
+            lista_tamano = Tamano.objects.all()
 
     paginator = Paginator(lista_tamano, 25)
     # Show 25 contacts per page
@@ -339,10 +470,32 @@ def lista_tamano(request):
         tamanos = paginator.page(paginator.num_pages)
 
     context = {'lista_tamano': lista_tamano, 'tamanos': tamanos}
-    return render(request, 'tamano_lista.html', context)
+
+    return render_to_response('tamano_lista_search.html', context)
 
 
 def lista_densidad(request):
+    """docstring"""
+
+    lista_densidad = Densidad.objects.all()
+
+    paginator = Paginator(lista_densidad, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        densidades = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        densidades = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        densidades = paginator.page(paginator.num_pages)
+
+    context = {'lista_densidad': lista_densidad, 'densidades': densidades}
+    return render(request, 'densidad_lista.html', context)
+
+
+def search_densidad(request):
     """docstring"""
 
     if request.method == "POST":
@@ -366,7 +519,12 @@ def lista_densidad(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_densidad = Densidad.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['descripcion', ])
+            lista_densidad = Densidad.objects.filter(entry_query)
+        else:
+            lista_densidad = Densidad.objects.all()
 
     paginator = Paginator(lista_densidad, 25)
     # Show 25 contacts per page
@@ -381,7 +539,8 @@ def lista_densidad(request):
         densidades = paginator.page(paginator.num_pages)
 
     context = {'lista_densidad': lista_densidad, 'densidades': densidades}
-    return render(request, 'densidad_lista.html', context)
+
+    return render_to_response('densidad_lista_search.html', context)
 
 
 def buscar_tamano_mueble(request, idmueble=0):

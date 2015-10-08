@@ -1,5 +1,3 @@
-{% if lista_pais %}
-
 {% block cantidad_tabla %}
 
 <h6>Cantidad de Países encontrados:
@@ -53,8 +51,11 @@
 
 {% endblock pagination %}
    </ul>
-            </nav>
+</nav>
+
 {% block cuerpo_tabla %}
+{% if paises %}
+
 <table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
 <tr class="active">
   <th>Pais</th>
@@ -78,5 +79,12 @@
 
 {% endfor %}
 </table>
-{% endblock cuerpo_tabla %}
+{% else %}
+
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr><td> No se encontraron registros</td>
+</tr>
+</table>
+
 {% endif %}
+{% endblock cuerpo_tabla %}

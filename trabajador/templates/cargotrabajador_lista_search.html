@@ -1,0 +1,105 @@
+{% block cantidad_tabla %}
+
+<h6 class="hidden-print">Roles de trabajador encontrados:
+  <span class="badge" id="count_reg">
+
+    {{ lista_cargo.count }}
+
+  </span>
+</h6>
+
+{% endblock cantidad_tabla %}
+
+<nav class="nav-pagination">
+  <ul class="pagination">
+
+{% block pagination %}
+
+{% if cargos.has_previous %}
+
+<li>
+  <a href="?page={{ cargos.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ cargos.number }}
+
+    de
+
+    {{ cargos.paginator.num_pages }}
+
+    Desde el vehiculo
+
+    {{ cargos.start_index }}
+
+    hasta el vehiculo
+
+    {{ cargos.end_index }}
+
+  </a>
+</li>
+
+{% if cargos.has_next %}
+
+<li>
+  <a href="?page={{ cargos.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
+  </ul>
+</nav>
+
+{% block cuerpo_tabla %}
+{% if cargos %}
+
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr class="active">
+  <th>Rol</th>
+  <th>tarifa x día ($)</th>
+  <th>Recargo fin de semana (%)</th>
+  <th>Recargo nocturno (%)</th>
+  <th width="80px" class="hidden-print">Editar</th>
+  <th width="80px" class="hidden-print">Eliminar</th>
+</tr>
+
+{% for i in cargos %}
+
+<tr id="tr{{i.id}}">
+  <td>{{ i.cargo }}</td>
+  <td>$ {{ i.tarifa_dia }}</td>
+
+  {% widthratio i.recargo_fin_semana 1 100 as recfin %}
+
+  <td>+{{ recfin|floatformat:"2" }}%</td>
+
+  {% widthratio i.recargo_nocturno 1 100 as recnoc %}
+
+  <td>+{{ recnoc|floatformat:"2" }}%</td>
+  <td>
+    <a title="Editar" data-toggle="tooltip" data-placement="right"href="{% url 'utrabajadores:edit_cargotrabajador' i.id %}?next={{request.get_full_path}}" class="hidden-print glyphicon glyphicon-edit" ></a>
+  </td>
+  <td>
+    <a title="Eliminar" href="#myModal" role="button" class="hidden-print glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.cargo}}"></a>
+  </td>
+  <input type="hidden" value="{{i.id}}" id="idtele">
+</tr>
+
+{% endfor %}
+
+</table>
+{% else %}
+
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr><td> No se encontraron registros</td>
+</tr>
+</table>
+
+{% endif %}
+{% endblock cuerpo_tabla %}

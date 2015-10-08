@@ -11,11 +11,32 @@ import simplejson as json
 import django.db
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from mtvmcotizacion.views import get_query
 
 
 # Create your views here.
 # lista
 def lista_contenido(request):
+    """docstring"""
+
+    lista_contenido = Contenido.objects.all()
+    paginator = Paginator(lista_contenido, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        contenidos = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contenidos = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contenidos = paginator.page(paginator.num_pages)
+
+    context = {'lista_contenido': lista_contenido, 'contenidos': contenidos}
+    return render(request, 'contenido_lista.html', context)
+
+
+def search_contenido(request):
     """docstring"""
 
     if request.method == "POST":
@@ -39,7 +60,13 @@ def lista_contenido(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_contenido = Contenido.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['contenido', ])
+            lista_contenido = Contenido.objects.filter(entry_query)
+        else:
+            lista_contenido = Contenido.objects.all()
+
     paginator = Paginator(lista_contenido, 25)
     # Show 25 contacts per page
     page = request.GET.get('page')
@@ -53,7 +80,7 @@ def lista_contenido(request):
         contenidos = paginator.page(paginator.num_pages)
 
     context = {'lista_contenido': lista_contenido, 'contenidos': contenidos}
-    return render(request, 'contenido_lista.html', context)
+    return render_to_response('contenido_lista_search.html', context)
 
 
 def buscar_contenidotipico(request, idmueble=0):

@@ -37,6 +37,7 @@ from servicio.models import Material
 
 from django.views.generic import View
 from django.conf import settings
+from mtvmcotizacion.views import get_query
 
 
 # Create your views here.
@@ -226,6 +227,27 @@ def lista_cotizacion(request):
 def lista_vehiculo(request):
     """docstring"""
 
+    lista_vehiculo = Vehiculo.objects.all()
+
+    paginator = Paginator(lista_vehiculo, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        vehiculos = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        vehiculos = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        vehiculos = paginator.page(paginator.num_pages)
+
+    context = {'lista_vehiculo': lista_vehiculo, 'vehiculos': vehiculos}
+    return render(request, 'vehiculo_lista.html', context)
+
+
+def search_vehiculo(request):
+    """docstring"""
+
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -247,7 +269,12 @@ def lista_vehiculo(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_vehiculo = Vehiculo.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['modelo', 'cargo__cargo', ])
+            lista_vehiculo = Vehiculo.objects.filter(entry_query)
+        else:
+            lista_vehiculo = Vehiculo.objects.all()
 
     paginator = Paginator(lista_vehiculo, 25)
     # Show 25 contacts per page
@@ -262,7 +289,7 @@ def lista_vehiculo(request):
         vehiculos = paginator.page(paginator.num_pages)
 
     context = {'lista_vehiculo': lista_vehiculo, 'vehiculos': vehiculos}
-    return render(request, 'vehiculo_lista.html', context)
+    return render_to_response('vehiculo_lista_search.html', context)
 
 
 def buscar_vehiculocotizacion(request, idcotizacion):

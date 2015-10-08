@@ -1,0 +1,92 @@
+{% block cantidad_tabla %}
+
+<h6>Cantidad de sexos encontrados:
+  <span class="badge" id="count_reg">
+
+    {{ lista_sexo.count }}
+
+  </span>
+</h6>
+
+{% endblock cantidad_tabla %}
+<nav class="nav-pagination">
+  <ul class="pagination">
+
+{% block pagination %}
+
+{% if sexos.has_previous %}
+
+<li>
+  <a href="?page={{ sexos.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ sexos.number }}
+
+    de
+
+    {{ sexos.paginator.num_pages }}
+
+    Desde el
+
+    {{ sexos.start_index }}
+
+    hasta el
+
+    {{ sexos.end_index }}
+
+  </a>
+</li>
+
+{% if sexos.has_next %}
+
+<li>
+  <a href="?page={{ sexos.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
+  </ul>
+</nav>
+
+{% block cuerpo_tabla %}
+{% if sexos %}
+
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr class="active">
+  <th>Sexo</th>
+  <th width="80px">Editar</th>
+  <th width="80px">Eliminar</th>
+</tr>
+
+{% for i in sexos %}
+
+<tr id="tr{{i.id}}">
+      <td>{{ i.sexo }}</td>
+      <td>
+        <a href="editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a>
+      </td>
+      <td>
+        <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.sexo}}"></a>
+      </td>
+    </tr>
+
+{% endfor %}
+
+</table>
+{% else %}
+
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr><td> No se encontraron registros</td>
+</tr>
+</table>
+
+{% endif %}
+{% endblock cuerpo_tabla %}
+

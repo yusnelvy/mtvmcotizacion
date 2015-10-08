@@ -327,12 +327,14 @@ class PresupuestoDireccionView(View):
                                                             tipo_direccion='Origen').count()
             cantDest = Presupuesto_direccion.objects.filter(presupuesto=request.POST['presupuesto'],
                                                             tipo_direccion='Destino').count()
-            if (cantOrig > 0 and cantDest) > 0:
-                updatepresu = Presupuesto.objects.filter(pk=request.POST['presupuesto'])
-                updatepresu.update(estado = 'Preparado')
+            if (cantOrig > 0 and cantDest > 0):
+                cant_item = Presupuesto_Detalle.objects.filter(presupuesto=request.POST['presupuesto']).count()
+                if cant_item <= 0:
+                    updatepresu = Presupuesto.objects.filter(pk=request.POST['presupuesto'])
+                    updatepresu.update(estado='Preparado')
 
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
-            return JsonResponse(mensaje, safe = False)
+            return JsonResponse(mensaje, safe=False)
 
         return render(request, self.template_name, {'form': form})
 
@@ -699,7 +701,8 @@ class PresupuestoServicioView(View):
 
                 updatepresu = Presupuesto.objects.filter(presupuesto_detalle__id=
                                                          request.POST['detalle_presupuesto'])
-                updatepresu.update(estado='Servicios cargados')
+                if updatepresu[0].estado == 'Muebles cargados':
+                    updatepresu.update(estado='Servicios cargados')
 
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
             return JsonResponse(mensaje, safe=False)

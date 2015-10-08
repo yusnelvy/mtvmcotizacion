@@ -1,0 +1,95 @@
+{% block cantidad_tabla %}
+
+<h6>Niveles de densidad de muebles registrados:
+  <span class="badge" id="count_reg">
+
+    {{ lista_densidad.count }}
+
+  </span>
+</h6>
+
+{% endblock cantidad_tabla %}
+
+<nav class="nav-pagination">
+  <ul class="pagination">
+
+{% block pagination %}
+
+{% if densidades.has_previous %}
+
+<li>
+  <a href="?page={{ densidades.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ densidades.number }}
+
+    de
+
+    {{ densidades.paginator.num_pages }}
+
+    Desde el nivel de densidad
+
+    {{ densidades.start_index }}
+
+    hasta el nivel de densidad
+
+    {{ densidades.end_index }}
+
+  </a>
+</li>
+
+{% if densidades.has_next %}
+
+<li>
+  <a href="?page={{ densidades.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
+  </ul>
+</nav>
+
+{% block cuerpo_tabla %}
+{% if densidades %}
+
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr class="active">
+  <th>Nivel de densidad</th>
+  <th width="80px">Editar</th>
+  <th width="80px">Eliminar</th>
+</tr>
+
+{% for i in densidades %}
+
+<tr id="tr{{i.id}}">
+  <td>{{ i.descripcion }}</td>
+  <td>
+    <a href="{% url 'umuebles:edit_densidad' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
+  </td>
+  <td>
+    <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.descripcion}}"></a>
+  </td>
+  <input type="hidden" value="{{i.id}}" id="idtele">
+</tr>
+
+{% endfor %}
+</table>
+
+{% else %}
+
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr><td> No se encontraron registros</td>
+</tr>
+</table>
+
+{% endif %}
+{% endblock cuerpo_tabla %}
+
+
