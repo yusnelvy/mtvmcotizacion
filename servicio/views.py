@@ -200,11 +200,19 @@ def search_material(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
+        contenedor = request.POST['contenedor']
         if search_text is not None and search_text != u"":
             entry_query = get_query(search_text, ['material', ])
-            lista_material = Material.objects.filter(entry_query)
+            if contenedor is not None and contenedor != u"":
+                lista_material = Material.objects.filter(entry_query, contenedor=True)
+            else:
+                lista_material = Material.objects.filter(entry_query)
+
         else:
-            lista_material = Material.objects.all()
+            if contenedor is not None and contenedor != u"":
+                lista_material = Material.objects.filter(contenedor=True)
+            else:
+                lista_material = Material.objects.all()
 
     paginator = Paginator(lista_material, 25)
     # Show 25 contacts per page
@@ -220,6 +228,27 @@ def search_material(request):
 
     context = {'lista_material': lista_material, 'materiales': materiales}
     return render_to_response('material_lista_search.html', context)
+
+
+def lista_contenedor(request):
+    """docstring"""
+
+    lista_material = Material.objects.filter(contenedor=True)
+
+    paginator = Paginator(lista_material, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        materiales = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        materiales = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        materiales = paginator.page(paginator.num_pages)
+
+    context = {'lista_material': lista_material, 'materiales': materiales, 'contenedor': 'contenedor'}
+    return render(request, 'material_lista.html', context)
 
 
 def lista_complejidad(request):

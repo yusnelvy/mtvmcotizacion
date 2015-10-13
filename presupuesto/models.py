@@ -289,7 +289,7 @@ class Presupuesto(models.Model):
 
 class Presupuesto_direccion(models.Model):
     """docstring"""
-    presupuesto = models.ForeignKey(Presupuesto, on_delete=models.PROTECT)
+    presupuesto = models.ForeignKey(Presupuesto)
     orden = models.IntegerField()
     direccion = models.TextField()
     tipo_direccion = models.CharField(max_length=100)
@@ -326,7 +326,7 @@ class Presupuesto_direccion(models.Model):
 
 class Presupuesto_Detalle(models.Model):
     """docstring"""
-    presupuesto = models.ForeignKey(Presupuesto, on_delete=models.PROTECT)
+    presupuesto = models.ForeignKey(Presupuesto)
     ambiente = models.CharField(max_length=100)
     mueble = models.CharField(max_length=100)
     cantidad = models.PositiveIntegerField(default=1)

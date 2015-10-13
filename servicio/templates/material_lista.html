@@ -1,12 +1,14 @@
 {% extends 'base_lista.html' %}
 
 {% block link_navegacion %}
-
+<li class="linknav"><a href="{% url 'uservicios:lista_material' %}">Materiales</a></li>
 <li class="linknav"><a href="{% url 'uservicios:lista_servicio' %}">Servicios</a></li>
 <li class="linknav"><a href="{% url 'uservicios:lista_unidad' %}">Unidades</a></li>
 <li class="linknav"><a href="{% url 'uservicios:lista_complejidad' %}">Niveles de complejidad</a></li>
 <li class="linknav"><a href="{% url 'uservicios:buscar_complejidad_servicio' 0 0 %}">Niveles de complejidad para el servicio</a></li>
 <li class="linknav"><a href="{% url 'uservicios:buscar_servicio_material' 0 0 %}">Servicios con sus materiales relacionados</a></li>
+
+<li class="linknav"><a href="{% url 'uservicios:lista_contenedor' %}">Contenedor</a></li>
 
 {% endblock link_navegacion %}
 
@@ -40,7 +42,15 @@ Eliminar material
 
 {% block titulo_tabla %}
 
+{% if contenedor %}
+
+<h2>Contenedores</h2>
+
+{% else %}
+
 <h2>Materiales</h2>
+
+{% endif %}
 
 {% endblock titulo_tabla %}
 
@@ -49,7 +59,7 @@ Eliminar material
  <div id="search-results">
    {% include "material_lista_search.html" %}
  </div>
-
+ <input style="visibility:hidden" type="text" id="contenedor" name="contenedor" value="{{contenedor}}">
 {% endblock contenidogeneral%}
 
 {% block ayuda %}
@@ -73,6 +83,7 @@ $(function(){
       url: "{% url 'uservicios:search_material' %}",
       data: {
         'search_text': $('#search').val(),
+        'contenedor': $('#contenedor').val(),
         'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
       },
       success: searchSuccess,

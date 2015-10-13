@@ -38,6 +38,9 @@ from django.contrib.auth.decorators import permission_required, login_required
 
 import sys
 import traceback
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from mtvmcotizacion.views import get_query
+from django.contrib import messages
 
 
 class ContactWizard(SessionWizardView):
@@ -65,9 +68,33 @@ class PresupuestoList(ListView):
     context_object_name = 'presupuestos'
     template_name = 'presupuesto_lista.html'
 
-    def get_queryset(self):
-        queryset = super(PresupuestoList, self).get_queryset()
-        return queryset.filter()
+
+def search_presupuesto(request):
+    """docstring"""
+    if request.method == "POST":
+
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['nombre_cliente',
+                                                  'empresa_cliente', 'dni', ])
+            presupuestos = Presupuesto.objects.filter(entry_query)
+        else:
+            presupuestos = Presupuesto.objects.all()
+
+    paginator = Paginator(presupuestos, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        page_obj = paginator.page(paginator.num_pages)
+
+    context = {'presupuestos': presupuestos, 'page_obj': page_obj}
+    return render_to_response('presupuesto_lista_search.html', context)
 
 
 class PresupuestoDetail(DetailView):
@@ -234,6 +261,7 @@ class PresupuestoView(View):
         if form.is_valid():
             id_reg = form.save()
             # <process form cleaned data>
+            messages.success(self.request, "Registro guardado!")
             return HttpResponseRedirect(reverse('upresupuestos:PresupuestoDetail',
                                                 args=(id_reg.id,)))
 
