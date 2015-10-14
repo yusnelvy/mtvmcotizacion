@@ -20,4 +20,7 @@ urlpatterns = patterns('',
                            name='add_tipotelefono'),
                        url(r'^tipo_telefono/editar/(?P<pk>\d+)/$',
                            views.edit_tipotelefono,
-                           name='edit_tipotelefono'),)
+                           name='edit_tipotelefono'),
+                       url(r'^tipo_telefono/search',
+                           views.search_tipotelefono,
+                           name='search_tipotelefono'),)

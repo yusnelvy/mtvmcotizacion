@@ -13,9 +13,34 @@ from django.template import RequestContext
 import simplejson as json
 import django.db
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from mtvmcotizacion.views import get_query
 
 
 def lista_ambiente(request):
+    """docstring"""
+
+    lista_ambiente = Ambiente.objects.all()
+    paginator = Paginator(lista_ambiente, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        ambientes = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        ambientes = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        ambientes = paginator.page(paginator.num_pages)
+
+    ambiente_links = zip(['Ambientes por tipo de inmueble', ],
+                         ['uambientes:lista_ambiente_tipo_inmueble', ])
+
+    context = {'lista_ambiente': lista_ambiente, 'ambientes': ambientes,
+               'ambiente_links': ambiente_links}
+    return render(request, 'ambiente_lista.html', context)
+
+
+def search_ambiente(request):
     """docstring"""
 
     if request.method == "POST":
@@ -39,7 +64,13 @@ def lista_ambiente(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_ambiente = Ambiente.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['ambiente', ])
+            lista_ambiente = Ambiente.objects.filter(entry_query)
+        else:
+            lista_ambiente = Ambiente.objects.all()
+
     paginator = Paginator(lista_ambiente, 25)
     # Show 25 contacts per page
     page = request.GET.get('page')
@@ -57,7 +88,7 @@ def lista_ambiente(request):
 
     context = {'lista_ambiente': lista_ambiente, 'ambientes': ambientes,
                'ambiente_links': ambiente_links}
-    return render(request, 'ambiente_lista.html', context)
+    return render_to_response('ambiente_lista_search.html', context)
 
 
 def lista_ambiente_tipo_inmueble(request):

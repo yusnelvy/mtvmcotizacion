@@ -1,0 +1,101 @@
+{% block cantidad_tabla %}
+
+<h6>Cantidad de registros encontrados:
+  <span class="badge" id="count_reg">
+
+    {{ presupuestos.count }}
+
+  </span>
+</h6>
+
+{% endblock cantidad_tabla %}
+
+<nav class="nav-pagination">
+  <ul class="pagination">
+
+{% block pagination %}
+
+{% if page_obj.has_previous %}
+
+<li>
+  <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ page_obj.number }}
+
+    de
+
+    {{ page_obj.paginator.num_pages }}
+
+    desde el presupuesto
+
+    {{ page_obj.start_index }}
+
+    hasta el presupuesto
+
+    {{ page_obj.end_index }}
+
+  </a>
+</li>
+
+{% if page_obj.has_next %}
+
+<li>
+  <a href="?page={{ page_obj.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
+  </ul>
+</nav>
+
+{% block cuerpo_tabla %}
+{% if presupuestos %}
+
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr class="active">
+  <th width="50px">N°</th>
+  <th width="80px">Fecha</th>
+  <th width="100px">DNI</th>
+  <th>Nombre del solicitante</th>
+  <th>Empresa</th>
+  <th width="80px">Ficha</th>
+  <th width="80px">Eliminar</th>
+</tr>
+
+{% for i in presupuestos %}
+
+<tr id="tr{{i.id}}">
+  <td>{{ i.id }}</td>
+  <td>{{ i.fecha_creacion|date:"d/m/Y" }}</td>
+  <td>{{ i.dni }}</td>
+  <td>{{ i.nombre_cliente }}</td>
+  <td>{{ i.empresa_cliente }}</td>
+  <td>
+    <a class="glyphicon glyphicon-file"  data-placement="left" data-toggletooltip="tooltip" href="{% url 'upresupuestos:PresupuestoDetail' i.id %}?next={{request.get_full_path}}" title="Ver ficha"></a>
+  </td>
+  <td>
+    <a class="glyphicon glyphicon-remove botonmodalEliminar" data-nombre="presupuesto N° {{ i.id }}" data-numero="{{ i.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDelete' i.id %}" data-target=".eliminar" data-toggle="modal" data-placement="left" data-toggletooltip="tooltip" title="Eliminar registro {{ i.id }}"></a>
+  </td>
+</tr>
+
+{% endfor %}
+
+</table>
+{% else %}
+
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr><td> No se encontraron registros</td>
+</tr>
+</table>
+
+{% endif %}
+{% endblock cuerpo_tabla %}
+

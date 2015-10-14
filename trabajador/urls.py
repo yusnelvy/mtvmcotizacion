@@ -13,4 +13,7 @@ urlpatterns = patterns('',
                            name='add_cargotrabajador'),
                        url(r'^editar/(?P<pk>\d+)/$',
                            views.edit_cargotrabajador,
-                           name='edit_cargotrabajador'),)
+                           name='edit_cargotrabajador'),
+                       url(r'^search',
+                           views.search_cargotrabajador,
+                           name='search_cargotrabajador'),)

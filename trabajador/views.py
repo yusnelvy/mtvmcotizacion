@@ -9,11 +9,33 @@ from django.core.urlresolvers import reverse
 import django.db
 import simplejson as json
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from mtvmcotizacion.views import get_query
 
 
 # Create your views here.
 # lista
 def lista_cargotrabajador(request):
+    """docstring"""
+
+    lista_cargo = Cargo_trabajador.objects.all()
+
+    paginator = Paginator(lista_cargo, 25)
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        cargos = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        cargos = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        cargos = paginator.page(paginator.num_pages)
+
+    context = {'lista_cargo': lista_cargo, 'cargos': cargos}
+    return render(request, 'cargotrabajador_lista.html', context)
+
+
+def search_cargotrabajador(request):
     """docstring"""
 
     if request.method == "POST":
@@ -37,7 +59,12 @@ def lista_cargotrabajador(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_cargo = Cargo_trabajador.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['cargo', ])
+            lista_cargo = Cargo_trabajador.objects.filter(entry_query)
+        else:
+            lista_cargo = Cargo_trabajador.objects.all()
 
     paginator = Paginator(lista_cargo, 25)
     # Show 25 contacts per page
@@ -52,7 +79,7 @@ def lista_cargotrabajador(request):
         cargos = paginator.page(paginator.num_pages)
 
     context = {'lista_cargo': lista_cargo, 'cargos': cargos}
-    return render(request, 'cargotrabajador_lista.html', context)
+    return render_to_response('cargotrabajador_lista_search.html', context)
 
 
 # agregar nuevo
