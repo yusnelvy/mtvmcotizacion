@@ -17,7 +17,7 @@
 <a aria-expanded="false" class="navbar-brand botonmodalFormulario" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Agregar dirección de destino" >
     <span class="glyphicon glyphicon-import"></span>
 </a>
-<a aria-expanded="false" class="navbar-brand botonmodalFormulario" data-nombre="Agregar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Agregar mueble">
+<a aria-expanded="false" class="navbar-brand botonmodalFormulario" data-nombre="Agregar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-numero="ambienteFocus" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Agregar mueble">
     <span class="glyphicon glyphicon-lamp"></span>
 </a>
 
@@ -177,7 +177,7 @@ class="col-md-10"
             <td colspan="4"><b>Observaciones:</b> {{ presupuesto.comentario }}</td>
         </tr>
     </table>
-    <a class="btn btn-default botonmodalFormulario hidden-print" data-numero="{{ presupuesto.id }}" data-nombre="Editar detalles del presupuesto" data-opcion="{% url 'upresupuestos:PresupuestoUpdate' presupuesto.id %}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Editar detalles del presupuesto">Editar detalles del presupuesto</a>
+    <a class="btn btn-default botonmodalFormulario hidden-print" data-numero="{{ presupuesto.id }}" data-nombre="Editar Datos básicos del presupuesto" data-opcion="{% url 'upresupuestos:PresupuestoUpdate' presupuesto.id %}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Editar Datos básicos del presupuesto">Editar Datos básicos del presupuesto</a>
 </div><!--Fin de Panel de Detalles del presupuesto-->
 <br>
 <div class="panel panel-color1" id="direcciones"><!--Panel de Direcciones-->
@@ -530,7 +530,7 @@ class="col-md-10"
 
         {% for ambiente in lista_ambiente %}
 
-        <div class="panel panel-default">
+        <div class="panel panel-default" id="{{ambiente.ambiente}}">
             <div class="panel-heading" style="padding:0px 5px!important;" id="headingOne{{ forloop.counter }}" role="tab">
                 <h4 class="panel-title">
                     <a aria-controls="collapseOne{{ forloop.counter }}" aria-expanded="true" class="t-ambiente" data-parent="#accordion" data-toggle="collapse" href="#collapseOne{{ forloop.counter }}" role="button">{{ambiente.ambiente|upper}}</a>
@@ -596,13 +596,22 @@ class="col-md-10"
                             </div>
                         </td>
                         <td>
-                            <a class="controles glyphicon glyphicon-wrench botonmodalFormulario hidden-print" data-name="{{ mueble.mueble|lower }}" data-nombre="Agregar servicio al mueble {{ mueble.mueble|lower }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{ request.get_full_path }}&pre={{ mueble.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
+                            {% if mueble.trasladable %}
+
+                            <a class="btn controles glyphicon glyphicon-wrench botonmodalFormulario hidden-print" data-name="{{ mueble.mueble|lower }}" data-nombre="Agregar servicio al mueble {{ mueble.mueble|lower }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{ request.get_full_path }}&pre={{ mueble.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
+
+                            {% else %}
+
+                            <a class="btn controles glyphicon glyphicon-wrench hidden-print disabled" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
+
+                            {% endif %}
+
                         </td>
                         <td>
-                            <a class="controles botonmodalFormulario glyphicon glyphicon-edit hidden-print" data-nombre="Editar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleUpdate' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Editar {{ mueble.mueble|lower }}"></a>
+                            <a class="btn controles botonmodalFormulario glyphicon glyphicon-edit hidden-print" data-nombre="Editar mueble" data-posicion="{{ ambiente.ambiente }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleUpdate' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Editar {{ mueble.mueble|lower }}"></a>
                         </td>
                         <td>
-                            <a class="controles botonmodalEliminar glyphicon glyphicon-remove hidden-print" data-nombre="{{ mueble.mueble|lower }}" data-numero="{{ mueble.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleDelete' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Eliminar {{ mueble.mueble|lower }}"></a>
+                            <a class="btn controles botonmodalEliminar glyphicon glyphicon-remove hidden-print" data-nombre="{{ mueble.mueble|lower }}" data-numero="{{ mueble.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleDelete' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Eliminar {{ mueble.mueble|lower }}"></a>
                         </td>
                     </tr>
 
@@ -613,7 +622,7 @@ class="col-md-10"
                     <tr>
                         <td></td>
                         <td colspan="7">
-                            <a class="btn-addmueble botonmodalFormulario hidden-print" data-nombre="Agregar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble al ambiente {{ ambiente.ambiente }}">Agregar otro mueble a {{ ambiente.ambiente }}</a>
+                            <a class="btn-addmueble botonmodalFormulario hidden-print" data-nombre="Agregar mueble" data-numero="" data-posicion="{{ ambiente.ambiente }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble al ambiente {{ ambiente.ambiente }}">Agregar otro mueble a {{ ambiente.ambiente }}</a>
                         </td>
                     </tr>
                 </table>
@@ -623,7 +632,7 @@ class="col-md-10"
         {% endfor %}
 
         <br>
-        <a class="botonmodalFormulario btn btn-default hidden-print boton-almedio" data-nombre="Agregar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble">Agregar mueble</a>
+        <a class="botonmodalFormulario btn btn-default hidden-print boton-almedio" data-nombre="Agregar mueble" data-posicion="{{ ambiente.ambiente }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-numero="ambienteFocus" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble">Agregar mueble</a>
 
     </div>
 
@@ -634,17 +643,17 @@ class="col-md-10"
 </div><!--fin acordion-->
 <div style="display:block;height:600px;width:100%;"></div>
 <!-- Modal Formularios-->
-<div aria-labelledby="myModalLabelFormulario" class="modal fade" id="myModalFormulario" role="dialog">
-    <div class="modal-dialog" role="document">
+<div  aria-hidden="true" aria-labelledby="myModalLabelFormulario" class="modal fade" tabindex="-1" id="myModalFormulario" role="dialog">
+    <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button aria-label="Close" class="close" data-dismiss="modal" id="btn-cerrarModal" type="button">
+                <button  aria-hidden="true" aria-label="Close" class="close" data-dismiss="modal" id="btn-cerrarModal" type="button" tabindex="-1">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h4 class="modal-title nombre" id="myModalLabelFormulario"><span class="nombreTitulo"></span></h4>
             </div>
             <div class="modal-body">
-                <iframe class="id_opcionFormulario" frameborder="0" height="500" id="" scrolling="auto" src="" width="100%">
+                <iframe class="id_opcionFormulario" data-posicion="" frameborder="0" height="500" id="" scrolling="auto" src="" width="100%">
                     <p>ESTE NAVEGADOR NO ACEPTA IFRAMES. UTILICE OPERA, MOZILLA FIREFOX O CHROME.</p>
                 </iframe>
             </div>
@@ -652,7 +661,7 @@ class="col-md-10"
     </div>
 </div>
 <!-- Modal resumen de presupuesto-->
-<div aria-labelledby="resumen" class="modal fade resumen" role="dialog">
+<div aria-labelledby="resumen" class="modal fade resumen" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">

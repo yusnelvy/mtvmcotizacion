@@ -1,5 +1,11 @@
 <tr>
-    <td><b>Cotizador:</b> {{ presupuesto.cotizador }}</td>
+    <td><b>Cotizador:</b>
+
+        {{ presupuesto.cotizador.first_name }}
+
+        {{ presupuesto.cotizador.last_name }}
+
+    </td>
     <td><b>Fecha de registro:</b> {{ presupuesto.fecha_creacion|date:"d/m/Y" }}</td>
     <td><b>Hora de registro:</b> {{ presupuesto.hora_creacion|time:"h:i a" }}</td>
     <td><b>N° de presupuesto:</b> {{ presupuesto.id }}</td>
