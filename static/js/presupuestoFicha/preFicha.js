@@ -24,11 +24,23 @@ $(".botonmodalFormulario").on('click', function(even) {
     var opcion = $(this).data('opcion');
     var numero = $(this).data('numero');
     var nombre = $(this).data('nombre');
+    var posicion = $(this).data('posicion');
     $('.id_opcionFormulario').attr('src', opcion);
     $('.id_opcionFormulario').attr('id', numero);
+    $('.id_opcionFormulario').attr('data-posicion', posicion);
     $('.nombreTitulo').text(nombre);
 });
 
+$('#myModalFormulario').on('show.bs.modal', function () {
+
+});
+$('#myModalFormulario').focus(function() {
+  //alert('hi');
+  $('.modal-content').attr('class', 'modal-content focusBlueModal');
+});
+$('#myModalFormulario').focusout(function() {
+  $('.modal-content').removeClass('focusBlueModal');
+});
 $(document).ready(function() {
     $(function () {
         $('[data-toggletooltip="tooltip"]').tooltip();
@@ -113,4 +125,9 @@ $(document).ready(function() {
         });
     });
 
+});
+
+$('#myModalFormulario').on('hidden.bs.modal', function () {
+  $('.id_opcionFormulario').attr('src', ' ');
+  setTimeout(function() {$('#msjGuardado').fadeOut();}, 3000);
 });

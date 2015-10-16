@@ -67,37 +67,37 @@ class PresupuestoForm(ModelForm):
             'dni': TextInput(
                 attrs={
                     'class': 'width50',
-                    'onkeypress': 'return justNumbers(event);',
+                    'onkeypress': 'return justNumbers(event);'
                     }),
             'telefono_celular': TextInput(
                 attrs={
                     'class': 'width50',
-                    'onkeypress': 'return justNumbers(event);',
+                    'onkeypress': 'return justNumbers(event);'
                     }),
             'telefono': TextInput(
                 attrs={
                     'class': 'width50',
-                    'onkeypress': 'return justNumbers(event);',
+                    'onkeypress': 'return justNumbers(event);'
                     }),
             'email': TextInput(
                 attrs={
-                    'class': 'width50',
+                    'class': 'width50'
                     }),
             'hora_estimadamudanza': Select(
                 attrs={
-                    'class': 'width50',
+                    'class': 'width50'
                     }),
             'recorrido_km': Select(
                 attrs={
-                    'class': 'width50',
+                    'class': 'width50'
                     }),
             'tiempo_recorrido': Select(
                 attrs={
-                    'class': 'width50',
+                    'class': 'width50'
                     }),
             'fecha_estimadamudanza': TextInput(
                 attrs={
-                    'class': 'width50',
+                    'class': 'width50'
                     }),
             }
 
@@ -146,7 +146,8 @@ class PresupuestoDireccionForm(ModelForm):
             'pisos_escalera': ('Cantidad de pisos a recorrer por escaleras'),
             'pisos_ascensor': ('Cantidad de pisos a recorrer por el ascensor'),
             'pisos_ascensor_servicio': (
-            'Cantidad de pisos a recorrer por el ascensor de servicio'),
+            'Cantidad de pisos a recorrer por el ascensor de servicio'
+            )
             }
         widgets = {
             'pisos_ascensor': RadioSelect(
@@ -184,8 +185,8 @@ class PresupuestoDireccionForm(ModelForm):
 
 class PresupuestoDetalleForm(ModelForm):
     """Docstring"""
-    lista_ambiente = ModelChoiceField(Ambiente.objects, widget=Select, empty_label='--seleccione el ambiente--', label='Ambiente del inmueble:')
-    lista_mueble = ModelChoiceField(Mueble.objects, widget=Select, empty_label='seleccione el mueble', label='Mueble del ambiente:')
+    lista_ambiente = ModelChoiceField(Ambiente.objects, widget=Select, empty_label=None, label='Ambiente del inmueble:')
+    lista_mueble = ModelChoiceField(Mueble.objects, widget=Select, empty_label=None, label='Mueble del ambiente:')
     lista_tamano = ModelChoiceField(Tamano.objects, widget=RadioSelect, empty_label=None, label='Tamaño del mueble:')
     lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=RadioSelect, empty_label=None, label='Ocupación del mueble:')
 
@@ -202,7 +203,7 @@ class PresupuestoDetalleForm(ModelForm):
         ('Muy alta', 'Muy alta'),
     )
     descripcion_densidadcontenido = forms.ChoiceField(
-        widget=RadioSelect(attrs={'class': 'radioselect', 'onclick': 'radioColor(name)'}),
+        widget=RadioSelect(attrs={'class': 'radioselect', 'onclick': 'radioColorBlue(name)'}),
         label='Densidad del contenido',
         choices=DENSIDAD_CHOICES)
 
@@ -225,6 +226,7 @@ class PresupuestoDetalleForm(ModelForm):
             'largo', \
             'alto', \
             'cantidad', \
+            'trasladable', \
             'lista_ocupacion', \
             'descripcion_contenido', \
             'descripcion_densidadcontenido', \
@@ -239,13 +241,13 @@ class PresupuestoDetalleForm(ModelForm):
             'capacidad_volumen_contenedor', \
             'peso_contenido', \
             'peso_contenedor', \
-            'descripcion_contenedor', \
-            'trasladable'
+            'descripcion_contenedor'
 
         labels = {
             'ancho': ('Ancho del mueble (cms)'),
             'largo': ('Largo del mueble (cms)'),
             'alto': ('Alto del mueble (cms)'),
+            'trasladable': ('Mueble trasladable'),
             'densidadcontenido': ('Densidad del contenido (kg/m3)'),
             'volumen_contenido': ('Volumen del contenido (m3)')
             }

@@ -345,18 +345,17 @@ que sobreescribe el diseño Bootstrap
   cursor: pointer;
 }
 
-table.tablesorter thead tr .header {
-  background-image: url(bg.gif);
-  background-repeat: no-repeat;
-  background-position: center right;
-  cursor: pointer;
+.focusBlue {
+  border-color: #66afe9!important;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
 }
-table.tablesorter thead tr .headerSortUp {
-  background-image: url(asc.gif);
-}
-table.tablesorter thead tr .headerSortDown {
-  background-image: url(desc.gif);
-}
-table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
-background-color: #8dbdd8;
+
+.focusBlueModal {
+  border-color: #66afe9!important;
+  border: 4px solid #66afe9!important;
+  outline: 0;
+  -webkit-box-shadow: inset 4 5px 5px rgba(0,0,0,.075), 5 5 20px rgba(102, 175, 233, .6);
+  box-shadow: inset 4 5px 5px rgba(0,0,0,.075), 5 5 20px rgba(102, 175, 233, .6);
 }

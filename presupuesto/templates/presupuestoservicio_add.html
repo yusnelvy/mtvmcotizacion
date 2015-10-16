@@ -65,9 +65,7 @@ $(document).ready(function() {
             $(guardar).css('width','300px');
             $(guardar).text('Servicio guardado con éxito');
             $(guardar).fadeIn();
-            setTimeout(function() {
               parent.location.reload();
-            }, 1000);
           }else {
             $("#seleccionServicio").text(data.msj);
             $("#seleccionServicio").fadeIn();

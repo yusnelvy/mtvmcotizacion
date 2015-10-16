@@ -86,7 +86,7 @@ $(document).ready(function() {
         for(var i=0; i<lista_descripcionDensidadContenido.length; i++) {
           if (lista_descripcionDensidadContenido[i].value == 'Media') {
             $(lista_descripcionDensidadContenido[i]).attr("checked","checked");
-            radioColor('descripcion_densidadcontenido');
+            radioColorBlue('descripcion_densidadcontenido');
           }
         }
 
@@ -94,7 +94,7 @@ $(document).ready(function() {
         for(var i=0; i<lista_ocupacion.length; i++) {
           if (data[0].ocupacion == lista_ocupacion[i].value) {
             $(lista_ocupacion[i]).attr("checked","checked");
-            radioColor('lista_ocupacion');
+            radioColorBlue('lista_ocupacion');
           }
         }
         if (data[0].trasladable == true) {
@@ -110,7 +110,7 @@ $(document).ready(function() {
             volumen = calcular_volumen($("#id_ancho").val(), $(
             "#id_largo").val(), $("#id_alto").val(), $("#id_cantidad").val());
             $("#id_volumen_mueble").val(volumen);
-            radioColor('lista_tamano');
+            radioColorBlue('lista_tamano');
             inputContenido('ocultar');
           }
         }
@@ -223,7 +223,7 @@ $(document).ready(function() {
     descripcionmensaje();
     if ($("#id_descripcion_contenido").val() == 'Sin contenido') {
       $('label[for=id_lista_ocupacion_0]').click();
-      radioColor('lista_ocupacion');
+      radioColorBlue('lista_ocupacion');
       inputContenido('ocultar');
 
     } else {
@@ -269,24 +269,31 @@ $(document).ready(function() {
     descripcionmensaje();
   });
 
+enterNone();
+
   $('#myform').submit(function() {
     disabledBtn($('.registrar'));
     document.getElementById('id_lista_ambiente').disabled = false;
     var id = $(parent.document.getElementsByClassName(
       "id_opcionFormulario")).attr('src');
+    var numero = $(parent.document.getElementsByClassName(
+      "id_opcionFormulario")).attr('data-posicion');
+    var p = parent.document.getElementById(numero);
+    var bodyp = parent.document.getElementById('id_body');
     var action = id;
     var that = $(this);
+    var position = $(p).position();
     $.ajax( {
       url: action,
       type: 'POST',
       data: that.serialize(),
       beforeSend: function(data) {
         $('#carga').css('display','block');
-      }
-      ,success: function(data) {
+        $(bodyp).animate({ scrollTop: $(p).offset().top - 60 }, 100);
+      },
+      success: function(data) {
         var modalp = parent.document.getElementById('myModalAmbiente');
         var divp = parent.document.getElementsByClassName("modal-backdrop");
-        var bodyp = parent.document.getElementById('id_body');
         var closep = parent.document.getElementById("btn-cerrarModal");
         var guardar = parent.document.getElementById("msjGuardado");
         if (data.estatus=="ok") {
@@ -294,14 +301,33 @@ $(document).ready(function() {
           $(guardar).css('width','300px');
           $(guardar).text('Mueble guardado con exito');
           $(guardar).fadeIn();
-          setTimeout(function() {
-            parent.location.reload();
-          }, 500);
+          parent.location.reload();
         }
       }
     });
     return false;
   });
+
+$('input[name="lista_tamano"]').focus(function() {
+  $('li:has(input[name="lista_tamano"])').attr('class', 'focusBlue');
+});
+$('input[name="lista_tamano"]').focusout(function() {
+    $('li:has(input[name="lista_tamano"])').removeClass('focusBlue');
+});
+
+$('input[name="lista_ocupacion"]').focus(function() {
+  $('li:has(input[name="lista_ocupacion"])').attr('class', 'focusBlue');
+});
+$('input[name="lista_ocupacion"]').focusout(function() {
+    $('li:has(input[name="lista_ocupacion"])').removeClass('focusBlue');
+});
+
+$('input[name="descripcion_densidadcontenido"]').focus(function() {
+  $('li:has(input[name="descripcion_densidadcontenido"])').attr('class', 'focusBlue');
+});
+$('input[name="descripcion_densidadcontenido"]').focusout(function() {
+    $('li:has(input[name="descripcion_densidadcontenido"])').removeClass('focusBlue');
+});
 
 function ocupacidadVacia() {
   if ($("#id_ocupacidad").val() == 'Vacío') {
@@ -368,6 +394,7 @@ function ocupacidadVacia() {
     cerrarModal(parent.document.getElementById('btn-cerrarModal'),
       parent.document.getElementById('msjEliminado')
       );
+    $(parent.document.getElementsByClassName("id_opcionFormulario")).attr('src', ' ');
   });
 
 }); // end del document
