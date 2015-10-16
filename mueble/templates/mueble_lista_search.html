@@ -24,7 +24,27 @@
     <li class="current">
       <a style="color:#000;"> Página
 
-        {{ muebles.number }}
+      <select title="nro pag." onchange="window.location.href=this.value;">
+        <option value="?page=0">ver todo</option>
+        {% if muebles.paginator.page_range %}
+
+        {% for p in muebles.paginator.page_range %}
+        {% if p == muebles.number %}
+
+        <option value="?page={{p}}" selected>{{p}}</option>
+
+        {% else %}
+
+        <option value="?page={{p}}">{{p}}</option>
+
+        {% endif %}
+
+        {% endfor %}
+
+        {% else %}
+        <option value="?page=1">paginar</option>
+        {% endif %}
+      </select>
 
         de
 
@@ -57,10 +77,26 @@
 
 <table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
 <tr class="active">
-  <th>Mueble</th>
-  <th>Tipo de mueble</th>
-  <th>Forma</th>
-  <th>Trasladable</th>
+  <th>
+    Mueble
+    <a href="?order_by=mueble">Asc</a>
+    <a href="?order_by=-mueble">Desc</a>
+  </th>
+  <th>
+    Tipo de mueble
+    <a href="?order_by=tipo_mueble">Asc</a>
+    <a href="?order_by=-tipo_mueble">Desc</a>
+  </th>
+  <th>
+    Forma
+    <a href="?order_by=forma">Asc</a>
+    <a href="?order_by=-forma">Desc</a>
+  </th>
+  <th>
+    Trasladable
+    <a href="?order_by=trasladable">Asc</a>
+    <a href="?order_by=-trasladable">Desc</a>
+  </th>
   <th width="80px">Ficha</th>
   <th width="80px">Editar</th>
   <th width="80px">Eliminar</th>

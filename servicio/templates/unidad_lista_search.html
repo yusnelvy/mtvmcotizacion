@@ -26,7 +26,27 @@
 <li class="current">
   <a style="color:#000;"> Página
 
-    {{ unidades.number }}
+    <select title="nro pag." onchange="window.location.href=this.value;">
+      <option value="?page=0">ver todo</option>
+      {% if unidades.paginator.page_range %}
+
+      {% for p in unidades.paginator.page_range %}
+      {% if p == unidades.number %}
+
+      <option value="?page={{p}}" selected>{{p}}</option>
+
+      {% else %}
+
+      <option value="?page={{p}}">{{p}}</option>
+
+      {% endif %}
+
+      {% endfor %}
+
+      {% else %}
+      <option value="?page=1">paginar</option>
+      {% endif %}
+    </select>
 
     de
 
@@ -61,7 +81,11 @@
 
 <table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
 <tr class="active">
-  <th>Unidad</th>
+  <th>
+    Unidad
+    <a href="?order_by=unidad">Asc</a>
+    <a href="?order_by=-unidad">Desc</a>
+  </th>
   <th width="80px">Editar</th>
   <th width="80px">Eliminar</th>
 </tr>

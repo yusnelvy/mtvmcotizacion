@@ -10,26 +10,40 @@ import django.db
 import simplejson as json
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from mtvmcotizacion.views import get_query
+from premisas.models import PerzonalizacionVisual
 
 
 # Create your views here.
 # lista
 def lista_cargotrabajador(request):
     """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
+    order_by = request.GET.get('order_by')
+    if order_by:
+        lista_cargo = Cargo_trabajador.objects.all().order_by(order_by)
+    else:
+        lista_cargo = Cargo_trabajador.objects.all()
 
-    lista_cargo = Cargo_trabajador.objects.all()
-
-    paginator = Paginator(lista_cargo, 25)
+    paginator = Paginator(lista_cargo, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
-    try:
-        cargos = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        cargos = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        cargos = paginator.page(paginator.num_pages)
+    if page == '0':
+        cargos = lista_cargo
+    else:
+        try:
+            cargos = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            cargos = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            cargos = paginator.page(paginator.num_pages)
 
     context = {'lista_cargo': lista_cargo, 'cargos': cargos}
     return render(request, 'cargotrabajador_lista.html', context)
@@ -37,7 +51,13 @@ def lista_cargotrabajador(request):
 
 def search_cargotrabajador(request):
     """docstring"""
-
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -66,7 +86,7 @@ def search_cargotrabajador(request):
         else:
             lista_cargo = Cargo_trabajador.objects.all()
 
-    paginator = Paginator(lista_cargo, 25)
+    paginator = Paginator(lista_cargo, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:

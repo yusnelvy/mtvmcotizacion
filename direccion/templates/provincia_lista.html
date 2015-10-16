@@ -74,7 +74,6 @@ Eliminar provincia
 {% endblock%}
 
 {% block js_sup %}
-
 <script>
 $(function(){
 
@@ -93,8 +92,9 @@ $(function(){
 });
 
 function searchSuccess(data, textStatus, jqXHR){
-  $('#search-results').html(data)
+  $('#search-results').html(data);
 }
+
 </script>
 
 {% endblock js_sup %}

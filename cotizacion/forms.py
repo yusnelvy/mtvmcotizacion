@@ -49,11 +49,18 @@ class CotizacionForm(ModelForm):
 
 
 class VehiculoForm(ModelForm):
+    """
+    Docstring documentación pendiente
+    """
+    def __init__(self, *args, **kwargs):
+        super(VehiculoForm, self).__init__(*args, **kwargs)
+        self.fields['cargo'].empty_label = "Seleccione el conductor designado"
+
     class Meta:
         model = Vehiculo
         fields = ('cantidad_total', 'modelo',
-            'tarifa_hora', 'tarifa_recorrido',
-            'capacidad_volumen', 'capacidad_peso', 'cargo')
+                  'tarifa_hora', 'tarifa_recorrido',
+                  'capacidad_volumen', 'capacidad_peso', 'cargo')
         labels = {
             'cantidad_total': ('Cantidad de vehículos'),
             'modelo': ('Modelo de vehículo'),

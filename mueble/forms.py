@@ -43,6 +43,12 @@ class FormaMuebleForm(ModelForm):
 
 class MuebleForm(ModelForm):
     """Docstring"""
+    def __init__(self, *args, **kwargs):
+        super(MuebleForm, self).__init__(*args, **kwargs)
+        self.fields['tipo_mueble'].empty_label = "Seleccione el tipo de mueble"
+        self.fields['forma'].empty_label = "Seleccione la forma del mueble"
+        self.fields['ocupacion'].empty_label = "Seleccione el nivel de ocupación del mueble"
+
     class Meta:
         model = Mueble
         fields = '__all__'
@@ -81,6 +87,10 @@ class DensidadForm(ModelForm):
 
 class TamanoMuebleForm(ModelForm):
     """Docstring"""
+    def __init__(self, *args, **kwargs):
+        super(TamanoMuebleForm, self).__init__(*args, **kwargs)
+        self.fields['tamano'].empty_label = "Seleccione el tamaño del mueble"
+
     class Meta:
         model = Tamano_Mueble
         fields = '__all__'
@@ -96,6 +106,11 @@ class TamanoMuebleForm(ModelForm):
 
 class MuebleAmbienteForm(ModelForm):
     """Docstring"""
+    def __init__(self, *args, **kwargs):
+        super(MuebleAmbienteForm, self).__init__(*args, **kwargs)
+        self.fields['ambiente'].empty_label = "Seleccione el ambiente"
+        self.fields['mueble'].empty_label = "Seleccione el mueble"
+
     class Meta:
         model = Mueble_Ambiente
         fields = '__all__'

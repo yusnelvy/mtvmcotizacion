@@ -25,8 +25,27 @@
 <li class="current">
   <a style="color:#000;"> Página
 
-    {{ estadoscivil.number }}
+    <select title="nro pag." onchange="window.location.href=this.value;">
+      <option value="?page=0">ver todo</option>
+      {% if estadoscivil.paginator.page_range %}
 
+      {% for p in estadoscivil.paginator.page_range %}
+      {% if p == estadoscivil.number %}
+
+      <option value="?page={{p}}" selected>{{p}}</option>
+
+      {% else %}
+
+      <option value="?page={{p}}">{{p}}</option>
+
+      {% endif %}
+
+      {% endfor %}
+
+      {% else %}
+      <option value="?page=1">paginar</option>
+      {% endif %}
+    </select>
     de
 
     {{ estadoscivil.paginator.num_pages }}
@@ -59,7 +78,11 @@
 
 <table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
 <tr class="active">
-  <th>Estado civil</th>
+  <th>
+    Estado civil
+    <a href="?order_by=estado_civil">Asc</a>
+    <a href="?order_by=-estado_civil">Desc</a>
+  </th>
   <th width="80px">Editar</th>
   <th width="80px">Eliminar</th>
 </tr>

@@ -26,8 +26,27 @@
 <li class="current">
   <a style="color:#000;"> Página
 
-    {{ complejidades.number }}
+      <select title="nro pag." onchange="window.location.href=this.value;">
+        <option value="?page=0">ver todo</option>
+        {% if complejidades.paginator.page_range %}
 
+        {% for p in complejidades.paginator.page_range %}
+        {% if p == complejidades.number %}
+
+        <option value="?page={{p}}" selected>{{p}}</option>
+
+        {% else %}
+
+        <option value="?page={{p}}">{{p}}</option>
+
+        {% endif %}
+
+        {% endfor %}
+
+        {% else %}
+        <option value="?page=1">paginar</option>
+        {% endif %}
+      </select>
     de
 
     {{ complejidades.paginator.num_pages }}
@@ -61,7 +80,11 @@
 
 <table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
 <tr class="active">
-  <th>Nivel de complejidad</th>
+  <th>
+    Nivel de complejidad
+    <a href="?order_by=descripcion">Asc</a>
+    <a href="?order_by=-descripcion">Desc</a>
+  </th>
   <th width="80px">Editar</th>
   <th width="80px">Eliminar</th>
 </tr>

@@ -24,7 +24,27 @@
 <li class="current">
   <a style="color:#000;"> Página
 
-    {{ ciudades.number }}
+  <select title="nro pag." onchange="window.location.href=this.value;">
+    <option value="?page=0">ver todo</option>
+    {% if ciudades.paginator.page_range %}
+
+    {% for p in ciudades.paginator.page_range %}
+    {% if p == ciudades.number %}
+
+    <option value="?page={{p}}" selected>{{p}}</option>
+
+    {% else %}
+
+    <option value="?page={{p}}">{{p}}</option>
+
+    {% endif %}
+
+    {% endfor %}
+
+    {% else %}
+    <option value="?page=1">paginar</option>
+    {% endif %}
+  </select>
 
     de
 
@@ -48,7 +68,6 @@
 </li>
 
 {% endif %}
-
 {% endblock pagination %}
    </ul>
 </nav>
@@ -56,25 +75,33 @@
 {% if ciudades %}
 
 <table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
-<tr class="active">
-  <th>Ciudad</th>
-  <th>Provincia</th>
-  <th width="80px">Editar</th>
-  <th width="80px">Eliminar</th>
-</tr>
+  <tr class="active">
+    <th>
+      Ciudad
+      <a href="?order_by=ciudad">Asc</a>
+      <a href="?order_by=-ciudad">Desc</a>
+    </th>
+    <th width="30%">
+      Provincia
+      <a href="?order_by=provincia">Asc</a>
+      <a href="?order_by=-provincia">Desc</a>
+    </th>
+    <th width="80px">Editar</th>
+    <th width="80px">Eliminar</th>
+  </tr>
 
-{% for i in ciudades %}
+  {% for i in ciudades %}
 
-<tr id="tr{{i.pk}}">
-  <td>{{ i.ciudad }} </td>
-  <td>{{ i.provincia }}</td>
-  <td width="80px"><a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'udirecciones:edit_ciudad' i.pk %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a></td>
-  <td width="80px">
-    <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.pk}}" data-name="{{i.ciudad}}"></a>
-  </td>
-</tr>
+  <tr id="tr{{i.pk}}">
+    <td>{{ i.ciudad }} </td>
+    <td>{{ i.provincia }}</td>
+    <td width="80px"><a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'udirecciones:edit_ciudad' i.pk %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a></td>
+    <td width="80px">
+      <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.pk}}" data-name="{{i.ciudad}}"></a>
+    </td>
+  </tr>
 
-{% endfor %}
+  {% endfor %}
 </table>
 {% else %}
 
@@ -85,5 +112,7 @@
 
 {% endif %}
 {% endblock cuerpo_tabla %}
+
+
 
 

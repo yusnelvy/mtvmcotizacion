@@ -1,6 +1,6 @@
 """Doctsring"""
 from django.shortcuts import render, render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, Http404
 from django.views.generic import ListView, DetailView, View, UpdateView, DeleteView
 from presupuesto.models import Presupuesto, Presupuesto_Detalle, \
     Presupuesto_direccion, Presupuesto_servicio, DatosPrecargado
@@ -41,6 +41,8 @@ import traceback
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from mtvmcotizacion.views import get_query
 from django.contrib import messages
+from premisas.models import PerzonalizacionVisual
+from django.core.paginator import InvalidPage
 
 
 class ContactWizard(SessionWizardView):
@@ -68,9 +70,41 @@ class PresupuestoList(ListView):
     context_object_name = 'presupuestos'
     template_name = 'presupuesto_lista.html'
 
+    def get_paginate_by(self, queryset):
+
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          self.request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                          tipo="paginacion")
+        page = self.request.GET.get('page')
+        if page == '0':
+            return None
+        else:
+            return self.request.GET.get('paginate_by', nropag[0]['valor'])
+
+    def get_queryset(self):
+
+        order_by = self.request.GET.get('order_by')
+        if order_by:
+            queryset = Presupuesto.objects.all().order_by(order_by)
+        else:
+            queryset = Presupuesto.objects.all()
+
+        return queryset
+
 
 def search_presupuesto(request):
     """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
 
         search_text = request.POST['search_text']
@@ -81,7 +115,7 @@ def search_presupuesto(request):
         else:
             presupuestos = Presupuesto.objects.all()
 
-    paginator = Paginator(presupuestos, 25)
+    paginator = Paginator(presupuestos, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:

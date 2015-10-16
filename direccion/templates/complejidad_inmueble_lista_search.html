@@ -25,7 +25,27 @@
 <li class="current">
   <a style="color:#000;"> Página
 
-    {{ complejidadinmuebles.number }}
+    <select title="nro pag." onchange="window.location.href=this.value;">
+    <option value="?page=0">ver todo</option>
+    {% if complejidadinmuebles.paginator.page_range %}
+
+    {% for p in complejidadinmuebles.paginator.page_range %}
+    {% if p == complejidadinmuebles.number %}
+
+    <option value="?page={{p}}" selected>{{p}}</option>
+
+    {% else %}
+
+    <option value="?page={{p}}">{{p}}</option>
+
+    {% endif %}
+
+    {% endfor %}
+
+    {% else %}
+    <option value="?page=1">paginar</option>
+    {% endif %}
+   </select>
 
     de
 
@@ -59,10 +79,26 @@
 
 <table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
 <tr class="active">
-  <th>Nivel de complejidad</th>
-  <th>Factor de complejidad (%)</th>
-  <th>Valor x ambiente ($)</th>
-  <th>Valor x m3 ($)</th>
+  <th>
+    Nivel de complejidad
+    <a href="?order_by=complejidad">Asc</a>
+    <a href="?order_by=-complejidad">Desc</a>
+  </th>
+  <th>
+    Factor de complejidad (%)
+    <a href="?order_by=factor">Asc</a>
+    <a href="?order_by=-factor">Desc</a>
+  </th>
+  <th>
+    Valor x ambiente ($)
+    <a href="?order_by=valor_ambiente">Asc</a>
+    <a href="?order_by=-valor_ambiente">Desc</a>
+  </th>
+  <th>
+    Valor x m3 ($)
+    <a href="?order_by=valor_metrocubico">Asc</a>
+    <a href="?order_by=-valor_metrocubico">Desc</a>
+  </th>
   <th width="80px">Editar</th>
   <th width="80px">Eliminar</th>
 </tr>

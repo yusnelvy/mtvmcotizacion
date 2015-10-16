@@ -27,6 +27,27 @@
   <a style="color:#000;"> Página
 
     {{ vehiculos.number }}
+    <select title="nro pag." onchange="window.location.href=this.value;">
+      <option value="?page=0">ver todo</option>
+      {% if vehiculos.paginator.page_range %}
+
+      {% for p in vehiculos.paginator.page_range %}
+      {% if p == vehiculos.number %}
+
+      <option value="?page={{p}}" selected>{{p}}</option>
+
+      {% else %}
+
+      <option value="?page={{p}}">{{p}}</option>
+
+      {% endif %}
+
+      {% endfor %}
+
+      {% else %}
+      <option value="?page=1">paginar</option>
+      {% endif %}
+    </select>
 
     de
 
@@ -62,12 +83,36 @@
 <table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
 <tr class="active">
   <th>Cant</th>
-  <th>Modelo</th>
-  <th>Tarifa ($/h)</th>
-  <th>Tarifa ($/Km)</th>
-  <th>Capacidad (m3)</th>
-  <th>Capacidad (Kg)</th>
-  <th>Conductor</th>
+  <th>
+    Modelo
+    <a href="?order_by=modelo">Asc</a>
+    <a href="?order_by=-modelo">Desc</a>
+  </th>
+  <th>
+    Tarifa ($/h)
+    <a href="?order_by=tarifa_hora">Asc</a>
+    <a href="?order_by=-tarifa_hora">Desc</a>
+  </th>
+  <th>
+    Tarifa ($/Km)
+    <a href="?order_by=tarifa_recorrido">Asc</a>
+    <a href="?order_by=-tarifa_recorrido">Desc</a>
+  </th>
+  <th>
+    Capacidad (m3)
+    <a href="?order_by=capacidad_volumen">Asc</a>
+    <a href="?order_by=-capacidad_volumen">Desc</a>
+  </th>
+  <th>
+    Capacidad (Kg)
+    <a href="?order_by=capacidad_peso">Asc</a>
+    <a href="?order_by=-capacidad_peso">Desc</a>
+  </th>
+  <th>
+    Conductor
+    <a href="?order_by=cargo">Asc</a>
+    <a href="?order_by=-cargo">Desc</a>
+  </th>
   <th>Editar</th>
   <th>Eliminar</th>
 </tr>

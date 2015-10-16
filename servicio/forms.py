@@ -3,6 +3,7 @@ from django.forms import ModelForm, TextInput
 from servicio.models import Servicio, Material, \
     Servicio_Material, Complejidad, \
     Complejidad_Servicio, Unidad
+from django import forms
 
 
 class ServicioForm(ModelForm):
@@ -17,6 +18,10 @@ class ServicioForm(ModelForm):
 
 class MaterialForm(ModelForm):
     """docstring"""
+    def __init__(self, *args, **kwargs):
+        super(MaterialForm, self).__init__(*args, **kwargs)
+        self.fields['unidad'].empty_label = "Seleccione la unidad"
+
     class Meta:
         model = Material
         fields = [
@@ -29,7 +34,8 @@ class MaterialForm(ModelForm):
             'precio',
             'contenedor',
             'capacidad_peso',
-            'capacidad_volumen'
+            'capacidad_volumen',
+            'recuperable'
         ]
         labels = {
             'material': ('Nombre del material'),
@@ -45,9 +51,37 @@ class MaterialForm(ModelForm):
             'unidad': ('Unidad de medida'),
         }
 
+    def clean_capacidad_peso(self):
+        diccionario_limpio = self.cleaned_data
+
+        capacidad_peso = diccionario_limpio.get('capacidad_peso')
+        contenedor = diccionario_limpio.get('contenedor')
+
+        if contenedor:
+            if capacidad_peso <= 0:
+                raise forms.ValidationError("La capacidad de contener objetos (m3) debe ser mayor a cero")
+
+        return capacidad_peso
+
+    def clean_capacidad_volumen(self):
+        diccionario_limpio = self.cleaned_data
+
+        capacidad_volumen = diccionario_limpio.get('capacidad_volumen')
+        contenedor = diccionario_limpio.get('contenedor')
+
+        if contenedor:
+            if capacidad_volumen <= 0:
+                raise forms.ValidationError("La capacidad de contener objetos (kg) debe ser mayor a cero")
+
+        return capacidad_volumen
+
 
 class ServicioMaterialForm(ModelForm):
     """docstring"""
+    def __init__(self, *args, **kwargs):
+        super(ServicioMaterialForm, self).__init__(*args, **kwargs)
+        self.fields['material'].empty_label = "Seleccione el material"
+
     class Meta:
         model = Servicio_Material
         fields = '__all__'
@@ -55,7 +89,7 @@ class ServicioMaterialForm(ModelForm):
             'servicio': ('Nombre del servicio'),
             'material': ('Nombre del material'),
             'cantidad': ('Cantidad de material aplicado al servicio'),
-            'Calculo': ('Forma de cálculo del material consumido')
+            'calculo': ('Forma de cálculo del material consumido')
             }
         widgets = {
             'cantidad': TextInput(attrs={'readonly': 'readonly'})
@@ -74,6 +108,10 @@ class ComplejidadForm(ModelForm):
 
 class ComplejidadServicioForm(ModelForm):
     """docstring"""
+    def __init__(self, *args, **kwargs):
+        super(ComplejidadServicioForm, self).__init__(*args, **kwargs)
+        self.fields['complejidad'].empty_label = "Seleccione el nivel de complejidad"
+
     class Meta:
         model = Complejidad_Servicio
         fields = '__all__'

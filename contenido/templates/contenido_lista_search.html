@@ -27,7 +27,27 @@
   <a style="color:#000;"> Página
 
     {{ contenidos.number }}
+    <select title="nro pag." onchange="window.location.href=this.value;">
+      <option value="?page=0">ver todo</option>
+      {% if contenidos.paginator.page_range %}
 
+      {% for p in contenidos.paginator.page_range %}
+      {% if p == contenidos.number %}
+
+      <option value="?page={{p}}" selected>{{p}}</option>
+
+      {% else %}
+
+      <option value="?page={{p}}">{{p}}</option>
+
+      {% endif %}
+
+      {% endfor %}
+
+      {% else %}
+      <option value="?page=1">paginar</option>
+      {% endif %}
+    </select>
     de
 
     {{ contenidos.paginator.num_pages }}
@@ -61,7 +81,11 @@
 
 <table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
 <tr class="active">
-  <th rowspan="2" style="vertical-align: middle;">Contenido</th>
+  <th rowspan="2" style="vertical-align: middle;">
+    Contenido
+    <a href="?order_by=contenido">Asc</a>
+    <a href="?order_by=-contenido">Desc</a>
+  </th>
   <th colspan="4">Densidad en Kg/m3</th>
   <th width="80px" rowspan="2" style="vertical-align: middle;">Editar</th>
   <th width="80px" rowspan="2" style="vertical-align: middle;">Eliminar</th>

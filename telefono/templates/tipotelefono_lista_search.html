@@ -25,7 +25,27 @@
 <li class="current">
   <a style="color:#000;"> Página
 
-    {{ tipostelefono.number }}
+    <select title="nro pag." onchange="window.location.href=this.value;">
+      <option value="?page=0">ver todo</option>
+      {% if tipostelefono.paginator.page_range %}
+
+      {% for p in tipostelefono.paginator.page_range %}
+      {% if p == tipostelefono.number %}
+
+      <option value="?page={{p}}" selected>{{p}}</option>
+
+      {% else %}
+
+      <option value="?page={{p}}">{{p}}</option>
+
+      {% endif %}
+
+      {% endfor %}
+
+      {% else %}
+      <option value="?page=1">paginar</option>
+      {% endif %}
+    </select>
 
     de
 
@@ -59,7 +79,11 @@
 
 <table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
 <tr class="active">
-    <th>Tipo de teléfono</th>
+    <th>
+      Tipo de teléfono
+      <a href="?order_by=tipo_telefono">Asc</a>
+      <a href="?order_by=-tipo_telefono">Desc</a>
+    </th>
     <th width="80px">Editar</th>
     <th width="80px">Eliminar</th>
 </tr>

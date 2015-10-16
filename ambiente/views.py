@@ -14,23 +14,38 @@ import simplejson as json
 import django.db
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from mtvmcotizacion.views import get_query
+from premisas.models import PerzonalizacionVisual
 
 
 def lista_ambiente(request):
     """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
 
-    lista_ambiente = Ambiente.objects.all()
-    paginator = Paginator(lista_ambiente, 25)
+    order_by = request.GET.get('order_by')
+    if order_by:
+        lista_ambiente = Ambiente.objects.all().order_by(order_by)
+    else:
+        lista_ambiente = Ambiente.objects.all()
+    paginator = Paginator(lista_ambiente, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
-    try:
-        ambientes = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        ambientes = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        ambientes = paginator.page(paginator.num_pages)
+    if page == '0':
+        ambientes = lista_ambiente
+    else:
+        try:
+            ambientes = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            ambientes = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            ambientes = paginator.page(paginator.num_pages)
 
     ambiente_links = zip(['Ambientes por tipo de inmueble', ],
                          ['uambientes:lista_ambiente_tipo_inmueble', ])
@@ -42,7 +57,13 @@ def lista_ambiente(request):
 
 def search_ambiente(request):
     """docstring"""
-
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -71,7 +92,7 @@ def search_ambiente(request):
         else:
             lista_ambiente = Ambiente.objects.all()
 
-    paginator = Paginator(lista_ambiente, 25)
+    paginator = Paginator(lista_ambiente, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -93,6 +114,13 @@ def search_ambiente(request):
 
 def lista_ambiente_tipo_inmueble(request):
     """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -113,9 +141,10 @@ def lista_ambiente_tipo_inmueble(request):
             except:
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
     lista_inmueble = Tipo_Inmueble.objects.filter()
     lista_ambtipoinmueble = Ambiente_Tipo_inmueble.objects.all()
-    paginator = Paginator(lista_inmueble, 25)
+    paginator = Paginator(lista_inmueble, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:

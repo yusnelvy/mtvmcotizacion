@@ -24,7 +24,27 @@
 <li class="current">
   <a style="color:#000;"> Página
 
-    {{ paises.number }}
+    <select title="nro pag." onchange="window.location.href=this.value;">
+    <option value="?page=0">ver todo</option>
+    {% if paises.paginator.page_range %}
+
+    {% for p in paises.paginator.page_range %}
+    {% if p == paises.number %}
+
+    <option value="?page={{p}}" selected>{{p}}</option>
+
+    {% else %}
+
+    <option value="?page={{p}}">{{p}}</option>
+
+    {% endif %}
+
+    {% endfor %}
+
+    {% else %}
+    <option value="?page=1">paginar</option>
+    {% endif %}
+    </select>
 
     de
 
@@ -57,27 +77,33 @@
 {% if paises %}
 
 <table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
-<tr class="active">
-  <th>Pais</th>
-  <th width="80px">Editar</th>
-  <th width="80px">Eliminar</th>
-</tr>
 
-{% for i in paises %}
+  <tr class="active">
+    <th>
+      Pais
+      <a href="?order_by=pais">Asc</a>
+      <a href="?order_by=-pais">Desc</a>
+    </th>
+    <th width="80px">Editar</th>
+    <th width="80px">Eliminar</th>
+  </tr>
 
-<tr id="tr{{i.pk}}">
-  <td>
+  {% for i in paises %}
 
-    {{ i.pais }}
+  <tr id="tr{{i.pk}}">
+    <td>
 
-  </td>
-  <td width="80px"><a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'udirecciones:edit_pais' i.pk %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a></td>
-  <td width="80px">
-    <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.pk}}" data-name="{{i.pais}}"></a>
-  </td>
-</tr>
+      {{ i.pais }}
 
-{% endfor %}
+    </td>
+    <td width="80px"><a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'udirecciones:edit_pais' i.pk %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a></td>
+    <td width="80px">
+      <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.pk}}" data-name="{{i.pais}}"></a>
+    </td>
+  </tr>
+
+  {% endfor %}
+
 </table>
 {% else %}
 

@@ -26,6 +26,10 @@ class ProvinciaForm(ModelForm):
     """
     Docstring documentación pendiente
     """
+    def __init__(self, *args, **kwargs):
+        super(ProvinciaForm, self).__init__(*args, **kwargs)
+        self.fields['pais'].empty_label = "Seleccione el pais"
+
     class Meta:
         model = Provincia
         fields = '__all__'
@@ -39,6 +43,11 @@ class CiudadForm(ModelForm):
     """
     Docstring documentación pendiente
     """
+    def __init__(self, *args, **kwargs):
+        super(CiudadForm, self).__init__(*args, **kwargs)
+        self.fields['pais'].empty_label = "Seleccione el pais"
+        self.fields['provincia'].empty_label = "Seleccione la provincia"
+
     class Meta:
         model = Ciudad
         fields = '__all__'
@@ -53,6 +62,12 @@ class ZonaForm(ModelForm):
     """
     Docstring documentación pendiente
     """
+    def __init__(self, *args, **kwargs):
+        super(ZonaForm, self).__init__(*args, **kwargs)
+        self.fields['pais'].empty_label = "Seleccione el pais"
+        self.fields['provincia'].empty_label = "Seleccione la provincia"
+        self.fields['ciudad'].empty_label = "Seleccione la ciudad"
+
     class Meta:
         model = Zona
         fields = '__all__'

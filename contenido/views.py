@@ -12,25 +12,39 @@ import django.db
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from mtvmcotizacion.views import get_query
+from premisas.models import PerzonalizacionVisual
 
 
 # Create your views here.
 # lista
 def lista_contenido(request):
     """docstring"""
-
-    lista_contenido = Contenido.objects.all()
-    paginator = Paginator(lista_contenido, 25)
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
+    order_by = request.GET.get('order_by')
+    if order_by:
+        lista_contenido = Contenido.objects.all().order_by(order_by)
+    else:
+        lista_contenido = Contenido.objects.all()
+    paginator = Paginator(lista_contenido, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
-    try:
-        contenidos = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        contenidos = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        contenidos = paginator.page(paginator.num_pages)
+    if page == '0':
+        contenidos = lista_contenido
+    else:
+        try:
+            contenidos = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            contenidos = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            contenidos = paginator.page(paginator.num_pages)
 
     context = {'lista_contenido': lista_contenido, 'contenidos': contenidos}
     return render(request, 'contenido_lista.html', context)
@@ -38,7 +52,13 @@ def lista_contenido(request):
 
 def search_contenido(request):
     """docstring"""
-
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -67,7 +87,7 @@ def search_contenido(request):
         else:
             lista_contenido = Contenido.objects.all()
 
-    paginator = Paginator(lista_contenido, 25)
+    paginator = Paginator(lista_contenido, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -85,7 +105,13 @@ def search_contenido(request):
 
 def buscar_contenidotipico(request, idmueble=0):
     """docstring"""
-
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -124,7 +150,7 @@ def buscar_contenidotipico(request, idmueble=0):
         lista_mueble = Mueble.objects.all()
         mensaje = ""
 
-    paginator = Paginator(lista_mueble, 25)
+    paginator = Paginator(lista_mueble, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -142,7 +168,13 @@ def buscar_contenidotipico(request, idmueble=0):
 
 def buscar_contenidoservicio(request, idservicio=0):
     """docstring"""
-
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -180,7 +212,7 @@ def buscar_contenidoservicio(request, idservicio=0):
         mensaje = ""
 
     lista_contenido = Contenido.objects.all()
-    paginator = Paginator(lista_contenido, 25)
+    paginator = Paginator(lista_contenido, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
