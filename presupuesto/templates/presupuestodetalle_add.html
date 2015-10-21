@@ -13,6 +13,11 @@
     <input type="text" id="capacidadmueble">
     <input type="text" id="volmaterial">
     <input type="text" id="pesomaterial">
+    <p>
+      <button class="btn btn-default" id="btn-calcularcontenedor" type="button">
+        Calcular contenedor
+      </button>
+    </p>
     <p id="msjcontenedor"></p>
   </div>
 
@@ -36,23 +41,31 @@
 <script src="/static/js/presupuestoForm/preDetalle.js"></script>
 
 <script>
+//$(".campo").eq(2).addClass("selectAmbiente");
 var densidadBaja = 0
 var densidadMedia = 0
 var densidadAlta = 0
 var densidadMuyAlta = 0
 
-setTimeout(function() {
+$(document).ready(function() {
+
+  $('.campo p .zelect .zelected').eq(0).addClass('selectAmbiente');
+  $('.campo p .zelect .zelected').eq(1).addClass('selectMueble');
+
+  setTimeout(function() {
   var idAmbinete = $(parent.document.getElementsByClassName(
-    "id_opcionMueble")).attr('id');
+    "id_opcionFormulario")).attr('id');
   if (idAmbinete=="ambienteFocus") {
     document.getElementById('id_lista_ambiente').focus();
+    $('.selectAmbiente').click();
   } else {
     document.getElementById('id_lista_mueble').focus();
     document.getElementById('id_lista_ambiente').disabled = true;
+    $('.selectMueble').click();
   }
 }, 500);
 
-$(document).ready(function() {
+
   $("#id_lista_ambiente").on("change", function() {
     id_lista_ambiente = $("#id_lista_ambiente").val();
     $("#id_ambiente").val(id_lista_ambiente);
@@ -91,7 +104,7 @@ $(document).ready(function() {
         for(var i=0; i<lista_descripcionDensidadContenido.length; i++) {
           if (lista_descripcionDensidadContenido[i].value == 'Media') {
             $(lista_descripcionDensidadContenido[i]).attr("checked","checked");
-            radioColor('descripcion_densidadcontenido');
+            radioColorBlue('descripcion_densidadcontenido');
           }
         }
 
@@ -99,7 +112,7 @@ $(document).ready(function() {
         for(var i=0; i<lista_ocupacion.length; i++) {
           if (data[0].ocupacion==lista_ocupacion[i].value) {
             $(lista_ocupacion[i]).attr("checked","checked");
-            radioColor('lista_ocupacion');
+            radioColorBlue('lista_ocupacion');
           }
         }
         if (data[0].trasladable == true) {
@@ -115,7 +128,7 @@ $(document).ready(function() {
             volumen = calcular_volumen($("#id_ancho").val(), $(
             "#id_largo").val(), $("#id_alto").val(), $("#id_cantidad").val());
             $("#id_volumen_mueble").val(volumen);
-            radioColor('lista_tamano');
+            radioColorBlue('lista_tamano');
             inputContenido('ocultar');
           }
         }
@@ -125,6 +138,7 @@ $(document).ready(function() {
           inputContenido('ocultar');
         } else {
           inputContenido('mostrar');
+          calculoscontenido();
         }
       });
   });
@@ -143,10 +157,6 @@ $(document).ready(function() {
           "#id_largo").val(), $("#id_alto").val(), $("#id_cantidad").val());
         $("#id_volumen_mueble").val(volumen);
         calculoscontenido();
-        $("#msjcontenedor").text("Peso del contenido: " +
-          $("#id_peso_contenido").val() +
-          "kg número de contenedores " +
-          $("#id_cantidad_contenedor").val());
       });
   });
 
@@ -185,56 +195,50 @@ $(document).ready(function() {
           inputContenido('ocultar');
         } else {
           inputContenido('mostrar');
+          calculoscontenido();
         }
-        calculoscontenido();
-        descripcionmensaje();
       });
   });
 
-  $('#id_ancho').on('change', function() {
+  $('#id_ancho').on('keyup', function() {
     volumen = calcular_volumen($(this).val(), $(
       "#id_largo").val(), $("#id_alto").val(), $("#id_cantidad").val());
     $("#id_volumen_mueble").val(volumen);
     calculoscontenido();
-    descripcionmensaje();
   });
 
-  $('#id_largo').on('change', function() {
+  $('#id_largo').on('keyup', function() {
     volumen = calcular_volumen($("#id_ancho").val(), $(
       this).val(), $("#id_alto").val(), $("#id_cantidad").val());
     $("#id_volumen_mueble").val(volumen);
     calculoscontenido();
-    descripcionmensaje();
   });
 
-  $('#id_alto').on('change', function() {
+  $('#id_alto').on('keyup', function() {
     volumen = calcular_volumen($("#id_ancho").val(), $(
       "#id_largo").val(), $(this).val(), $("#id_cantidad").val());
     $("#id_volumen_mueble").val(volumen);
     calculoscontenido();
-    descripcionmensaje();
   });
 
-  $("#id_cantidad").on('change', function() {
+  $("#id_cantidad").on('keyup', function() {
     // al cambiar la cantidad de muebles se recalcula el volumen del contenido y todo los calculos posteriores al él
     volumen = calcular_volumen($("#id_ancho").val(), $(
       "#id_largo").val(), $("#id_alto").val(), $("#id_cantidad").val());
     $("#id_volumen_mueble").val(volumen);
     calculoscontenido();
-    descripcionmensaje();
   });
 
   $("#id_descripcion_contenido").change(function() {
     cargarinformacioncontenido();
-    calculoscontenido();
-    descripcionmensaje();
     if ($("#id_descripcion_contenido").val() == 'Sin contenido') {
       $('label[for=id_lista_ocupacion_0]').click();
-      radioColor('lista_ocupacion');
+      radioColorBlue('lista_ocupacion');
       inputContenido('ocultar');
 
     } else {
       inputContenido('mostrar');
+      calculoscontenido();
     }
   });
 
@@ -248,8 +252,6 @@ $(document).ready(function() {
     } else if ($('input[name=descripcion_densidadcontenido]:checked').val() == 'Muy alta'){
       $("#id_densidadcontenido").val(densidadMuyAlta);
     }
-    calculoscontenido();
-    descripcionmensaje();
   });
 
 //obj = document.getElementById("id_descripcion_contenedor");
@@ -264,15 +266,14 @@ $(document).ready(function() {
         $("#id_capacidad_volumen_contenedor").val(data[0].capacidadvolcontenedor);
         $("#id_capacidad_peso_contenedor").val(data[0].capacidadpesocontenedor);
       });
-      calculoscontenido();
-      descripcionmensaje();
   });
   // ev = document.createEvent('Event');
   // ev.initEvent('change', true, false);
   // obj.dispatchEvent(ev);
 
-  $("#id_descripcion_contenedor").on("focusout", function() {
+  $("#btn-calcularcontenedor").click(function () {
     calculoscontenido();
+    calculoscontenedor();
     descripcionmensaje();
   });
 
@@ -309,7 +310,9 @@ $(document).ready(function() {
       "#id_volumen_contenido").val(), $(
       "#id_densidadcontenido").val());
     $("#id_peso_contenido").val(peso_contenido);
+  }
 
+  function calculoscontenedor() {
     cant_contenedor = calcular_cantidadcontenedor($(
       "#id_volumen_contenido").val(), $(
       "#id_capacidad_volumen_contenedor").val(), $(
@@ -329,6 +332,10 @@ $(document).ready(function() {
   }
 
   $('#myform').submit(function() {
+    calculoscontenido();
+    calculoscontenedor();
+    descripcionmensaje();
+
     disabledBtn($('.registrar'));
     document.getElementById('id_lista_ambiente').disabled = false;
     var action = "{% url 'upresupuestos:PresupuestoDetalleView' %}";
@@ -336,8 +343,8 @@ $(document).ready(function() {
     $.ajax( {
       url: action,
       type: 'POST',
-      data: that.serialize()
-      ,success: function(data) {
+      data: that.serialize(),
+      success: function(data) {
         var modalp = parent.document.getElementById('myModalAmbiente');
         var divp = parent.document.getElementsByClassName("modal-backdrop");
         var bodyp = parent.document.getElementById('id_body');
@@ -348,21 +355,20 @@ $(document).ready(function() {
           $(guardar).css('width','300px');
           $(guardar).text('Mueble guardado con exito');
           $(guardar).fadeIn();
-          setTimeout(function() {
-            parent.location.reload();
-          }, 1000);
+          parent.location.reload();
         }
       }
     });
     return false;
   });
 
+enterNone();
+
   $('#btn-cancelar').click(function() {
     cerrarModal(parent.document.getElementById('btn-cerrarModal'),
       parent.document.getElementById('msjEliminado')
       );
   });
-
 });
 </script>
 <script type="text/javascript">

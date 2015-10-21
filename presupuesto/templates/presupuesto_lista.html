@@ -1,5 +1,4 @@
 {% extends 'base_lista.html' %}
-
 {% block link_navegacion %}
 
 <li class="linknav"><a width="" href="{% url 'upresupuestos:DatosPrecargadoUpdate' 1 %}?next={{request.get_full_path}}">Datos precargados</a></li>
@@ -36,93 +35,13 @@ Eliminar presupuesto
 
 {% endblock titulo_tabla %}
 
-{% if presupuestos %}
+{% block contenidogeneral %}
 
-{% block cantidad_tabla %}
+ <div id="search-results">
+   {% include "presupuesto_lista_search.html" %}
+ </div>
 
-<h6>Cantidad de registros encontrados:
-  <span class="badge" id="count_reg">
-
-    {{ presupuestos.count }}
-
-  </span>
-</h6>
-
-{% endblock cantidad_tabla %}
-
-{% block pagination %}
-
-{% if page_obj.has_previous %}
-
-<li>
-  <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-</li>
-
-{% endif %}
-
-<li class="current">
-  <a style="color:#000;"> Página
-
-    {{ page_obj.number }}
-
-    de
-
-    {{ page_obj.paginator.num_pages }}
-
-    desde el presupuesto
-
-    {{ page_obj.start_index }}
-
-    hasta el presupuesto
-
-    {{ page_obj.end_index }}
-
-  </a>
-</li>
-
-{% if page_obj.has_next %}
-
-<li>
-  <a href="?page={{ page_obj.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-</li>
-
-{% endif %}
-
-{% endblock pagination %}
-
-{% block cuerpo_tabla %}
-
-<tr class="active">
-  <th width="50px">N°</th>
-  <th width="80px">Fecha</th>
-  <th width="100px">DNI</th>
-  <th>Nombre del solicitante</th>
-  <th>Empresa</th>
-  <th width="80px">Ficha</th>
-  <th width="80px">Eliminar</th>
-</tr>
-
-{% for i in presupuestos %}
-
-<tr id="tr{{i.id}}">
-  <td>{{ i.id }}</td>
-  <td>{{ i.fecha_creacion|date:"d/m/Y" }}</td>
-  <td>{{ i.dni }}</td>
-  <td>{{ i.nombre_cliente }}</td>
-  <td>{{ i.empresa_cliente }}</td>
-  <td>
-    <a class="glyphicon glyphicon-file"  data-placement="left" data-toggletooltip="tooltip" href="{% url 'upresupuestos:PresupuestoDetail' i.id %}?next={{request.get_full_path}}" title="Ver ficha"></a>
-  </td>
-  <td>
-    <a class="glyphicon glyphicon-remove botonmodalEliminar" data-nombre="presupuesto N° {{ i.id }}" data-numero="{{ i.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDelete' i.id %}" data-target=".eliminar" data-toggle="modal" data-placement="left" data-toggletooltip="tooltip" title="Eliminar registro {{ i.id }}"></a>
-  </td>
-</tr>
-
-{% endfor %}
-
-{% endblock cuerpo_tabla %}
-
-{% endif %}
+{% endblock contenidogeneral%}
 
 {% block ayuda %}
 
@@ -131,4 +50,27 @@ Eliminar presupuesto
 </div>
 
 {% endblock ayuda %}
+{% block js_sup %}
+<script>
+$(function(){
 
+  $('#search').keyup(function(){
+    $.ajax({
+      type: "POST",
+      url: "{% url 'upresupuestos:search_presupuesto' %}",
+      data: {
+        'search_text': $('#search').val(),
+        'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+      },
+      success: searchSuccess,
+      dataType: 'Html'
+    });
+  });
+});
+
+function searchSuccess(data, textStatus, jqXHR){
+  $('#search-results').html(data)
+}
+</script>
+
+{% endblock js_sup %}

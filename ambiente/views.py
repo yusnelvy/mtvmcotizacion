@@ -13,11 +13,57 @@ from django.template import RequestContext
 import simplejson as json
 import django.db
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from mtvmcotizacion.views import get_query
+from premisas.models import PerzonalizacionVisual
 
 
 def lista_ambiente(request):
     """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
 
+    order_by = request.GET.get('order_by')
+    if order_by:
+        lista_ambiente = Ambiente.objects.all().order_by(order_by)
+    else:
+        lista_ambiente = Ambiente.objects.all()
+    paginator = Paginator(lista_ambiente, nropag[0]['valor'])
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    if page == '0':
+        ambientes = lista_ambiente
+    else:
+        try:
+            ambientes = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            ambientes = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            ambientes = paginator.page(paginator.num_pages)
+
+    ambiente_links = zip(['Ambientes por tipo de inmueble', ],
+                         ['uambientes:lista_ambiente_tipo_inmueble', ])
+
+    context = {'lista_ambiente': lista_ambiente, 'ambientes': ambientes,
+               'ambiente_links': ambiente_links}
+    return render(request, 'ambiente_lista.html', context)
+
+
+def search_ambiente(request):
+    """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -39,8 +85,14 @@ def lista_ambiente(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_ambiente = Ambiente.objects.all()
-    paginator = Paginator(lista_ambiente, 25)
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['ambiente', ])
+            lista_ambiente = Ambiente.objects.filter(entry_query)
+        else:
+            lista_ambiente = Ambiente.objects.all()
+
+    paginator = Paginator(lista_ambiente, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -57,11 +109,18 @@ def lista_ambiente(request):
 
     context = {'lista_ambiente': lista_ambiente, 'ambientes': ambientes,
                'ambiente_links': ambiente_links}
-    return render(request, 'ambiente_lista.html', context)
+    return render_to_response('ambiente_lista_search.html', context)
 
 
 def lista_ambiente_tipo_inmueble(request):
     """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -82,9 +141,10 @@ def lista_ambiente_tipo_inmueble(request):
             except:
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
     lista_inmueble = Tipo_Inmueble.objects.filter()
     lista_ambtipoinmueble = Ambiente_Tipo_inmueble.objects.all()
-    paginator = Paginator(lista_inmueble, 25)
+    paginator = Paginator(lista_inmueble, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:

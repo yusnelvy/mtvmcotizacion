@@ -13,127 +13,56 @@ from django.template import RequestContext
 import simplejson as json
 import django.db
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Q
-
-
-import re
-
-
-def normalize_query(query_string,
-                    findterms=re.compile(r'"([^"]+)"|(\S+)').findall,
-                    normspace=re.compile(r'\s{2,}').sub):
-    ''' Splits the query string in invidual keywords, getting rid of unecessary spaces
-        and grouping quoted words together.
-        Example:
-
-        >>> normalize_query('  some random  words "with   quotes  " and   spaces')
-        ['some', 'random', 'words', 'with quotes', 'and', 'spaces']
-
-    '''
-    return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)]
-
-
-def get_query(query_string, search_fields):
-    ''' Returns a query, that is a combination of Q objects. That combination
-        aims to search keywords within a model by testing the given search fields.
-
-    '''
-    query = None  # Query to search for every search term
-    terms = normalize_query(query_string)
-    for term in terms:
-        or_query = None  # Query to search for a given term in each field
-        for field_name in search_fields:
-            q = Q(**{"%s__icontains" % field_name: term})
-            if or_query is None:
-                or_query = q
-            else:
-                or_query = or_query | q
-        if query is None:
-            query = or_query
-        else:
-            query = query & or_query
-    return query
+from mtvmcotizacion.views import get_query
+from premisas.models import PerzonalizacionVisual
 
 
 # Create your views here.
-
-def search_provincia(request):
-    if request.method == "POST":
-        search_text = request.POST['search_text']
-        if search_text is not None and search_text != u"":
-            entry_query = get_query(search_text, ['provincia', 'pais__pais', ])
-            lista_provincia = Provincia.objects.filter(entry_query)
-        else:
-            lista_provincia = Provincia.objects.all()
-
-    paginator = Paginator(lista_provincia, 25)
-
-    page = request.GET.get('page')
-    try:
-        provincias = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        provincias = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        provincias = paginator.page(paginator.num_pages)
-
-    return render_to_response('provincia_lista_search.html', {'lista_provincia': lista_provincia, 'provincias': provincias})
-
-
-def search_pais(request):
-    if request.method == "POST":
-        search_text = request.POST['search_text']
-        if search_text is not None and search_text != u"":
-            entry_query = get_query(search_text, ['pais', ])
-            lista_pais = Pais.objects.filter(entry_query)
-        else:
-            lista_pais = Pais.objects.all()
-
-    paginator = Paginator(lista_pais, 25)
-    # Show 25 contacts per page
-    page = request.GET.get('page')
-    try:
-        paises = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        paises = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        paises = paginator.page(paginator.num_pages)
-
-    return render_to_response('pais_lista_search.html', {'lista_pais': lista_pais, 'paises': paises})
-
-
-def search_ciudad(request):
-    """docstring"""
-    if request.method == "POST":
-        search_text = request.POST['search_text']
-        if search_text is not None and search_text != u"":
-            entry_query = get_query(search_text, ['ciudad', 'provincia__provincia', 'pais__pais', ])
-            lista_ciudad = Ciudad.objects.filter(entry_query)
-        else:
-            lista_ciudad = Ciudad.objects.all()
-
-    paginator = Paginator(lista_ciudad, 25)
-    # Show 25 contacts per page
-    page = request.GET.get('page')
-    try:
-        ciudades = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        ciudades = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        ciudades = paginator.page(paginator.num_pages)
-    context = {'lista_ciudad': lista_ciudad, 'ciudades': ciudades}
-    return render(request, 'ciudad_lista_search.html', context)
-
-
 # lista
 def lista_pais(request):
     """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
+    order_by = request.GET.get('order_by')
+    if order_by:
+        lista_pais = Pais.objects.all().order_by(order_by)
+    else:
+        lista_pais = Pais.objects.all()
 
+    paginator = Paginator(lista_pais, nropag[0]['valor'])
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    if page == '0':
+        paises = lista_pais
+    else:
+        try:
+            paises = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            paises = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            paises = paginator.page(paginator.num_pages)
+
+    context = {'lista_pais': lista_pais, 'paises': paises}
+    #return render(request, 'pais_lista.html', context)
+    return render_to_response('pais_lista.html',
+                              context, context_instance=RequestContext(request))
+
+
+def search_pais(request):
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -160,19 +89,14 @@ def lista_pais(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_pais = Pais.objects.all()
-
-    if request.is_ajax() and request.POST:
-        if request.POST['search_text']:
-            search_text = request.POST['search_text']
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['pais', ])
+            lista_pais = Pais.objects.filter(entry_query)
         else:
-            search_text = ''
+            lista_pais = Pais.objects.all()
 
-        lista_pais = Pais.objects.filter(pais__icontains=search_text)
-
-        return render_to_response('object_list.html', {'paises': lista_pais}, context_instance=RequestContext(request))
-
-    paginator = Paginator(lista_pais, 25)
+    paginator = Paginator(lista_pais, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -184,13 +108,53 @@ def lista_pais(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         paises = paginator.page(paginator.num_pages)
 
-    context = {'lista_pais': lista_pais, 'paises': paises}
-    #return render(request, 'pais_lista.html', context)
-    return render_to_response('pais_lista.html', context, context_instance=RequestContext(request))
+    return render_to_response('pais_lista_search.html',
+                              {'lista_pais': lista_pais, 'paises': paises})
 
 
 def lista_provincia(request):
     """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
+    order_by = request.GET.get('order_by')
+    if order_by:
+        lista_provincia = Provincia.objects.all().order_by(order_by)
+    else:
+        lista_provincia = Provincia.objects.all()
+
+    paginator = Paginator(lista_provincia, nropag[0]['valor'])
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+
+    if page == '0':
+        provincias = lista_provincia
+    else:
+        try:
+            provincias = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            provincias = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            provincias = paginator.page(paginator.num_pages)
+    context = {'lista_provincia': lista_provincia, 'provincias': provincias}
+    return render(request, 'provincia_lista.html', context)
+
+
+def search_provincia(request):
+
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
 
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -214,10 +178,15 @@ def lista_provincia(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_provincia = Provincia.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['provincia', 'pais__pais', ])
+            lista_provincia = Provincia.objects.filter(entry_query)
+        else:
+            lista_provincia = Provincia.objects.all()
 
-    paginator = Paginator(lista_provincia, 25)
-    # Show 25 contacts per page
+    paginator = Paginator(lista_provincia, nropag[0]['valor'])
+
     page = request.GET.get('page')
     try:
         provincias = paginator.page(page)
@@ -227,17 +196,53 @@ def lista_provincia(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         provincias = paginator.page(paginator.num_pages)
-    context = {'lista_provincia': lista_provincia, 'provincias': provincias}
-    return render(request, 'provincia_lista.html', context)
+
+    return render_to_response('provincia_lista_search.html', {'lista_provincia': lista_provincia, 'provincias': provincias})
 
 
 def lista_ciudad(request):
     """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
+    order_by = request.GET.get('order_by')
+    if order_by:
+        lista_ciudad = Ciudad.objects.all().order_by(order_by)
+    else:
+        lista_ciudad = Ciudad.objects.all()
 
+    paginator = Paginator(lista_ciudad, nropag[0]['valor'])
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    if page == '0':
+        ciudades = lista_ciudad
+    else:
+        try:
+            ciudades = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            ciudades = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            ciudades = paginator.page(paginator.num_pages)
+    context = {'lista_ciudad': lista_ciudad, 'ciudades': ciudades}
+    return render(request, 'ciudad_lista.html', context)
+
+
+def search_ciudad(request):
+    """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
-        search_text = request.POST.get('q', '')
-        lista_ciudad = Ciudad.objects.filter(Q(ciudad__icontains=search_text) | Q(provincia__provincia__icontains=search_text))
-
         if "item_id" in request.POST:
             try:
                 id_ciudad = request.POST['item_id']
@@ -258,10 +263,18 @@ def lista_ciudad(request):
 
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['ciudad', 'provincia__provincia', 'pais__pais', ])
+            lista_ciudad = Ciudad.objects.filter(entry_query)
+        else:
+            order_by = request.GET.get('order_by')
+            if order_by:
+                lista_ciudad = Ciudad.objects.all().order_by(order_by)
+            else:
+                lista_ciudad = Ciudad.objects.all()
 
-    lista_ciudad = Ciudad.objects.all()
-
-    paginator = Paginator(lista_ciudad, 25)
+    paginator = Paginator(lista_ciudad, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -273,12 +286,52 @@ def lista_ciudad(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         ciudades = paginator.page(paginator.num_pages)
     context = {'lista_ciudad': lista_ciudad, 'ciudades': ciudades}
-    return render(request, 'ciudad_lista.html', context)
+    return render(request, 'ciudad_lista_search.html', context)
 
 
 def lista_zona(request):
     """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
+    order_by = request.GET.get('order_by')
+    if order_by:
+        lista_zona = Zona.objects.all().order_by(order_by)
+    else:
+        lista_zona = Zona.objects.all()
 
+    paginator = Paginator(lista_zona, nropag[0]['valor'])
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+
+    if page == '0':
+        zonas = lista_zona
+    else:
+        try:
+            zonas = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            zonas = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            zonas = paginator.page(paginator.num_pages)
+    context = {'lista_zona': lista_zona, 'zonas': zonas}
+    return render(request, 'zona_lista.html', context)
+
+
+def search_zona(request):
+    """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -300,10 +353,14 @@ def lista_zona(request):
 
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['zona', 'ciudad__ciudad', 'provincia__provincia', 'pais__pais', ])
+            lista_zona = Zona.objects.filter(entry_query)
+        else:
+            lista_zona = Zona.objects.all()
 
-    lista_zona = Zona.objects.all()
-
-    paginator = Paginator(lista_zona, 25)
+    paginator = Paginator(lista_zona, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -315,12 +372,52 @@ def lista_zona(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         zonas = paginator.page(paginator.num_pages)
     context = {'lista_zona': lista_zona, 'zonas': zonas}
-    return render(request, 'zona_lista.html', context)
+    return render(request, 'zona_lista_search.html', context)
 
 
 def lista_tipo_direccion(request):
     """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
+    order_by = request.GET.get('order_by')
+    if order_by:
+        lista_tipodireccion = Tipo_direccion.objects.all().order_by(order_by)
+    else:
+        lista_tipodireccion = Tipo_direccion.objects.all()
 
+    paginator = Paginator(lista_tipodireccion, nropag[0]['valor'])
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    if page == '0':
+        tipodirecciones = lista_tipodireccion
+    else:
+        try:
+            tipodirecciones = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            tipodirecciones = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            tipodirecciones = paginator.page(paginator.num_pages)
+
+    context = {'lista_tipodireccion': lista_tipodireccion, 'tipodirecciones': tipodirecciones}
+    return render(request, 'tipodireccion_lista.html', context)
+
+
+def search_tipo_direccion(request):
+    """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -343,9 +440,14 @@ def lista_tipo_direccion(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_tipodireccion = Tipo_direccion.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['tipo_direccion', ])
+            lista_tipodireccion = Tipo_direccion.objects.filter(entry_query)
+        else:
+            lista_tipodireccion = Tipo_direccion.objects.all()
 
-    paginator = Paginator(lista_tipodireccion, 25)
+    paginator = Paginator(lista_tipodireccion, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -356,9 +458,8 @@ def lista_tipo_direccion(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         tipodirecciones = paginator.page(paginator.num_pages)
-
     context = {'lista_tipodireccion': lista_tipodireccion, 'tipodirecciones': tipodirecciones}
-    return render(request, 'tipodireccion_lista.html', context)
+    return render(request, 'tipodireccion_lista_search.html', context)
 
 
 def lista_direccion(request):
@@ -393,7 +494,47 @@ def lista_direccion(request):
 
 def lista_tipo_inmueble(request):
     """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
+    order_by = request.GET.get('order_by')
+    if order_by:
+        lista_tipo_inmueble = Tipo_Inmueble.objects.all().order_by(order_by)
+    else:
+        lista_tipo_inmueble = Tipo_Inmueble.objects.all()
 
+    paginator = Paginator(lista_tipo_inmueble, nropag[0]['valor'])
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    if page == '0':
+        tipoinmuebles = lista_tipo_inmueble
+    else:
+        try:
+            tipoinmuebles = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            tipoinmuebles = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            tipoinmuebles = paginator.page(paginator.num_pages)
+
+    context = {'lista_tipo_inmueble': lista_tipo_inmueble, 'tipoinmuebles': tipoinmuebles}
+    return render(request, 'tipo_inmueble_lista.html', context)
+
+
+def search_tipo_inmueble(request):
+    """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -416,9 +557,14 @@ def lista_tipo_inmueble(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_tipo_inmueble = Tipo_Inmueble.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['tipo_inmueble', ])
+            lista_tipo_inmueble = Tipo_Inmueble.objects.filter(entry_query)
+        else:
+            lista_tipo_inmueble = Tipo_Inmueble.objects.all()
 
-    paginator = Paginator(lista_tipo_inmueble, 25)
+    paginator = Paginator(lista_tipo_inmueble, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -430,13 +576,54 @@ def lista_tipo_inmueble(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         tipoinmuebles = paginator.page(paginator.num_pages)
 
-    context = {'lista_tipo_inmueble': lista_tipo_inmueble, 'tipoinmuebles': tipoinmuebles}
-    return render(request, 'tipo_inmueble_lista.html', context)
+    return render_to_response('tipo_inmueble_lista_search.html',
+                              {'lista_tipo_inmueble': lista_tipo_inmueble,
+                               'tipoinmuebles': tipoinmuebles})
 
 
 def lista_complejidad_inmueble(request):
     """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
+    order_by = request.GET.get('order_by')
+    if order_by:
+        lista_complejidad_inmueble = Complejidad_Inmueble.objects.all().order_by(order_by)
+    else:
+        lista_complejidad_inmueble = Complejidad_Inmueble.objects.all()
 
+    paginator = Paginator(lista_complejidad_inmueble, nropag[0]['valor'])
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    if page == '0':
+        complejidadinmuebles = lista_complejidad_inmueble
+    else:
+        try:
+            complejidadinmuebles = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            complejidadinmuebles = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            complejidadinmuebles = paginator.page(paginator.num_pages)
+
+    context = {'lista_complejidad_inmueble': lista_complejidad_inmueble, 'complejidadinmuebles': complejidadinmuebles}
+    return render(request, 'complejidad_inmueble_lista.html', context)
+
+
+def search_complejidad_inmueble(request):
+    """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -459,9 +646,14 @@ def lista_complejidad_inmueble(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_complejidad_inmueble = Complejidad_Inmueble.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['complejidad', ])
+            lista_complejidad_inmueble = Complejidad_Inmueble.objects.filter(entry_query)
+        else:
+            lista_complejidad_inmueble = Complejidad_Inmueble.objects.all()
 
-    paginator = Paginator(lista_complejidad_inmueble, 25)
+    paginator = Paginator(lista_complejidad_inmueble, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -473,13 +665,14 @@ def lista_complejidad_inmueble(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         complejidadinmuebles = paginator.page(paginator.num_pages)
 
-    context = {'lista_complejidad_inmueble': lista_complejidad_inmueble, 'complejidadinmuebles': complejidadinmuebles}
-    return render(request, 'complejidad_inmueble_lista.html', context)
+    context = {'lista_complejidad_inmueble': lista_complejidad_inmueble,
+               'complejidadinmuebles': complejidadinmuebles
+               }
+    return render_to_response('complejidad_inmueble_lista_search.html', context)
 
 
 def lista_inmueble(request, iddireccion):
     """docstring"""
-
     if request.method == "POST":
         if "item_id" in request.POST:
             try:

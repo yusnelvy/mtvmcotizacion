@@ -1,0 +1,151 @@
+{% block cantidad_tabla %}
+
+<h6>Cantidad de modelos de vehículos registrados:
+  <span class="badge" id="count_reg">
+
+    {{ lista_vehiculo.count }}
+
+  </span>
+</h6>
+
+{% endblock cantidad_tabla %}
+
+<nav class="nav-pagination">
+  <ul class="pagination">
+
+{% block pagination %}
+
+{% if vehiculos.has_previous %}
+
+<li>
+  <a href="?page={{ vehiculos.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    {{ vehiculos.number }}
+    <select title="nro pag." onchange="window.location.href=this.value;">
+      <option value="?page=0">ver todo</option>
+      {% if vehiculos.paginator.page_range %}
+
+      {% for p in vehiculos.paginator.page_range %}
+      {% if p == vehiculos.number %}
+
+      <option value="?page={{p}}" selected>{{p}}</option>
+
+      {% else %}
+
+      <option value="?page={{p}}">{{p}}</option>
+
+      {% endif %}
+
+      {% endfor %}
+
+      {% else %}
+      <option value="?page=1">paginar</option>
+      {% endif %}
+    </select>
+
+    de
+
+    {{ vehiculos.paginator.num_pages }}
+
+    Desde el modelo de vehiculo
+
+    {{ vehiculos.start_index }}
+
+    hasta el modelo de vehiculo
+
+    {{ vehiculos.end_index }}
+
+  </a>
+</li>
+
+{% if vehiculos.has_next %}
+
+<li>
+  <a href="?page={{ vehiculos.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
+  </ul>
+</nav>
+
+{% block cuerpo_tabla %}
+{% if vehiculos %}
+
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr class="active">
+  <th>Cant</th>
+  <th>
+    Modelo
+    <a href="?order_by=modelo">Asc</a>
+    <a href="?order_by=-modelo">Desc</a>
+  </th>
+  <th>
+    Tarifa ($/h)
+    <a href="?order_by=tarifa_hora">Asc</a>
+    <a href="?order_by=-tarifa_hora">Desc</a>
+  </th>
+  <th>
+    Tarifa ($/Km)
+    <a href="?order_by=tarifa_recorrido">Asc</a>
+    <a href="?order_by=-tarifa_recorrido">Desc</a>
+  </th>
+  <th>
+    Capacidad (m3)
+    <a href="?order_by=capacidad_volumen">Asc</a>
+    <a href="?order_by=-capacidad_volumen">Desc</a>
+  </th>
+  <th>
+    Capacidad (Kg)
+    <a href="?order_by=capacidad_peso">Asc</a>
+    <a href="?order_by=-capacidad_peso">Desc</a>
+  </th>
+  <th>
+    Conductor
+    <a href="?order_by=cargo">Asc</a>
+    <a href="?order_by=-cargo">Desc</a>
+  </th>
+  <th>Editar</th>
+  <th>Eliminar</th>
+</tr>
+
+{% for i in vehiculos %}
+
+<tr id="tr{{i.id}}">
+  <td>{{ i.cantidad_total }}</td>
+  <td>{{ i.modelo }}</td>
+  <td>$ {{ i.tarifa_hora }}</td>
+  <td>$ {{ i.tarifa_recorrido }}</td>
+  <td>{{ i.capacidad_volumen|floatformat:"0" }} m3</td>
+  <td>{{ i.capacidad_peso|floatformat:"0" }} kgs</td>
+  <td>{{ i.cargo }}</td>
+  <td>
+    <a href="{% url 'ucotizaciones:edit_vehiculo' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
+  </td>
+  <td>
+    <a href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.modelo}}"></a>
+  </td>
+  <input type="hidden" value="{{i.id}}" id="idtele">
+</tr>
+
+{% endfor %}
+
+</table>
+{% else %}
+
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr><td> No se encontraron registros</td>
+</tr>
+</table>
+
+{% endif %}
+{% endblock cuerpo_tabla %}
+

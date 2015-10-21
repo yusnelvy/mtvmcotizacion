@@ -10,6 +10,35 @@
 <li class="linknav">
     <a onClick="location='{% url 'upresupuestos:PresupuestoDetail' presupuesto.id %}'">Volver a la ficha</a>
 </li>
+
+{% if presupuesto.dni and direccion_origen and direccion_destino and ambientes %}
+
+{% if presupuesto.estado = "Servicios cargados" %}
+
+<li>
+    <a class="btn btn-default btn-blanco botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado=Terminado cliente">Finalizar solicitud</a>
+</li>
+
+{% endif %}
+
+{% endif %}
+
+{% if presupuesto.estado = "Terminado cliente" %}
+
+<li>
+    <a class="btn btn-success btn-verde" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
+</li>
+
+{% endif %}
+
+{% if presupuesto.estado = "Terminado cotizador" %}
+
+<li>
+    <a class="btn btn-default btn-blanco" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
+</li>
+
+{% endif %}
+
 {% endblock link_navegacion %}
 {% block content1 %}
 {% comment %}
@@ -33,7 +62,13 @@
             </td>
             <td>
                 <span style="font-size:25px;"><strong>Presupuesto Nro: </strong> <span style=" float:right;">{{ presupuesto.id }}</span></span><br>
-                <strong>Cotizador:</strong> <span style="float:right;">{{presupuesto.cotizador|title }}</span><br>
+                <strong>Cotizador:</strong>
+                <span style="float:right;">
+
+                    {{ presupuesto.cotizador.first_name|title }}
+
+                    {{ presupuesto.cotizador.last_name|title }}
+                </span><br>
                 <strong>Fecha actual: </strong> <span style="float:right;">{{ now|date:"d/m/Y" }}</span> <br>
                 <strong>Fecha presupuesto: </strong><span style="float:right;">{{ presupuesto.fecha_creacion|date:"d/m/Y" }}</span> <br>
                 <strong>Fecha estimada de Mudanza: </strong><span style="float:right;">{{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}</span> <br>
@@ -319,7 +354,7 @@
 
                                 {% if presupuesto.tipo_calculo == 'Basico' %}
 
-                                <a class="glyphicon glyphicon-ok"></a>
+                                <span class="glyphicon glyphicon-ok"></span>
 
                                 {% endif %}
 
@@ -329,7 +364,7 @@
 
                                 {% if presupuesto.tipo_calculo == 'Optimizado' %}
 
-                                <a class="glyphicon glyphicon-ok"></a>
+                                <span class="glyphicon glyphicon-ok"></span>
 
                                 {% endif %}
 
@@ -339,7 +374,7 @@
 
                                 {% if presupuesto.tipo_calculo == 'Revisado' %}
 
-                                <a class="glyphicon glyphicon-ok"></a>
+                                <span class="glyphicon glyphicon-ok"></span>
 
                                 {% endif %}
 
@@ -622,15 +657,15 @@
                             <table class="table table-hover table-condensed table-bordered" align="center">
                                 <tr>
                                     <th width="80px">Cantidad</th>
-                                    <th width="250px">Mueble</th>
+                                    <th width="190px">Mueble</th>
                                     <th width="100px">Tamaño</th>
                                     <th width="100px">Ocupación</th>
-                                    <th width="200px">Servicios</th>
+                                    <th width="180px">Servicios</th>
 
                                     {% if perms.presupuesto_detalle.see_detallepresupuestoitem %}
 
                                     <th width="60px">Vol. (m<sup>3</sup>)</th>
-                                    <th width="100px">Contenedores</th>
+                                    <th width="180px">Contenedores</th>
                                     <th width="60px">Trasl.</th>
 
                                      {% endif %} <!-- end del if de verificación del permiso en detalle presupuesto -->
@@ -669,7 +704,33 @@
                                     {% if perms.presupuesto_detalle.see_detallepresupuestoitem %}
 
                                     <td>{{det_mueble.volumen_mueble|floatformat:"2"}}</td>
-                                    <td>{{ det_mueble.cantidad_contenedor }} {{ det_mueble.descripcion_contenedor}} <br>
+                                    <td>
+
+                                        {% if det_mueble.cantidad_contenedor > 0 %}
+
+                                        {{ det_mueble.cantidad_contenedor }}
+
+                                        {% if det_mueble.descripcion_contenedor|slice:":6" == 'Caja 4' %}
+                                        {{det_mueble.descripcion_contenedor|slice:":4"}}{{ det_mueble.cantidad_contenedor|pluralize }} 40
+                                        <br>
+
+                                        {% elif det_mueble.descripcion_contenedor|slice:":6" == 'Caja g'%}
+                                        {{det_mueble.descripcion_contenedor|slice:":4"}}{{ det_mueble.cantidad_contenedor|pluralize }} grande
+                                        <br>
+
+                                        {% else %}
+                                        {{ det_mueble.descripcion_contenedor }}{{ det_mueble.cantidad_contenedor|pluralize }} <br>
+
+                                        {% endif %}
+
+                                        Contenido: {{ det_mueble.descripcion_contenido }} <br>
+                                        {{det_mueble.peso_contenido|floatformat:"2"}} kg /
+                                        {{ det_mueble.volumen_contenido|floatformat:"2" }} m<sup>3</sup>
+
+                                        {% else %}
+                                        -
+                                        {% endif %}
+
                                     </td>
                                     <td>
                                         {{ det_mueble.trasladable|yesno:"Si,No" }}
@@ -691,6 +752,7 @@
         </tr>
 
         {% if perms.presupuesto_servicio.see_servicioitem %}
+        {% if servicio2 %}
 
         <tr>
             <td colspan="4" class="border-none">
@@ -766,6 +828,15 @@
             </td>
         </tr>
 
+        {% else %}
+        <tr>
+            <td colspan="4">
+                <div>
+                    <h4>No se cargaron servicios a este presupuesto</h4>
+                </div>
+            </td>
+        </tr>
+        {% endif %}
         {%endif%} <!-- end del if de verificación del permiso en servicio -->
 
     </table>

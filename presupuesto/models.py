@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from decimal import Decimal
 from datetime import time
+from gestiondocumento.models import EstadoDocumento
 
 
 PISOS_CHOICES = (
@@ -193,9 +194,10 @@ class Presupuesto(models.Model):
                                                   blank=True, default=Decimal("0.00"))
     descuento_recargo = models.CharField(max_length=1, default='-')
     estado = models.CharField(max_length=20, default='Iniciado')
-    activo = models.CharField(max_length=20, default='Activado')
+    activo = models.ForeignKey(EstadoDocumento)
     tipo_calculo = models.CharField(max_length=20, default='Optimizado')
     comentario = models.TextField(blank=True)
+    comentario_activo = models.TextField(blank=True)
 
     def __str__(self):
         return str(self.pk)
@@ -289,7 +291,7 @@ class Presupuesto(models.Model):
 
 class Presupuesto_direccion(models.Model):
     """docstring"""
-    presupuesto = models.ForeignKey(Presupuesto, on_delete=models.PROTECT)
+    presupuesto = models.ForeignKey(Presupuesto)
     orden = models.IntegerField()
     direccion = models.TextField()
     tipo_direccion = models.CharField(max_length=100)
@@ -326,7 +328,7 @@ class Presupuesto_direccion(models.Model):
 
 class Presupuesto_Detalle(models.Model):
     """docstring"""
-    presupuesto = models.ForeignKey(Presupuesto, on_delete=models.PROTECT)
+    presupuesto = models.ForeignKey(Presupuesto)
     ambiente = models.CharField(max_length=100)
     mueble = models.CharField(max_length=100)
     cantidad = models.PositiveIntegerField(default=1)
@@ -431,3 +433,18 @@ class DatosPrecargado(models.Model):
     class Meta:
         verbose_name = "Dato Precargado"
         verbose_name_plural = "Datos Precargados"
+
+
+class PresupuestoEstado(models.Model):
+    """docstring"""
+    presupuesto = models.ForeignKey(Presupuesto)
+    estado = models.ForeignKey(EstadoDocumento)
+    fecha_registro = models.DateField(auto_now_add=True, blank=True)
+    predefinido = models.BooleanField(default=None)
+
+    def __str__(self):
+        return u' %s - %s' % (self.presupuesto, self.estado)
+
+    class Meta:
+        verbose_name = "Estado del presupuesto"
+        verbose_name_plural = "Estados del presupuesto"

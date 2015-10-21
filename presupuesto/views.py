@@ -1,9 +1,10 @@
 """Doctsring"""
 from django.shortcuts import render, render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, Http404
 from django.views.generic import ListView, DetailView, View, UpdateView, DeleteView
 from presupuesto.models import Presupuesto, Presupuesto_Detalle, \
-    Presupuesto_direccion, Presupuesto_servicio, DatosPrecargado
+    Presupuesto_direccion, Presupuesto_servicio, DatosPrecargado, \
+    PresupuestoEstado
 from presupuesto.forms import PresupuestoForm, \
     PresupuestoDireccionForm, PresupuestoDetalleForm, \
     PresupuestoServicioForm, DatosPrecargadoForm, PresupuestoRevisarForm
@@ -18,6 +19,7 @@ from cotizacion.models import Vehiculo
 from trabajador.models import Cargo_trabajador
 from premisas.models import Empresa
 from inicio.email import Email
+from gestiondocumento.models import EstadoDocumento
 
 from formtools.wizard.views import SessionWizardView
 from django.forms.formsets import formset_factory
@@ -38,6 +40,13 @@ from django.contrib.auth.decorators import permission_required, login_required
 
 import sys
 import traceback
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from mtvmcotizacion.views import get_query
+from django.contrib import messages
+from premisas.models import PerzonalizacionVisual
+from django.core.paginator import InvalidPage
+from django.db import IntegrityError, \
+    DatabaseError, transaction, OperationalError
 
 
 class ContactWizard(SessionWizardView):
@@ -65,9 +74,65 @@ class PresupuestoList(ListView):
     context_object_name = 'presupuestos'
     template_name = 'presupuesto_lista.html'
 
+    def get_paginate_by(self, queryset):
+
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          self.request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                          tipo="paginacion")
+        page = self.request.GET.get('page')
+        if page == '0':
+            return None
+        else:
+            return self.request.GET.get('paginate_by', nropag[0]['valor'])
+
     def get_queryset(self):
-        queryset = super(PresupuestoList, self).get_queryset()
-        return queryset.filter()
+
+        order_by = self.request.GET.get('order_by')
+        if order_by:
+            queryset = Presupuesto.objects.all().order_by(order_by)
+        else:
+            queryset = Presupuesto.objects.all()
+
+        return queryset
+
+
+def search_presupuesto(request):
+    """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
+    if request.method == "POST":
+
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['nombre_cliente',
+                                                  'empresa_cliente', 'dni', ])
+            presupuestos = Presupuesto.objects.filter(entry_query)
+        else:
+            presupuestos = Presupuesto.objects.all()
+
+    paginator = Paginator(presupuestos, nropag[0]['valor'])
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        page_obj = paginator.page(paginator.num_pages)
+
+    context = {'presupuestos': presupuestos, 'page_obj': page_obj}
+    return render_to_response('presupuesto_lista_search.html', context)
 
 
 class PresupuestoDetail(DetailView):
@@ -223,17 +288,35 @@ class PresupuestoView(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         """docstring"""
+        estadoactivo = EstadoDocumento.objects.filter(estado__estado='Activo',
+                                                      documento='Presupuesto')
         data = {
-            'cotizador': self.request.user
+            'cotizador': self.request.user,
+            'activo': estadoactivo[0].id
         }
         form = self.form_class(initial=data)
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+
         if form.is_valid():
             id_reg = form.save()
+
+            agregarestadoactivo = PresupuestoEstado.objects.create(presupuesto=id_reg,
+                                                                   estado=id_reg.activo,
+                                                                   predefinido=False)
+            agregarestadoactivo.save()
+
+            estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
+                                                          orden='1')
+            agregarestado = PresupuestoEstado.objects.create(presupuesto=id_reg,
+                                                             estado_id=estadoactual[0].id,
+                                                             predefinido=True)
+            agregarestado.save()
+
             # <process form cleaned data>
+            messages.success(self.request, "Presupuesto registrado.")
             return HttpResponseRedirect(reverse('upresupuestos:PresupuestoDetail',
                                                 args=(id_reg.id,)))
 
@@ -308,7 +391,7 @@ class PresupuestoDireccionView(View):
         }
         form = self.form_class(initial=data)
         return render(request, self.template_name, {'form': form})
-
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
 
@@ -317,22 +400,43 @@ class PresupuestoDireccionView(View):
         orden = Presupuesto_direccion.objects.filter(presupuesto=request.POST['presupuesto'],
                                                      tipo_direccion=request.POST['tipo_direccion']).count()
         if form.is_valid():
-            formResult = form.save(commit=False)
-            formResult.tipo_inmueble = tipo_inmueble.tipo_inmueble
-            formResult.ocupacidad_inmueble = ocupacidad_inmueble.descripcion
-            formResult.valor_ocupacidad = ocupacidad_inmueble.valor
-            formResult.orden = orden + 1
-            formResult.save()
-            cantOrig = Presupuesto_direccion.objects.filter(presupuesto=request.POST['presupuesto'],
-                                                            tipo_direccion='Origen').count()
-            cantDest = Presupuesto_direccion.objects.filter(presupuesto=request.POST['presupuesto'],
-                                                            tipo_direccion='Destino').count()
-            if (cantOrig > 0 and cantDest) > 0:
-                updatepresu = Presupuesto.objects.filter(pk=request.POST['presupuesto'])
-                updatepresu.update(estado = 'Preparado')
+            sql = transaction.savepoint()
+            try:
+                formResult = form.save(commit=False)
+                formResult.tipo_inmueble = tipo_inmueble.tipo_inmueble
+                formResult.ocupacidad_inmueble = ocupacidad_inmueble.descripcion
+                formResult.valor_ocupacidad = ocupacidad_inmueble.valor
+                formResult.orden = orden + 1
+                formResult.save()
+                cantOrig = Presupuesto_direccion.objects.filter(presupuesto=request.POST['presupuesto'],
+                                                                tipo_direccion='Origen').count()
+                cantDest = Presupuesto_direccion.objects.filter(presupuesto=request.POST['presupuesto'],
+                                                                tipo_direccion='Destino').count()
+                if (cantOrig > 0 and cantDest > 0):
+                    cant_item = Presupuesto_Detalle.objects.filter(presupuesto=request.POST['presupuesto']).count()
+                    if cant_item <= 0:
+                        updatepresu = Presupuesto.objects.filter(pk=request.POST['presupuesto'])
+                        updatepresu.update(estado='Preparado')
 
-            mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
-            return JsonResponse(mensaje, safe = False)
+                        updateestado = PresupuestoEstado.objects.filter(presupuesto=request.POST['presupuesto'],
+                                                                        predefinido=True)
+                        updateestado.update(predefinido=False)
+                        estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
+                                                                      orden='2')
+                        agregarestado = PresupuestoEstado.objects.create(presupuesto_id=request.POST['presupuesto'],
+                                                                         estado_id=estadoactual[0].id,
+                                                                         predefinido=True)
+                        agregarestado.save()
+
+                transaction.savepoint_commit(sql)
+                mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+                return JsonResponse(mensaje, safe=False)
+            except:
+                transaction.savepoint_rollback(sql)
+                tb = sys.exc_info()[2]
+                tbinfo = traceback.format_tb(tb)[0]
+                mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+                return JsonResponse(mensaje, safe=False)
 
         return render(request, self.template_name, {'form': form})
 
@@ -542,19 +646,48 @@ class PresupuestoDetalleView(View):
 
         return render(request, self.template_name, {'form': form})
 
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            form.save()
+            sql = transaction.savepoint()
+            try:
 
-            #actualizar estatus en presupuesto
-            updatepresu = Presupuesto.objects.filter(pk=self.request.POST.get('presupuesto'))
-            cant_item = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto=self.request.POST.get('presupuesto')).count()
-            if cant_item <= 0:
-                updatepresu.update(estado='Muebles cargados')
+                form.save()
 
-            mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
-            return JsonResponse(mensaje, safe=False)
+                #actualizar estatus en presupuesto
+                updatepresu = Presupuesto.objects.filter(pk=self.request.POST.get('presupuesto'))
+                cant_item = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto=self.request.POST.get('presupuesto')).count()
+                if cant_item <= 0:
+                    updatepresu.update(estado='Muebles cargados')
+
+                    updateestado = PresupuestoEstado.objects.filter(presupuesto=self.request.POST.get('presupuesto'),
+                                                                    predefinido=True)
+                    updateestado.update(predefinido=False)
+
+                    estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
+                                                                  orden='3')
+                    agregarestado = PresupuestoEstado.objects.create(presupuesto_id=self.request.POST.get('presupuesto'),
+                                                                     estado_id=estadoactual[0].id,
+                                                                     predefinido=True)
+                    agregarestado.save()
+
+                transaction.savepoint_commit(sql)
+                mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+                return JsonResponse(mensaje, safe=False)
+
+            except IntegrityError:
+                transaction.savepoint_rollback(sql)
+
+                mensaje = {'estatus': 'ok', 'msj': 'Error de integridad'}
+                return JsonResponse(mensaje, safe=False)
+
+            except:
+                transaction.savepoint_rollback(sql)
+                tb = sys.exc_info()[2]
+                tbinfo = traceback.format_tb(tb)[0]
+                mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+                return JsonResponse(mensaje, safe=False)
 
         return render(request, self.template_name, {'form': form})
 
@@ -581,6 +714,7 @@ class PresupuestoServicioView(View):
         form = self.form_class(initial=data)
         return render(request, self.template_name, {'form': form})
 
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
 
         precargado = DatosPrecargado.objects.all()
@@ -598,6 +732,7 @@ class PresupuestoServicioView(View):
 
         servicios = request.POST.getlist('lista_servicio')
 
+        sql = transaction.savepoint()
         try:
 
             try:
@@ -699,12 +834,33 @@ class PresupuestoServicioView(View):
 
                 updatepresu = Presupuesto.objects.filter(presupuesto_detalle__id=
                                                          request.POST['detalle_presupuesto'])
-                updatepresu.update(estado='Servicios cargados')
+                if updatepresu[0].estado == 'Muebles cargados':
+                    updatepresu.update(estado='Servicios cargados')
+                    id_reg = updatepresu[0].id
 
+                    updateestado = PresupuestoEstado.objects.filter(presupuesto=id_reg,
+                                                                    predefinido=True)
+                    updateestado.update(predefinido=False)
+
+                    estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
+                                                                  orden='4')
+                    agregarestado = PresupuestoEstado.objects.create(presupuesto_id=id_reg,
+                                                                     estado_id=estadoactual[0].id,
+                                                                     predefinido=True)
+                    agregarestado.save()
+
+            transaction.savepoint_commit(sql)
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
             return JsonResponse(mensaje, safe=False)
 
+        except IntegrityError:
+                transaction.savepoint_rollback(sql)
+
+                mensaje = {'estatus': 'ok', 'msj': 'Error de integridad'}
+                return JsonResponse(mensaje, safe=False)
+
         except:
+            transaction.savepoint_rollback(sql)
             tb = sys.exc_info()[2]
             tbinfo = traceback.format_tb(tb)[0]
             mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
@@ -759,11 +915,17 @@ class PresupuestoUpdate(UpdateView):
     model = Presupuesto
 
     def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.save()
+        try:
+            self.object = form.save(commit=False)
+            self.object.save()
+            mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+            return JsonResponse(mensaje, safe=False)
 
-        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
-        return JsonResponse(mensaje, safe=False)
+        except:
+            tb = sys.exc_info()[2]
+            tbinfo = traceback.format_tb(tb)[0]
+            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            return JsonResponse(mensaje, safe=False)
 
 
 class PresupuestoDireccionUpdate(UpdateView):
@@ -781,16 +943,23 @@ class PresupuestoDireccionUpdate(UpdateView):
     def form_valid(self, form):
         tipo_inmueble = Tipo_Inmueble.objects.get(id=self.request.POST['lista_tipoinmueble'])
         ocupacidad_inmueble = Ocupacion.objects.get(id=self.request.POST['lista_ocupacion'])
+        try:
+            self.object = form.save(commit=False)
+            self.object.tipo_inmueble = tipo_inmueble.tipo_inmueble
+            self.object.ocupacidad_inmueble = ocupacidad_inmueble.descripcion
+            self.object.valor_ocupacidad = ocupacidad_inmueble.valor
 
-        self.object = form.save(commit=False)
-        self.object.tipo_inmueble = tipo_inmueble.tipo_inmueble
-        self.object.ocupacidad_inmueble = ocupacidad_inmueble.descripcion
-        self.object.valor_ocupacidad = ocupacidad_inmueble.valor
+            self.object.save()
 
-        self.object.save()
+            mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+            return JsonResponse(mensaje, safe=False)
 
-        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
-        return JsonResponse(mensaje, safe=False)
+        except:
+
+            tb = sys.exc_info()[2]
+            tbinfo = traceback.format_tb(tb)[0]
+            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            return JsonResponse(mensaje, safe=False)
 
 
 class PresupuestoDetalleUpdate(UpdateView):
@@ -858,21 +1027,28 @@ class PresupuestoDetalleUpdate(UpdateView):
         return self.initial
 
     def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.save()
+        try:
+            self.object = form.save(commit=False)
+            self.object.save()
 
-        #actualizar valore de canti_ambiente y cant_mueble en presupuesto
-        presu = Presupuesto_Detalle.objects.filter(presupuesto=self.request.POST.get('presupuesto'))
-        cant_ambiente = presu.values('ambiente').annotate(
-            acount=Count('ambiente')).order_by('ambiente')
+            #actualizar valore de canti_ambiente y cant_mueble en presupuesto
+            presu = Presupuesto_Detalle.objects.filter(presupuesto=self.request.POST.get('presupuesto'))
+            cant_ambiente = presu.values('ambiente').annotate(
+                acount=Count('ambiente')).order_by('ambiente')
 
-        cant_mueble = presu.count()
-        reporter = Presupuesto.objects.filter(pk=self.request.POST.get('presupuesto'))
-        reporter.update(cantidad_ambientes=len(cant_ambiente))
-        reporter.update(cantidad_muebles=cant_mueble)
+            cant_mueble = presu.count()
+            reporter = Presupuesto.objects.filter(pk=self.request.POST.get('presupuesto'))
+            reporter.update(cantidad_ambientes=len(cant_ambiente))
+            reporter.update(cantidad_muebles=cant_mueble)
 
-        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
-        return JsonResponse(mensaje, safe=False)
+            mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+            return JsonResponse(mensaje, safe=False)
+
+        except:
+            tb = sys.exc_info()[2]
+            tbinfo = traceback.format_tb(tb)[0]
+            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            return JsonResponse(mensaje, safe=False)
 
 
 class PresupuestoServicioUpdate(UpdateView):
@@ -906,59 +1082,121 @@ class PresupuestoDelete(DeleteView):
     form_class = PresupuestoForm
     template_name = 'server_confirm_delete.html'
 
+    @transaction.atomic
     def delete(self, request, *args, **kwargs):
-        self.obj = self.get_object()
-        self.obj.activo = 'Anulado'
-        self.obj.delete()
+        sql = transaction.savepoint()
+        try:
+            self.obj = self.get_object()
+            #self.obj.activo = 'Anulado'
+            self.obj.delete()
 
-        mensaje = {'estatus': 'ok', 'msj': 'Registro eliminado'}
-        return JsonResponse(mensaje, safe=False)
+            transaction.savepoint_commit(sql)
+            mensaje = {'estatus': 'ok', 'msj': 'Registro eliminado'}
+            return JsonResponse(mensaje, safe=False)
+        except:
+            transaction.savepoint_rollback(sql)
+
+            tb = sys.exc_info()[2]
+            tbinfo = traceback.format_tb(tb)[0]
+            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            return JsonResponse(mensaje, safe=False)
 
 
 class PresupuestoDireccionDelete(DeleteView):
     model = Presupuesto_direccion
     template_name = 'server_confirm_delete.html'
 
+    @transaction.atomic
     def delete(self, request, *args, **kwargs):
-        self.obj = self.get_object()
-        presu = self.obj.presupuesto
-        tipo = self.obj.tipo_direccion
-        orden = self.obj.orden
-        self.obj.delete()
+        sql = transaction.savepoint()
+        try:
+            self.obj = self.get_object()
+            presu = self.obj.presupuesto
+            tipo = self.obj.tipo_direccion
+            orden = self.obj.orden
+            self.obj.delete()
 
-        Presupuesto_direccion.objects.filter(presupuesto=presu,
-                                             tipo_direccion=tipo,
-                                             orden__gt=orden).update(orden=(F('orden')-1))
+            Presupuesto_direccion.objects.filter(presupuesto=presu,
+                                                 tipo_direccion=tipo,
+                                                 orden__gt=orden).update(orden=(F('orden')-1))
 
-        cantOrig = Presupuesto_direccion.objects.filter(presupuesto=presu,
-                                                        tipo_direccion='Origen').count()
-        cantDest = Presupuesto_direccion.objects.filter(presupuesto=presu,
-                                                        tipo_direccion='Destino').count()
+            cantOrig = Presupuesto_direccion.objects.filter(presupuesto=presu,
+                                                            tipo_direccion='Origen').count()
+            cantDest = Presupuesto_direccion.objects.filter(presupuesto=presu,
+                                                            tipo_direccion='Destino').count()
 
-        if cantOrig <= 0 or cantDest <= 0:
-            updatepresu = Presupuesto.objects.filter(pk=presu.id)
-            updatepresu.update(estado='Iniciado')
+            if cantOrig <= 0 or cantDest <= 0:
+                updatepresu = Presupuesto.objects.filter(pk=presu.id)
+                updatepresu.update(estado='Iniciado')
 
-        mensaje = {'estatus': 'ok', 'msj': 'Registro eliminado'}
-        return JsonResponse(mensaje, safe=False)
+                updateestado = PresupuestoEstado.objects.filter(presupuesto=presu.id,
+                                                                predefinido=True)
+                updateestado.update(predefinido=False)
+                estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
+                                                              orden='1')
+                agregarestado = PresupuestoEstado.objects.create(presupuesto_id=presu.id,
+                                                                 estado_id=estadoactual[0].id,
+                                                                 predefinido=True)
+                agregarestado.save()
+
+            transaction.savepoint_commit(sql)
+            mensaje = {'estatus': 'ok', 'msj': 'Registro eliminado'}
+            return JsonResponse(mensaje, safe=False)
+        except IntegrityError:
+            transaction.savepoint_rollback(sql)
+            mensaje = {'estatus': 'error', 'msj': 'Error de integridad'}
+            return JsonResponse(mensaje, safe=False)
+
+        except DatabaseError:
+            transaction.savepoint_rollback(sql)
+            mensaje = {'estatus': 'error', 'msj': 'Error de conexión'}
+            return JsonResponse(mensaje, safe=False)
+
+        except:
+            transaction.savepoint_rollback(sql)
+
+            tb = sys.exc_info()[2]
+            tbinfo = traceback.format_tb(tb)[0]
+            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            return JsonResponse(mensaje, safe=False)
 
 
 class PresupuestoDetalleDelete(DeleteView):
     model = Presupuesto_Detalle
     template_name = 'server_confirm_delete.html'
 
+    @transaction.atomic
     def delete(self, request, *args, **kwargs):
-        self.obj = self.get_object()
-        presu = self.obj.presupuesto
-        self.obj.delete()
+        sql = transaction.savepoint()
+        try:
+            self.obj = self.get_object()
+            presu = self.obj.presupuesto
+            self.obj.delete()
 
-        cant_item = Presupuesto_Detalle.objects.filter(presupuesto=presu).count()
-        if cant_item <= 0:
-            updatepresu = Presupuesto.objects.filter(pk=presu.id)
-            updatepresu.update(estado='Preparado')
+            cant_item = Presupuesto_Detalle.objects.filter(presupuesto=presu).count()
+            if cant_item <= 0:
+                updatepresu = Presupuesto.objects.filter(pk=presu.id)
+                updatepresu.update(estado='Preparado')
+                updateestado = PresupuestoEstado.objects.filter(presupuesto=presu.id,
+                                                                predefinido=True)
+                updateestado.update(predefinido=False)
+                estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
+                                                              orden='2')
+                agregarestado = PresupuestoEstado.objects.create(presupuesto_id=presu.id,
+                                                                 estado_id=estadoactual[0].id,
+                                                                 predefinido=True)
+                agregarestado.save()
 
-        mensaje = {'estatus': 'ok', 'msj': 'Registro eliminado'}
-        return JsonResponse(mensaje, safe=False)
+            transaction.savepoint_commit(sql)
+            mensaje = {'estatus': 'ok', 'msj': 'Registro eliminado'}
+            return JsonResponse(mensaje, safe=False)
+        except:
+            transaction.savepoint_rollback(sql)
+
+            tb = sys.exc_info()[2]
+            tbinfo = traceback.format_tb(tb)[0]
+            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            return JsonResponse(mensaje, safe=False)
 
 
 class PresupuestoServicioDelete(DeleteView):
@@ -966,19 +1204,40 @@ class PresupuestoServicioDelete(DeleteView):
     template_name = 'server_confirm_delete.html'
     #success_url = reverse_lazy('upresupuesto:PresupuestoList')
 
+    @transaction.atomic
     def delete(self, request, *args, **kwargs):
-        self.obj = self.get_object()
-        presu = self.obj.detalle_presupuesto.id
-        Presupuesto_servicio.objects.filter(servicio=self.obj.servicio,
-                                            detalle_presupuesto=presu).delete()
+        sql = transaction.savepoint()
+        try:
+            self.obj = self.get_object()
+            presu = self.obj.detalle_presupuesto.id
+            Presupuesto_servicio.objects.filter(servicio=self.obj.servicio,
+                                                detalle_presupuesto=presu).delete()
 
-        updatepresu = Presupuesto.objects.filter(presupuesto_detalle__id=presu)
-        cant_item = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto=updatepresu).count()
-        if cant_item <= 0:
-            updatepresu.update(estado='Muebles cargados')
+            updatepresu = Presupuesto.objects.filter(presupuesto_detalle__id=presu)
+            cant_item = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto=updatepresu).count()
+            if cant_item <= 0:
+                id_presu = updatepresu[0].id
+                updatepresu.update(estado='Muebles cargados')
+                updateestado = PresupuestoEstado.objects.filter(presupuesto=id_presu,
+                                                                predefinido=True)
+                updateestado.update(predefinido=False)
+                estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
+                                                              orden='3')
+                agregarestado = PresupuestoEstado.objects.create(presupuesto_id=id_presu,
+                                                                 estado_id=estadoactual[0].id,
+                                                                 predefinido=True)
+                agregarestado.save()
 
-        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
-        return JsonResponse(mensaje, safe=False)
+            transaction.savepoint_commit(sql)
+            mensaje = {'estatus': 'ok', 'msj': 'Registro eliminado'}
+            return JsonResponse(mensaje, safe=False)
+        except:
+            transaction.savepoint_rollback(sql)
+
+            tb = sys.exc_info()[2]
+            tbinfo = traceback.format_tb(tb)[0]
+            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            return JsonResponse(mensaje, safe=False)
 
 
 class PresupuestoDetailResumen(DetailView):
@@ -1062,34 +1321,41 @@ class PresupuestoDetailResumen(DetailView):
 
 def PresupuestoDireccionOrden(request, pk):
     if request.method == "GET" and request.is_ajax():
-        tipo = request.GET['tipo']
-        posicion = request.GET['posicion']
-        cantdireccion = Presupuesto_direccion.objects.filter(presupuesto=request.GET['presupuesto'],
-                                                             tipo_direccion=tipo).count()
-        if cantdireccion > 1:
-            if (posicion == 'bajar'):
-                direccionactual = Presupuesto_direccion.objects.filter(id=pk)
-                presupuestoactual = direccionactual[0].presupuesto
-                ordenactual = direccionactual[0].orden
-                direccionsiguiente = Presupuesto_direccion.objects.filter(presupuesto=presupuestoactual,
-                                                                          tipo_direccion=tipo,
-                                                                          orden=(ordenactual + 1))
-                direccionsiguiente.update(orden=(F('orden')-1))
-                direccionactual.update(orden=(F('orden')+1))
+        try:
+            tipo = request.GET['tipo']
+            posicion = request.GET['posicion']
+            cantdireccion = Presupuesto_direccion.objects.filter(presupuesto=request.GET['presupuesto'],
+                                                                 tipo_direccion=tipo).count()
+            if cantdireccion > 1:
+                if (posicion == 'bajar'):
+                    direccionactual = Presupuesto_direccion.objects.filter(id=pk)
+                    presupuestoactual = direccionactual[0].presupuesto
+                    ordenactual = direccionactual[0].orden
+                    direccionsiguiente = Presupuesto_direccion.objects.filter(presupuesto=presupuestoactual,
+                                                                              tipo_direccion=tipo,
+                                                                              orden=(ordenactual + 1))
+                    direccionsiguiente.update(orden=(F('orden')-1))
+                    direccionactual.update(orden=(F('orden')+1))
 
-            elif (posicion == 'subir'):
-                direccionactual = Presupuesto_direccion.objects.filter(id=pk)
-                presupuestoactual = direccionactual[0].presupuesto
-                ordenactual = direccionactual[0].orden
+                elif (posicion == 'subir'):
+                    direccionactual = Presupuesto_direccion.objects.filter(id=pk)
+                    presupuestoactual = direccionactual[0].presupuesto
+                    ordenactual = direccionactual[0].orden
 
-                direccionanterior = Presupuesto_direccion.objects.filter(presupuesto=presupuestoactual,
-                                                                         tipo_direccion=tipo,
-                                                                         orden=(ordenactual - 1))
-                direccionanterior.update(orden=(F('orden')+1))
-                direccionactual.update(orden=(F('orden')-1))
+                    direccionanterior = Presupuesto_direccion.objects.filter(presupuesto=presupuestoactual,
+                                                                             tipo_direccion=tipo,
+                                                                             orden=(ordenactual - 1))
+                    direccionanterior.update(orden=(F('orden')+1))
+                    direccionactual.update(orden=(F('orden')-1))
 
-        mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
-        return JsonResponse(mensaje, safe=False)
+            mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+            return JsonResponse(mensaje, safe=False)
+        except:
+
+            tb = sys.exc_info()[2]
+            tbinfo = traceback.format_tb(tb)[0]
+            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            return JsonResponse(mensaje, safe=False)
 
 
 def generar_pdf(request):
@@ -1143,18 +1409,39 @@ class PresupuestoRevisarUpdateView(UpdateView):
         # devolvemos el contexto
         return context
 
+    @transaction.atomic
     def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.save()
+        sql = transaction.savepoint()
+        try:
+            self.object = form.save(commit=False)
+            self.object.save()
 
-        estado = Presupuesto.objects.filter(pk=self.object.id)
-        estado.update(estado='Terminado cotizador')
+            estado = Presupuesto.objects.filter(pk=self.object.id)
+            estado.update(estado='Terminado cotizador')
+            updateestado = PresupuestoEstado.objects.filter(presupuesto=self.object.id,
+                                                            predefinido=True)
+            updateestado.update(predefinido=False)
+            estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
+                                                          orden='6')
+            agregarestado = PresupuestoEstado.objects.create(presupuesto_id=self.object.id,
+                                                             estado_id=estadoactual[0].id,
+                                                             predefinido=True)
+            agregarestado.save()
 
-        redirect_to = self.request.REQUEST.get('next', '')
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
-            return render_to_response(self.template_name, self.get_context_data())
+            transaction.savepoint_commit(sql)
+            redirect_to = self.request.REQUEST.get('next', '')
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return render_to_response(self.template_name, self.get_context_data())
+
+        except:
+            transaction.savepoint_rollback(sql)
+
+            tb = sys.exc_info()[2]
+            tbinfo = traceback.format_tb(tb)[0]
+            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            return JsonResponse(mensaje, safe=False)
 
 
 def redondeo(cantidad, redondear):
@@ -1543,14 +1830,6 @@ def update_presupuesto(request, pk):
     return(presupuesto)
 
 
-def PresupuestoCambiarEstado(request, pk, estado=None):
-    """Docstring"""
-    presupuesto = Presupuesto.objects.filter(pk=pk)
-    presupuesto.update(estado=estado)
-    mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
-    return (mensaje)
-
-
 def PresupuestoFinalizadoCliente(request, pk):
     if request.method == "GET" and request.is_ajax():
         estado = request.GET['estado']
@@ -1558,6 +1837,24 @@ def PresupuestoFinalizadoCliente(request, pk):
 
         presupuesto = Presupuesto.objects.filter(pk=pk)
         presupuesto.update(estado=estado)
+        updateestado = PresupuestoEstado.objects.filter(presupuesto=pk,
+                                                        predefinido=True)
+        updateestado.update(predefinido=False)
+        if estado == 'Servicios cargados':
+            estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
+                                                          orden='4')
+            agregarestado = PresupuestoEstado.objects.create(presupuesto_id=pk,
+                                                             estado_id=estadoactual[0].id,
+                                                             predefinido=True)
+            agregarestado.save()
+
+        elif estado == 'Terminado cliente':
+            estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
+                                                          orden='5')
+            agregarestado = PresupuestoEstado.objects.create(presupuesto_id=pk,
+                                                             estado_id=estadoactual[0].id,
+                                                             predefinido=True)
+            agregarestado.save()
 
         mensaje = {'estatus': 'ok', 'msj': 'Registro guardado', 'nexturl': nexturl}
         return JsonResponse(mensaje, safe=False)

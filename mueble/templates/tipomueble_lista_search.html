@@ -1,0 +1,118 @@
+{% if lista_tipomueble %}
+
+{% block cantidad_tabla %}
+
+<h6>Tipos de muebles registrados:
+  <span class="badge" id="count_reg">
+    {{ lista_tipomueble.count }}
+  </span>
+</h6>
+
+{% endblock cantidad_tabla %}
+<nav class="nav-pagination">
+  <ul class="pagination">
+{% block pagination %}
+
+{% if tipomuebles.has_previous %}
+
+<li>
+  <a href="?page={{ tipomuebles.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    <select title="nro pag." onchange="window.location.href=this.value;">
+      <option value="?page=0">ver todo</option>
+      {% if tipomuebles.paginator.page_range %}
+
+      {% for p in tipomuebles.paginator.page_range %}
+      {% if p == tipomuebles.number %}
+
+      <option value="?page={{p}}" selected>{{p}}</option>
+
+      {% else %}
+
+      <option value="?page={{p}}">{{p}}</option>
+
+      {% endif %}
+
+      {% endfor %}
+
+      {% else %}
+      <option value="?page=1">paginar</option>
+      {% endif %}
+    </select>
+    de
+
+    {{ tipomuebles.paginator.num_pages }}
+
+    Desde el tipo de mueble
+
+    {{ tipomuebles.start_index }}
+
+    hasta el tipo de mueble
+
+    {{ tipomuebles.end_index }}
+
+  </a>
+</li>
+
+{% if tipomuebles.has_next %}
+
+<li>
+  <a href="?page={{ tipomuebles.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
+  </ul>
+</nav>
+
+{% block cuerpo_tabla %}
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr class="active">
+  <th>
+    Tipo de mueble
+    <a href="?order_by=tipo_mueble">Asc</a>
+    <a href="?order_by=-tipo_mueble">Desc</a>
+  </th>
+  <th width="80px">Editar</th>
+  <th width="80px">Eliminar</th>
+</tr>
+
+{% for i in tipomuebles %}
+
+<tr id="tr{{i.id}}">
+  <td>{{ i.tipo_mueble }}</td>
+  <td>
+    <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'umuebles:edit_tipo_mueble' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
+  </td>
+  <td>
+    <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.tipo_mueble}}"></a>
+  </td>
+  <input type="hidden" value="{{i.id}}" id="idtele">
+</tr>
+
+
+{% endfor %}
+
+</table>
+{% endblock cuerpo_tabla %}
+
+{% else %}
+<h6>Tipos de muebles registrados:
+  <span class="badge" id="count_reg">0</span>
+</h6>
+
+<br>
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr><td> No se encontraron registros</td>
+</tr>
+</table>
+
+{% endif %}

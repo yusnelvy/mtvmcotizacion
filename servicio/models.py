@@ -1,6 +1,7 @@
 from django.db import models
 
 FORMULA_CHOICES = (
+    ('', 'Seleccione la forma de cálculo'),
     ('1', 'Laminados inelásticos'),
     ('2', 'Laminados elásticos'),
     ('3', 'Complementos'),

@@ -41,6 +41,7 @@
 <script src="/static/js/presupuestoForm/preDireccion.js"></script>
 <script>
 $(document).ready(function() {
+  enterNone();
   $('#myform').submit(function() {
     disabledBtn($('.registrar'));
     var id = $(parent.document.getElementsByClassName("id_opcionFormulario")).attr('id');

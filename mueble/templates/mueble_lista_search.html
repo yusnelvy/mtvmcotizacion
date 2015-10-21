@@ -1,0 +1,136 @@
+{% block cantidad_tabla %}
+
+<h6>Cantidad de muebles encontradas:
+  <span class="badge" id="count_reg">
+
+    {{ lista_mueble.count }}
+
+  </span>
+</h6>
+
+{% endblock cantidad_tabla %}
+<nav class="nav-pagination">
+  <ul class="pagination">
+{% block pagination %}
+
+    {% if muebles.has_previous %}
+
+    <li>
+      <a href="?page={{ muebles.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+
+    {% endif %}
+
+    <li class="current">
+      <a style="color:#000;"> Página
+
+      <select title="nro pag." onchange="window.location.href=this.value;">
+        <option value="?page=0">ver todo</option>
+        {% if muebles.paginator.page_range %}
+
+        {% for p in muebles.paginator.page_range %}
+        {% if p == muebles.number %}
+
+        <option value="?page={{p}}" selected>{{p}}</option>
+
+        {% else %}
+
+        <option value="?page={{p}}">{{p}}</option>
+
+        {% endif %}
+
+        {% endfor %}
+
+        {% else %}
+        <option value="?page=1">paginar</option>
+        {% endif %}
+      </select>
+
+        de
+
+        {{ muebles.paginator.num_pages }}
+
+        Desde el mueble
+
+        {{ muebles.start_index }}
+
+        hasta el mueble
+
+        {{ muebles.end_index }}
+
+      </a>
+    </li>
+
+    {% if muebles.has_next %}
+
+    <li>
+      <a href="?page={{ muebles.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+
+    {% endif %}
+
+{% endblock pagination %}
+  </ul>
+</nav>
+{% block cuerpo_tabla %}
+{% if muebles %}
+
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr class="active">
+  <th>
+    Mueble
+    <a href="?order_by=mueble">Asc</a>
+    <a href="?order_by=-mueble">Desc</a>
+  </th>
+  <th>
+    Tipo de mueble
+    <a href="?order_by=tipo_mueble">Asc</a>
+    <a href="?order_by=-tipo_mueble">Desc</a>
+  </th>
+  <th>
+    Forma
+    <a href="?order_by=forma">Asc</a>
+    <a href="?order_by=-forma">Desc</a>
+  </th>
+  <th>
+    Trasladable
+    <a href="?order_by=trasladable">Asc</a>
+    <a href="?order_by=-trasladable">Desc</a>
+  </th>
+  <th width="80px">Ficha</th>
+  <th width="80px">Editar</th>
+  <th width="80px">Eliminar</th>
+</tr>
+
+{% for i in muebles %}
+
+<tr id="tr{{i.id}}">
+  <td>{{ i.mueble }}</td>
+  <td>{{ i.tipo_mueble }}</td>
+  <td>{{ i.forma }}</td>
+  <td>{{i.trasladable|yesno:"Si,No"}}</td>
+  <td>
+    <a title="Ver ficha" data-toggle="tooltip" data-placement="right" href="{% url 'umuebles:mueble_ficha' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-file"></a>
+  </td>
+  <td>
+    <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'umuebles:edit_mueble' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
+  </td>
+  <td>
+    <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.id}}" data-name="{{i.mueble}}"></a>
+  </td>
+  <input type="hidden" value="{{i.id}}" id="idtele">
+</tr>
+
+{% endfor %}
+</table>
+
+{% else %}
+
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr><td> No se encontraron registros</td>
+</tr>
+</table>
+
+{% endif %}
+{% endblock cuerpo_tabla %}
+

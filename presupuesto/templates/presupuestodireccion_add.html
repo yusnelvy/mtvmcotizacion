@@ -59,9 +59,7 @@ $(document).ready(function() {
           $(closep).click();
           $(msj).text('Guardado con exito');
           $(msj).fadeIn();
-          setTimeout(function() {
-            parent.location.reload();
-          }, 500);
+          parent.location.reload();
         }
       }
     });
@@ -90,10 +88,13 @@ function refresh () {
   });
 }
 
+enterNone();
+
 $('#btn-cancelar').click(function() {
   cerrarModal(parent.document.getElementById('btn-cerrarModal'),
     parent.document.getElementById('msjEliminado')
     );
+  $(parent.document.getElementsByClassName("id_opcionFormulario")).attr('src', ' ');
 });
 </script>
 

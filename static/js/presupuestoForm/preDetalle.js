@@ -1,27 +1,22 @@
 $('input[name=lista_ocupacion]').click(function() {
-  radioColor('lista_ocupacion');
+  radioColorBlue('lista_ocupacion');
 });
 
-radioColor('lista_ocupacion');
+radioColorBlue('lista_ocupacion');
 
 $('input[name=lista_tamano]').click(function() {
-  radioColor('lista_tamano');
+  radioColorBlue('lista_tamano');
 });
 
-radioColor('lista_tamano');
+radioColorBlue('lista_tamano');
 
 $('input[name=descripcion_densidadcontenido]').click(function() {
-  radioColor('descripcion_densidadcontenido');
+  radioColorBlue('descripcion_densidadcontenido');
 });
 
-radioColor('descripcion_densidadcontenido');
+radioColorBlue('descripcion_densidadcontenido');
 
-function radioColor(name) {
-  $("label:has(input[name=" + name + "])").css("background-color", "#fff");
-  $("label:has(input[name=" + name + "])").css("color", "#777");
-  $("label:has(input[name=" + name + "]:checked)").css("background-color", "#08c");
-  $("label:has(input[name=" + name + "]:checked)").css("color", "#fff");
-}
+$('input[name="trasladable"]').bootstrapSwitch();
 
 $(setup);
 
@@ -70,7 +65,7 @@ function inputContenido(funcion) {
     });
 
     $('label[for=id_descripcion_densidadcontenido_1]').click();
-      radioColor('descripcion_densidadcontenido');
+      radioColorBlue('descripcion_densidadcontenido');
     }
 
     if (funcion == 'mostrar'){
@@ -101,7 +96,6 @@ $('p:has(input[id=id_capacidad_volumen_contenedor])').css('display', 'none');
 $('p:has(input[id=id_peso_contenido])').css('display', 'none');
 $('p:has(input[id=id_descripcion_contenedor])').css('display', 'none');
 $('p:has(input[id=id_peso_contenedor])').css('display', 'none');
-$('p:has(input[id=id_trasladable])').css('display', 'none');
 $('input[id=capacidadmueble]').css('display', 'none');
 $('input[id=densidadcontenido]').css('display', 'none');
 $('input[id=volmaterial]').css('display', 'none');
@@ -109,3 +103,28 @@ $('input[id=pesomaterial]').css('display', 'none');
 $('#id_lista_ocupacion').addClass('radioselect-ul');
 $('#id_lista_tamano').addClass('radioselect-ul');
 $('#id_descripcion_densidadcontenido').addClass('radioselect-ul');
+
+
+$('input[name="lista_tamano"]').focus(function() {
+  $('li:has(input[name="lista_tamano"])').attr('class', 'focusBlue');
+  var v = $(this);
+  var p = v.position();
+  scrollWin(p.top);
+});
+$('input[name="lista_tamano"]').focusout(function() {
+  $('li:has(input[name="lista_tamano"])').removeClass('focusBlue');
+});
+
+$('input[name="lista_ocupacion"]').focus(function() {
+  $('li:has(input[name="lista_ocupacion"])').attr('class', 'focusBlue');
+});
+$('input[name="lista_ocupacion"]').focusout(function() {
+  $('li:has(input[name="lista_ocupacion"])').removeClass('focusBlue');
+});
+
+$('input[name="descripcion_densidadcontenido"]').focus(function() {
+  $('li:has(input[name="descripcion_densidadcontenido"])').attr('class', 'focusBlue');
+});
+$('input[name="descripcion_densidadcontenido"]').focusout(function() {
+  $('li:has(input[name="descripcion_densidadcontenido"])').removeClass('focusBlue');
+});

@@ -37,6 +37,8 @@ from servicio.models import Material
 
 from django.views.generic import View
 from django.conf import settings
+from mtvmcotizacion.views import get_query
+from premisas.models import PerzonalizacionVisual
 
 
 # Create your views here.
@@ -86,7 +88,13 @@ class EstadoCreate(View):
 @login_required
 def lista_estado_cotizacion(request):
     """docstring"""
-
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -109,7 +117,7 @@ def lista_estado_cotizacion(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_estadocotizacion = Estado_Cotizacion.objects.all()
-    paginator = Paginator(lista_estadocotizacion, 25)
+    paginator = Paginator(lista_estadocotizacion, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -126,7 +134,13 @@ def lista_estado_cotizacion(request):
 
 def lista_piso(request):
     """docstring"""
-
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -155,7 +169,13 @@ def lista_piso(request):
 
 def lista_tiempocarga(request):
     """docstring"""
-
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -178,7 +198,7 @@ def lista_tiempocarga(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_tiempocarga = Tiempo_Carga.objects.all()
-    paginator = Paginator(lista_tiempocarga, 25)
+    paginator = Paginator(lista_tiempocarga, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -225,7 +245,47 @@ def lista_cotizacion(request):
 
 def lista_vehiculo(request):
     """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
+    order_by = request.GET.get('order_by')
+    if order_by:
+        lista_vehiculo = Vehiculo.objects.all().order_by(order_by)
+    else:
+        lista_vehiculo = Vehiculo.objects.all()
 
+    paginator = Paginator(lista_vehiculo, nropag[0]['valor'])
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    if page == '0':
+        vehiculos = lista_vehiculo
+    else:
+        try:
+            vehiculos = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            vehiculos = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            vehiculos = paginator.page(paginator.num_pages)
+
+    context = {'lista_vehiculo': lista_vehiculo, 'vehiculos': vehiculos}
+    return render(request, 'vehiculo_lista.html', context)
+
+
+def search_vehiculo(request):
+    """docstring"""
+    try:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+    except PerzonalizacionVisual.DoesNotExist:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                      tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -247,9 +307,14 @@ def lista_vehiculo(request):
                 mensaje = {"status": "False", "form": "del", "msj": " "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
-    lista_vehiculo = Vehiculo.objects.all()
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['modelo', 'cargo__cargo', ])
+            lista_vehiculo = Vehiculo.objects.filter(entry_query)
+        else:
+            lista_vehiculo = Vehiculo.objects.all()
 
-    paginator = Paginator(lista_vehiculo, 25)
+    paginator = Paginator(lista_vehiculo, nropag[0]['valor'])
     # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -262,7 +327,7 @@ def lista_vehiculo(request):
         vehiculos = paginator.page(paginator.num_pages)
 
     context = {'lista_vehiculo': lista_vehiculo, 'vehiculos': vehiculos}
-    return render(request, 'vehiculo_lista.html', context)
+    return render_to_response('vehiculo_lista_search.html', context)
 
 
 def buscar_vehiculocotizacion(request, idcotizacion):

@@ -19,6 +19,10 @@ class ContenidoForm(ModelForm):
 
 class ContenidoTipicoForm(ModelForm):
     """docstring"""
+    def __init__(self, *args, **kwargs):
+        super(ContenidoTipicoForm, self).__init__(*args, **kwargs)
+        self.fields['contenido'].empty_label = "Seleccione el tipo de contenido"
+
     class Meta:
         model = Contenido_Tipico
         fields = '__all__'
@@ -32,6 +36,10 @@ class ContenidoTipicoForm(ModelForm):
 
 class ContenidoServicioForm(ModelForm):
     """docstring"""
+    def __init__(self, *args, **kwargs):
+        super(ContenidoServicioForm, self).__init__(*args, **kwargs)
+        self.fields['servicio'].empty_label = "Seleccione el servicio"
+
     class Meta:
         model = Contenido_Servicio
         fields = '__all__'

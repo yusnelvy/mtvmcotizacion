@@ -10,6 +10,11 @@ class ClienteForm(ModelForm):
     """
     Docstring documentación pendiente
     """
+    def __init__(self, *args, **kwargs):
+        super(ClienteForm, self).__init__(*args, **kwargs)
+        self.fields['sexo'].empty_label = "Seleccione el sexo"
+        self.fields['estado_civil'].empty_label = "Seleccione el estado civil"
+
     class Meta:
         model = Cliente
         fields = '__all__'

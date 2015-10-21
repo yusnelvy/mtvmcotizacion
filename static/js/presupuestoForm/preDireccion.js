@@ -26,12 +26,56 @@ $('input[name="ascensor"]').bootstrapSwitch();
 $('input[name="ascensor_servicio"]').bootstrapSwitch();
 $('ul').attr('class', 'radioselect-ul');
 
-function radioColorBlue (name) {
-  $("label:has(input[name=" + name + "])").css("background-color", "#fff");
-  $("label:has(input[name=" + name + "])").css("color", "#777");
-  $("label:has(input[name=" + name + "]:checked)").css("background-color", "#337ab7");
-  $("label:has(input[name=" + name + "]:checked)").css("color", "#fff");
-}
+$('input[name="lista_ocupacion"]').focus(function() {
+  $('li:has(input[name="lista_ocupacion"])').attr('class', 'focusBlue');
+  var v = $(this);
+  var p = v.position();
+  scrollWin(p.top);
+});
+$('input[name="lista_ocupacion"]').focusout(function() {
+    $('li:has(input[name="lista_ocupacion"])').removeClass('focusBlue');
+});
+
+$('input[name="pisos"]').focus(function() {
+  $('li:has(input[name="pisos"])').attr('class', 'focusBlue');
+  var v = $(this);
+  var p = v.position();
+  scrollWin(p.top);
+});
+$('input[name="pisos"]').focusout(function() {
+    $('li:has(input[name="pisos"])').removeClass('focusBlue');
+});
+
+$('input[name="pisos_escalera"]').focus(function() {
+  $('li:has(input[name="pisos_escalera"])').attr('class', 'focusBlue');
+  var v = $(this);
+  var p = v.position();
+  scrollWin(p.top);
+});
+$('input[name="pisos_escalera"]').focusout(function() {
+    $('li:has(input[name="pisos_escalera"])').removeClass('focusBlue');
+});
+
+$('input[name="pisos_ascensor"]').focus(function() {
+  $('li:has(input[name="pisos_ascensor"])').attr('class', 'focusBlue');
+  var v = $(this);
+  var p = v.position();
+  scrollWin(p.top);
+});
+$('input[name="pisos_ascensor"]').focusout(function() {
+    $('li:has(input[name="pisos_ascensor"])').removeClass('focusBlue');
+});
+
+$('input[name="pisos_ascensor_servicio"]').focus(function() {
+  $('li:has(input[name="pisos_ascensor_servicio"])').attr('class', 'focusBlue');
+  var v = $(this);
+  var p = v.position();
+  scrollWin(p.top);
+});
+$('input[name="pisos_ascensor_servicio"]').focusout(function() {
+    $('li:has(input[name="pisos_ascensor_servicio"])').removeClass('focusBlue');
+});
+
 
 $("input[name=pisos][value=1]").attr('checked', 'checked');
 radioColorBlue('pisos_ascensor');
@@ -147,3 +191,5 @@ showContent(
   document.getElementById("id_ascensor_servicio"),
   $('label[for=id_pisos_ascensor_servicio_0]')
    );
+
+enterNone();
