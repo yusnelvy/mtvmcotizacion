@@ -1,26 +1,24 @@
-<div class="alert alert-danger msj" id="msjEliminado" style="display:none;" role="alert">
-    Eliminado
-</div>
+<div class="alert alert-success msj notific" id="msjEliminado" style="display:none;" role="alert"></div>
 <!--modal eliminar-->
-<div aria-labelledby="mySmallModalLabel" class="modal fade eliminar" role="dialog">
-    <div class="modal-dialog modal-sm">
+<div aria-hidden="true" aria-labelledby="mySmallModalLabel" class="modal fade eliminar" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button aria-label="Close" class="close" data-dismiss="modal" id="cerrarEliminar" type="button"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">
-                    Eliminar <span class="nombreEliminar"></span>
-                </h4>
+            <div class="modal-body">
+                <span class="nombreEliminar elementHidden"></span>
+                <button  aria-hidden="true" aria-label="Close" class="close elementHidden" data-dismiss="modal" id="cerrarEliminar" type="button" tabindex="-1">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <iframe class="id_opcionEliminar" frameborder="0" height="80" id="" scrolling="auto"  seamless src="" width="100%">
+                    <p>ESTE NAVEGADOR NO ACEPTA IFRAMES. UTILICE OPERA, MOZILLA FIREFOX O CHROME</p>
+                </iframe>
             </div>
-            <iframe class="id_opcionEliminar" frameborder="0" height="80" id="" scrolling="auto"  seamless src="" width="100%">
-                <p>ESTE NAVEGADOR NO ACEPTA IFRAMES. UTILICE OPERA, MOZILLA FIREFOX O CHROME</p>
-            </iframe>
             <div class="modal-footer">
                 <form method="post" id="myform">
 
                     {% csrf_token %}
 
-                    <input type="submit" class="btn btn-danger btn-modalEliminar" value="Si">
-                    <a class="btn btn-default btn-modalEliminar" id="btn-cancelarEliminar">No</a>
+                    <a class="btn btn-default" id="btn-cancelarEliminar">CANCELAR</a>
+                    <input type="submit" class="btn btn-success" value="ELIMINAR">
                 </form>
             </div>
         </div>

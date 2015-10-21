@@ -75,6 +75,20 @@
 
 {% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente %}
 
+{% if presupuesto.estado = 'Muebles cargados'  %}
+
+<li class="linknav">
+    <a class="btn btn-default btn-blanco" data-target=".resumen" data-toggle="modal" type="button" style="color:#777;">Contratar servicios</a>
+</li>
+
+{% else %}
+
+{% endif %}
+
+{% endif %}
+
+{% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente %}
+
 {% if presupuesto.estado != 'Muebles cargados'  %}
 
 <li class="linknav">
@@ -82,10 +96,6 @@
 </li>
 
 {% else %}
-
-<li class="linknav">
-    <a data-target=".resumen" data-toggle="modal" type="button">Ver resumen</a>
-</li>
 
 {% endif %}
 
@@ -188,7 +198,7 @@ class="col-md-10"
             {% if not direccion_origen %}
 
             <tr>
-                <td>
+                <td colspan="4">
                     <a class="botonmodalFormulario btn btn-success hidden-print" data-nombre="Agregar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Origen&pre={{ presupuesto.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar dirección de origen">Agregar dirección de origen
                     </a>
                 </td>
@@ -347,7 +357,7 @@ class="col-md-10"
             {% if not direccion_destino %}
 
             <tr>
-                <td>
+                <td colspan="4">
                     <a class="botonmodalFormulario btn btn-success hidden-print boton-almedio" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar dirección de destino">Agregar dirección de destino
                     </a>
                 </td>
@@ -662,27 +672,40 @@ class="col-md-10"
 </div>
 <!-- Modal resumen de presupuesto-->
 <div aria-labelledby="resumen" class="modal fade resumen" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button id="btn-cerrarModalServ" aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="gridSystemModalLabel">Resumen del presupuesto</h4>
-            </div>
             <div class="modal-body">
+                <span class="elementHidden">resumen</span>
+                <button  aria-hidden="true" aria-label="Close" class="close elementHidden" data-dismiss="modal" id="btn-cerrarModalServ" type="button" tabindex="-1">
+                    <span aria-hidden="true">&times;</span>
+                </button>
 
-                ¿Desea contratar servicios para los muebles?
+                <h4>¿Desea contratar servicios para los muebles?</h4>
 
             </div>
             <div class="modal-footer">
-
-                <a class="btn btn-default scrollSpy" data-dismiss="modal" href="#ambientes" type="button">Sí</a>
-                <a class="btn btn-default botonFinalizar" data-dismiss="modal" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado=Servicios cargados&nexturl={% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}" href="" type="button">No</a>
-
+                <a class="btn btn-default botonFinalizar" data-dismiss="modal" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado=Servicios cargados&nexturl=" href="" tabindex="-1" type="button">No deseo contratar servicios</a>
+                <a class="btn btn-success scrollSpy" data-dismiss="modal" href="#ambientes" tabindex="-1" type="button">Contratar servicios</a>
             </div>
         </div>
     </div>
 </div>
-<div class="alert alert-success msj" id="msjGuardado" style="display:none;" role="alert">Guardado</div>
+<div class="alert alert-success msj notific" id="msjGuardado" style="display:none;" role="alert">Guardado</div>
+
+{% if messages %}
+
+{% for message in messages %}
+
+<script>
+var msj = document.getElementById('msjGuardado');
+$(msj).text('{{ message }}');
+$(msj).fadeIn();
+setTimeout(function() {$(msj).fadeOut();}, 4000);
+</script>
+
+{% endfor %}
+
+{% endif %}
 
 {% endblock content1 %}
 

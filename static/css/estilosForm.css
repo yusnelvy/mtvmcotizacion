@@ -337,10 +337,6 @@ que sobreescribe el diseño Bootstrap
   opacity: .9;
 }
 
-.btn-modalEliminar {
-  float: left!important;
-}
-
 .botonmodalEliminar {
   cursor: pointer;
 }
@@ -358,4 +354,24 @@ que sobreescribe el diseño Bootstrap
   outline: 0;
   -webkit-box-shadow: inset 4 5px 5px rgba(0,0,0,.075), 5 5 20px rgba(102, 175, 233, .6);
   box-shadow: inset 4 5px 5px rgba(0,0,0,.075), 5 5 20px rgba(102, 175, 233, .6);
+}
+
+.elementHidden {
+  visibility: hidden;
+}
+
+.notific {
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.fuenteTotales {
+  font-weight: 600;
+  background: rgba(232, 232, 232, 1);
+}
+
+.fuenteSubTotales {
+  background: rgba(232, 232, 232, 1);
 }

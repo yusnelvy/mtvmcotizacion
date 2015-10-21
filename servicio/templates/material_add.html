@@ -20,7 +20,30 @@
 
 </div>
 <script type="text/javascript">
-document.getElementById('id_material').focus()
+document.getElementById('id_material').focus();
+$('#id_contenedor').click(function() {
+    seleccionR(this);
+});
+
+seleccionR($('#id_contenedor'));
+
+function seleccionR(id) {
+    if( $(id).is(':checked') ) {
+        $('p:has(input[id=id_capacidad_peso])').fadeIn(200);
+        $('p:has(input[id=id_capacidad_volumen])').fadeIn(200);
+        $('input[id=id_capacidad_peso]').val('');
+        $('input[id=id_capacidad_volumen]').val('');
+    }else {
+        $('p:has(input[id=id_capacidad_peso])').fadeOut( 200, function() {
+        $(this).css('display', 'none');
+     });
+        $('p:has(input[id=id_capacidad_volumen])').fadeOut( 200, function() {
+        $(this).css('display', 'none');
+     });
+        $('input[id=id_capacidad_peso]').val(0);
+        $('input[id=id_capacidad_volumen]').val(0);
+    }
+}
 </script>
 
 {% endblock cuerpo_form %}
