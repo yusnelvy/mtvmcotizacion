@@ -322,7 +322,7 @@ class PresupuestoRevisarForm(ModelForm):
                 attrs={
                     'required': 'True',
                     'readonly': 'readonly',
-                    'class': 'input-re check3 input-re-no-border',
+                    'class': 'input-re check3 input-re-no-border fuenteSubTotales',
                     'type': 'number',
                     'step': '0.01',
                     'style': 'text-align: right; padding-right: 10px;'

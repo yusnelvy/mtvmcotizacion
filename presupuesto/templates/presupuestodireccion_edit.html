@@ -60,8 +60,8 @@ $(document).ready(function() {
           $(msj).text('Guardado con éxito');
           $(msj).fadeIn();
           setTimeout(function() {
-            $(msj).fadeOut();
-          }, 3000);
+          parent.location.reload();
+          }, 500);
           parent.location.reload();
         }
       }

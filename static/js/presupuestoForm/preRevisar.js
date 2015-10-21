@@ -468,3 +468,9 @@ function checkRevisado () {
 $('#myform').submit(function () {
     EnableRevisadoInput();
 });
+
+$('a').attr('tabindex', '-1');
+
+$("input").click(function(){
+  this.select();
+});

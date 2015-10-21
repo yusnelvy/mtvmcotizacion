@@ -2,11 +2,16 @@
 
 {% block formulario %}
 
-            <div class="modal-body">
+            <div id="status" class="modal-body">
 
                 {% block validacion_modal %}
 
-                <p>¿Desea eliminar el registro: <strong id="objeto">{{ object }}</strong>?</p>
+                <h4 >
+                    ¿Desea eliminar el registro:
+                    <strong id="objeto">
+                        {{ object }}
+                    </strong>?
+                </h4>
 
                 {% endblock validacion_modal %}
 
@@ -32,27 +37,24 @@ myform.submit(function () {
             var closep = parent.document.getElementById("cerrarEliminar");
             var eliminar = parent.document.getElementById("msjEliminado");
           if (data.estatus=="ok") {
+            $(eliminar).addClass('alert alert-success msj notific');
             cerrarModal(closep, eliminar);
             setTimeout(function () {
             parent.location.reload();
-            }, 1000);
-            $(eliminar).text(object + ' eliminado');
+            }, 500);
+            $(eliminar).append("<span class='glyphicon glyphicon-ok-circle'></span> " + object + " eliminado ");
             $(eliminar).fadeIn();
-          }else{
-            alert('no se elimino ' + data.msj);
+          }else {
             cerrarModal(closep, eliminar);
-          }
-        },
-        error: function (ajaxContext) {
-        setTimeout(function() {
-            cerrarModal(closep, eliminar);
-        }, 1000);
-        $(eliminar).text('No se puede eliminar ' + object);
-        $(eliminar).fadeIn();
-        setTimeout(function() {
+            setTimeout(function () {
             $(eliminar).fadeOut();
-        }, 3000);
-    }
+            parent.location.reload();
+            }, 3000);
+            $(eliminar).addClass('alert alert-danger msj notific');
+            $(eliminar).append("<span class='glyphicon glyphicon-ban-circle'></span> " + object + " no eliminado<p style='font-size: 12px;'>" + data.msj + "</p>");
+            $(eliminar).fadeIn();
+          }
+        }
     });
     return false;
 });

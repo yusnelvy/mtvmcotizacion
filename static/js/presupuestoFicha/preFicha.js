@@ -31,11 +31,7 @@ $(".botonmodalFormulario").on('click', function(even) {
     $('.nombreTitulo').text(nombre);
 });
 
-$('#myModalFormulario').on('show.bs.modal', function () {
-
-});
 $('#myModalFormulario').focus(function() {
-  //alert('hi');
   $('.modal-content').attr('class', 'modal-content focusBlueModal');
 });
 $('#myModalFormulario').focusout(function() {
@@ -94,9 +90,9 @@ $(document).ready(function() {
                 type: 'GET',
                 data: numero,
                 success: function(data) {
+                    var closep = document.getElementById("btn-cerrarModalServ");
                     if (data.estatus == "ok") {
                         if (data.nexturl !=""){
-                            var closep = document.getElementById("btn-cerrarModalServ");
                             $(closep).click();
                             $('#msjGuardado').css('width', '300px');
                             $('#msjGuardado').fadeIn();
@@ -106,10 +102,14 @@ $(document).ready(function() {
                             }, 500);
 
                         } else  {
+                            $(closep).click();
+                            $('#msjGuardado').css('width', '300px');
+                            $('#msjGuardado').fadeIn();
+                            $('#msjGuardado').text('No se contrataran servicios');
 
                             setTimeout(function() {
                                 parent.location.reload();
-                            }, 1000);
+                            }, 500);
 
                         }
 
@@ -128,6 +128,6 @@ $(document).ready(function() {
 });
 
 $('#myModalFormulario').on('hidden.bs.modal', function () {
-  $('.id_opcionFormulario').attr('src', ' ');
+  $('.id_opcionFormulario').attr('src', '');
   setTimeout(function() {$('#msjGuardado').fadeOut();}, 3000);
 });

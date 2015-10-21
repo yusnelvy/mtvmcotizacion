@@ -41,6 +41,7 @@
 <script src="/static/js/presupuestoForm/preDireccion.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+  enterNone();
   $('#myform').submit(function() {
     disabledBtn($('.registrar'));
     var action = "{% url 'upresupuestos:PresupuestoDireccionView' %}";
@@ -59,6 +60,9 @@ $(document).ready(function() {
           $(closep).click();
           $(msj).text('Guardado con exito');
           $(msj).fadeIn();
+          setTimeout(function() {
+          parent.location.reload();
+          }, 500);
           parent.location.reload();
         }
       }
@@ -87,8 +91,6 @@ function refresh () {
     }
   });
 }
-
-enterNone();
 
 $('#btn-cancelar').click(function() {
   cerrarModal(parent.document.getElementById('btn-cerrarModal'),
