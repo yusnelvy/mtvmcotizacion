@@ -72,6 +72,21 @@
 
     </a>
 </li>
+<li class="linknav">
+    <a class="scrollSpy">Servicios contratados
+
+        {% if presupuesto.estado = "Servicios cargados" %}
+
+        <span class="glyphicon glyphicon-ok"></span>
+
+        {% else %}
+
+        <span class="glyphicon glyphicon-minus"></span>
+
+        {% endif %}
+
+    </a>
+</li>
 
 {% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente %}
 
@@ -700,7 +715,7 @@ class="col-md-10"
 var msj = document.getElementById('msjGuardado');
 $(msj).text('{{ message }}');
 $(msj).fadeIn();
-setTimeout(function() {$(msj).fadeOut();}, 4000);
+setTimeout(function() {$(msj).fadeOut();}, 500);
 </script>
 
 {% endfor %}

@@ -116,12 +116,12 @@ class PresupuestoDireccionForm(ModelForm):
     class Meta:
         model = Presupuesto_direccion
         fields = 'direccion', \
+            'pisos_escalera', \
             'lista_tipoinmueble', \
             'lista_ocupacion', \
             'total_m2', \
             'distancia_vehiculo',\
             'pisos', \
-            'pisos_escalera', \
             'rampa', \
             'ascensor', \
             'pisos_ascensor', \
@@ -143,7 +143,7 @@ class PresupuestoDireccionForm(ModelForm):
             'distancia_vehiculo': ('Distancia del inmueble al vehículo (m)'),
             'total_m2': ('Área del inmueble (m2)'),
             'pisos': ('Cantidad de pisos del inmueble'),
-            'pisos_escalera': ('Cantidad de pisos a recorrer por escaleras'),
+            'pisos_escalera': ('Numero de piso donde se encuentra el inmueble'),
             'pisos_ascensor': ('Cantidad de pisos a recorrer por el ascensor'),
             'pisos_ascensor_servicio': (
             'Cantidad de pisos a recorrer por el ascensor de servicio'

@@ -40,6 +40,10 @@ function inputContenido(funcion) {
         $(this).css('display', 'none');
     });
 
+    $('p:has(button[id=btn-calcularcontenedor])').fadeOut( 200, function() {
+        $(this).css('display', 'none');
+    });
+
     $('p:has(input[id=id_volumen_contenido])').fadeOut( 200, function() {
         $(this).css('display', 'none');
     });
@@ -70,6 +74,7 @@ function inputContenido(funcion) {
 
     if (funcion == 'mostrar'){
     $('p:has(select[id=id_descripcion_densidadcontenido])').fadeIn(200);
+    $('p:has(button[id=btn-calcularcontenedor])').fadeIn(200);
     $('p:has(input[id=id_densidadcontenido])').fadeIn(200);
     $('p:has(input[id=id_volumen_contenido])').fadeIn(200);
     $('p:has(select[id=id_descripcion_contenedor])').fadeIn(200);

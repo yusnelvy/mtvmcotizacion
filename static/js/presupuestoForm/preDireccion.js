@@ -101,7 +101,7 @@ function proponerPisos (pisos, check, msj, name ) {
       $("input[name=" + name + "][value=" + 0 + "]").click();
       radioColorBlue(name);
       $(msj).text(
-        'Seleccione cantidad de pisos a recorrer por escaleras para agregar ascensor.'
+        'Seleccione numero de piso donde se encuentra el inmueble para agregar ascensor.'
         );
       $(msj).fadeIn();
       setTimeout(function () {
