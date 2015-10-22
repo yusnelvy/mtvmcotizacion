@@ -111,10 +111,21 @@ $(document).ready(function() {
         lista_ocupacion = $("input[name=lista_ocupacion]");
         for(var i=0; i<lista_ocupacion.length; i++) {
           if (data[0].ocupacion==lista_ocupacion[i].value) {
-            $(lista_ocupacion[i]).attr("checked","checked");
+            document.getElementById($(lista_ocupacion[i]).attr('id')).checked = true;
             radioColorBlue('lista_ocupacion');
           }
         }
+
+        if ($("#id_ocupacidad").val() == 'Vacío') {
+          $("#id_descripcion_contenido").val('Sin contenido');
+          cargarinformacioncontenido();
+          inputContenido('ocultar');
+
+        } else {
+          inputContenido('mostrar');
+          calculoscontenido();
+        }
+
         if (data[0].trasladable == true) {
           document.getElementById("id_trasladable").checked = true;
         } else {
@@ -132,18 +143,28 @@ $(document).ready(function() {
             inputContenido('ocultar');
           }
         }
-        if ($("#id_ocupacidad").val() == 'Vacío') {
-          $("#id_descripcion_contenido").val('Sin contenido');
-          cargarinformacioncontenido();
-          inputContenido('ocultar');
-        } else {
-          inputContenido('mostrar');
-          calculoscontenido();
-        }
+
       });
   });
 
   $("#id_lista_tamano").on("change", function() {
+    id_lista_tamano = $('input[name=lista_tamano]:checked').val();
+    id_lista_mueble = $("#id_lista_mueble").val();
+    $.get('/presupuesto/detalle/nuevo',
+      {id_lista_tamano: id_lista_tamano, id_lista_mueble: id_lista_mueble},
+      function(data) {
+        $("#id_tamano").val(data[0].tamano);
+        $("#id_ancho").val(data[0].ancho);
+        $("#id_largo").val(data[0].largo);
+        $("#id_alto").val(data[0].alto);
+        volumen = calcular_volumen($("#id_ancho").val(), $(
+          "#id_largo").val(), $("#id_alto").val(), $("#id_cantidad").val());
+        $("#id_volumen_mueble").val(volumen);
+        calculoscontenido();
+      });
+  });
+
+  $("#id_lista_tamano").click(function () {
     id_lista_tamano = $('input[name=lista_tamano]:checked').val();
     id_lista_mueble = $("#id_lista_mueble").val();
     $.get('/presupuesto/detalle/nuevo',
@@ -193,6 +214,7 @@ $(document).ready(function() {
           $("#id_descripcion_contenido").val('Sin contenido');
           cargarinformacioncontenido();
           inputContenido('ocultar');
+          radioColorBlue('lista_ocupacion');
         } else {
           inputContenido('mostrar');
           calculoscontenido();
@@ -432,6 +454,7 @@ function calcular_pesocontenedor(cant_contenedor, peso_material) {
   resultado= (cant_contenedor*peso_material)
   return resultado.toFixed(3);
 }
+
 </script>
 
 {% endblock js_form %}
