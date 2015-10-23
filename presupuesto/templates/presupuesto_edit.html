@@ -53,8 +53,9 @@ $('#myform').submit(function(){
                 $(closep).click();
                 $(msj).text('Guardado con éxito');
                 $(msj).fadeIn();
-                setTimeout(function() {$(msj).fadeOut();}, 500);
-                asyncChange();
+                setTimeout(function() {
+                    parent.location.reload();
+                }, 500);
             }
         }
     });

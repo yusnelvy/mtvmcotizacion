@@ -51,6 +51,9 @@ $('#id_lista_ocupacion li label').addClass('btn-radio');
 
 $('#id_lista_tamano li label').addClass('btn-radio');
 
+document.getElementById('id_lista_ambiente').disabled = true;
+document.getElementById('id_lista_mueble').disabled = true;
+
 $(document).ready(function() {
   descripcionmensaje();
   ocupacidadVacia();
@@ -272,7 +275,7 @@ $(document).ready(function() {
   $('#myform').submit(function() {
     calculoscontenedor();
     descripcionmensaje();
-
+    document.getElementById('id_lista_mueble').disabled = false;
     disabledBtn($('.registrar'));
     document.getElementById('id_lista_ambiente').disabled = false;
     var id = $(parent.document.getElementsByClassName(
@@ -302,7 +305,9 @@ $(document).ready(function() {
           $(guardar).css('width','300px');
           $(guardar).text('Mueble guardado con exito');
           $(guardar).fadeIn();
-          parent.location.reload();
+          setTimeout(function () {
+            parent.location.reload();
+          }, 500);
         }
       }
     });

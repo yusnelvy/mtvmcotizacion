@@ -18,18 +18,6 @@ radioColorBlue('descripcion_densidadcontenido');
 
 $('input[name="trasladable"]').bootstrapSwitch();
 
-$(setup);
-
-function setup() {
-  $('#id_lista_mueble').zelect( {
-    placeholder:'Seleccione el mueble'
-  });
-
-  $('#id_lista_ambiente').zelect( {
-    placeholder:'Seleccione el ambiente'
-  });
-}
-
 function inputContenido(funcion) {
     if (funcion == 'ocultar'){
       $('p:has(select[id=id_descripcion_densidadcontenido])').fadeOut( 200, function() {
@@ -133,3 +121,14 @@ $('input[name="descripcion_densidadcontenido"]').focus(function() {
 $('input[name="descripcion_densidadcontenido"]').focusout(function() {
   $('li:has(input[name="descripcion_densidadcontenido"])').removeClass('focusBlue');
 });
+
+function l_mueble() {
+  $('#id_lista_mueble').zelect( {
+    placeholder:'Seleccione el mueble'
+  });
+}
+function l_ambiente() {
+  $('#id_lista_ambiente').zelect( {
+    placeholder:'Seleccione el ambiente'
+  });
+}
