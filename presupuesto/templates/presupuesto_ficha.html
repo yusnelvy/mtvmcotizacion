@@ -72,6 +72,21 @@
 
     </a>
 </li>
+<li class="linknav">
+    <a class="scrollSpy">Servicios contratados
+
+        {% if presupuesto.estado = "Servicios cargados" %}
+
+        <span class="glyphicon glyphicon-ok"></span>
+
+        {% else %}
+
+        <span class="glyphicon glyphicon-minus"></span>
+
+        {% endif %}
+
+    </a>
+</li>
 
 {% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente %}
 
@@ -676,7 +691,7 @@ class="col-md-10"
         <div class="modal-content">
             <div class="modal-body">
                 <span class="elementHidden">resumen</span>
-                <button  aria-hidden="true" aria-label="Close" class="close elementHidden" data-dismiss="modal" id="btn-cerrarModalServ" type="button" tabindex="-1">
+                <button  aria-hidden="true" aria-label="Close" class="close" data-dismiss="modal" id="btn-cerrarModalServ" type="button" tabindex="-1">
                     <span aria-hidden="true">&times;</span>
                 </button>
 
@@ -700,7 +715,7 @@ class="col-md-10"
 var msj = document.getElementById('msjGuardado');
 $(msj).text('{{ message }}');
 $(msj).fadeIn();
-setTimeout(function() {$(msj).fadeOut();}, 4000);
+setTimeout(function() {$(msj).fadeOut();}, 500);
 </script>
 
 {% endfor %}

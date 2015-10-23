@@ -35,48 +35,45 @@ PISOS_RECORRER_CHOICES = (
     )
 
 DISTANCIA_VEHICULO_INMUEBLE = (
-    (10, '10 mts o menos'),
-    (20, '11 a 20 mts'),
-    (30, '21 a 30 mts'),
-    (40, '31 a 40 mts'),
-    (50, '41 a 50 mts'),
-    (60, '51 a 60 mts'),
-    (70, '70 mts o más'),
+    (20, '10 a 20 mts'),
+    (30, '20 a 30 mts'),
+    (40, '30 a 40 mts'),
+    (50, '40 a 50 mts'),
+    (60, '50 a 60 mts'),
+    (70, '60 mts o más'),
     )
 
 METROSCUADRADO_INMUEBLE = (
     (Decimal('40.00'), '40 m2 o menos'),
-    (Decimal('80.00'), '41 a 80 m2'),
-    (Decimal('120.00'), '81 a 120 m2'),
-    (Decimal('160.00'), '121 a 160 m2'),
-    (Decimal('200.00'), '161 a 200 m2'),
-    (Decimal('240.00'), '240 m2 o más'),
+    (Decimal('80.00'), '40 a 80 m2'),
+    (Decimal('120.00'), '80 a 120 m2'),
+    (Decimal('160.00'), '120 a 160 m2'),
+    (Decimal('200.00'), '160 a 200 m2'),
+    (Decimal('240.00'), '200 m2 o más'),
     )
 
 RECORRIDO_KM = (
-    (Decimal('20.00'), '20 Km o menos'),
-    (Decimal('40.00'), '21 a 40 Km'),
-    (Decimal('60.00'), '41 a 60 Km'),
-    (Decimal('80.00'), '61 a 80 Km'),
-    (Decimal('100.00'), '81 a 100 Km'),
-    (Decimal('120.00'), '101 a 120 Km'),
-    (Decimal('140.00'), '121 a 140 Km'),
-    (Decimal('160.00'), '141 a 160 Km'),
-    (Decimal('180.00'), '161 a 180 Km'),
-    (Decimal('200.00'), '200 Km o más')
+    (Decimal('40.00'), '20 a 40 Km'),
+    (Decimal('60.00'), '40 a 60 Km'),
+    (Decimal('80.00'), '60 a 80 Km'),
+    (Decimal('100.00'), '80 a 100 Km'),
+    (Decimal('120.00'), '100 a 120 Km'),
+    (Decimal('140.00'), '120 a 140 Km'),
+    (Decimal('160.00'), '140 a 160 Km'),
+    (Decimal('180.00'), '160 a 180 Km'),
+    (Decimal('200.00'), '180 Km o más')
     )
 
 TIEMPO_RECORRIDO = (
-    (Decimal('1.00'), '1 hora o menos'),
-    (Decimal('2.00'), '1 a 2 horas'),
-    (Decimal('3.00'), '2 a 3 horas'),
-    (Decimal('4.00'), '3 a 4 horas'),
-    (Decimal('5.00'), '4 a 5 horas'),
-    (Decimal('6.00'), '5 a 6 horas'),
-    (Decimal('7.00'), '6 a 7 horas'),
-    (Decimal('8.00'), '7 a 8 horas'),
-    (Decimal('9.00'), '8 a 9 horas'),
-    (Decimal('10.00'), '10 horas o más')
+    (Decimal('2.00'), '01 a 02 horas'),
+    (Decimal('3.00'), '02 a 03 horas'),
+    (Decimal('4.00'), '03 a 04 horas'),
+    (Decimal('5.00'), '04 a 05 horas'),
+    (Decimal('6.00'), '05 a 06 horas'),
+    (Decimal('7.00'), '06 a 07 horas'),
+    (Decimal('8.00'), '07 a 08 horas'),
+    (Decimal('9.00'), '08 a 09 horas'),
+    (Decimal('10.00'), '09 horas o más')
     )
 
 HORAS_CHOICES = (

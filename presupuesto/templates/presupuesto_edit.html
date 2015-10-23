@@ -9,7 +9,7 @@ $(function() {
     });
 });
 setTimeout(function () {
-    document.getElementById('id_dni').focus();
+   document.getElementById('id_dni').focus();
 }, 500);
 </script>
 <form action="" method="post" id="myform">
@@ -53,8 +53,9 @@ $('#myform').submit(function(){
                 $(closep).click();
                 $(msj).text('Guardado con éxito');
                 $(msj).fadeIn();
-                setTimeout(function() {$(msj).fadeOut();}, 3000);
-                asyncChange();
+                setTimeout(function() {
+                    parent.location.reload();
+                }, 500);
             }
         }
     });

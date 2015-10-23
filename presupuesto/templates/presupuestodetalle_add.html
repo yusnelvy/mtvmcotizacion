@@ -47,25 +47,33 @@ var densidadMedia = 0
 var densidadAlta = 0
 var densidadMuyAlta = 0
 
+var idAmbinete = $(parent.document.getElementsByClassName(
+    "id_opcionFormulario")).attr('id');
+      if (idAmbinete=="ambienteFocus") {
+        l_ambiente();
+        l_mueble();
+      } else {
+        document.getElementById('id_lista_ambiente').disabled = true;
+        l_mueble();
+      }
 $(document).ready(function() {
-
   $('.campo p .zelect .zelected').eq(0).addClass('selectAmbiente');
   $('.campo p .zelect .zelected').eq(1).addClass('selectMueble');
-
   setTimeout(function() {
-  var idAmbinete = $(parent.document.getElementsByClassName(
-    "id_opcionFormulario")).attr('id');
+
   if (idAmbinete=="ambienteFocus") {
     document.getElementById('id_lista_ambiente').focus();
-    $('.selectAmbiente').click();
+    setTimeout(function () {
+      $('.selectAmbiente').click();
+    }, 500);
   } else {
     document.getElementById('id_lista_mueble').focus();
     document.getElementById('id_lista_ambiente').disabled = true;
-    $('.selectMueble').click();
+    setTimeout(function () {
+      $('.selectAmbiente').click();
+    }, 100);
   }
 }, 500);
-
-
   $("#id_lista_ambiente").on("change", function() {
     id_lista_ambiente = $("#id_lista_ambiente").val();
     $("#id_ambiente").val(id_lista_ambiente);
@@ -128,8 +136,10 @@ $(document).ready(function() {
 
         if (data[0].trasladable == true) {
           document.getElementById("id_trasladable").checked = true;
+          $('input[name="trasladable"]').bootstrapSwitch('state', true );
         } else {
           document.getElementById("id_trasladable").checked = false;
+          $('input[name="trasladable"]').bootstrapSwitch('state', false );
         }
 
         lista_tamano = $("input[name=lista_tamano]");
@@ -377,7 +387,9 @@ $(document).ready(function() {
           $(guardar).css('width','300px');
           $(guardar).text('Mueble guardado con exito');
           $(guardar).fadeIn();
-          parent.location.reload();
+          setTimeout(function () {
+            parent.location.reload();
+          }, 500);
         }
       }
     });

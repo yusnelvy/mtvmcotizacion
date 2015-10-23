@@ -18,18 +18,6 @@ radioColorBlue('descripcion_densidadcontenido');
 
 $('input[name="trasladable"]').bootstrapSwitch();
 
-$(setup);
-
-function setup() {
-  $('#id_lista_mueble').zelect( {
-    placeholder:'Seleccione el mueble'
-  });
-
-  $('#id_lista_ambiente').zelect( {
-    placeholder:'Seleccione el ambiente'
-  });
-}
-
 function inputContenido(funcion) {
     if (funcion == 'ocultar'){
       $('p:has(select[id=id_descripcion_densidadcontenido])').fadeOut( 200, function() {
@@ -37,6 +25,10 @@ function inputContenido(funcion) {
     });
 
     $('p:has(input[id=id_densidadcontenido])').fadeOut( 200, function() {
+        $(this).css('display', 'none');
+    });
+
+    $('p:has(button[id=btn-calcularcontenedor])').fadeOut( 200, function() {
         $(this).css('display', 'none');
     });
 
@@ -70,6 +62,7 @@ function inputContenido(funcion) {
 
     if (funcion == 'mostrar'){
     $('p:has(select[id=id_descripcion_densidadcontenido])').fadeIn(200);
+    $('p:has(button[id=btn-calcularcontenedor])').fadeIn(200);
     $('p:has(input[id=id_densidadcontenido])').fadeIn(200);
     $('p:has(input[id=id_volumen_contenido])').fadeIn(200);
     $('p:has(select[id=id_descripcion_contenedor])').fadeIn(200);
@@ -128,3 +121,14 @@ $('input[name="descripcion_densidadcontenido"]').focus(function() {
 $('input[name="descripcion_densidadcontenido"]').focusout(function() {
   $('li:has(input[name="descripcion_densidadcontenido"])').removeClass('focusBlue');
 });
+
+function l_mueble() {
+  $('#id_lista_mueble').zelect( {
+    placeholder:'Seleccione el mueble'
+  });
+}
+function l_ambiente() {
+  $('#id_lista_ambiente').zelect( {
+    placeholder:'Seleccione el ambiente'
+  });
+}

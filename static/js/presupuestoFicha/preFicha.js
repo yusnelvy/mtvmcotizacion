@@ -31,12 +31,6 @@ $(".botonmodalFormulario").on('click', function(even) {
     $('.nombreTitulo').text(nombre);
 });
 
-$('#myModalFormulario').focus(function() {
-  $('.modal-content').attr('class', 'modal-content focusBlueModal');
-});
-$('#myModalFormulario').focusout(function() {
-  $('.modal-content').removeClass('focusBlueModal');
-});
 $(document).ready(function() {
     $(function () {
         $('[data-toggletooltip="tooltip"]').tooltip();
@@ -70,7 +64,7 @@ $(document).ready(function() {
                     if (data.estatus == "ok") {
                         setTimeout(function() {
                             parent.location.reload();
-                        }, 1000);
+                        }, 500);
                     } else {
                         alert('Ocurrio un error ' + data.estatus);
                     }
@@ -128,6 +122,8 @@ $(document).ready(function() {
 });
 
 $('#myModalFormulario').on('hidden.bs.modal', function () {
-  $('.id_opcionFormulario').attr('src', '');
-  setTimeout(function() {$('#msjGuardado').fadeOut();}, 3000);
+    setTimeout(function() {
+        $('.id_opcionFormulario').attr('src', '');
+        setTimeout(function() {$('#msjGuardado').fadeOut();}, 500);
+    }, 500);
 });
