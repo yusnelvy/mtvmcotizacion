@@ -109,14 +109,8 @@
 <tr id="tr{{i.id}}">
   <td>{{ i.cargo }}</td>
   <td>$ {{ i.tarifa_dia }}</td>
-
-  {% widthratio i.recargo_fin_semana 1 100 as recfin %}
-
-  <td>+{{ recfin|floatformat:"2" }}%</td>
-
-  {% widthratio i.recargo_nocturno 1 100 as recnoc %}
-
-  <td>+{{ recnoc|floatformat:"2" }}%</td>
+  <td>+{{ i.recargo_fin_semana|floatformat:"2" }}%</td>
+  <td>+{{ i.recargo_nocturno|floatformat:"2" }}%</td>
   <td>
     <a title="Editar" data-toggle="tooltip" data-placement="right"href="{% url 'utrabajadores:edit_cargotrabajador' i.id %}?next={{request.get_full_path}}" class="hidden-print glyphicon glyphicon-edit" ></a>
   </td>

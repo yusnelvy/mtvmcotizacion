@@ -107,10 +107,7 @@
 
 <tr id="tr{{i.id}}">
   <td>{{ i.complejidad }}</td>
-
-  {% widthratio i.factor 1 100 as val %}
-
-  <td>{{ val|floatformat:"2" }}%</td>
+  <td>{{ i.factor|floatformat:"2" }}%</td>
   <td>$ {{ i.valor_ambiente }}</td>
   <td>$ {{ i.valor_metrocubico }}</td>
   <td width="80px"><a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'udirecciones:edit_complejidad_inmueble' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a></td>

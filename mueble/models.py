@@ -1,5 +1,6 @@
 from django.db import models
 from ambiente.models import Ambiente
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # Create your models here.
@@ -25,7 +26,11 @@ class Ocupacion(models.Model):
         super(Ocupacion, self).__init__(*args, **kwargs)
 
     descripcion = models.CharField(max_length=100, unique=True)
-    valor = models.DecimalField(max_digits=5, decimal_places=2)
+    valor = models.DecimalField(max_digits=5, decimal_places=2,
+                                validators=[
+                                    MaxValueValidator(100),
+                                    MinValueValidator(0)
+                                ])
 
     def __str__(self):
         return self.descripcion
@@ -61,7 +66,11 @@ class Mueble(models.Model):
     tipo_mueble = models.ForeignKey(Tipo_Mueble, on_delete=models.PROTECT)
     forma = models.ForeignKey(Forma_Mueble, on_delete=models.PROTECT)
     ocupacion = models.ForeignKey(Ocupacion, on_delete=models.PROTECT)
-    capacidad = models.DecimalField(max_digits=8, decimal_places=3)
+    capacidad = models.DecimalField(max_digits=8, decimal_places=3,
+                                    validators=[
+                                        MaxValueValidator(100),
+                                        MinValueValidator(0)
+                                    ])
     trasladable = models.BooleanField(default=None)
     apilable = models.BooleanField(default=None)
     capacidad_carga = models.BooleanField(default=None)

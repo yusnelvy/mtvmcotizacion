@@ -7,6 +7,7 @@
 <title>Presupuesto</title>
 {% endblock titulo %}
 {% block link_navegacion %}
+
 <li class="linknav">
     <a onClick="location='{% url 'upresupuestos:PresupuestoDetail' presupuesto.id %}'">Volver a la ficha</a>
 </li>
@@ -35,6 +36,14 @@
 
 <li>
     <a class="btn btn-default btn-blanco" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
+</li>
+
+{% endif %}
+
+{% if presupuesto.estado = "Por autorizar" %}
+
+<li>
+    <a class="btn btn-success btn-verde botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado=Terminado cotizador">Autorizar</a>
 </li>
 
 {% endif %}
@@ -270,14 +279,22 @@
                         </table>
                         <table class="table table-hover table-condensed table-bordered break" align="center">
                             <tr align="center">
-                                <td width="50px">Km recorrido</td>
-                                <td width="50px">Tiempo de recorrido</td>
-                                <td width="50px">Tiempo de servicios</td>
+                                <td width="40px">Km recorrido</td>
+                                <td width="40px">Tiempo de recorrido</td>
+                                <td width="40px">Tiempo de servicios</td>
+                                <td width="40px">Tiempo de carga</td>
                             </tr>
                             <tr align="center">
                                 <td>{{ presupuesto.recorrido_km}}</td>
                                 <td>{% calular_horas presupuesto.tiempo_recorrido %}</td>
                                 <td>{% calular_horas presupuesto.tiempo_servicios %}</td>
+                                <td>{% calular_horas presupuesto.tiempo_carga %}</td>
+                            </tr>
+                            <tr align="center">
+                                <td colspan="3">
+                                    Tiempo total de la mudanza
+                                </td>
+                                <td>{% calular_horas presupuesto.tiempo_total %}</td>
                             </tr>
                         </table>
                     </div>
@@ -392,7 +409,9 @@
                             <td>
                                 {% calular_horas presupuesto.duracion_optima %}
                             </td>
-                            <td></td>
+                            <td>
+                                {% calular_horas presupuesto.tiempo_carga %}
+                            </td>
                         </tr>
                         <tr align="center" style="border-top: 2px solid #ddd;">
                             <td>Valor por m<sup>3</sup> </td>
@@ -516,18 +535,15 @@
                                 {% endif %}
                             </td>
                             <td>
-                                {% if presupuesto.tipo_calculo == 'Optimizado' %}
 
-                                {% if presupuesto.maxrecursooptimo == presupuesto.monto_personaoptima %}
-                                {{presupuesto.maxrecursooptimo}}
-                                {% endif %}
-                                {% else %}
+                                {% if presupuesto.monto_personaoptima == presupuesto.monto_recursos_revisado %}
 
-                                    {% if presupuesto.monto_personaoptima == presupuesto.monto_recursos_revisado %}
+                                {% if presupuesto.monto_personaoptima != presupuesto.monto_personateorica %}
 
                                     {{presupuesto.monto_recursos_revisado}}
 
-                                    {% endif %}
+                                {% endif %}
+
                                 {% endif %}
 
                             </td>
@@ -629,12 +645,28 @@
                             <td align="center">{{presupuesto.mudanzamontorevisadotoerico}}</td>
                             <td align="center">{{presupuesto.mudanzamontorevisadooptimo}}</td>
                             <td align="center">
+                                {% if presupuesto.tipo_calculo == 'Optimizado' %}
 
-                                {% if presupuesto.mudanzamontorevisado == 0 %}
                                     {{presupuesto.mudanzamontorevisadooptimo}}
+
+                                {% elif presupuesto.tipo_calculo == 'Basico' %}
+
+                                    {{presupuesto.mudanzamontorevisadotoerico}}
+
                                 {% else %}
-                                    {{presupuesto.mudanzamontorevisado}}
+
+                                    {% if presupuesto.mudanzamontorevisado == 0 %}
+
+                                        {{presupuesto.mudanzamontorevisadooptimo}}
+
+                                    {% else %}
+
+                                        {{presupuesto.mudanzamontorevisado}}
+
+                                    {% endif %}
+
                                 {% endif %}
+
 
                             </td>
                         </tr>

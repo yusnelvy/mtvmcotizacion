@@ -406,6 +406,8 @@ function checkBasico () {
     $('#id_monto_descuento_recargo').val(parseFloat($('#descuento_regargobasico').val().replace(',','')).toFixed(2));
     $('#porc_descuento').val(parseFloat($('#porc_descuentobasico').val().replace(',','')).toFixed(2));
     $('#mudanzamontorevisado').val(parseFloat($('#mudanzamontorevisadotoerico').val().replace(',','')).toFixed(2));
+    $('#id_tiempo_carga').val($('#duracionteorica').val());
+    $('#id_tipo_duracion').val('Basico');
     RecargoEnableBasico();
     RecargodisabledOptimo();
     RecargodisabledRevisado();
@@ -430,6 +432,8 @@ function checkOptimizado () {
     $('#id_monto_descuento_recargo').val(parseFloat($('#descuento_recargooptimo').val().replace(',','')).toFixed(2));
     $('#porc_descuento').val(parseFloat($('#porc_descuentooptimo').val().replace(',','')).toFixed(2));
     $('#mudanzamontorevisado').val(parseFloat($('#mudanzamontorevisadooptimo').val().replace(',','')).toFixed(2));
+    $('#id_tiempo_carga').val($('#duracionoptima').val());
+    $('#id_tipo_duracion').val('Optimizado');
     RecargodisabledBasico();
     RecargoEnableOptimo();
     RecargodisabledRevisado();

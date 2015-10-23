@@ -391,6 +391,7 @@ class PresupuestoDireccionView(View):
         }
         form = self.form_class(initial=data)
         return render(request, self.template_name, {'form': form})
+
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -1411,22 +1412,44 @@ class PresupuestoRevisarUpdateView(UpdateView):
 
     @transaction.atomic
     def form_valid(self, form):
+        precargado = DatosPrecargado.objects.values('porcentaje_variacion')
+        if precargado:
+            porcentaje_variacion = precargado[0]['porcentaje_variacion']
+
         sql = transaction.savepoint()
         try:
             self.object = form.save(commit=False)
             self.object.save()
 
             estado = Presupuesto.objects.filter(pk=self.object.id)
-            estado.update(estado='Terminado cotizador')
-            updateestado = PresupuestoEstado.objects.filter(presupuesto=self.object.id,
-                                                            predefinido=True)
-            updateestado.update(predefinido=False)
-            estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
-                                                          orden='6')
-            agregarestado = PresupuestoEstado.objects.create(presupuesto_id=self.object.id,
-                                                             estado_id=estadoactual[0].id,
-                                                             predefinido=True)
-            agregarestado.save()
+            variacion = (estado[0].monto_mundanza_revisada * porcentaje_variacion)/100
+            descuentorecargo = estado[0].monto_descuento_recargo
+            tiempototal = estado[0].tiempo_recorrido + estado[0].tiempo_servicios + estado[0].tiempo_carga
+
+            estado.update(tiempo_total=round(tiempototal, 2))
+
+            if descuentorecargo > variacion:
+                estado.update(estado='Por autorizar')
+                updateestado = PresupuestoEstado.objects.filter(presupuesto=self.object.id,
+                                                                predefinido=True)
+                updateestado.update(predefinido=False)
+                estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
+                                                              orden='6')
+                agregarestado = PresupuestoEstado.objects.create(presupuesto_id=self.object.id,
+                                                                 estado_id=estadoactual[0].id,
+                                                                 predefinido=True)
+                agregarestado.save()
+            else:
+                estado.update(estado='Terminado cotizador')
+                updateestado = PresupuestoEstado.objects.filter(presupuesto=self.object.id,
+                                                                predefinido=True)
+                updateestado.update(predefinido=False)
+                estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
+                                                              orden='7')
+                agregarestado = PresupuestoEstado.objects.create(presupuesto_id=self.object.id,
+                                                                 estado_id=estadoactual[0].id,
+                                                                 predefinido=True)
+                agregarestado.save()
 
             transaction.savepoint_commit(sql)
             redirect_to = self.request.REQUEST.get('next', '')
@@ -1600,6 +1623,8 @@ def update_presupuesto(request, pk):
     montomaterial = presupuesto.monto_materiales
     recorridokm = presupuesto.recorrido_km
     tiemporecorrido = presupuesto.tiempo_recorrido
+    duracion_carga = presupuesto.tiempo_carga
+    tipo_duracion = presupuesto.tipo_duracion
 
     cant_vehiculovol = 0
     descripcion_vehvol = ""
@@ -1806,6 +1831,13 @@ def update_presupuesto(request, pk):
     montoteoricomudanza = recuersoteoricomax + montoservicio + montomaterial + vehiculomonto
     montooptimomudanza = recuersooptimomax + montoservicio + montomaterial + vehiculomonto
 
+    if tipo_duracion == 'Optimizado':
+        duracion_carga = duracion_optimamudanza
+    elif tipo_duracion == 'Basico':
+        duracion_carga = duracionteorica
+
+    tiempototal = tiemposervicio + tiemporecorrido + duracion_carga
+
     updatepresu = Presupuesto.objects.filter(pk=pk)
     updatepresu.update(descripcion_vehiculo=descripcion_veh)
     updatepresu.update(cantidad_vehiculo=cant_vehiculo)
@@ -1824,6 +1856,8 @@ def update_presupuesto(request, pk):
     updatepresu.update(monto_m3_inmueble=round((totalm3mudanza*tarifa_m3), 2))
     updatepresu.update(monto_amb_inmueble=round((cant_amb*tarifa_amb), 2))
     updatepresu.update(total_m3=round(totalm3mudanza, 3))
+    updatepresu.update(tiempo_carga=round(duracion_carga, 2))
+    updatepresu.update(tiempo_total=round(tiempototal, 2))
 
     presupuesto = Presupuesto.objects.get(pk=pk)
 
@@ -1834,6 +1868,8 @@ def PresupuestoFinalizadoCliente(request, pk):
     if request.method == "GET" and request.is_ajax():
         estado = request.GET['estado']
         nexturl = request.GET.get('nexturl', '')
+
+        update_presupuesto(request, pk)
 
         presupuesto = Presupuesto.objects.filter(pk=pk)
         presupuesto.update(estado=estado)

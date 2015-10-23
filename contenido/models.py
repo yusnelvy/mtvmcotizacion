@@ -5,6 +5,7 @@ Docstring Documentación pendiente
 from django.db import models
 from mueble.models import Mueble
 from servicio.models import Servicio
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # Create your models here.
@@ -35,7 +36,11 @@ class Contenido_Tipico(models.Model):
 
     contenido = models.ForeignKey(Contenido, on_delete=models.PROTECT)
     mueble = models.ForeignKey(Mueble, on_delete=models.PROTECT)
-    cantidad = models.DecimalField(max_digits=8, decimal_places=3)
+    cantidad = models.DecimalField(max_digits=8, decimal_places=3,
+                                   validators=[
+                                       MaxValueValidator(100),
+                                       MinValueValidator(0)
+                                   ])
     predefinido = models.BooleanField(default=False)
 
     def __str__(self):
