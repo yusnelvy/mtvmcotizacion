@@ -5,6 +5,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <span class="nombreEliminar elementHidden"></span>
+                <span class="askEliminar elementHidden"></span>
                 <button  aria-hidden="true" aria-label="Close" class="close elementHidden" data-dismiss="modal" id="cerrarEliminar" type="button" tabindex="-1">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -18,7 +19,7 @@
                     {% csrf_token %}
 
                     <a class="btn btn-default" id="btn-cancelarEliminar">CANCELAR</a>
-                    <input type="submit" class="btn btn-success" value="ELIMINAR">
+                    <input type="submit" class="btn btn-success" id="boton" value="{{boton}}">
                 </form>
             </div>
         </div>

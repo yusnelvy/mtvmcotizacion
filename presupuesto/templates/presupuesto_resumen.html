@@ -14,17 +14,17 @@
 
 {% if presupuesto.dni and direccion_origen and direccion_destino and ambientes %}
 
-{% if presupuesto.estado = "Servicios cargados" %}
+{% if estado.0.estado__orden == 4 %}
 
 <li>
-    <a class="btn btn-default btn-blanco botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado=Terminado cliente">Finalizar solicitud</a>
+    <a class="btn btn-default btn-blanco botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=5">Finalizar solicitud</a>
 </li>
 
 {% endif %}
 
 {% endif %}
 
-{% if presupuesto.estado = "Terminado cliente" %}
+{% if estado.0.estado__orden == 5 or estado.0.estado__orden == 6 %}
 
 <li>
     <a class="btn btn-success btn-verde" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
@@ -32,7 +32,7 @@
 
 {% endif %}
 
-{% if presupuesto.estado = "Terminado cotizador" %}
+{% if estado.0.estado__orden == 7 %}
 
 <li>
     <a class="btn btn-default btn-blanco" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
@@ -40,10 +40,10 @@
 
 {% endif %}
 
-{% if presupuesto.estado = "Por autorizar" %}
+{% if estado.0.estado__orden == 6 %}
 
 <li>
-    <a class="btn btn-success btn-verde botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado=Terminado cotizador">Autorizar</a>
+    <a class="btn btn-success btn-verde botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7">Autorizar</a>
 </li>
 
 {% endif %}
@@ -74,9 +74,8 @@
                 <strong>Cotizador:</strong>
                 <span style="float:right;">
 
-                    {{ presupuesto.cotizador.first_name|title }}
+                    {{presupuesto.cotizador.get_full_name}}
 
-                    {{ presupuesto.cotizador.last_name|title }}
                 </span><br>
                 <strong>Fecha actual: </strong> <span style="float:right;">{{ now|date:"d/m/Y" }}</span> <br>
                 <strong>Fecha presupuesto: </strong><span style="float:right;">{{ presupuesto.fecha_creacion|date:"d/m/Y" }}</span> <br>
