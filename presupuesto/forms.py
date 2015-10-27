@@ -283,7 +283,10 @@ class PresupuestoDetalleForm(ModelForm):
 
 class PresupuestoServicioForm(ModelForm):
     """Docstring"""
-    lista_servicio = ModelChoiceField(Servicio.objects.exclude(servicio_material__material__contenedor=True).distinct(), widget=SelectMultiple, empty_label=None, label='Servicios')
+    lista_servicio = ModelChoiceField(Servicio.objects.exclude(servicio_material__material__contenedor=True).distinct(),
+                                      widget=SelectMultiple,
+                                      empty_label=None,
+                                      label='Servicios')
 
     class Meta:
         model = Presupuesto_servicio
@@ -309,14 +312,16 @@ class PresupuestoRevisarForm(ModelForm):
     """docstring"""
     class Meta:
         model = Presupuesto
-        fields = 'monto_recursos_revisado', \
+        fields = 'tiempo_carga', \
+                 'monto_recursos_revisado', \
                  'monto_vehiculo_revisado', \
                  'monto_servicios_revisado', \
                  'monto_materiales_revisado', \
                  'monto_mundanza_revisada',\
                  'monto_descuento_recargo', \
                  'descuento_recargo', \
-                 'tipo_calculo'
+                 'tipo_calculo', \
+                 'tipo_duracion'
         widgets = {
             'monto_mundanza_revisada': TextInput(
                 attrs={
@@ -377,6 +382,14 @@ class PresupuestoRevisarForm(ModelForm):
                     'hidden': 'hiden'
                 }),
             'tipo_calculo': TextInput(
+                attrs={
+                    'hidden': 'hiden'
+                }),
+            'tiempo_carga': TextInput(
+                attrs={
+                    'hidden': 'hiden'
+                }),
+            'tipo_duracion': TextInput(
                 attrs={
                     'hidden': 'hiden'
                 })

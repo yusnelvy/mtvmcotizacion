@@ -427,6 +427,14 @@ function calcular_volumen(ancho, largo, alto, cantidadmueble) {
 
 function calcular_volcontenido(cap_mueble, vol_mueble, ocupacidad, cantidadmueble) {
   var resultado = 0;
+
+  if (cap_mueble > 0){
+    cap_mueble = cap_mueble/100
+  }
+  if (ocupacidad > 0){
+    ocupacidad = ocupacidad/100
+  }
+
   resultado= (cap_mueble*vol_mueble*ocupacidad*cantidadmueble);
   return resultado.toFixed(3);
 }

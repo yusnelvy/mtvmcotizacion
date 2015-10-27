@@ -27,15 +27,35 @@ $(".botonmodalEliminar").on('click', function(evento) {
   var opcion = $(this).data('opcion');
   var numero = $(this).data('numero');
   var nombre = $(this).data('nombre');
+  var boton = $(this).data('boton');
+  var ask = $(this).data('ask');
+  $('.askEliminar').text(ask);
   $('.id_opcionEliminar').attr('src', opcion);
   $('.id_opcionEliminar').attr('id', numero);
   $('.nombreEliminar').text(nombre);
+  $('#boton').val(boton);
+
 });
 
 $('#btn-cancelarEliminar').click(function() {
   cerrarModal(document.getElementById('cerrarEliminar'),
     document.getElementById('msjEliminado')
     );
+});
+
+$(".botonmodalAnular").on('click', function(evento) {
+  evento.preventDefault();
+  var opcion = $(this).data('opcion');
+  var numero = $(this).data('numero');
+  var nombre = $(this).data('nombre');
+  var boton = $(this).data('boton');
+  var ask = $(this).data('ask');
+  $('.askEliminar').text(ask);
+  $('.id_opcionEliminar').attr('src', opcion);
+  $('.id_opcionEliminar').attr('id', numero);
+  $('.nombreEliminar').text(nombre);
+  $('#boton').val(boton);
+
 });
 
 function disabledBtn(boton) {

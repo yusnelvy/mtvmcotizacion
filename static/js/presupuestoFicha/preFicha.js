@@ -97,10 +97,6 @@ $(document).ready(function() {
 
                         } else  {
                             $(closep).click();
-                            $('#msjGuardado').css('width', '300px');
-                            $('#msjGuardado').fadeIn();
-                            $('#msjGuardado').text('No se contrataran servicios');
-
                             setTimeout(function() {
                                 parent.location.reload();
                             }, 500);

@@ -11,7 +11,7 @@ from presupuesto.views import PresupuestoView, PresupuestoList, PresupuestoDetai
     PresupuestoDetalleDetail2, PresupuestoDireccionOrigenDetail, \
     PresupuestoDireccionDestinoDetail, DatosPrecargadoUpdate, \
     PresupuestoDatosPersonales, PresupuestoRevisarUpdateView,\
-    PresupuestoFinalizadoCliente
+    PresupuestoFinalizadoCliente, PresupuestoAnular
 from presupuesto import views
 from presupuesto.forms import PresupuestoDetalleForm1, PresupuestoDetalleForm2, \
     PresupuestoDetalleForm3
@@ -37,6 +37,9 @@ urlpatterns = patterns('',
                        url(r'^ficha/(?P<pk>\d+)/delete/$',
                            PresupuestoDelete.as_view(),
                            name='PresupuestoDelete'),
+                       url(r'^ficha/(?P<pk>\d+)/anular/$',
+                           PresupuestoAnular.as_view(),
+                           name='PresupuestoAnular'),
                        url(r'^ficha/resumen/(?P<pk>\d+)/$',
                            PresupuestoDetailResumen.as_view(),
                            name='PresupuestoDetailResumen'),

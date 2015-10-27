@@ -190,14 +190,17 @@ class Presupuesto(models.Model):
     monto_descuento_recargo = models.DecimalField(max_digits=9, decimal_places=2,
                                                   blank=True, default=Decimal("0.00"))
     descuento_recargo = models.CharField(max_length=1, default='-')
-    estado = models.CharField(max_length=20, default='Iniciado')
     activo = models.ForeignKey(EstadoDocumento)
     tipo_calculo = models.CharField(max_length=20, default='Optimizado')
     comentario = models.TextField(blank=True)
     comentario_activo = models.TextField(blank=True)
+    tipo_duracion = models.CharField(max_length=20, default='Optimizado')
 
     def __str__(self):
         return str(self.pk)
+
+    def get_estadoactual(self):
+        return self.presupuestoestado_set.filter(predefinido=True)
 
     def _get_cantidadobjmudanza(self):
         """docstring"""
@@ -423,6 +426,7 @@ class DatosPrecargado(models.Model):
     duracion_optimamudanza = models.DecimalField(max_digits=7, decimal_places=2)
     descripcioncontenedor = models.CharField(max_length=100)
     descripcioncontenido = models.CharField(max_length=100)
+    porcentaje_variacion = models.DecimalField(max_digits=8, decimal_places=2)
 
     def __str__(self):
         return u' %s' % (self.pk)
