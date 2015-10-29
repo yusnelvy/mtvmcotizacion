@@ -1,7 +1,7 @@
 {% extends 'base_ficha.html' %}
 {% load presupuesto_extras %}
 
-{% block col1 %}class="col-md-10"{% endblock col1 %}
+{% block col1 %}class="col-md-12"{% endblock col1 %}
 
 {% block titulo %}
 <title>Presupuesto</title>
@@ -34,6 +34,9 @@
                 <li>
                     <a class="btn btn-success btn-verde" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
                 </li>
+                <li>
+                    <a class="btn btn-success btn-verde botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7&terminar=terminar">Terminar presupuesto</a>
+                </li>
 
             {% endif %}
 
@@ -44,6 +47,9 @@
         <li>
             <a class="btn btn-success btn-verde" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
         </li>
+        <li>
+            <a class="btn btn-success btn-verde botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7&terminar=terminar">Terminar presupuesto</a>
+        </li>
 
     {% endif %}
 {% endif %}
@@ -52,6 +58,9 @@
 
 <li>
     <a class="btn btn-default btn-blanco" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
+</li>
+<li>
+    <a class="btn btn-default btn-blanco" href="{% url 'upresupuestos:PresupuestoDetailResumenFinal' presupuesto.id %}" type="button">Resumen final</a>
 </li>
 
 {% endif %}
@@ -90,7 +99,6 @@
     </a>
 {% endcomment %}
 <div class="panel panel-default">
-
     <table class="table table-hover">
         <tr>
             <td align="center" width="20%">

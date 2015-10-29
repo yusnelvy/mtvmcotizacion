@@ -1638,6 +1638,76 @@ class PresupuestoDetailResumen(DetailView):
         return context
 
 
+class PresupuestoDetailResumenFinal(DetailView):
+
+    model = Presupuesto
+    context_object_name = "presupuesto"
+    template_name = 'presupuesto_resumenfinal.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(PresupuestoDetailResumenFinal, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['detalle_list'] = Presupuesto_Detalle.objects.filter(presupuesto=self.object.pk)
+        context['ambientes'] = Presupuesto_Detalle.objects.filter(presupuesto=
+                                                                  self.object.pk).values('ambiente').annotate(acount=Count('ambiente')).order_by('ambiente')
+        context['direccion_origen'] = Presupuesto_direccion.objects.filter(presupuesto=
+                                                                           self.object.pk,
+                                                                           tipo_direccion="Origen")
+        context['direccion_destino'] = Presupuesto_direccion.objects.filter(presupuesto=self.object.pk,
+                                                                            tipo_direccion="Destino")
+        context['estado'] = PresupuestoEstado.objects.values("estado",
+                                                             "estado__estado__estado",
+                                                             "estado__orden").filter(presupuesto=
+                                                                                     self.object.pk,
+                                                                                     predefinido=True)
+        servicio = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto=
+                                                       self.object.pk).values('servicio',
+                                                                              'detalle_presupuesto',
+                                                                              'monto_servicio',
+                                                                              'tiempo_aplicado').annotate(tcount=Count('servicio')).order_by('servicio')
+        servicio2 = Presupuesto_servicio.objects.filter(detalle_presupuesto__presupuesto=
+                                                        self.object.pk).values('servicio',
+                                                                               'material',
+                                                                               'precio_material',
+                                                                               'unidad_material').annotate(tcount=Count('servicio'),
+                                                                                                           smontomat=Sum('monto_material'),
+                                                                                                           scantmat=Sum('cantidad_material'),
+                                                                                                           svolmat=Sum('volumen_material'),
+                                                                                                           spesomat=Sum('peso_material'),
+                                                                                                           stiempoa=Sum('tiempo_aplicado'),
+                                                                                                           smontoserv=Sum('monto_servicio')).order_by('servicio')
+        montoservicio = 0
+        tiemposervicio = 0
+        for i in range(len(servicio)):
+            montoservicio = montoservicio + servicio[i]['monto_servicio']
+            tiemposervicio = tiemposervicio + servicio[i]['tiempo_aplicado']
+
+        totalmontomateriales = 0
+        totalpesomateriales = 0
+        totalvolumenmateriales = 0
+
+        for i in range(len(servicio2)):
+            totalmontomateriales = totalmontomateriales + servicio2[i]['smontomat']
+            totalpesomateriales = totalpesomateriales + servicio2[i]['spesomat']
+            totalvolumenmateriales = totalvolumenmateriales + servicio2[i]['svolmat']
+
+        totales = {'montoservicio': montoservicio,
+                   'tiemposervicio': tiemposervicio,
+                   'totalmontomateriales': totalmontomateriales,
+                   'totalpesomateriales': totalpesomateriales,
+                   'totalvolumenmateriales': totalvolumenmateriales
+                   }
+
+        context['servicio'] = servicio
+        context['totales'] = totales
+        context['empresa'] = Empresa.objects.get(id=1)
+        context['now'] = timezone.now()
+        context['servicio2'] = servicio2
+
+        return context
+
+
 def PresupuestoDireccionOrden(request, pk):
     if request.method == "GET" and request.is_ajax():
         try:
@@ -1730,9 +1800,6 @@ class PresupuestoRevisarUpdateView(UpdateView):
 
     @transaction.atomic
     def form_valid(self, form):
-        precargado = DatosPrecargado.objects.values('porcentaje_variacion')
-        if precargado:
-            porcentaje_variacion = precargado[0]['porcentaje_variacion']
 
         sql = transaction.savepoint()
         try:
@@ -1740,32 +1807,9 @@ class PresupuestoRevisarUpdateView(UpdateView):
             self.object.save()
 
             estado = Presupuesto.objects.filter(pk=self.object.id)
-            variacion = (estado[0].monto_mundanza_revisada * porcentaje_variacion)/100
-            descuentorecargo = estado[0].monto_descuento_recargo
             tiempototal = estado[0].tiempo_recorrido + estado[0].tiempo_servicios + estado[0].tiempo_carga
 
             estado.update(tiempo_total=round(tiempototal, 2))
-
-            if descuentorecargo > variacion:
-                updateestado = PresupuestoEstado.objects.filter(presupuesto=self.object.id,
-                                                                predefinido=True)
-                updateestado.update(predefinido=False)
-                estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
-                                                              orden='6')
-                agregarestado = PresupuestoEstado.objects.create(presupuesto_id=self.object.id,
-                                                                 estado_id=estadoactual[0].id,
-                                                                 predefinido=True)
-                agregarestado.save()
-            else:
-                updateestado = PresupuestoEstado.objects.filter(presupuesto=self.object.id,
-                                                                predefinido=True)
-                updateestado.update(predefinido=False)
-                estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
-                                                              orden='7')
-                agregarestado = PresupuestoEstado.objects.create(presupuesto_id=self.object.id,
-                                                                 estado_id=estadoactual[0].id,
-                                                                 predefinido=True)
-                agregarestado.save()
 
             transaction.savepoint_commit(sql)
             redirect_to = self.request.REQUEST.get('next', '')
@@ -2186,6 +2230,7 @@ def PresupuestoFinalizadoCliente(request, pk):
         estadoorden = request.GET['estado_orden']
         activar = request.GET.get('activar', '')
         nexturl = request.GET.get('nexturl', '')
+        terminar = request.GET.get('terminar', '')
 
         update_presupuesto(request, pk)
         sql = transaction.savepoint()
@@ -2203,16 +2248,48 @@ def PresupuestoFinalizadoCliente(request, pk):
                 agregarestadoactivo.save()
 
             else:
-                updateestado = PresupuestoEstado.objects.filter(presupuesto=pk,
-                                                                predefinido=True)
-                updateestado.update(predefinido=False)
+                if terminar:
 
-                estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
-                                                              orden=estadoorden)
-                agregarestado = PresupuestoEstado.objects.create(presupuesto_id=pk,
-                                                                 estado_id=estadoactual[0].id,
-                                                                 predefinido=True)
-                agregarestado.save()
+                    precargado = DatosPrecargado.objects.values('porcentaje_variacion')
+                    if precargado:
+                        porcentaje_variacion = precargado[0]['porcentaje_variacion']
+
+                    estado = Presupuesto.objects.filter(pk=pk)
+                    variacion = (estado[0].monto_mundanza_revisada * porcentaje_variacion)/100
+                    descuentorecargo = estado[0].monto_descuento_recargo
+
+                    if descuentorecargo > variacion:
+                        updateestado = PresupuestoEstado.objects.filter(presupuesto=pk,
+                                                                        predefinido=True)
+                        updateestado.update(predefinido=False)
+                        estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
+                                                                      orden='6')
+                        agregarestado = PresupuestoEstado.objects.create(presupuesto_id=pk,
+                                                                         estado_id=estadoactual[0].id,
+                                                                         predefinido=True)
+                        agregarestado.save()
+                    else:
+                        updateestado = PresupuestoEstado.objects.filter(presupuesto=pk,
+                                                                        predefinido=True)
+                        updateestado.update(predefinido=False)
+                        estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
+                                                                      orden='7')
+                        agregarestado = PresupuestoEstado.objects.create(presupuesto_id=pk,
+                                                                         estado_id=estadoactual[0].id,
+                                                                         predefinido=True)
+                        agregarestado.save()
+                else:
+
+                    updateestado = PresupuestoEstado.objects.filter(presupuesto=pk,
+                                                                    predefinido=True)
+                    updateestado.update(predefinido=False)
+
+                    estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
+                                                                  orden=estadoorden)
+                    agregarestado = PresupuestoEstado.objects.create(presupuesto_id=pk,
+                                                                     estado_id=estadoactual[0].id,
+                                                                     predefinido=True)
+                    agregarestado.save()
 
             transaction.savepoint_commit(sql)
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado', 'nexturl': nexturl}
