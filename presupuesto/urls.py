@@ -121,3 +121,8 @@ urlpatterns = patterns('',
                        url(r'^finalizar_presupuesto/(?P<pk>\d+)/',
                            views.PresupuestoFinalizadoCliente,
                            name='presupuesto_finalizado_cliente'),)
+                       # url(r'^lo', 'presupuesto.views.index2'),
+                       # url(r'^ficha/resumenfinal/5/download/', 'presupuesto.views.download'),
+                       # url(r'^ficha/resumenfinal/5/html_to_pdf_directly/',
+                       #     'presupuesto.views.html_to_pdf_directly'),
+                       # url(r'^ezpdf_sample', 'presupuesto.views.ezpdf_sample'),)
