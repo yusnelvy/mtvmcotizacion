@@ -82,8 +82,8 @@
 <tr class="active">
   <th>
     Servicios
-    <a href="?order_by=servicio">Asc</a>
-    <a href="?order_by=-servicio">Desc</a>
+    <a href="?order_by=servicio" id="servicio" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-servicio" id="-servicio"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th width="80px">Materiales</th>
   <th>Complejidad</th>
@@ -117,3 +117,10 @@
 
 {% endif %}
 {% endblock cuerpo_tabla %}
+{% block js_inf %}
+
+<script>
+ocultarASCDesc('servicio');
+</script>
+
+{% endblock js_inf %}

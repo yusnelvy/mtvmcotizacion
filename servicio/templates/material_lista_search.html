@@ -82,23 +82,23 @@
 <tr class="active">
   <th>
     Material
-    <a href="?order_by=material">Asc</a>
-    <a href="?order_by=-material">Desc</a>
+    <a href="?order_by=material" id="material" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-material" id="-material"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>
     Precio ($)
-    <a href="?order_by=precio">Asc</a>
-    <a href="?order_by=-precio">Desc</a>
+    <a href="?order_by=precio" id="precio" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-precio" id="-precio"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>
     Peso (Kgs)
-    <a href="?order_by=peso">Asc</a>
-    <a href="?order_by=-peso">Desc</a>
+    <a href="?order_by=peso" id="peso" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-peso" id="-peso"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>
     Recuperable
-    <a href="?order_by=recuperable">Asc</a>
-    <a href="?order_by=-recuperable">Desc</a>
+    <a href="?order_by=recuperable" id="recuperable" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-recuperable" id="-recuperable"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th width="80px">Editar</th>
   <th width="80px">Eliminar</th>
@@ -134,4 +134,13 @@
 
 {% endif %}
 {% endblock cuerpo_tabla %}
+{% block js_inf %}
 
+<script>
+ocultarASCDesc('material');
+ocultarASCDesc('precio');
+ocultarASCDesc('peso');
+ocultarASCDesc('recuperable');
+</script>
+
+{% endblock js_inf %}

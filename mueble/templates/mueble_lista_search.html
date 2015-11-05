@@ -79,23 +79,23 @@
 <tr class="active">
   <th>
     Mueble
-    <a href="?order_by=mueble">Asc</a>
-    <a href="?order_by=-mueble">Desc</a>
+    <a href="?order_by=mueble" id="mueble" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-mueble" id="-mueble"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>
     Tipo de mueble
-    <a href="?order_by=tipo_mueble">Asc</a>
-    <a href="?order_by=-tipo_mueble">Desc</a>
+    <a href="?order_by=tipo_mueble" id="tipo_mueble" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-tipo_mueble" id="-tipo_mueble"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>
     Forma
-    <a href="?order_by=forma">Asc</a>
-    <a href="?order_by=-forma">Desc</a>
+    <a href="?order_by=forma" id="forma" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-forma" id="-forma"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>
     Trasladable
-    <a href="?order_by=trasladable">Asc</a>
-    <a href="?order_by=-trasladable">Desc</a>
+    <a href="?order_by=trasladable" id="trasladable" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-trasladable" id="-trasladable"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th width="80px">Ficha</th>
   <th width="80px">Editar</th>
@@ -133,4 +133,13 @@
 
 {% endif %}
 {% endblock cuerpo_tabla %}
+{% block js_inf %}
 
+<script>
+ocultarASCDesc('mueble');
+ocultarASCDesc('tipo_mueble');
+ocultarASCDesc('forma');
+ocultarASCDesc('trasladable');
+</script>
+
+{% endblock js_inf %}

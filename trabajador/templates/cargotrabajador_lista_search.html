@@ -82,23 +82,23 @@
 <tr class="active">
   <th>
     Rol
-    <a href="?order_by=cargo">Asc</a>
-    <a href="?order_by=-cargo">Desc</a>
+    <a href="?order_by=cargo" id="cargo" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-cargo" id="-cargo"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>
     tarifa x día ($)
-    <a href="?order_by=tarifa_dia">Asc</a>
-    <a href="?order_by=-tarifa_dia">Desc</a>
+    <a href="?order_by=tarifa_dia" id="tarifa_dia" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-tarifa_dia" id="-tarifa_dia"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>
     Recargo fin de semana (%)
-    <a href="?order_by=recargo_fin_semana">Asc</a>
-    <a href="?order_by=-recargo_fin_semana">Desc</a>
+    <a href="?order_by=recargo_fin_semana" id="recargo_fin_semana" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-recargo_fin_semana" id="-recargo_fin_semana"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>
     Recargo nocturno (%)
-    <a href="?order_by=recargo_nocturno">Asc</a>
-    <a href="?order_by=-recargo_nocturno">Desc</a>
+    <a href="?order_by=recargo_nocturno" id="recargo_nocturno" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-recargo_nocturno" id="-recargo_nocturno"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th width="80px" class="hidden-print">Editar</th>
   <th width="80px" class="hidden-print">Eliminar</th>
@@ -132,3 +132,13 @@
 
 {% endif %}
 {% endblock cuerpo_tabla %}
+{% block js_inf %}
+
+<script>
+ocultarASCDesc('cargo');
+ocultarASCDesc('tarifa_dia');
+ocultarASCDesc('recargo_fin_semana');
+ocultarASCDesc('recargo_nocturno');
+</script>
+
+{% endblock js_inf %}

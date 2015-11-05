@@ -79,8 +79,8 @@
   <tr class="active">
     <th>
       Tipo de dirección
-      <a href="?order_by=tipo_direccion">Asc</a>
-      <a href="?order_by=-tipo_direccion">Desc</a>
+      <a href="?order_by=tipo_direccion" id="tipo_direccion" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+      <a href="?order_by=-tipo_direccion" id="-tipo_direccion"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
     </th>
     <th width="80px">
       Estado
@@ -111,4 +111,10 @@
 
 {% endif %}
 {% endblock cuerpo_tabla %}
+{% block js_inf %}
 
+<script>
+ocultarASCDesc('tipo_direccion');
+</script>
+
+{% endblock js_inf %}
