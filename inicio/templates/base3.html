@@ -19,7 +19,7 @@
     <script src="/static/jquery/jquery-2.1.4.js"></script>
     <script language="Javascript" src="/static/js/ajax.js"></script>
     <script src="/static/js/jquery-ui.js"></script>
- <!--    <script src="/static/js/prototype.js"></script> -->
+    <!--    <script src="/static/js/prototype.js"></script> -->
     <script src="/static/js/prototype-comp.js"></script>
 
     {% block js_sup %}{% endblock js_sup %}
@@ -27,12 +27,17 @@
     {% block titulo %}{% endblock titulo %}
 
 </head>
-
 <body id="id_body">
 
     {% block header %}{% endblock header %}
 
-    <nav class="navbar navbar-default navbar-fixed-top">
+    {% block modal %}
+
+    {% include "modal.html" %}
+
+    {% endblock modal %}
+
+    <nav class="navbar navbar-default navbar-fixed-top navbarPrincipal" style="">
         <div class="container-fluid">
             <div class="navbar-header">
 
@@ -48,73 +53,102 @@
             </div>
         </div><!-- /.container-fluid -->
     </nav>
+    <div class="contenidoVariable" id="contenidoVariable">
+        <div id="page-wrap">
+            <div id="wrapper">
+                <!-- Sidebar -->
+                <div id="sidebar-wrapper" class="hidden-print">
+                    <a href="#menu-toggle" class="glyphicon glyphicon-remove navbar-brand menu-toggle" id="" style="float:right;z-index:1001;" title="Cerrar"></a>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-brand">
+                            <a href="#">
+                                App mudarte
+                            </a>
+                        </li>
 
-    {% block modal %}
+                        {% block link_navegacion %}{% endblock link_navegacion %}
 
-    {% include "modal.html" %}
+                        <div class="widgetSidebar">
 
-    {% endblock modal %}
+                            {% block widget_sidebar %}{% endblock widget_sidebar %}
 
-    <div class="container-fluid" id="page-wrap">
-        <div class="row">
+                        </div>
+                    </ul>
+                </div>
+                <!-- /#sidebar-wrapper -->
+                <!-- Page Content -->
+                <div id="page-content-wrapper">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12">
 
-            {% block navegacion %}{% endblock navegacion %}
+                                {% block ficha %}{% endblock ficha %}
+                                {% block content %}{% endblock content %}
 
-            {% block content %}{% endblock content %}
-
-            {% block ficha %}{% endblock ficha %}
-
-        </div>
-    </div>
-    <div class="container-fluid hidden-print" id="footer">
-        <div class="row">
-            <br>
-            <br>
-            <footer>
-                <div class="container">
-                    <br>
-                    <div class="row">
-                        <div class="col-xs-6 col-lg-3">
-                            <p>&copy; Mudarte.com.ar 2015</p>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="search" name="search" placeholder="Buscar..." tabIndex="-1">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" tabIndex="-1"><span class="glyphicon glyphicon-search"></span></button>
-                                </span>
-                            </div><!-- /input-group -->
-                            <div class="redes">
-                                <a href="#"><span class="glyphicon glyphicon-envelope"></span></a>
-                                <a href="#"><span class="glyphicon glyphicon-thumbs-up"></span></a>
-                                <a href="#"><span class="glyphicon glyphicon-lock"></span></a>
                             </div>
-                        </div><!-- /.col-lg-3 -->
-                        <div class="col-xs-0 col-lg-3"></div>
-                        <div class="col-xs-3 col-lg-4">
-                            <h4>Aplicación</h4>
-                            <ul class="w">
-                                <li><a href="{% url 'uinicio:pantalla_inicial' %}">Inicio</a></li>
-
-                                {% block footerLink %}{% endblock footerLink %}
-
-                            </ul>
-                        </div>
-                        <div class="col-xs-2 col-lg-2">
-                            <h4>Compañía</h4>
-                            <ul class="w">
-                                <li><a href="#">¿Qué hacemos?</a></li>
-                                <li><a href="#" data-toggle="modal" data-target="#myModal1">Contáctenos</a></li>
-                                <li><a href="#" data-toggle="modal" data-target="#myModal3">Blog</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div id="copyright">
-                            <p>Copyright © Todos los Derechos Reservados.</p>
                         </div>
                     </div>
                 </div>
-            </footer>
+                <!-- /#page-content-wrapper -->
+            </div>
+            <!-- /#wrapper -->
         </div>
+
+        {% block footer_principal %}
+
+        <div class="container-fluid hidden-print" id="footer">
+            <div class="row">
+                <br>
+                <br>
+                <footer>
+                    <div class="container">
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-6 col-lg-3">
+                                <p>&copy; Mudarte.com.ar 2015</p>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="search" placeholder="Buscar..." tabIndex="-1">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" tabIndex="-1"><span class="glyphicon glyphicon-search"></span></button>
+                                    </span>
+                                </div><!-- /input-group -->
+                                <div class="redes">
+                                    <a href="#"><span class="glyphicon glyphicon-envelope"></span></a>
+                                    <a href="#"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+                                    <a href="#"><span class="glyphicon glyphicon-lock"></span></a>
+                                </div>
+                            </div><!-- /.col-lg-3 -->
+                            <div class="col-xs-0 col-lg-3"></div>
+                            <div class="col-xs-3 col-lg-4">
+                                <h4>Aplicación</h4>
+                                <ul class="w">
+                                    <li><a href="{% url 'uinicio:pantalla_inicial' %}">Inicio</a></li>
+
+                                    {% block footerLink %}{% endblock footerLink %}
+
+                                </ul>
+                            </div>
+                            <div class="col-xs-2 col-lg-2">
+                                <h4>Compañía</h4>
+                                <ul class="w">
+                                    <li><a href="#">¿Qué hacemos?</a></li>
+                                    <li><a href="#" data-toggle="modal" data-target="#myModal1">Contáctenos</a></li>
+                                    <li><a href="#" data-toggle="modal" data-target="#myModal3">Blog</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="copyright">
+                                <p>Copyright © Todos los Derechos Reservados.</p>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        {% endblock footer_principal %}
+
     </div>
 
     {% include "modalEliminar.html" %}

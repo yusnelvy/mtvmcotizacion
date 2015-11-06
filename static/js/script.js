@@ -91,3 +91,29 @@ function enterNone() {
     }
   });
 }
+
+$('.eliminar').on('hidden.bs.modal', function () {
+    setTimeout(function() {
+        $('.id_opcionEliminar').attr('src', '');
+        $('.id_opcionEliminar').attr('height', '80');
+        $('#search').focus();
+    }, 600);
+});
+var cont = 1;
+ $(".menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+        $(".navbarPrincipal").toggleClass("toggled");
+
+        //$(".navbarPrincipal").css('margin-left', '0');
+
+         if(cont == 1){
+
+            cont = 0;
+            $('#menuSidebar').css('display', 'block');
+        } else {
+            cont = 1;
+
+            $('#menuSidebar').css('display', 'none');
+        }
+    });

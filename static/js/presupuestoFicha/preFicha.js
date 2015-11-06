@@ -1,6 +1,5 @@
 //Ajusta el tamaño de un iframe al de su contenido interior para evitar scroll
 function autofitIframe (id) {
-    alert(id);
     if (!window.opera && document.all && document.getElementById) {
         id.style.height = id.contentWindow.document.body.scrollHeight;
     } else if(document.getElementById) {
@@ -44,12 +43,13 @@ $(document).ready(function() {
             e.preventDefault();
             //obtenemos el id del elemento en el que debemos posicionarnos
             var strAncla = $(this).attr('href');
+            //alert($(strAncla).offset().top);
             //utilizamos body y html, ya que dependiendo del navegador uno u otro no funciona
-            $('body,html').stop(true, true).animate( {
+            $('#id_body').stop(true, true).animate( {
                 //realizamos la animacion hacia el ancla
                 //-126 indica que baja el scroll 126px que es la altura de la cabecera
                 //para que se coloque correctamente
-                scrollTop: $(strAncla).offset().top - 60
+                scrollTop: $(strAncla).offset().top - 70
             }, 1000);
         });
 
@@ -86,7 +86,7 @@ $(document).ready(function() {
                 success: function(data) {
                     var closep = document.getElementById("btn-cerrarModalServ");
                     if (data.estatus == "ok") {
-                        if (data.nexturl !=""){
+                        if (data.nexturl !==""){
                             $(closep).click();
                             $('#msjGuardado').css('width', '300px');
                             $('#msjGuardado').fadeIn();

@@ -14,10 +14,11 @@
                         {{ object }}
                     </strong>?
                 </h4>
-                <p class="elementHidden" id="pcometario">
-                    <label for="comentario">Motivo de la anulación: </label>
-                    <input type="text" id="comentario" name="comentario" required>
+                <p class="elementNone" id="pcometario">
+                    <label class="labelU" for="comentario">Motivo de la anulación: </label>
+                    <input class="form-control" type="text" id="comentario" name="comentario" required>
                 </p>
+                <div class="alert alert-danger motivoAnulacion" id="motivoAnulacion" style="display:none;" role="alert"></div>
 
                 {% endblock validacion_modal %}
 
@@ -32,13 +33,19 @@ var object = $(parent.document.getElementsByClassName("nombreEliminar")).text();
 var myform = $(parent.document.getElementById("myform"));
 var boton = $(parent.document.getElementById("boton"));
 var ask = $(parent.document.getElementsByClassName("askEliminar")).text();
+var iframe = $(parent.document.getElementsByClassName("id_opcionEliminar"));
 
 $('#objeto').text(object);
 $('#ask').text(ask);
 
 if (boton.val() == "ANULAR"){
-    $('#pcometario').removeClass("elementHidden");
-}else{
+    iframe.attr('height', '140');
+    $('#pcometario').removeClass("elementNone");
+    setTimeout(function() {
+    $('#comentario').focus();
+    }, 300);
+    }else{
+    iframe.attr('height', '80');
     $('#comentario').val('eliminar');
 }
 
@@ -85,11 +92,15 @@ myform.submit(function () {
         });
         return false;
     }else{
-        alert("ingrese el motivo");
+      $("#motivoAnulacion").text('Díganos el motivo de la anulación');
+      $("#motivoAnulacion").fadeIn();
+      setTimeout(function() {
+        $("#motivoAnulacion").fadeOut();
+        $('#comentario').focus();
+      }, 3000);
         return false;
     }
 });
-
 </script>
 
 {% endblock js_form %}
