@@ -1,0 +1,43 @@
+Excepciones Database
+
+Excepciones de bases de datos pueden ser importados desde django.db.
+
+Django envuelve las excepciones de base de datos estándar para que su código de Django tiene una implementación común garantizado de estas clases.
+
+exception Error
+Excepción que es la clase base de todas las demás excepciones de error. Usted puede usar esto para atrapar todos los errores con una sola excepción comunicado. Las advertencias no se consideran errores y por lo tanto no deben utilizar esta clase como base. Debe ser una subclase de la Python StandardError (definidos en las excepciones del módulo).
+
+exception InterfaceError
+Excepción levantó de errores que están relacionados con la interfaz de base de datos en lugar de la base de datos en sí. Debe ser una subclase de Error.
+
+exception DatabaseError
+Excepción levantó de los errores que están relacionados con la base de datos. Debe ser una subclase de Error.
+
+exception DataError
+Excepción planteado por los errores que se deben a problemas con los datos procesados, como la división por cero, valor numérico fuera de rango, etc. Debe ser una subclase de DatabaseError.
+
+exception OperationalError
+Excepción planteado por los errores que están relacionados con el funcionamiento de la base de datos y no necesariamente bajo el control del programador, por ejemplo, una desconexión inesperada ocurre, el nombre de la fuente de datos no se encuentra, una transacción no se pudo procesar, se produjo un error de asignación de memoria durante el procesamiento, etc. Debe ser una subclase de DatabaseError.
+
+exception IntegrityError
+Excepción levantó cuando la integridad relacional de la base de datos se ve afectado, por ejemplo, un cheque clave externa falla. Debe ser una subclase de DatabaseError.
+
+exception InternalError
+Excepción levantó cuando la base de datos se encuentra con un error interno, por ejemplo, el cursor ya no es válida, la transacción no está sincronizado, etc. Debe ser una subclase de DatabaseError.
+
+exception ProgrammingError
+Excepción planteado por errores de programación, por ejemplo, la tabla no se encuentra o que ya existe, error de sintaxis en la sentencia SQL, número incorrecto de parámetros especifica, etc. Debe ser una subclase de DatabaseError.
+
+exception NotSupportedError
+Excepción criado en caso se utilizó un método o base de datos de la API que no sea compatible con la base de datos, por ejemplo, solicitar una .rollback () en una conexión que no soporta la transacción o tiene transacciones apagados. Debe ser una subclase de DatabaseError.
+
+    @transaction.atomic
+    sql = transaction.savepoint()
+    try:
+        transaction.savepoint_commit(sql)
+    except:
+        transaction.savepoint_rollback(sql)
+        tb = sys.exc_info()[2]
+        tbinfo = traceback.format_tb(tb)[0]
+        mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+        return JsonResponse(mensaje, safe=False)

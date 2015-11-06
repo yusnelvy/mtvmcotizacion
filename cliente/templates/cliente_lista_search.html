@@ -81,8 +81,8 @@
 <tr class="active">
   <th>
     Nombre
-    <a href="?order_by=nombre_principal">Asc</a>
-    <a href="?order_by=-nombre_principal">Desc</a>
+    <a href="?order_by=nombre_principal" id="nombre_principal" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-nombre_principal" id="-nombre_principal"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th width="80px">Estado</th>
   <th width="80px">Ficha</th>
@@ -117,4 +117,10 @@
 
 {% endif %}
 {% endblock cuerpo_tabla %}
+{% block js_inf %}
 
+<script>
+ocultarASCDesc('nombre_principal');
+</script>
+
+{% endblock js_inf %}

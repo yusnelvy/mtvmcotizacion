@@ -9,7 +9,7 @@
   <div class="form-group campo">
 
     {{form.as_p}}
-
+    {{form2.as_p}}
     <input type="text" id="capacidadmueble" value={{capacidadmueble}}>
     <input type="text" id="volmaterial" value={{vol_contenedor}}>
     <input type="text" id="pesomaterial" value={{peso_contenedor}}>
@@ -34,6 +34,7 @@
 {% block style %}
 
 <link rel="stylesheet" href="/static/css/presupuestoForm/preDetalle.css">
+<link rel="stylesheet" href="/static/css/presupuestoForm/preServicio.css">
 
 {% endblock style %}
 
@@ -53,7 +54,12 @@ $('#id_lista_tamano li label').addClass('btn-radio');
 
 document.getElementById('id_lista_ambiente').disabled = true;
 document.getElementById('id_lista_mueble').disabled = true;
-
+$('#id_lista_servicio').multiSelect(
+{
+  afterSelect: function(values) {
+    $("#id_servicio").val(values);
+  },
+});
 $(document).ready(function() {
   descripcionmensaje();
   ocupacidadVacia();
@@ -308,6 +314,8 @@ $(document).ready(function() {
           setTimeout(function () {
             parent.location.reload();
           }, 500);
+        }else{
+          alert(data.msj);
         }
       }
     });

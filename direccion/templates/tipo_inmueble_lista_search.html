@@ -78,8 +78,8 @@
   <tr class="active">
     <th>
       Tipo de inmueble
-      <a href="?order_by=tipo_inmueble">Asc</a>
-      <a href="?order_by=-tipo_inmueble">Desc</a>
+      <a href="?order_by=tipo_inmueble" id="tipo_inmueble" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+      <a href="?order_by=-tipo_inmueble" id="-tipo_inmueble"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
     </th>
     <th width="80px">Editar</th>
     <th width="80px">Eliminar</th>
@@ -106,5 +106,11 @@
 
 {% endif %}
 {% endblock cuerpo_tabla %}
+{% block js_inf %}
 
+<script>
+ocultarASCDesc('tipo_inmueble');
+</script>
+
+{% endblock js_inf %}
 

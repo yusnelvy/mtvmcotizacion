@@ -185,10 +185,22 @@ class PresupuestoDireccionForm(ModelForm):
 
 class PresupuestoDetalleForm(ModelForm):
     """Docstring"""
-    lista_ambiente = ModelChoiceField(Ambiente.objects, widget=Select(attrs={'class': 'width50'}), empty_label=None, label='Ambiente del inmueble:')
-    lista_mueble = ModelChoiceField(Mueble.objects, widget=Select(attrs={'class': 'width50'}), empty_label=None, label='Mueble del ambiente:')
-    lista_tamano = ModelChoiceField(Tamano.objects, widget=RadioSelect, empty_label=None, label='Tamaño del mueble:')
-    lista_ocupacion = ModelChoiceField(Ocupacion.objects, widget=RadioSelect, empty_label=None, label='Ocupación del mueble:')
+    lista_ambiente = ModelChoiceField(Ambiente.objects,
+                                      widget=Select(attrs={'class': 'width50'}),
+                                      empty_label=None,
+                                      label='Ambiente del inmueble:')
+    lista_mueble = ModelChoiceField(Mueble.objects,
+                                    widget=Select(attrs={'class': 'width50'}),
+                                    empty_label=None,
+                                    label='Mueble del ambiente:')
+    lista_tamano = ModelChoiceField(Tamano.objects,
+                                    widget=RadioSelect,
+                                    empty_label=None,
+                                    label='Tamaño del mueble:')
+    lista_ocupacion = ModelChoiceField(Ocupacion.objects,
+                                       widget=RadioSelect,
+                                       empty_label=None,
+                                       label='Ocupación del mueble:')
 
     contenido_choices = [(contenido.contenido, contenido.contenido) for contenido in Contenido.objects.all()]
     descripcion_contenido = forms.ChoiceField(

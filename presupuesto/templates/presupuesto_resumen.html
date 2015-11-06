@@ -26,10 +26,32 @@
 
 {% if estado.0.estado__orden == 5 or estado.0.estado__orden == 6 %}
 
-<li>
-    <a class="btn btn-success btn-verde" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
-</li>
+    {% if user.groups.count > 0 %}
+        {% for group in user.groups.all %}
 
+            {% if group.name == 'cotizador' %}
+
+                <li>
+                    <a class="btn btn-success btn-verde" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
+                </li>
+                <li>
+                    <a class="btn btn-success btn-verde botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7&terminar=terminar">Terminar presupuesto</a>
+                </li>
+
+            {% endif %}
+
+        {% endfor %}
+
+    {% elif user.is_superuser %}
+
+        <li>
+            <a class="btn btn-success btn-verde" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
+        </li>
+        <li>
+            <a class="btn btn-success btn-verde botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7&terminar=terminar">Terminar presupuesto</a>
+        </li>
+
+    {% endif %}
 {% endif %}
 
 {% if estado.0.estado__orden == 7 %}
@@ -37,14 +59,35 @@
 <li>
     <a class="btn btn-default btn-blanco" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
 </li>
+<li>
+    <a class="btn btn-default btn-blanco" href="{% url 'upresupuestos:PresupuestoDetailResumenFinal' presupuesto.id %}" type="button">Resumen final</a>
+</li>
 
 {% endif %}
 
 {% if estado.0.estado__orden == 6 %}
 
-<li>
-    <a class="btn btn-success btn-verde botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7">Autorizar</a>
-</li>
+    {% if user.groups.count > 0 %}
+
+        {% for group in user.groups.all %}
+
+        {% if group.name == 'cotizador' %}
+
+        <li>
+            <a class="btn btn-success btn-verde botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7">Autorizar</a>
+        </li>
+
+        {% endif %}
+
+        {% endfor %}
+
+    {% elif user.is_superuser %}
+
+        <li>
+            <a class="btn btn-success btn-verde botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7">Autorizar</a>
+        </li>
+
+    {% endif %}
 
 {% endif %}
 
