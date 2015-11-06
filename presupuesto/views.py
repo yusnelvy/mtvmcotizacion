@@ -86,14 +86,18 @@ class PresupuestoList(ListView):
     template_name = 'presupuesto_lista.html'
 
     def get_paginate_by(self, queryset):
-
-        try:
-            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                          self.request.user.id,
-                                                                          tipo="paginacion")
-        except PerzonalizacionVisual.DoesNotExist:
+        if self.request.user.id is not None:
+            try:
+                nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                              self.request.user.id,
+                                                                              tipo="paginacion")
+            except PerzonalizacionVisual.DoesNotExist:
+                nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+                                                                              tipo="paginacion")
+        else:
             nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
                                                                           tipo="paginacion")
+
         page = self.request.GET.get('page')
         if page == '0':
             return None
@@ -113,12 +117,16 @@ class PresupuestoList(ListView):
 
 def search_presupuesto(request):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     if request.method == "POST":
 

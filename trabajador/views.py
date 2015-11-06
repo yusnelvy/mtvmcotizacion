@@ -17,12 +17,16 @@ from premisas.models import PerzonalizacionVisual
 # lista
 def lista_cargotrabajador(request):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     order_by = request.GET.get('order_by')
     if order_by:
@@ -51,12 +55,16 @@ def lista_cargotrabajador(request):
 
 def search_cargotrabajador(request):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:

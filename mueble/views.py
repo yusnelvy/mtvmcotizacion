@@ -39,12 +39,16 @@ class TamanoMuebleListView(MuebleListView, ListView):
 
 def lista_mueble(request):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     order_by = request.GET.get('order_by')
     if order_by:
@@ -72,12 +76,16 @@ def lista_mueble(request):
 
 def search_mueble(request):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -176,12 +184,16 @@ def edit_mueble(request, pk):
 
 def lista_tipo_mueble(request):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     order_by = request.GET.get('order_by')
     if order_by:
@@ -210,12 +222,16 @@ def lista_tipo_mueble(request):
 
 def search_tipo_mueble(request):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -266,12 +282,16 @@ def search_tipo_mueble(request):
 
 def lista_ocupacion(request):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     order_by = request.GET.get('order_by')
     if order_by:
@@ -299,12 +319,16 @@ def lista_ocupacion(request):
 
 def search_ocupacion(request):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -352,12 +376,16 @@ def search_ocupacion(request):
 
 def lista_forma_mueble(request):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     order_by = request.GET.get('order_by')
     if order_by:
@@ -386,12 +414,16 @@ def lista_forma_mueble(request):
 
 def search_forma_mueble(request):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -440,12 +472,16 @@ def search_forma_mueble(request):
 
 def lista_tamano(request):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     order_by = request.GET.get('order_by')
     if order_by:
@@ -474,12 +510,16 @@ def lista_tamano(request):
 
 def search_tamano(request):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -528,12 +568,16 @@ def search_tamano(request):
 
 def lista_densidad(request):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     order_by = request.GET.get('order_by')
     if order_by:
@@ -562,12 +606,16 @@ def lista_densidad(request):
 
 def search_densidad(request):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -616,12 +664,16 @@ def search_densidad(request):
 
 def buscar_tamano_mueble(request, idmueble=0):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
@@ -685,12 +737,16 @@ def buscar_tamano_mueble(request, idmueble=0):
 
 def buscar_mueble_ambiente(request, idambiente=0):
     """docstring"""
-    try:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                      request.user.id,
-                                                                      tipo="paginacion")
-    except PerzonalizacionVisual.DoesNotExist:
-        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario="std",
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
     if request.method == "POST":
         if "item_id" in request.POST:

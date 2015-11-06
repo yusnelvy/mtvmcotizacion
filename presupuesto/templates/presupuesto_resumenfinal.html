@@ -339,7 +339,7 @@ $(document).ready(function() {
         };
         pdf.addHTML($('#content')[0], margins.top, margins.left, {}, function () {
             pdf.save("ResumenFinal_{{presupuesto.id}}.pdf");
-        });
+        }, margins);
     });
 });
 

@@ -19,6 +19,7 @@ def Email(template, context, subject, text_content, from_email, to):
     to = to
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
+    msg.attach_file('temp/respaldo.txt')
     msg.send()
 
 
