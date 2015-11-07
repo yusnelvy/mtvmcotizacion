@@ -728,7 +728,7 @@
       inverse: false,
       radioAllOff: false,
       onColor: "primary",
-      offColor: "default",
+      offColor: "primary",
       onText: "Si",
       offText: "No",
       labelText: "&nbsp;",

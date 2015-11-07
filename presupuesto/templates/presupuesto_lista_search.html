@@ -103,6 +103,7 @@
     <a href="?order_by=-empresa_cliente">Desc</a>
   </th>
   <th width="80px">Ficha</th>
+  <th width="80px">Anular</th>
   <th width="80px">Eliminar</th>
 </tr>
 
@@ -118,7 +119,24 @@
     <a class="glyphicon glyphicon-file"  data-placement="left" data-toggletooltip="tooltip" href="{% url 'upresupuestos:PresupuestoDetail' i.id %}?next={{request.get_full_path}}" title="Ver ficha"></a>
   </td>
   <td>
-    <a class="glyphicon glyphicon-remove botonmodalEliminar" data-nombre="presupuesto N° {{ i.id }}" data-numero="{{ i.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDelete' i.id %}" data-target=".eliminar" data-toggle="modal" data-placement="left" data-toggletooltip="tooltip" title="Eliminar registro {{ i.id }}"></a>
+
+    {% for estado in i.get_estadoactual %}
+
+    {% if estado.estado.orden == 8 or i.activo.orden == 9 %}
+
+    <a class="glyphicon glyphicon-ban-circle botonmodalAnular btn disabled" data-nombre="presupuesto N° {{ i.id }}" data-numero="{{ i.id }}" data-ask="Desea anular el registro: " data-boton="ANULAR" data-opcion="{% url 'upresupuestos:PresupuestoAnular' i.id %}" data-target=".eliminar" data-toggle="modal" data-placement="left" data-toggletooltip="tooltip" title="Anular registro {{ i.id }}"></a>
+
+    {% else %}
+
+    <a class="glyphicon glyphicon-ban-circle botonmodalAnular" data-nombre="presupuesto N° {{ i.id }}" data-numero="{{ i.id }}" data-ask="Desea anular el registro: " data-boton="ANULAR" data-opcion="{% url 'upresupuestos:PresupuestoAnular' i.id %}" data-target=".eliminar" data-toggle="modal" data-placement="left" data-toggletooltip="tooltip" title="Anular registro {{ i.id }}"></a>
+
+    {% endif %}
+
+    {% endfor %}
+
+  </td>
+  <td>
+    <a class="glyphicon glyphicon-remove botonmodalEliminar" data-nombre="presupuesto N° {{ i.id }}" data-numero="{{ i.id }}" data-ask="Desea eliminar el registro: " data-boton="ELIMINAR" data-opcion="{% url 'upresupuestos:PresupuestoDelete' i.id %}" data-target=".eliminar" data-toggle="modal" data-placement="left" data-toggletooltip="tooltip" title="Eliminar registro {{ i.id }}"></a>
   </td>
 </tr>
 

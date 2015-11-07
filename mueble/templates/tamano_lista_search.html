@@ -80,8 +80,8 @@
 <tr class="active">
   <th>
     Tamaño
-    <a href="?order_by=descripcion">Asc</a>
-    <a href="?order_by=-descripcion">Desc</a>
+    <a href="?order_by=descripcion" id="descripcion" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-descripcion" id="-descripcion"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th width="80px">Editar</th>
   <th width="80px">Eliminar</th>
@@ -111,4 +111,10 @@
 {% endif %}
 
 {% endblock cuerpo_tabla %}
+{% block js_inf %}
 
+<script>
+ocultarASCDesc('descripcion');
+</script>
+
+{% endblock js_inf %}

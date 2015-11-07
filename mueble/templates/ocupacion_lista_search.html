@@ -78,13 +78,13 @@
 <tr class="active">
   <th>
     Nivel de ocupación
-    <a href="?order_by=descripcion">Asc</a>
-    <a href="?order_by=-descripcion">Desc</a>
+    <a href="?order_by=descripcion" id="descripcion" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-descripcion" id="-descripcion"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>
     Valor
-    <a href="?order_by=valor">Asc</a>
-    <a href="?order_by=-valor">Desc</a>
+    <a href="?order_by=valor" id="valor" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-valor" id="-valor"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th width="80px">Editar</th>
   <th width="80px">Eliminar</th>
@@ -94,10 +94,7 @@
 
 <tr id="tr{{i.id}}">
   <td>{{ i.descripcion }}</td>
-
-  {% widthratio i.valor 1 100 as val %}
-
-  <td>{{ val|floatformat:"2" }}% </td>
+  <td>{{ i.valor|floatformat:"2" }}% </td>
   <td>
     <a href="{% url 'umuebles:edit_ocupacion' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
   </td>
@@ -120,3 +117,11 @@
 {% endif %}
 
 {% endblock cuerpo_tabla %}
+{% block js_inf %}
+
+<script>
+ocultarASCDesc('descripcion');
+ocultarASCDesc('valor');
+</script>
+
+{% endblock js_inf %}

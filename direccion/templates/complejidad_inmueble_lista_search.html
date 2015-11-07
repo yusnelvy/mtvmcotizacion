@@ -81,23 +81,29 @@
 <tr class="active">
   <th>
     Nivel de complejidad
-    <a href="?order_by=complejidad">Asc</a>
-    <a href="?order_by=-complejidad">Desc</a>
+    <a href="?order_by=complejidad" id="complejidad" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-complejidad" id="-complejidad"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>
     Factor de complejidad (%)
     <a href="?order_by=factor">Asc</a>
     <a href="?order_by=-factor">Desc</a>
+    <a href="?order_by=factor" id="factor" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-factor" id="-factor"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>
     Valor x ambiente ($)
     <a href="?order_by=valor_ambiente">Asc</a>
     <a href="?order_by=-valor_ambiente">Desc</a>
+    <a href="?order_by=valor_ambiente" id="valor_ambiente" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-valor_ambiente" id="-valor_ambiente"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>
     Valor x m3 ($)
     <a href="?order_by=valor_metrocubico">Asc</a>
     <a href="?order_by=-valor_metrocubico">Desc</a>
+    <a href="?order_by=valor_metrocubico" id="valor_metrocubico" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-valor_metrocubico" id="-valor_metrocubico"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th width="80px">Editar</th>
   <th width="80px">Eliminar</th>
@@ -107,10 +113,7 @@
 
 <tr id="tr{{i.id}}">
   <td>{{ i.complejidad }}</td>
-
-  {% widthratio i.factor 1 100 as val %}
-
-  <td>{{ val|floatformat:"2" }}%</td>
+  <td>{{ i.factor|floatformat:"2" }}%</td>
   <td>$ {{ i.valor_ambiente }}</td>
   <td>$ {{ i.valor_metrocubico }}</td>
   <td width="80px"><a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'udirecciones:edit_complejidad_inmueble' i.id %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a></td>
@@ -130,7 +133,16 @@
 
 {% endif %}
 {% endblock cuerpo_tabla %}
+{% block js_inf %}
 
+<script>
+ocultarASCDesc('complejidad');
+ocultarASCDesc('factor');
+ocultarASCDesc('valor_ambiente');
+ocultarASCDesc('valor_metrocubico');
+</script>
+
+{% endblock js_inf %}
 
 
 

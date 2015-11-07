@@ -81,13 +81,13 @@
   <tr class="active">
     <th>
       Zona
-      <a href="?order_by=zona">Asc</a>
-      <a href="?order_by=-zona">Desc</a>
+      <a href="?order_by=zona" id="zona" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+      <a href="?order_by=-zona" id="-zona"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
     </th>
     <th width="30%">
       Ciudad
-      <a href="?order_by=ciudad">Asc</a>
-      <a href="?order_by=-ciudad">Desc</a>
+      <a href="?order_by=ciudad" id="ciudad" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+      <a href="?order_by=-ciudad" id="-ciudad"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
     </th>
     <th width="80px">Editar</th>
     <th width="80px">Eliminar</th>
@@ -116,6 +116,13 @@
 
 {% endif %}
 {% endblock cuerpo_tabla %}
+{% block js_inf %}
 
+<script>
+ocultarASCDesc('zona');
+ocultarASCDesc('ciudad');
+</script>
+
+{% endblock js_inf %}
 
 

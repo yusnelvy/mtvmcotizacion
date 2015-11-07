@@ -6,12 +6,18 @@
 
                 {% block validacion_modal %}
 
-                <h4 >
-                    ¿Desea eliminar el registro:
+                <h4>
+                    ¿<span id="ask">
+                        {{ ask }}
+                     </span>
                     <strong id="objeto">
                         {{ object }}
                     </strong>?
                 </h4>
+                <p class="elementHidden" id="pcometario">
+                    <label for="comentario">Motivo de la anulación: </label>
+                    <input type="text" id="comentario" name="comentario" required>
+                </p>
 
                 {% endblock validacion_modal %}
 
@@ -24,40 +30,66 @@
 <script>
 var object = $(parent.document.getElementsByClassName("nombreEliminar")).text();
 var myform = $(parent.document.getElementById("myform"));
+var boton = $(parent.document.getElementById("boton"));
+var ask = $(parent.document.getElementsByClassName("askEliminar")).text();
+
 $('#objeto').text(object);
+$('#ask').text(ask);
+
+if (boton.val() == "ANULAR"){
+    $('#pcometario').removeClass("elementHidden");
+}else{
+    $('#comentario').val('eliminar');
+}
+
 myform.submit(function () {
-    var id = $(parent.document.getElementsByClassName("id_opcionEliminar")).attr('src');
-    var action = id;
-    var that = $(this);
-    $.ajax({
-        url: action,
-        type: 'POST',
-        data: that.serialize(),
-        success: function (data) {
-            var closep = parent.document.getElementById("cerrarEliminar");
-            var eliminar = parent.document.getElementById("msjEliminado");
-          if (data.estatus=="ok") {
-            $(eliminar).addClass('alert alert-success msj notific');
-            cerrarModal(closep, eliminar);
-            setTimeout(function () {
-            parent.location.reload();
-            }, 500);
-            $(eliminar).append("<span class='glyphicon glyphicon-ok-circle'></span> " + object + " eliminado ");
-            $(eliminar).fadeIn();
-          }else {
-            cerrarModal(closep, eliminar);
-            setTimeout(function () {
-            $(eliminar).fadeOut();
-            parent.location.reload();
-            }, 3000);
-            $(eliminar).addClass('alert alert-danger msj notific');
-            $(eliminar).append("<span class='glyphicon glyphicon-ban-circle'></span> " + object + " no eliminado<p style='font-size: 12px;'>" + data.msj + "</p>");
-            $(eliminar).fadeIn();
-          }
-        }
-    });
-    return false;
+    if ( $('#comentario').val() != ''){
+        var comentario= $('#comentario').val();
+        var id = $(parent.document.getElementsByClassName("id_opcionEliminar")).attr('src');
+        var action = id;
+        var that = $(this);
+        $.ajax({
+            url: action,
+            type: 'POST',
+            data: that.serialize() + "&comentario=" + comentario,
+            success: function (data) {
+                var closep = parent.document.getElementById("cerrarEliminar");
+                var eliminar = parent.document.getElementById("msjEliminado");
+                if (data.estatus=="ok") {
+                    $(eliminar).addClass('alert alert-success msj notific');
+                    cerrarModal(closep, eliminar);
+                    setTimeout(function () {
+                        parent.location.reload();
+                    }, 500);
+                    if (boton.val() == 'ANULAR') {
+                        $(eliminar).append("<span class='glyphicon glyphicon-ok-circle'></span> " + object + " anulado ");
+                    }else {
+                        $(eliminar).append("<span class='glyphicon glyphicon-ok-circle'></span> " + object + " eliminado ");
+                    }
+                    $(eliminar).fadeIn();
+                }else {
+                    cerrarModal(closep, eliminar);
+                    setTimeout(function () {
+                        $(eliminar).fadeOut();
+                        parent.location.reload();
+                    }, 3000);
+                    $(eliminar).addClass('alert alert-danger msj notific');
+                    if (boton.val() == 'ANULAR') {
+                        $(eliminar).append("<span class='glyphicon glyphicon-ban-circle'></span> " + object + " no anulado <p style='font-size: 12px;'>" + data.msj + "</p>");
+                    }else{
+                        $(eliminar).append("<span class='glyphicon glyphicon-ban-circle'></span> " + object + " no eliminado <p style='font-size: 12px;'>" + data.msj + "</p>");
+                    }
+                    $(eliminar).fadeIn();
+                }
+            }
+        });
+        return false;
+    }else{
+        alert("ingrese el motivo");
+        return false;
+    }
 });
+
 </script>
 
 {% endblock js_form %}

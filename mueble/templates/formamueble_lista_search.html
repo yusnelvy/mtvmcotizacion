@@ -81,8 +81,8 @@
 <tr class="active">
   <th>
     Forma
-    <a href="?order_by=forma">Asc</a>
-    <a href="?order_by=-forma">Desc</a>
+    <a href="?order_by=forma" id="forma" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-forma" id="-forma"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th width="80px">Editar</th>
   <th width="80px">Eliminar</th>
@@ -114,5 +114,11 @@
 
 {% endif %}
 {% endblock cuerpo_tabla %}
+{% block js_inf %}
 
+<script>
+ocultarASCDesc('forma');
+</script>
+
+{% endblock js_inf %}
 

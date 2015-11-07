@@ -104,7 +104,11 @@
 .filtra-campos>p>label[for=id_tipo_calculo],
 .filtra-campos>p>input#id_tipo_calculo,
 .filtra-campos>p>label[for=id_descuento_recargo],
-.filtra-campos>p>input#id_descuento_recargo {
+.filtra-campos>p>input#id_descuento_recargo,
+.filtra-campos>p>label[for=id_activo],
+.filtra-campos>p>select#id_activo,
+.filtra-campos>p>label[for=id_comentario_activo],
+.filtra-campos>p>textarea#id_comentario_activo  {
   display: none;
 }
 

@@ -39,7 +39,16 @@ class="col-md-10"
 
     {{ form.descuento_recargo }}
 
+    {{ form.tiempo_carga }}
+
+    {{ form.tipo_duracion}}
+
+    <input id="idpresupuesto" type="hidden" value="{{ presupuesto.id }}">
+    <input id="duracionteorica" type="hidden" value="{{ presupuesto.duracion_teorica }}">
+    <input id="duracionoptima" type="hidden" value="{{ presupuesto.duracion_optima }}">
+
     <div class="break-inside">
+
         <h2>Detalles de los costos del presupuesto</h2>
         <table align="center" class="table table-condensed table-bordered" style="border: 2px solid #ddd;">
             <tr align="center">
@@ -75,8 +84,12 @@ class="col-md-10"
                     {% calular_horas presupuesto.duracion_optima %}
 
                 </td>
-                <td align="center" class="check3" colspan="2">
-                    <input id="idpresupuesto" type="hidden" value="{{ presupuesto.id }}">
+                <td align="center" class="check3" colspan="2" id="tiempocarga">
+                    {% if tipo_calculo == Optimizado %}
+                        {% calular_horas presupuesto.duracion_optima %}
+                    {% else %}
+                        {% calular_horas form.tiempo_carga.value %}
+                    {% endif %}
                 </td>
             </tr>
             <tr style="border-top: 2px solid #ddd;">
@@ -389,7 +402,15 @@ class="col-md-10"
 {% endblock ayuda %}
 
 {% block js_inf %}
+<script>
 
+    $('#optimizado').click(function() {
+        $('#tiempocarga').text("{% calular_horas presupuesto.duracion_optima %}");
+    });
+    $('#basico').click(function() {
+        $('#tiempocarga').text("{% calular_horas presupuesto.duracion_teorica %}");
+    });
+</script>
 <script src="/static/js/presupuestoForm/preRevisar.js"></script>
 
 {% endblock js_inf %}

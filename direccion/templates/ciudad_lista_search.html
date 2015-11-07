@@ -78,13 +78,13 @@
   <tr class="active">
     <th>
       Ciudad
-      <a href="?order_by=ciudad">Asc</a>
-      <a href="?order_by=-ciudad">Desc</a>
+      <a href="?order_by=ciudad" id="ciudad" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+      <a href="?order_by=-ciudad" id="-ciudad"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
     </th>
     <th width="30%">
       Provincia
-      <a href="?order_by=provincia">Asc</a>
-      <a href="?order_by=-provincia">Desc</a>
+      <a href="?order_by=provincia" id="provincia" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+      <a href="?order_by=-provincia" id="-provincia"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
     </th>
     <th width="80px">Editar</th>
     <th width="80px">Eliminar</th>
@@ -112,6 +112,14 @@
 
 {% endif %}
 {% endblock cuerpo_tabla %}
+{% block js_inf %}
+
+<script>
+ocultarASCDesc('ciudad');
+ocultarASCDesc('provincia');
+</script>
+
+{% endblock js_inf %}
 
 
 
