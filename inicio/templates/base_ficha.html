@@ -1,5 +1,9 @@
 {% extends "base3.html" %}
 
+{% block widgetPasosacompletar %}{% endblock widgetPasosacompletar %}
+
+{% block widgetAcciones %}{% endblock widgetAcciones %}
+
 {% block acceso_rapido %}
     <a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
     <a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
@@ -7,20 +11,7 @@
 
 {% block acceso_rapido_adicional%}{% endblock acceso_rapido_adicional%}
 
-{% block navegacion %}
 
-<div class="col-md-2">
-    <div class="barra-vertical hidden-print" id="navbar-example" style="">
-        <h3>{% block menu_navegacion %}Menú{% endblock menu_navegacion %}</h3>
-        <ul class="nav_l nav nav-pills nav-stacked" role="tablist">
-
-            {% block link_navegacion %}{% endblock link_navegacion %}
-
-        </ul>
-    </div>
-</div>
-
-{% endblock navegacion %}
 
 {% block ficha %}
 <!--IniciaModal-->

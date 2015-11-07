@@ -8,22 +8,19 @@
 
 {% endblock acceso_rapido %}
 
-{% block navegacion %}
 
-<div class="col-md-2">
-    <div class="barra-vertical hidden-print" style="">
-        <h3>{% block menu_navegacion %}Menú{% endblock menu_navegacion %}</h3>
-        <ul class="nav_l">
-
-            {% block link_navegacion %}{% endblock link_navegacion %}
-
-        </ul>
-    </div>
-</div>
-
-{% endblock navegacion %}
 
 {% block content %}
+
+<script>
+    function ocultarASCDesc(id){
+        if ('{{request.GET.order_by}}' == id){
+            $('#'+id).css('display', 'none');
+        }else{
+            $('#-'+id).css('display', 'none');
+        }
+    }
+</script>
 
 <!--IniciaModal-->
 <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -62,7 +59,7 @@
 
 </div>
 <!--EndModal-->
-<div class="col-md-10">
+<div class="col-md-12">
     <div class="">
 
         <input class="form-control hidden-print" style="max-width: 250px;float:right;" type="text" id="search" name="search" placeholder="Buscar...">
@@ -94,7 +91,9 @@
     </div>
 </div>
 <script type="text/javascript">
-document.getElementById('search').focus()
+document.getElementById('search').focus();
 </script>
 
 {% endblock content %}
+
+{% block footer_principal %} {% endblock footer_principal %}

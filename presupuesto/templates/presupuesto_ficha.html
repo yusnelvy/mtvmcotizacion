@@ -1,5 +1,7 @@
 {% extends 'base_ficha.html' %}
 
+{% load presupuesto_extras %}
+
 {% block acceso_rapido %}
 
 <a aria-expanded="false" class="navbar-brand" href="{% url 'upresupuestos:PresupuestoList' %}" role="button" title="Volver">
@@ -8,16 +10,16 @@
 <a aria-expanded="false" class="navbar-brand" onclick="window.print();" role="button" title="Imprimir">
     <span class="glyphicon glyphicon-print"></span>
 </a>
-<a aria-expanded="false" class="navbar-brand botonmodalFormulario" data-numero="{{ presupuesto.id }}" data-nombre="Editar detalle del presupuesto" data-opcion="{% url 'upresupuestos:PresupuestoUpdate' presupuesto.id %}" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Editar detalles del presupuesto">
+<a aria-expanded="false" class="navbar-brand botonmodalFormulario btn2" data-numero="{{ presupuesto.id }}" data-nombre="Editar detalle del presupuesto" data-opcion="{% url 'upresupuestos:PresupuestoUpdate' presupuesto.id %}" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Editar detalles del presupuesto">
     <span class="glyphicon glyphicon-edit"></span>
 </a>
-<a aria-expanded="false" class="navbar-brand botonmodalFormulario" data-nombre="Agregar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Origen&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Agregar dirección de origen" >
+<a aria-expanded="false" class="navbar-brand botonmodalFormulario btn2" data-nombre="Agregar dirección de origen" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Origen&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Agregar dirección de origen" >
     <span class="glyphicon glyphicon-export"></span>
 </a>
-<a aria-expanded="false" class="navbar-brand botonmodalFormulario" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Agregar dirección de destino" >
+<a aria-expanded="false" class="navbar-brand botonmodalFormulario btn2" data-nombre="Agregar dirección de destino" data-opcion="{% url 'upresupuestos:PresupuestoDireccionView' %}?next={{ request.get_full_path }}&tipo=Destino&pre={{ presupuesto.id }}" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Agregar dirección de destino" >
     <span class="glyphicon glyphicon-import"></span>
 </a>
-<a aria-expanded="false" class="navbar-brand botonmodalFormulario" data-nombre="Agregar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-numero="ambienteFocus" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Agregar mueble">
+<a aria-expanded="false" class="navbar-brand botonmodalFormulario btn2" data-nombre="Agregar mueble" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-numero="ambienteFocus" data-target="#myModalFormulario" data-toggle="modal" role="button" title="Agregar mueble">
     <span class="glyphicon glyphicon-lamp"></span>
 </a>
 
@@ -25,144 +27,19 @@
 
 {% block acceso_rapido_adicional %}{% endblock acceso_rapido_adicional %}
 
-{% block link_navegacion %}
+{% block link_navegacion %}{% endblock link_navegacion %}
 
-    <li class="linknav">
-        <a class="scrollSpy" href="#datos-personales">Datos básicos del presupuesto
+{% block widget_sidebar %}
 
-            {% if presupuesto.dni %}
-
-            <span class="glyphicon glyphicon-ok"></span>
-
-            {% else %}
-
-            <span class="glyphicon glyphicon-minus"></span>
-
-            {% endif %}
-
-        </a>
-    </li>
-    <li class="linknav">
-        <a class="scrollSpy" id="link_direcciones" href="#direcciones">Direcciones
-
-            {% if direccion_origen and direccion_destino %}
-
-            <span class="glyphicon glyphicon-ok"></span>
-
-            {% else %}
-
-            <span class="glyphicon glyphicon-minus"></span>
-
-            {% endif %}
-
-        </a>
-    </li>
-    <li class="linknav">
-        <a class="scrollSpy" href="#ambientes">Muebles a mudar
-
-            {% if lista_ambiente %}
-
-            <span class="glyphicon glyphicon-ok"></span>
-
-            {% else %}
-
-            <span class="glyphicon glyphicon-minus"></span>
-
-            {% endif %}
-
-        </a>
-    </li>
-    <li class="linknav">
-        <a class="scrollSpy">Servicios contratados
-
-            {% if estado.0.estado__orden == 1 or estado.0.estado__orden == 2 or estado.0.estado__orden == 3 %}
-
-            <span class="glyphicon glyphicon-minus"></span>
-
-            {% else %}
-
-            <span class="glyphicon glyphicon-ok"></span>
-
-            {% endif %}
-
-        </a>
-    </li>
+{% widget_sidebar "pasos" "Pasos a completar" %}
 
 {% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente %}
 
-{% if estado.0.estado__orden == 3  %}
-
-    <li class="linknav">
-        <a class="btn btn-default btn-blanco" data-target=".resumen" data-toggle="modal" type="button" style="color:#777;">Contratar servicios</a>
-    </li>
+{% widget_sidebar "acciones" "Acciones" %}
 
 {% endif %}
 
-{% endif %}
-
-{% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente %}
-
-{% if estado.0.estado__orden != 3  %}
-
-    <li class="linknav">
-        <a onClick="location='{% url 'upresupuestos:PresupuestoDetailResumen' presupuesto.id %}'">Ver resumen</a>
-    </li>
-
-{% else %}
-
-{% endif %}
-
-{% endif %}
-
-{% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente %}
-
-{% if estado.0.estado__orden == 4 %}
-
-    <li>
-        <a class="btn btn-default btn-blanco botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=5">Finalizar solicitud</a>
-    </li>
-
-{% endif %}
-
-{% endif %}
-
-{% if estado.0.estado__orden == 5 or estado.0.estado__orden == 6 %}
-
-    <li>
-        <a class="btn btn-success btn-verde" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
-    </li>
-
-{% endif %}
-
-{% if estado.0.estado__orden == 6 %}
-
-    <li>
-        <a class="btn btn-success btn-verde botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7">Autorizar</a>
-    </li>
-
-{% endif %}
-
-{% if estado.0.estado__orden == 7 %}
-
-    <li>
-        <a class="btn btn-default btn-blanco" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
-    </li>
-
-    <li>
-        <a class="btn btn-success btn-verde" href="#" type="button">Enviar correo</a>
-    </li>
-    <li>
-        <a class="btn btn-default btn-blanco botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=5">Reabrir el presupuesto</a>
-    </li>
-
-{% endif %}
-{% if presupuesto.activo.orden == 9 %}
-    <li>
-    <a class="btn btn-default btn-blanco botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden={{estado.0.estado__orden}}&activar=Activo">Reabrir el presupuesto</a>
-</li>
-{% endif %}
-
-{% endblock link_navegacion %}
+{% endblock widget_sidebar %}
 
 {% block titulo %}
 
@@ -172,7 +49,7 @@
 
 {% block col1 %}
 
-class="col-md-10"
+class="col-md-12"
 
 {% endblock col1 %}
 
@@ -615,7 +492,7 @@ class="col-md-10"
 
                                         {% if forloop.first %}
 
-                                        <a class="botonmodalEliminar boton-servicios glyphicon glyphicon-remove hidden-print btn2 btn" data-nombre="{{ det_servicio.grouper }}" data-ask="Desea eliminar el registro: " data-boton="ELIMINAR" data-opcion="{% url 'upresupuestos:PresupuestoServicioDelete' item.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" title="Eliminar {{ det_servicio.grouper }}"></a>
+                                        <a class="botonmodalEliminar boton-servicios glyphicon glyphicon-remove hidden-print btn2" data-nombre="{{ det_servicio.grouper }}" data-ask="Desea eliminar el registro: " data-boton="ELIMINAR" data-opcion="{% url 'upresupuestos:PresupuestoServicioDelete' item.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" title="Eliminar {{ det_servicio.grouper }}"></a>
 
                                         {% endif %}
 
@@ -631,20 +508,20 @@ class="col-md-10"
                         <td>
                             {% if mueble.trasladable %}
 
-                            <a class="btn controles glyphicon glyphicon-wrench botonmodalFormulario hidden-print btn2" data-name="{{ mueble.mueble|lower }}" data-nombre="Agregar servicio al mueble {{ mueble.mueble|lower }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{ request.get_full_path }}&pre={{ mueble.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
+                            <a class="controles glyphicon glyphicon-wrench botonmodalFormulario hidden-print btn2" data-name="{{ mueble.mueble|lower }}" data-nombre="Agregar servicio al mueble {{ mueble.mueble|lower }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{ request.get_full_path }}&pre={{ mueble.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
 
                             {% else %}
 
-                            <a class="btn controles glyphicon glyphicon-wrench hidden-print disabled" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
+                            <a class="controles glyphicon glyphicon-wrench hidden-print btn-disabled" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
 
                             {% endif %}
 
                         </td>
                         <td>
-                            <a class="btn controles botonmodalFormulario glyphicon glyphicon-edit hidden-print btn2" data-nombre="Editar mueble" data-posicion="{{ ambiente.ambiente }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleUpdate' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Editar {{ mueble.mueble|lower }}"></a>
+                            <a class="controles botonmodalFormulario glyphicon glyphicon-edit hidden-print btn2" data-nombre="Editar mueble" data-posicion="{{ ambiente.ambiente }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleUpdate' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Editar {{ mueble.mueble|lower }}"></a>
                         </td>
                         <td>
-                            <a class="btn controles botonmodalEliminar glyphicon glyphicon-remove hidden-print btn2" data-ask="Desea eliminar el registro: " data-boton="ELIMINAR" data-nombre="{{ mueble.mueble|lower }}" data-numero="{{ mueble.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleDelete' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Eliminar {{ mueble.mueble|lower }}"></a>
+                            <a class="controles botonmodalEliminar glyphicon glyphicon-remove hidden-print btn2" data-ask="Desea eliminar el registro: " data-boton="ELIMINAR" data-nombre="{{ mueble.mueble|lower }}" data-numero="{{ mueble.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleDelete' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Eliminar {{ mueble.mueble|lower }}"></a>
                         </td>
                     </tr>
 
@@ -655,7 +532,7 @@ class="col-md-10"
                     <tr>
                         <td></td>
                         <td colspan="7">
-                            <a class="btn-addmueble botonmodalFormulario hidden-print btn2 btn" data-nombre="Agregar mueble" data-numero="" data-posicion="{{ ambiente.ambiente }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble al ambiente {{ ambiente.ambiente }}">Agregar otro mueble a {{ ambiente.ambiente }}</a>
+                            <a class="btn-addmueble botonmodalFormulario hidden-print btn2" data-nombre="Agregar mueble" data-numero="" data-posicion="{{ ambiente.ambiente }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble al ambiente {{ ambiente.ambiente }}">Agregar otro mueble a {{ ambiente.ambiente }}</a>
                         </td>
                     </tr>
                 </table>
@@ -666,7 +543,6 @@ class="col-md-10"
 
         <br>
         <a class="botonmodalFormulario btn btn-default hidden-print boton-almedio btn2" data-nombre="Agregar mueble" data-posicion="{{ ambiente.ambiente }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-numero="ambienteFocus" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble">Agregar mueble</a>
-
     </div>
 
     {% endif %}
@@ -693,22 +569,28 @@ class="col-md-10"
         </div>
     </div>
 </div>
-<!-- Modal resumen de presupuesto-->
-<div aria-labelledby="resumen" class="modal fade resumen" tabindex="-1" role="dialog">
+<!-- Modal comoContratarServicio de presupuesto-->
+<div aria-labelledby="comoContratarServicio" class="modal fade comoContratarServicio" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-                <span class="elementHidden">resumen</span>
+                <span class="elementNone">comoContratarServicio</span>
                 <button  aria-hidden="true" aria-label="Close" class="close" data-dismiss="modal" id="btn-cerrarModalServ" type="button" tabindex="-1">
                     <span aria-hidden="true">&times;</span>
                 </button>
-
-                <h4>¿Desea contratar servicios para los muebles?</h4>
-
+                <h4 id="contenidoMensaje">Pasos para contratar servicios</h4>
+                <ul>
+                    <li>Para contratar servicios se debe dirigir a la lista de los muebles.</li>
+                    <li>Posicionarse en el mueble que desee agregar servicio.</li>
+                    <li>Luego de posicionarse en el mueble, presionar el botón de servicios (<span class="glyphicon glyphicon-wrench"></span>), a la derecha del mueble.</li>
+                    <li>Se desplegara un formulario con la lista de los servicios disponibles para seleccionar.</li>
+                    <li>Seleccione los servicios y luego presione registrar.</li>
+                </ul>
+                <p><b>Nota:</b> solo los muebles que son trasladable se le pueden aplicar servicios.</p>
             </div>
             <div class="modal-footer">
                 <a class="btn btn-default botonFinalizar" data-dismiss="modal" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=4&nexturl=" href="" tabindex="-1" type="button">No deseo contratar servicios</a>
-                <a class="btn btn-success scrollSpy" data-dismiss="modal" href="#ambientes" tabindex="-1" type="button">Contratar servicios</a>
+                <a class="btn btn-success scrollSpy" data-dismiss="modal" href="#ambientes" tabindex="-1" type="button">Confirmar</a>
             </div>
         </div>
     </div>
@@ -723,18 +605,23 @@ class="col-md-10"
 var msj = document.getElementById('msjGuardado');
 $(msj).text('{{ message }}');
 $(msj).fadeIn();
-setTimeout(function() {$(msj).fadeOut();}, 500);
+setTimeout(function() {
+    $(msj).fadeOut();
+}, 500);
 </script>
 
 {% endfor %}
 
 {% endif %}
 
-{% if estado.0.estado__orden == 7 or estado.0.estado__orden == 6 %}
-    <script>
-    $(".btn2").addClass("disabled");
-    </script>
+{% if estado.0.estado__orden == 7 or estado.0.estado__orden == 6 or presupuesto.activo.orden == 9 %}
+
+<script>
+$(".btn2").addClass("btn-disabled");
+</script>
+
 {% endif %}
+
 {% endblock content1 %}
 
 {% block ayuda %}

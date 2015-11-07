@@ -1,0 +1,44 @@
+<div class="{% if widget == 'acciones' %}widgetAcciones{% endif %}{% if widget == 'pasos' %}widgetPasos{% endif %}">
+    <div class="{% if widget == 'acciones' %}titleAcciones{% endif %}{% if widget == 'pasos' %}titlePasos{% endif %}">{{ titulo }}</div>
+    <div id="{% if widget == 'pasos' %}navbar-example{% endif %}" class="{% if widget == 'acciones' %}btnAcciones btn-group-vertical{% endif %}">
+
+        {% if widget == "acciones" %}
+
+                    {% for i in data %}
+
+                    <button type="button" class="btn {% if i.btnsuccess == 'success' %}btn-success{% else %}btn-default{% endif %} floatLeft {{i.botonFinalizar}}" onClick="{{i.url}}" data-numero="{{i.datanumero}}" data-opcion="{{i.dataopcion}}">{{i.btnNombre}}</button>
+
+                    {% if i.elementoHidden == "1" %}
+
+                        <button type="button" class="btn btn-default floatLeft elementHidden" onClick="{{i.url}}">{{i.btnNombre}}</button>
+
+                    {% endif %}
+
+                    {% endfor %}
+
+            {% else %}
+
+        {% endif %}
+
+        {% if widget == "pasos" %}
+
+            <ul class="nav nav-pills ulWpasos" role="tablist">
+
+                {% for u in data %}
+
+                    <li class="">
+                        <a class="scrollSpy" href="{{u.ancla}}">{{u.paso}}
+                            <span class="glyphicon glyphicon-{{u.span}}"></span>
+                        </a>
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+            {% else %}
+
+        {% endif %}
+
+    </div>
+</div>

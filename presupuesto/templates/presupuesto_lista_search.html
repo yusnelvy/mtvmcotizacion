@@ -25,12 +25,13 @@
 
 <li class="current">
   <a style="color:#000;"> Página
-
     <select title="nro pag." onchange="window.location.href=this.value;">
       <option value="?page=0">ver todo</option>
+
       {% if page_obj.paginator.page_range %}
 
       {% for p in page_obj.paginator.page_range %}
+
       {% if p == page_obj.number %}
 
       <option value="?page={{p}}" selected>{{p}}</option>
@@ -44,8 +45,11 @@
       {% endfor %}
 
       {% else %}
+
       <option value="?page=1">paginar</option>
+
       {% endif %}
+
     </select>
 
     de
@@ -77,34 +81,35 @@
 </nav>
 
 {% block cuerpo_tabla %}
+
 {% if presupuestos %}
 
 <table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
 <tr class="active">
   <th width="50px">N°</th>
-  <th width="80px">
+  <th width="100px">
     Fecha
-    <a href="?order_by=fecha_creacion">Asc</a>
-    <a href="?order_by=-fecha_creacion">Desc</a>
+    <a href="?order_by=fecha_creacion" id="fecha_creacion" class="hidden-print glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-fecha_creacion" id="-fecha_creacion"  class="hidden-print glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th width="100px">
     DNI
-    <a href="?order_by=dni">Asc</a>
-    <a href="?order_by=-dni">Desc</a>
+    <a href="?order_by=dni" id="dni" class="hidden-print glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-dni" id="-dni" class="hidden-print glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>
     Nombre del solicitante
-    <a href="?order_by=nombre_cliente">Asc</a>
-    <a href="?order_by=-nombre_cliente">Desc</a>
+    <a href="?order_by=nombre_cliente" id="nombre_cliente" class="hidden-print glyphicon glyphicon-sort-by-alphabet btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-nombre_cliente" id="-nombre_cliente" class="hidden-print glyphicon glyphicon-sort-by-alphabet-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>
     Empresa
-    <a href="?order_by=empresa_cliente">Asc</a>
-    <a href="?order_by=-empresa_cliente">Desc</a>
+    <a href="?order_by=empresa_cliente" id="empresa_cliente" class="hidden-print glyphicon glyphicon-sort-by-alphabet btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-empresa_cliente" id="-empresa_cliente" class="hidden-print glyphicon glyphicon-sort-by-alphabet-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
-  <th width="80px">Ficha</th>
-  <th width="80px">Anular</th>
-  <th width="80px">Eliminar</th>
+  <th width="80px" class="hidden-print">Ficha</th>
+  <th width="80px" class="hidden-print">Anular</th>
+  <th width="80px" class="hidden-print">Eliminar</th>
 </tr>
 
 {% for i in presupuestos %}
@@ -115,16 +120,16 @@
   <td>{{ i.dni }}</td>
   <td>{{ i.nombre_cliente }}</td>
   <td>{{ i.empresa_cliente }}</td>
-  <td>
+  <td class="hidden-print">
     <a class="glyphicon glyphicon-file"  data-placement="left" data-toggletooltip="tooltip" href="{% url 'upresupuestos:PresupuestoDetail' i.id %}?next={{request.get_full_path}}" title="Ver ficha"></a>
   </td>
-  <td>
+  <td class="hidden-print">
 
     {% for estado in i.get_estadoactual %}
 
     {% if estado.estado.orden == 8 or i.activo.orden == 9 %}
 
-    <a class="glyphicon glyphicon-ban-circle botonmodalAnular btn disabled" data-nombre="presupuesto N° {{ i.id }}" data-numero="{{ i.id }}" data-ask="Desea anular el registro: " data-boton="ANULAR" data-opcion="{% url 'upresupuestos:PresupuestoAnular' i.id %}" data-target=".eliminar" data-toggle="modal" data-placement="left" data-toggletooltip="tooltip" title="Anular registro {{ i.id }}"></a>
+    <a class="glyphicon glyphicon-ban-circle botonmodalAnular btn-disabled" data-nombre="presupuesto N° {{ i.id }}" data-numero="{{ i.id }}" data-ask="Desea anular el registro: " data-boton="ANULAR" data-opcion="{% url 'upresupuestos:PresupuestoAnular' i.id %}" data-target=".eliminar" data-toggle="modal" data-placement="left" data-toggletooltip="tooltip" title="Anular registro {{ i.id }}"></a>
 
     {% else %}
 
@@ -135,7 +140,7 @@
     {% endfor %}
 
   </td>
-  <td>
+  <td class="hidden-print">
     <a class="glyphicon glyphicon-remove botonmodalEliminar" data-nombre="presupuesto N° {{ i.id }}" data-numero="{{ i.id }}" data-ask="Desea eliminar el registro: " data-boton="ELIMINAR" data-opcion="{% url 'upresupuestos:PresupuestoDelete' i.id %}" data-target=".eliminar" data-toggle="modal" data-placement="left" data-toggletooltip="tooltip" title="Eliminar registro {{ i.id }}"></a>
   </td>
 </tr>
@@ -143,6 +148,7 @@
 {% endfor %}
 
 </table>
+
 {% else %}
 
 <table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
@@ -151,5 +157,16 @@
 </table>
 
 {% endif %}
+
 {% endblock cuerpo_tabla %}
 
+{% block js_inf %}
+
+ <script>
+ ocultarASCDesc('fecha_creacion');
+ ocultarASCDesc('dni');
+ ocultarASCDesc('nombre_cliente');
+ ocultarASCDesc('empresa_cliente');
+</script>
+
+{% endblock js_inf %}

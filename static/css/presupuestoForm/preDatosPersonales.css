@@ -108,7 +108,9 @@
 .filtra-campos>p>label[for=id_activo],
 .filtra-campos>p>select#id_activo,
 .filtra-campos>p>label[for=id_comentario_activo],
-.filtra-campos>p>textarea#id_comentario_activo  {
+.filtra-campos>p>textarea#id_comentario_activo,
+.filtra-campos>p>label[for=id_tipo_duracion],
+.filtra-campos>p>input#id_tipo_duracion {
   display: none;
 }
 
