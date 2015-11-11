@@ -1,11 +1,15 @@
 {% extends 'base_ficha.html' %}
+
 {% load presupuesto_extras %}
 
-{% block col1 %}class="col-md-10"{% endblock col1 %}
+{% block col1 %}class="col-md-12"{% endblock col1 %}
 
 {% block titulo %}
+
 <title>Presupuesto</title>
+
 {% endblock titulo %}
+
 {% block link_navegacion %}
 
 <li class="linknav">
@@ -14,29 +18,29 @@
 
 {% if presupuesto.dni and direccion_origen and direccion_destino and ambientes %}
 
-{% if estado.0.estado__orden == 4 %}
+<div class="widgetAcciones">
+    <div class="titleAcciones">Acciones</div>
+    <div id="" class="btnAcciones btn-group-vertical">
 
-<li>
-    <a class="btn btn-default btn-blanco botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=5">Finalizar solicitud</a>
-</li>
+        {% if estado.0.estado__orden == 4 %}
 
-{% endif %}
+        <button type="button" class="btn btn-default floatLeft botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=5">Finalizar solicitud</button>
+        <button type="button" class="btn btn-success floatLeft elementHidden" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7&terminar=terminar">Terminar presupuesto</button>
 
-{% endif %}
+        {% endif %}
 
-{% if estado.0.estado__orden == 5 or estado.0.estado__orden == 6 %}
+        {% endif %}
+
+        {% if estado.0.estado__orden == 5 or estado.0.estado__orden == 6 %}
 
     {% if user.groups.count > 0 %}
+
         {% for group in user.groups.all %}
 
             {% if group.name == 'cotizador' %}
 
-                <li>
-                    <a class="btn btn-success btn-verde" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
-                </li>
-                <li>
-                    <a class="btn btn-success btn-verde botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7&terminar=terminar">Terminar presupuesto</a>
-                </li>
+            <button type="button" class="btn btn-default floatLeft" onClick="location='{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}'">Revisar presupuesto</button>
+            <button type="button" class="btn btn-success floatLeft botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7&terminar=terminar">Terminar presupuesto</button>
 
             {% endif %}
 
@@ -44,24 +48,17 @@
 
     {% elif user.is_superuser %}
 
-        <li>
-            <a class="btn btn-success btn-verde" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
-        </li>
-        <li>
-            <a class="btn btn-success btn-verde botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7&terminar=terminar">Terminar presupuesto</a>
-        </li>
+            <button type="button" class="btn btn-default floatLeft" onClick="location='{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}'">Revisar presupuesto</button>
+            <button type="button" class="btn btn-success floatLeft botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7&terminar=terminar">Terminar presupuesto</button>
 
     {% endif %}
+
 {% endif %}
 
 {% if estado.0.estado__orden == 7 %}
 
-<li>
-    <a class="btn btn-default btn-blanco" href="{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}" type="button">Revisar presupuesto</a>
-</li>
-<li>
-    <a class="btn btn-default btn-blanco" href="{% url 'upresupuestos:PresupuestoDetailResumenFinal' presupuesto.id %}" type="button">Resumen final</a>
-</li>
+    <button class="btn btn-default floatLeft" onClick="location='{% url 'upresupuestos:PresupuestoRevisarUpdateView' presupuesto.id %}?next={{ request.get_full_path }}'" type="button">Revisar presupuesto</button>
+    <button class="btn btn-default floatLeft" onClick="location='{% url 'upresupuestos:PresupuestoDetailResumenFinal' presupuesto.id %}'" type="button">Resumen final</button>
 
 {% endif %}
 
@@ -73,9 +70,8 @@
 
         {% if group.name == 'cotizador' %}
 
-        <li>
-            <a class="btn btn-success btn-verde botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7">Autorizar</a>
-        </li>
+            <button type="button" class="btn btn-success floatLeft botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7">Autorizar</button>
+            <button type="button" class="btn btn-success floatLeft elementHidden" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7&terminar=terminar">Terminar presupuesto</button>
 
         {% endif %}
 
@@ -83,23 +79,26 @@
 
     {% elif user.is_superuser %}
 
-        <li>
-            <a class="btn btn-success btn-verde botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7">Autorizar</a>
-        </li>
+            <botton type="button" class="btn btn-default floatLeft botonFinalizar" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7">Autorizar</botton>
+            <button type="button" class="btn btn-success floatLeft elementHidden" data-numero="{{ presupuesto.id }}" data-placement="left" data-opcion="{% url 'upresupuestos:presupuesto_finalizado_cliente' presupuesto.id %}?estado_orden=7&terminar=terminar">Terminar presupuesto</button>
 
     {% endif %}
 
 {% endif %}
 
+    </div>
+</div>
+
 {% endblock link_navegacion %}
+
 {% block content1 %}
 {% comment %}
         <a href="{% url 'upresupuestos:pdf' %}">
         <input type="button" class="btn-primary" value="Imprimir"/>
     </a>
 {% endcomment %}
+<br>
 <div class="panel panel-default">
-
     <table class="table table-hover">
         <tr>
             <td align="center" width="20%">
@@ -123,8 +122,6 @@
                 <strong>Fecha actual: </strong> <span style="float:right;">{{ now|date:"d/m/Y" }}</span> <br>
                 <strong>Fecha presupuesto: </strong><span style="float:right;">{{ presupuesto.fecha_creacion|date:"d/m/Y" }}</span> <br>
                 <strong>Fecha estimada de Mudanza: </strong><span style="float:right;">{{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}</span> <br>
-
-
             </td>
         </tr>
         <tr>
@@ -149,9 +146,13 @@
                 <h4>
 
                     {% if direccion_origen.count > 1%}
+
                         Direcciones de origen
+
                     {% else %}
+
                         Dirección de origen
+
                     {% endif %}
 
                 </h4>
@@ -160,9 +161,13 @@
                 <h4>
 
                     {% if direccion_destino.count > 1%}
+
                         Direcciones de destino
+
                     {% else %}
+
                         Dirección de destino
+
                     {% endif %}
 
                 </h4>
@@ -170,105 +175,191 @@
         </tr>
         <tr>
             <td colspan="2">
+
                 {% for direc_origen in direccion_origen %}
+
                 <strong>{{ direc_origen.tipo_direccion }} {{ direc_origen.orden }}</strong> <br>
                 {{ direc_origen.direccion }} <br>
                 Tipo: {{ direc_origen.tipo_inmueble }}, {{ direc_origen.total_m2 }} m<sup>2</sup>, {{ direc_origen.pisos }}
+
                 {% if direc_origen.pisos > 1 %}
+
                 pisos,
+
                 {% else %}
+
                 piso,
-                {% endif %} ocupación: {{ direc_origen.ocupacidad_inmueble }}<br>
+
+                {% endif %}
+
+                ocupación: {{ direc_origen.ocupacidad_inmueble }}<br>
+
                 {% if direc_origen.pisos_escalera = 0 %}
+
                 sin escaleras,
+
                 {% else %}
+
                 {{ direc_origen.pisos_escalera }}
+
                 {% if direc_origen.pisos_escalera > 1 %}
+
                 pisos por escaleras,
+
                 {% else %}
+
                 piso por escaleras,
+
                 {% endif %}
-                {% endif %}
-                {% if direc_origen.ascensor %}
-                con rampa,
-                {% else %}
-                sin rampa,
+
                 {% endif %}
 
                 {% if direc_origen.ascensor %}
-                {{ direc_origen.pisos_ascensor }}
-                {% if direc_origen.pisos_ascensor > 1 %}
-                pisos por ascensor <br>
+
+                con rampa,
+
                 {% else %}
-                piso por ascensor <br>
+
+                sin rampa,
+
                 {% endif %}
+
+                {% if direc_origen.ascensor %}
+
+                {{ direc_origen.pisos_ascensor }}
+
+                {% if direc_origen.pisos_ascensor > 1 %}
+
+                pisos por ascensor <br>
+
                 {% else %}
+
+                piso por ascensor <br>
+
+                {% endif %}
+
+                {% else %}
+
                 sin ascensor,
+
                 {% endif %}
 
                 {% if direc_origen.ascensor_servicio %}
+
                 {{ direc_origen.pisos_ascensor_servicio }}
+
                 {% if direc_origen.pisos_ascensor_servicio > 1 %}
+
                 pisos por ascensor de servicio <br>
+
                 {% else %}
+
                 piso por ascensor de servicio <br>
+
                 {% endif %}
+
                 {% else %}
+
                 sin ascensor de servicio <br>
+
                 {% endif %}
 
                 Distancia del vehículo al inmueble: {{ direc_origen.distancia_vehiculo }} mts <br>
+
                 {% endfor %}
+
             </td>
             <td colspan="2">
                 {% for direc_destino in direccion_destino %}
+
                 <strong>{{ direc_destino.tipo_direccion }} {{ direc_destino.orden }}</strong> <br>
                 {{ direc_destino.direccion }}<br>
                 Tipo: {{ direc_destino.tipo_inmueble }}, {{ direc_destino.total_m2 }} m<sup>2</sup>, {{ direc_destino.pisos }}
+
                 {% if direc_destino.pisos > 1 %}
+
                 pisos,
+
                 {% else %}
+
                 piso,
-                {% endif %} ocupación: {{ direc_destino.ocupacidad_inmueble }}<br>
+
+                {% endif %}
+
+                ocupación: {{ direc_destino.ocupacidad_inmueble }}<br>
+
                 {% if direc_destino.pisos_escalera = 0 %}
+
                 sin escaleras,
+
                 {% else %}
+
                 {{ direc_destino.pisos_escalera }}
+
                 {% if direc_destino.pisos_escalera > 1 %}
+
                 pisos por escaleras,
+
                 {% else %}
+
                 piso por escaleras,
+
                 {% endif %}
-                {% endif %}
-                {% if direc_destino.ascensor %}
-                con rampa,
-                {% else %}
-                sin rampa,
+
                 {% endif %}
 
                 {% if direc_destino.ascensor %}
-                {{ direc_destino.pisos_ascensor }}
-                {% if direc_destino.pisos_ascensor > 1 %}
-                pisos por ascensor <br>
+
+                con rampa,
+
                 {% else %}
-                piso por ascensor <br>
+
+                sin rampa,
+
                 {% endif %}
+
+                {% if direc_destino.ascensor %}
+
+                {{ direc_destino.pisos_ascensor }}
+
+                {% if direc_destino.pisos_ascensor > 1 %}
+
+                pisos por ascensor <br>
+
                 {% else %}
+
+                piso por ascensor <br>
+
+                {% endif %}
+
+                {% else %}
+
                 sin ascensor,
+
                 {% endif %}
 
                 {% if direc_destino.ascensor_servicio %}
+
                 {{ direc_destino.pisos_ascensor_servicio }}
+
                 {% if direc_destino.pisos_ascensor_servicio > 1 %}
+
                 pisos por ascensor de servicio <br>
+
                 {% else %}
+
                 piso por ascensor de servicio <br>
+
                 {% endif %}
+
                 {% else %}
+
                 sin ascensor de servicio <br>
+
                 {% endif %}
 
                 Distancia del vehículo al inmueble: {{ direc_destino.distancia_vehiculo }} mts <br>
+
                 {% endfor %}
 
             </td>
@@ -446,13 +537,19 @@
                             <td></td>
                             <td></td>
                             <td>
+
                                 {% calular_horas presupuesto.duracion_teorica %}
+
                             </td>
                             <td>
+
                                 {% calular_horas presupuesto.duracion_optima %}
+
                             </td>
                             <td>
+
                                 {% calular_horas presupuesto.tiempo_carga %}
+
                             </td>
                         </tr>
                         <tr align="center" style="border-top: 2px solid #ddd;">
@@ -461,20 +558,31 @@
                             <td>{{direccion_origen.0.valor_metrocubico_complejiadad}}</td>
                             <td>{{presupuesto.monto_m3_inmueble}}</td>
                             <td>
+
                                 {% if presupuesto.maxrecursoteorico == presupuesto.monto_m3_inmueble %}
+
                                 {{presupuesto.maxrecursoteorico}}
+
                                 {% endif %}
+
                             </td>
                             <td>
+
                                 {% if presupuesto.maxrecursooptimo == presupuesto.monto_m3_inmueble %}
+
                                 {{presupuesto.maxrecursooptimo}}
+
                                 {% endif %}
+
                             </td>
                             <td>
+
                                 {% if presupuesto.tipo_calculo == 'Optimizado' %}
 
                                 {% if presupuesto.maxrecursooptimo == presupuesto.monto_m3_inmueble %}
+
                                 {{presupuesto.maxrecursooptimo}}
+
                                 {% endif %}
 
                                 {% else %}
@@ -492,7 +600,9 @@
                                     {% endif %}
 
                                     {% endif %}
+
                                 {% endif %}
+
                             </td>
                         </tr>
                         <tr align="center">
@@ -501,21 +611,33 @@
                             <td>{{direccion_origen.0.valor_ambiente_complejidad}}</td>
                             <td>{{presupuesto.monto_amb_inmueble}}</td>
                             <td>
+
                                 {% if presupuesto.maxrecursoteorico == presupuesto.monto_amb_inmueble %}
+
                                 {{presupuesto.maxrecursoteorico}}
+
                                 {% endif %}
+
                             </td>
                             <td>
+
                                 {% if presupuesto.maxrecursooptimo == presupuesto.monto_amb_inmueble %}
+
                                 {{presupuesto.maxrecursooptimo}}
+
                                 {% endif %}
+
                             </td>
                             <td>
+
                                 {% if presupuesto.tipo_calculo == 'Optimizado' %}
 
                                 {% if presupuesto.maxrecursooptimo == presupuesto.monto_amb_inmueble %}
+
                                 {{presupuesto.maxrecursooptimo}}
+
                                 {% endif %}
+
                                 {% else %}
 
                                     {% if presupuesto.monto_amb_inmueble == presupuesto.monto_recursos_revisado %}
@@ -523,7 +645,9 @@
                                     {{presupuesto.monto_recursos_revisado}}
 
                                     {% endif %}
+
                                 {% endif %}
+
                             </td>
                         </tr>
                         <tr align="center">
@@ -532,25 +656,37 @@
                             <td></td>
                             <td>{{presupuesto.monto_personateorica}}</td>
                             <td>
+
                                 {% if presupuesto.maxrecursoteorico == presupuesto.monto_personateorica %}
+
                                 {{presupuesto.maxrecursoteorico}}
+
                                 {% endif %}
+
                             </td>
                             <td>
+
                                 {% if presupuesto.tipo_calculo == 'Optimizado' %}
 
                                 {% if presupuesto.maxrecursooptimo == presupuesto.monto_personaoptima %}
+
                                 {{presupuesto.maxrecursooptimo}}
+
                                 {% endif %}
 
                                 {% endif %}
+
                             </td>
                             <td>
+
                                 {% if presupuesto.tipo_calculo == 'Optimizado' %}
 
                                 {% if presupuesto.maxrecursooptimo == presupuesto.monto_personaoptima %}
+
                                 {{presupuesto.maxrecursooptimo}}
+
                                 {% endif %}
+
                                 {% else %}
 
                                     {% if presupuesto.monto_personateorica == presupuesto.monto_recursos_revisado %}
@@ -558,7 +694,9 @@
                                     {{presupuesto.monto_recursos_revisado}}
 
                                     {% endif %}
+
                                 {% endif %}
+
                             </td>
                         </tr>
                         <tr align="center">
@@ -567,14 +705,22 @@
                             <td></td>
                             <td>{{presupuesto.monto_personaoptima}}</td>
                             <td>
+
                                 {% if presupuesto.maxrecursoteorico == presupuesto.monto_personaoptima %}
+
                                 {{presupuesto.maxrecursoteorico}}
+
                                 {% endif %}
+
                             </td>
                             <td>
+
                                 {% if presupuesto.maxrecursooptimo == presupuesto.monto_personaoptima %}
+
                                 {{presupuesto.maxrecursooptimo}}
+
                                 {% endif %}
+
                             </td>
                             <td>
 
@@ -639,9 +785,13 @@
                             <td align="center">
 
                                 {% if presupuesto.monto_mundanza_revisada == 0 %}
+
                                     {{presupuesto.monto_mundanza_hrsoptimas}}
+
                                 {% else %}
+
                                     {{presupuesto.monto_mundanza_revisada}}
+
                                 {% endif %}
 
                             </td>
@@ -663,18 +813,26 @@
                             <td align="center">
 
                                 {% if presupuesto.tipo_calculo == 'Basico' %}
+
                                     {{presupuesto.monto_descuento_recargo}}
+
                                 {% else %}
+
                                  0.00
+
                                 {% endif %}
 
                             </td>
                             <td align="center">
 
                                 {% if presupuesto.tipo_calculo == 'Optimizado' %}
+
                                     {{presupuesto.monto_descuento_recargo}}
+
                                 {% else %}
+
                                  0.00
+
                                 {% endif %}
 
                             </td>
@@ -687,6 +845,7 @@
                             <td align="center">{{presupuesto.mudanzamontorevisadotoerico}}</td>
                             <td align="center">{{presupuesto.mudanzamontorevisadooptimo}}</td>
                             <td align="center">
+
                                 {% if presupuesto.tipo_calculo == 'Optimizado' %}
 
                                     {{presupuesto.mudanzamontorevisadooptimo}}
@@ -709,7 +868,6 @@
 
                                 {% endif %}
 
-
                             </td>
                         </tr>
                     </table>
@@ -725,7 +883,9 @@
 
                 <div class="row">
                     <div class="col-md-12">
+
                         {% for ambiente in ambientes %}
+
                         <div class="break-inside">
                             <h4>{{ambiente.ambiente}}</h4>
                             <table class="table table-hover table-condensed table-bordered" align="center">
@@ -747,7 +907,9 @@
                                 </tr>
 
                                 {% for det_mueble in detalle_list %}
+
                                 {% if ambiente.ambiente = det_mueble.ambiente %}
+
                                 <tr align="center">
                                     <td>
                                         {{ det_mueble.cantidad }}
@@ -762,17 +924,25 @@
                                     <td>{{ det_mueble.ocupacidad }}</td>
                                     <td>
                                         {% if servicio %}
+
                                         {% for det_servicio in servicio %}
+
                                         {% if det_servicio.detalle_presupuesto = det_mueble.id %}
+
                                         {{ det_servicio.servicio }}
+
                                         {% if forloop.last %}
 
                                         {% else %} -
 
                                         {% endif %}
+
                                         {% endif %}
+
                                         {% endfor %}
+
                                         {% endif %}
+
                                     </td>
 
                                     {% if perms.presupuesto_detalle.see_detallepresupuestoitem %}
@@ -785,14 +955,17 @@
                                         {{ det_mueble.cantidad_contenedor }}
 
                                         {% if det_mueble.descripcion_contenedor|slice:":6" == 'Caja 4' %}
+
                                         {{det_mueble.descripcion_contenedor|slice:":4"}}{{ det_mueble.cantidad_contenedor|pluralize }} 40
                                         <br>
 
                                         {% elif det_mueble.descripcion_contenedor|slice:":6" == 'Caja g'%}
+
                                         {{det_mueble.descripcion_contenedor|slice:":4"}}{{ det_mueble.cantidad_contenedor|pluralize }} grande
                                         <br>
 
                                         {% else %}
+
                                         {{ det_mueble.descripcion_contenedor }}{{ det_mueble.cantidad_contenedor|pluralize }} <br>
 
                                         {% endif %}
@@ -816,16 +989,21 @@
                                 </tr>
 
                                 {%endif%}
+
                                 {% endfor %}
+
                             </table>
                         </div>
+
                         {% endfor %}
+
                     </div>
                 </div>
             </td>
         </tr>
 
         {% if perms.presupuesto_servicio.see_servicioitem %}
+
         {% if servicio2 %}
 
         <tr>
@@ -847,10 +1025,13 @@
                     {% regroup servicio2 by servicio as servicio_list %}
 
                     {% for servicio in servicio_list %}
+
                     {% for item in servicio.list %}
 
                     <tr align="center">
+
                         {% if forloop.counter == 1 %}
+
                         <td rowspan="{{servicio.list|length}}">
                             {{ servicio.grouper }}
                         </td>
@@ -884,7 +1065,9 @@
                     </tr>
 
                     {% endfor %}
+
                     {% endfor %}
+
                     <tr align="center" style="border-top: 2px solid #ddd;">
                         <td>Totales</td>
                         <td>{{totales.montoservicio}}</td>
@@ -903,6 +1086,7 @@
         </tr>
 
         {% else %}
+
         <tr>
             <td colspan="4">
                 <div>
@@ -910,7 +1094,9 @@
                 </div>
             </td>
         </tr>
+
         {% endif %}
+
         {%endif%} <!-- end del if de verificación del permiso en servicio -->
 
     </table>

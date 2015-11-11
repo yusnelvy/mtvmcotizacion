@@ -10,16 +10,10 @@
 
     {{form.as_p}}
     {{form2.as_p}}
-    <input type="text" id="capacidadmueble" value={{capacidadmueble}}>
-    <input type="text" id="volmaterial" value={{vol_contenedor}}>
-    <input type="text" id="pesomaterial" value={{peso_contenedor}}>
-    <p>
-      <button class="btn btn-default" id="btn-calcularcontenedor" type="button">
-        Calcular contenedor
-      </button>
-    </p>
-    <p id="msjcontenedor"></p>
 
+    <input type="text" id="capacidadmueble" value="{{capacidadmueble}}">
+    <input type="text" id="volmaterial" value="{{vol_contenedor}}">
+    <input type="text" id="pesomaterial" value="{{peso_contenedor}}">
   </div>
 
   <button type="submit" class="btn btn-default registrar">{{nombre_btn}}</button>
@@ -34,7 +28,6 @@
 {% block style %}
 
 <link rel="stylesheet" href="/static/css/presupuestoForm/preDetalle.css">
-<link rel="stylesheet" href="/static/css/presupuestoForm/preServicio.css">
 
 {% endblock style %}
 
@@ -43,10 +36,14 @@
 <script src="/static/js/presupuestoForm/preDetalle.js"></script>
 <script>
 
-var densidadBaja = 0
-var densidadMedia = 0
-var densidadAlta = 0
-var densidadMuyAlta = 0
+var densidadBaja = "{{densidades.densidad_baja}}"
+var densidadMedia = "{{densidades.densidad_media}}"
+var densidadAlta = "{{densidades.densidad_alta}}"
+var densidadMuyAlta = "{{densidades.densidad_superalta}}"
+densidadBaja = parseFloat(densidadBaja.replace(',','')).toFixed(2)
+densidadMedia = parseFloat(densidadMedia.replace(',','')).toFixed(2)
+densidadAlta = parseFloat(densidadAlta.replace(',','')).toFixed(2)
+densidadMuyAlta = parseFloat(densidadMuyAlta.replace(',','')).toFixed(2)
 
 $('#id_lista_ocupacion li label').addClass('btn-radio');
 
@@ -60,6 +57,16 @@ $('#id_lista_servicio').multiSelect(
     $("#id_servicio").val(values);
   },
 });
+$('#id_descripcion_contenedor').after('<br><p><button class="btn btn-default" id="btn-calcularcontenedor" type="button">Calcular contenedor</button></p><p id="msjcontenedor"></p>');
+if (document.getElementById("id_trasladable").checked === false) {
+  $('p:has(label[for=id_lista_servicio])').fadeOut( 200, function() {
+                $(this).css('display', 'none');
+                $('#id_lista_servicio').multiSelect('deselect_all');
+            });
+}
+if (document.getElementById("id_trasladable").checked === true) {
+  $('p:has(label[for=id_lista_servicio])').fadeIn(200);
+}
 $(document).ready(function() {
   descripcionmensaje();
   ocupacidadVacia();
@@ -116,9 +123,14 @@ $(document).ready(function() {
         if (data[0].trasladable == true) {
           document.getElementById("id_trasladable").checked = true;
           $('input[name="trasladable"]').bootstrapSwitch('state', true );
+          $('p:has(label[for=id_lista_servicio])').fadeIn(200);
         } else {
           document.getElementById("id_trasladable").checked = false;
           $('input[name="trasladable"]').bootstrapSwitch('state', false );
+          $('p:has(label[for=id_lista_servicio])').fadeOut( 200, function() {
+                $(this).css('display', 'none');
+                $('#id_lista_servicio').multiSelect('deselect_all');
+            });
         }
 
         lista_tamano = $("input[name=lista_tamano]");
@@ -272,6 +284,7 @@ $(document).ready(function() {
   // obj.dispatchEvent(ev);
 
   $("#btn-calcularcontenedor").click(function () {
+    calculoscontenido();
     calculoscontenedor();
     descripcionmensaje();
   });

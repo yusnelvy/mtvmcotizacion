@@ -1,8 +1,8 @@
-<div class="{% if widget == 'acciones' %}widgetAcciones{% endif %}{% if widget == 'pasos' %}widgetPasos{% endif %}">
-    <div class="{% if widget == 'acciones' %}titleAcciones{% endif %}{% if widget == 'pasos' %}titlePasos{% endif %}">{{ titulo }}</div>
-    <div id="{% if widget == 'pasos' %}navbar-example{% endif %}" class="{% if widget == 'acciones' %}btnAcciones btn-group-vertical{% endif %}">
+<div class="{% if widget == 'acciones_ficha_presupuesto' or widget == 'acciones_resumen_presupuesto' %}widgetAcciones{% endif %}{% if widget == 'pasos_presupuesto' %}widgetPasos{% endif %}">
+    <div class="{% if widget == 'acciones_ficha_presupuesto' or widget == 'acciones_resumen_presupuesto' %}titleAcciones{% endif %}{% if widget == 'pasos_presupuesto' %}titlePasos{% endif %}">{{ titulo }}</div>
+    <div id="{% if widget == 'pasos_presupuesto' %}navbar-example{% endif %}" class="{% if widget == 'acciones_ficha_presupuesto' or widget == 'acciones_resumen_presupuesto' %}btnAcciones btn-group-vertical{% endif %}">
 
-        {% if widget == "acciones" %}
+        {% if widget == "acciones_ficha_presupuesto" or widget == "acciones_resumen_presupuesto" %}
 
                     {% for i in data %}
 
@@ -20,7 +20,7 @@
 
         {% endif %}
 
-        {% if widget == "pasos" %}
+        {% if widget == "pasos_presupuesto" %}
 
             <ul class="nav nav-pills ulWpasos" role="tablist">
 

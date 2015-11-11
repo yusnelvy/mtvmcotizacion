@@ -13,12 +13,6 @@
     <input type="text" id="capacidadmueble">
     <input type="text" id="volmaterial">
     <input type="text" id="pesomaterial">
-    <p>
-      <button class="btn btn-default" id="btn-calcularcontenedor" type="button">
-        Calcular contenedor
-      </button>
-    </p>
-    <p id="msjcontenedor"></p>
   </div>
 
   {{form_data}}
@@ -33,7 +27,6 @@
 {% block style %}
 
 <link rel="stylesheet" href="/static/css/presupuestoForm/preDetalle.css">
-<link rel="stylesheet" href="/static/css/presupuestoForm/preServicio.css">
 
 {% endblock style %}
 
@@ -62,7 +55,9 @@ var idAmbinete = $(parent.document.getElementsByClassName(
         document.getElementById('id_lista_ambiente').disabled = true;
         l_mueble();
       }
+      $('#id_descripcion_contenedor').after('<br><p><button class="btn btn-default" id="btn-calcularcontenedor" type="button">Calcular contenedor</button></p><p id="msjcontenedor"></p>');
 $(document).ready(function() {
+
   $('.campo p .zelect .zelected').eq(0).addClass('selectAmbiente');
   $('.campo p .zelect .zelected').eq(1).addClass('selectMueble');
   setTimeout(function() {
@@ -143,9 +138,14 @@ $(document).ready(function() {
         if (data[0].trasladable == true) {
           document.getElementById("id_trasladable").checked = true;
           $('input[name="trasladable"]').bootstrapSwitch('state', true );
+          $('p:has(label[for=id_lista_servicio])').fadeIn(200);
         } else {
           document.getElementById("id_trasladable").checked = false;
           $('input[name="trasladable"]').bootstrapSwitch('state', false );
+          $('p:has(label[for=id_lista_servicio])').fadeOut( 200, function() {
+                $(this).css('display', 'none');
+                $('#id_lista_servicio').multiSelect('deselect_all');
+            });
         }
 
         lista_tamano = $("input[name=lista_tamano]");

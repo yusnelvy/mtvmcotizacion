@@ -18,6 +18,19 @@ radioColorBlue('descripcion_densidadcontenido');
 
 $('input[name="trasladable"]').bootstrapSwitch();
 
+$('input[name="trasladable"]').on('switchChange.bootstrapSwitch', function(event, state) {
+if (state === true ) {
+  $('p:has(label[for=id_lista_servicio])').fadeIn(200);
+}
+if (state === false ) {
+  $('p:has(label[for=id_lista_servicio])').fadeOut( 200, function() {
+        $(this).css('display', 'none');
+        $('#id_lista_servicio').multiSelect('deselect_all');
+    });
+}
+
+});
+
 function inputContenido(funcion) {
     if (funcion == 'ocultar'){
       $('p:has(select[id=id_descripcion_densidadcontenido])').fadeOut( 200, function() {

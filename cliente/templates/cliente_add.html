@@ -21,7 +21,11 @@
 
 </div>
 <script type="text/javascript">
-document.getElementById('id_nombre_principal').focus()
+document.getElementById('id_nombre_principal').focus();
+$( "#id_fecha_nacimiento" ).datepicker({
+      changeMonth: true,
+      changeYear: true
+    });
 </script>
 
 {% endblock cuerpo_form %}
