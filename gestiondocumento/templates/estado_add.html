@@ -1,0 +1,39 @@
+{% extends "base_edit.html" %}
+
+{% block titulo %}
+
+<title>Estado</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+  <h2>Agregar estado</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ form.as_p }}
+
+</div>
+<script type="text/javascript">
+document.getElementById('id_estado').focus()
+</script>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="">
+    <div class="">
+        <p>La <strong>Estado </strong>es el área urbana que presenta una alta densidad de población, conformada por habitantes que no suelen dedicarse a las actividades agrícolas.</p>
+        <p>Se recomienda agregar las estados  correspondientes para cada <strong>provincia</strong>.</p>
+        <p>Para lograr buena calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
+    </div>
+</div>
+
+{% endblock%}
+

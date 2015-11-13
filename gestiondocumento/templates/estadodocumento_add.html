@@ -1,0 +1,43 @@
+{% extends "base_edit.html" %}
+
+{% block js_sup %}
+
+{% endblock js_sup %}
+
+{% block titulo %}
+
+<title>Estado de documento</title>
+
+{% endblock titulo %}
+
+{% block col_edit %}
+
+class="col-md-5"
+
+{% endblock col_edit %}
+
+{% block titulo_form %}
+
+<h2>Nuevo estado de documento</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+{{form.as_p}}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="">
+    <p>
+        El <strong>Estado de documento</strong> es el cálculo anticipado del valor del servicio a prestarse en determinado tiempo y bajo ciertas condiciones indicadas por el cliente.
+    </p>
+</div>
+
+{% endblock ayuda %}

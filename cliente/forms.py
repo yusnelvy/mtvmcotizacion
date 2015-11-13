@@ -3,7 +3,7 @@ Docstring documentación pendiente
 """
 
 from django.forms import ModelForm, DateInput
-from cliente.models import Cliente, Email, Sexo, Estado_civil
+from cliente.models import Cliente, Email, Sexo, Estado_civil, TipoCliente
 
 
 class ClienteForm(ModelForm):
@@ -66,4 +66,16 @@ class EstadoCivilForm(ModelForm):
         fields = '__all__'
         labels = {
             'estado_civil': ('Nombre del Estado civil')
+        }
+
+
+class TipoClienteForm(ModelForm):
+    """
+    Docstring documentación pendiente
+    """
+    class Meta:
+        model = TipoCliente
+        fields = '__all__'
+        labels = {
+            'tipo_cliente': ('Tipo de cliente')
         }

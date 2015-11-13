@@ -1,0 +1,73 @@
+{% extends 'base_lista.html' %}
+{% block link_navegacion %}
+
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+{% endblock footerLink %}
+
+{% block titulo %}
+
+<title>Estado</title>
+
+{% endblock titulo %}
+
+{% block titulo_modal %}
+
+Eliminar estado
+
+{% endblock titulo_modal %}
+
+{% block validacion_modal %}
+
+<p>¿Realmente desea eliminar el registro: <strong id="modal_name"></strong>?</p>
+
+{% endblock validacion_modal %}
+
+{% block titulo_tabla %}
+
+<h2>Listado de estados</h2>
+
+{% endblock titulo_tabla %}
+
+{% block contenidogeneral %}
+
+ <div id="search-results">
+   {% include "estado_lista_search.html" %}
+ </div>
+
+{% endblock contenidogeneral%}
+
+{% block ayuda %}
+
+<div class="well well-lg">
+  <p>La <strong>Estado</strong>  es la acción y efecto de cotizar, poner precio a algo, estimar a alguien o algo en relación con un fin. el documento informa y establece el valor del servicios.</p>
+</div>
+
+{% endblock ayuda %}
+{% block js_sup %}
+<script>
+$(function(){
+
+  $('#search').keyup(function(){
+    $.ajax({
+      type: "POST",
+      url: "{% url 'ugestiondocumentos:search_estado' %}",
+      data: {
+        'search_text': $('#search').val(),
+        'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+      },
+      success: searchSuccess,
+      dataType: 'Html'
+    });
+  });
+});
+
+function searchSuccess(data, textStatus, jqXHR){
+  $('#search-results').html(data)
+}
+</script>
+
+{% endblock js_sup %}

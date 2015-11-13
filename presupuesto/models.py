@@ -96,6 +96,7 @@ class Presupuesto(models.Model):
     nombre_cliente = models.CharField(max_length=250)
     empresa_cliente = models.CharField(max_length=250, blank=True, default='')
     cargo_cliente = models.CharField(max_length=250, blank=True, default='')
+    tipo_cliente = models.CharField(max_length=100, blank=True, default='')
     telefono = models.CharField(max_length=100)
     telefono_celular = models.CharField(max_length=100, blank=True)
     email = models.EmailField()

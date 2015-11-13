@@ -268,6 +268,27 @@ def lista_vehiculo(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_vehiculo = request.POST['item_id']
+                p = Vehiculo.objects.get(pk=id_vehiculo)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
     order_by = request.GET.get('order_by')
     if order_by:
         lista_vehiculo = Vehiculo.objects.all().order_by(order_by)

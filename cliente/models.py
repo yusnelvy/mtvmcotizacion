@@ -33,6 +33,19 @@ class Estado_civil(models.Model):
         ordering = ['estado_civil']
 
 
+class TipoCliente(models.Model):
+    """docstring for TipoCliente"""
+    tipo_cliente = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.tipo_cliente
+
+    class Meta:
+        verbose_name = "Tipo de cliente"
+        verbose_name_plural = "Tipos de cliente"
+        ordering = ['tipo_cliente']
+
+
 class Cliente(models.Model):
     """docstring for Cliente"""
     def __init__(self, *args, **kwargs):
@@ -49,6 +62,7 @@ class Cliente(models.Model):
     adicional3 = models.CharField(max_length=50, blank=True)
     adicional4 = models.CharField(max_length=50, blank=True)
     activo = models.BooleanField(default=True)
+    tipo_cliente = models.ForeignKey(TipoCliente)
 
     def __str__(self):
         return self.nombre_principal

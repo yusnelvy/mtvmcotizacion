@@ -1,10 +1,12 @@
 """ docstring """
 
 from django.shortcuts import render, render_to_response, get_object_or_404
-from cliente.models import Cliente, Email, Sexo, Estado_civil
+from cliente.models import Cliente, Email, Sexo, Estado_civil,\
+    TipoCliente
 from telefono.models import Telefono
 from direccion.models import Direccion
-from cliente.forms import ClienteForm, EmailForm, SexoForm, EstadoCivilForm
+from cliente.forms import ClienteForm, EmailForm, SexoForm,\
+    EstadoCivilForm, TipoClienteForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
@@ -32,6 +34,26 @@ def lista_sexo(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_sexo = request.POST['item_id']
+                p = Sexo.objects.get(pk=id_sexo)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
         lista_sexo = Sexo.objects.all().order_by(order_by)
@@ -128,6 +150,28 @@ def lista_estadocivil(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_estadocivil = request.POST['item_id']
+                p = Estado_civil.objects.get(pk=id_estadocivil)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:  # ERROR requiere definir un tipo de error para la excepción
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
     order_by = request.GET.get('order_by')
     if order_by:
         lista_estadocivil = Estado_civil.objects.all().order_by(order_by)
@@ -224,6 +268,26 @@ def lista_cliente(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_cliente = request.POST['item_id']
+                p = Cliente.objects.get(pk=id_cliente)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
         lista_cliente = Cliente.objects.all().order_by(order_by)
@@ -398,6 +462,121 @@ def lista_direccioncliente(request, id_cli):
     return render(request, 'direccioncliente_lista.html', context)
 
 
+def lista_tipo_cliente(request):
+    """docstring"""
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                      tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_tipocliente = request.POST['item_id']
+                p = TipoCliente.objects.get(pk=id_tipocliente)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+    order_by = request.GET.get('order_by')
+    if order_by:
+        lista_tipo_cliente = TipoCliente.objects.all().order_by(order_by)
+    else:
+        lista_tipo_cliente = TipoCliente.objects.all()
+
+    paginator = Paginator(lista_tipo_cliente, nropag[0]['valor'])
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    if page == '0':
+        tipo_clientes = lista_tipo_cliente
+    else:
+        try:
+            tipo_clientes = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            tipo_clientes = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            tipo_clientes = paginator.page(paginator.num_pages)
+
+    context = {'lista_tipo_cliente': lista_tipo_cliente, 'tipo_clientes': tipo_clientes}
+    return render(request, 'tipocliente_lista.html', context)
+
+
+def search_tipo_cliente(request):
+    """docstring"""
+    if request.user.id is not None:
+        try:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                          request.user.id,
+                                                                          tipo="paginacion")
+        except PerzonalizacionVisual.DoesNotExist:
+            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="paginacion")
+    else:
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                      tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_tipocliente = request.POST['item_id']
+                p = TipoCliente.objects.get(pk=id_tipocliente)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+        search_text = request.POST['search_text']
+        if search_text is not None and search_text != u"":
+            entry_query = get_query(search_text, ['nombre_principal', 'dni', 'sexo__sexo', ])
+            lista_tipo_cliente = TipoCliente.objects.filter(entry_query)
+        else:
+            lista_tipo_cliente = TipoCliente.objects.all()
+
+    paginator = Paginator(lista_tipo_cliente, nropag[0]['valor'])
+    # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        tipo_clientes = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        tipo_clientes = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        tipo_clientes = paginator.page(paginator.num_pages)
+
+    context = {'lista_tipo_cliente': lista_tipo_cliente, 'tipo_clientes': tipo_clientes}
+    return render_to_response('tipocliente_lista_search.html', context)
+
+
 # agregar nuevo
 def add_cliente(request):
     mensaje = ''
@@ -489,6 +668,29 @@ def add_email(request, id_cli):
 
     return render_to_response('Emailcliente_add.html',
                               {'email_form': email_form, 'create': True, 'mensaje': mensaje},
+                              context_instance=RequestContext(request))
+
+
+def add_tipocliente(request):
+    mensaje = ''
+    if request.method == 'POST':
+        try:
+            tipocliente_form = TipoClienteForm(request.POST)
+
+            if tipocliente_form.is_valid():
+                tipocliente_form.save()
+                mensaje = 'Se ha guardado la información del tipo de cliente'
+                return HttpResponseRedirect(reverse('uclientes:lista_tipo_cliente'))
+
+        except Exception as ex:
+            tipocliente_form = TipoClienteForm()
+            mensaje = "se ha producido un error"+str(ex)
+
+    else:
+        tipocliente_form = TipoClienteForm()
+
+    return render_to_response('tipocliente_add.html',
+                              {'tipocliente_form': tipocliente_form, 'create': True, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
 
@@ -592,6 +794,39 @@ def edit_estado_civil(request, pk):
 
     return render_to_response('estadocivil_edit.html',
                               {'form_edit_estadocivil': form_edit_estadocivil, 'create': False},
+                              context_instance=RequestContext(request))
+
+
+def edit_tipocliente(request, pk):
+
+    redirect_to = request.REQUEST.get('next', '')
+
+    try:
+        id_tipocliente = TipoCliente.objects.get(pk=pk)
+    except ObjectDoesNotExist as ex:
+        mensaje = "El tipo de cliente no existe"
+    except Exception as ex:
+        mensaje = "se ha producido un error"+str(ex)
+
+    if request.method == 'POST':
+        # formulario enviado
+        editar_tipocliente = TipoClienteForm(request.POST, instance=id_tipocliente)
+
+        if editar_tipocliente.is_valid():
+            # formulario validado correctamente
+            editar_tipocliente.save()
+            #return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
+        if redirect_to:
+            return HttpResponseRedirect(redirect_to)
+        else:
+            return HttpResponseRedirect(reverse('uclientes:lista_tipo_cliente', args=(id_tipocliente.id,)))
+
+    else:
+        # formulario inicial
+        editar_tipocliente = TipoClienteForm(instance=id_tipocliente)
+        mensaje = ""
+    return render_to_response('tipocliente_edit.html',
+                              {'editar_tipocliente': editar_tipocliente, 'id_tipocli': pk, 'create': False, 'mensaje': mensaje},
                               context_instance=RequestContext(request))
 
 

@@ -12,6 +12,7 @@ from servicio.models import Servicio, Material
 from django import forms
 from premisas.models import FuentePromocion
 from contenido.models import Contenido
+from cliente.models import TipoCliente
 
 
 class PresupuestoDetalleForm1(forms.Form):
@@ -32,6 +33,7 @@ class PresupuestoDetalleForm3(forms.Form):
 class PresupuestoForm(ModelForm):
     """Docstring"""
     fuente_choices = [(fuente.fuente_promocion, fuente.fuente_promocion) for fuente in FuentePromocion.objects.all()]
+    tipocliente_choices = [(tipocliente.tipo_cliente, tipocliente.tipo_cliente) for tipocliente in TipoCliente.objects.all()]
 
     fecha_estimadamudanza = forms.DateField(
         label='Fecha estimada de la mudanza:',
@@ -42,6 +44,11 @@ class PresupuestoForm(ModelForm):
         widget=Select(attrs={'class': 'width50'}),
         label='Fuente de promoción',
         choices=fuente_choices)
+
+    tipo_cliente = forms.ChoiceField(
+        widget=Select(attrs={'class': 'width50'}),
+        label='Tipo de Solicitante',
+        choices=tipocliente_choices)
 
     class Meta:
         model = Presupuesto

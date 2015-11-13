@@ -1,0 +1,34 @@
+{% extends "base_edit.html" %}
+
+{% block titulo %}
+
+<title>Tipo de cliente</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+  <h2>Agregar tipo de cliente</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+<div class="form-group">
+
+  {{ tipocliente_form.as_p }}
+            {{ mensaje }}
+
+</div>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="">
+  <p>Los <strong>Tipo de clientes</strong> son las personas a las que se prestan los servicios de <strong>mudanza</strong>.</p>
+  <p>El registro de <strong>Tipo de clientes</strong> conlleva el llenado de múltiples campos que aportan información sobre la persona a atender. Puede estar activo o inactivo.</p>
+
+</div>
+
+{% endblock ayuda %}
