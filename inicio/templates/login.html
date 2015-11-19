@@ -2,14 +2,14 @@
 
 {% block acceso_rapido %}
 
-<a title="Volver" class="navbar-brand" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
+<a title="Volver" class="navbar-brand" href="/index/"><span class="glyphicon glyphicon-chevron-left"></span></a>
 
 {% endblock acceso_rapido %}
 
 {% block navegacion %}
 
         <div class="col-md-2">
-            <div class="barra-vertical hidden-print" style="">
+            <div class="barra-vertical hidden-print">
             <ul class="nav_l">
 
                 {% block link_navegacion %}{% endblock link_navegacion %}
@@ -71,7 +71,7 @@
                     </script>
                 </div>
                 <input type="submit" class="btn btn-success" value="Ingresar"/>
-                <a href="javascript:history.back();" class="btn btn-default">Cancelar</a>
+                <a href="/index/" class="btn btn-default">Cancelar</a>
             </form>
             <br>
             <p><a href="#">Password olvidado?</a></p>

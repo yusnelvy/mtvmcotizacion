@@ -1,5 +1,7 @@
 {% extends "base_modal_form.html" %}
 
+{% load staticfiles %}
+
 {% block formulario %}
 
 <form action="" method="post" id="myform" name="myform2">
@@ -27,15 +29,15 @@
 
 {% block style %}
 
-<link rel="stylesheet" href="/static/css/presupuestoForm/preDetalle.css">
+<link rel="stylesheet" href="{% static 'css/preDetalle.css' %}">
 
 {% endblock style %}
 
 {% block js_form %}
 
-<script src="/static/js/presupuestoForm/preDetalle.js"></script>
+<script src="{% static 'js/preDetalle.js' %}"></script>
 <script>
-
+{% if densidades %}
 var densidadBaja = "{{densidades.densidad_baja}}"
 var densidadMedia = "{{densidades.densidad_media}}"
 var densidadAlta = "{{densidades.densidad_alta}}"
@@ -44,6 +46,13 @@ densidadBaja = parseFloat(densidadBaja.replace(',','')).toFixed(2)
 densidadMedia = parseFloat(densidadMedia.replace(',','')).toFixed(2)
 densidadAlta = parseFloat(densidadAlta.replace(',','')).toFixed(2)
 densidadMuyAlta = parseFloat(densidadMuyAlta.replace(',','')).toFixed(2)
+{% else %}
+var densidadBaja = 0
+var densidadMedia = 0
+var densidadAlta = 0
+var densidadMuyAlta = 0
+{% endif %}
+
 
 $('#id_lista_ocupacion li label').addClass('btn-radio');
 

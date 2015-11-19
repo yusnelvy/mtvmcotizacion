@@ -1,5 +1,7 @@
 {% extends "base_modal_form.html" %}
 
+{% load staticfiles %}
+
 {% block formulario %}
 
 <form action="" method="post" id="myform">
@@ -38,7 +40,7 @@
 
 {% block js_form %}
 
-<script src="/static/js/presupuestoForm/preDireccion.js"></script>
+<script src="{% static 'js/preDireccion.js' %}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
   enterNone();

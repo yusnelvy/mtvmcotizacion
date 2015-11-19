@@ -1,6 +1,9 @@
 {% extends "base_modal_form.html" %}
 
+{% load staticfiles %}
+
 {% block formulario %}
+
 <script>
 $(function() {
     $( "#id_fecha_estimadamudanza" ).datepicker();
@@ -29,7 +32,7 @@ setTimeout(function () {
 
 {% block style %}
 
-<link rel="stylesheet" href="/static/css/presupuestoForm/preDatosPersonales.css">
+<link rel="stylesheet" href="{% static 'css/preDatosBasicos.css' %}">
 
 {% endblock style %}
 

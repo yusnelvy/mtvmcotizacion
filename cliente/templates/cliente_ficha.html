@@ -76,7 +76,7 @@ Eliminar
                   {{ lista_cliente.0.nombre_principal }}
 
                   <p>
-                    <span style="">
+                    <span>
                       <strong>Estado civil: </strong>
 
                       {{ lista_cliente.0.estado_civil }}
@@ -86,7 +86,7 @@ Eliminar
 
                     {{ lista_cliente.0.fecha_nacimiento|date:"d/m/Y" }}
 
-                    <span style="">
+                    <span>
                       <strong>Sexo: </strong>
 
                       {{ lista_cliente.0.sexo }}
@@ -95,7 +95,7 @@ Eliminar
                   </p>
                 </td>
                 <td colspan="2">
-                  <span style="">
+                  <span>
                     <strong>
 
                       {{ lista_cliente.0.activo|yesno:"Activo,Inactivo" }}
@@ -104,7 +104,7 @@ Eliminar
                   </span>
                 </td>
                 <td>
-                  <a title="Editar cliente" data-toggle="tooltip" data-placement="right" href="../../editar/{{lista_cliente.0.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+                  <a title="Editar cliente" data-toggle="tooltip" data-placement="right" href="../../editar/{{lista_cliente.0.id}}/" class="glyphicon-asterisk glyphicon glyphicon-edit floatRight"></a>
                 </td>
               </tr>
               <tr>
@@ -113,7 +113,7 @@ Eliminar
 
                   {% for i in lista_telefono_cliente %}
 
-                  <p id="tr{{lista_telefono_cliente.0.id}}" style="margin:0 0 0!important;">
+                  <p class="fichaClienteTlf" id="tr{{lista_telefono_cliente.0.id}}">
                     <strong>
 
                       {{ lista_telefono_cliente.0.tipo_telefono }}:
@@ -123,8 +123,8 @@ Eliminar
                     {{ lista_telefono_cliente.0.numero }}
 
                     <small>
-                      <a style="padding: 0 0 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="../../../telefono/editar/{{lista_telefono_cliente.0.id}}/" class="glyphicon glyphicon-edit"></a>
-                      <a style="padding: 0 0 8px 8px;" href=# onclick="eliminar('telefono/delete/?codigo={{lista_telefono_cliente.0.id}}','{{lista_telefono_cliente.0.id}}','{{lista_telefono_cliente.0.numero}}'); return false" class="glyphicon glyphicon-remove"></a>
+                      <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../../telefono/editar/{{lista_telefono_cliente.0.id}}/" class="glyphicon glyphicon-edit fichaClienteCon"></a>
+                      <a href=# onclick="eliminar('telefono/delete/?codigo={{lista_telefono_cliente.0.id}}','{{lista_telefono_cliente.0.id}}','{{lista_telefono_cliente.0.numero}}'); return false" class="glyphicon glyphicon-remove fichaClienteCon"></a>
                     </small>
                   </p>
 
@@ -134,7 +134,7 @@ Eliminar
                 <td></td>
                 <td></td>
                 <td>
-                  <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../../telefono/nuevo/{{lista_cliente.0.id}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+                  <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../../telefono/nuevo/{{lista_cliente.0.id}}/" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
                 </td>
               </tr>
               <tr>
@@ -143,13 +143,13 @@ Eliminar
 
                   {% for i in lista_email %}
 
-                  <p id="tr{{i.id}}" style="margin:0 00!important;">
+                  <p id="tr{{i.id}}">
 
                     {{ i.email }}
 
                     <small>
-                      <a style="padding:0px0 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="" href="email/editar/{{i.id}}/" class="glyphicon glyphicon-edit"></a>
-                      <a style="padding:0px0 8px 8px;" href=# onclick="eliminar('email/delete/?codigo={{i.id}}','{{i.id}}','{{i.email}}'); return false" class="glyphicon glyphicon-remove"> </a>
+                      <a title="Editar" data-toggle="tooltip" data-placement="" href="email/editar/{{i.id}}/" class="glyphicon glyphicon-edit fichaClienteCon"></a>
+                      <a href=# onclick="eliminar('email/delete/?codigo={{i.id}}','{{i.id}}','{{i.email}}'); return false" class="glyphicon glyphicon-remove fichaClienteCon"> </a>
                     </small>
                   </p>
 
@@ -159,7 +159,7 @@ Eliminar
                   <td></td>
                 </td>
                 <td>
-                  <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../email/nuevo/{{lista_cliente.0.id}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+                  <a title="Agregar" data-toggle="tooltip" data-placement="right" href="../../email/nuevo/{{lista_cliente.0.id}}/" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
                 </td>
               </tr>
               <tr>
@@ -168,15 +168,15 @@ Eliminar
 
                   {% for i in direccioncliente_lista %}
 
-                  <p id="tr{{i.id}}" style="margin:0 00!important;">
+                  <p id="tr{{i.id}}">
                     <strong>{{ i.tipo_direccion }}: </strong>
                     {{ i.zona.ciudad.provincia.pais }}.
                     {{ i.zona.ciudad.provincia }}, {{ i.zona.ciudad }}
                     Zona {{ i.zona }}, calle {{ i.calle }}, número {{ i.numero }}
                     Punto de referencia {{ i.punto_referencia }}
                     <small>
-                      <a style="padding:0px0 8px 16px;" title="Editar" data-toggle="tooltip" data-placement="right" href="../../../direccion/{{i.id}}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
-                      <a style="padding:0px0 8px 8px;" href=# onclick="eliminar('direccion/delete/?codigo={{i.id}}','{{i.id}}','{{ i.zona.ciudad.provincia.pais }}. {{ i.zona.ciudad.provincia }}, {{ i.zona.ciudad }} Zona {{ i.zona }} calle {{ i.calle }} numero {{ i.numero }} Punto de referencia {{ i.punto_referencia }}'); return false" class="glyphicon glyphicon-remove"></a>
+                      <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../../direccion/{{i.id}}/" class="glyphicon-asterisk glyphicon glyphicon-edit fichaClienteCon"></a>
+                      <a href=# onclick="eliminar('direccion/delete/?codigo={{i.id}}','{{i.id}}','{{ i.zona.ciudad.provincia.pais }}. {{ i.zona.ciudad.provincia }}, {{ i.zona.ciudad }} Zona {{ i.zona }} calle {{ i.calle }} numero {{ i.numero }} Punto de referencia {{ i.punto_referencia }}'); return false" class="glyphicon glyphicon-remove fichaClienteCon"></a>
                     </small>
                     <a href="{{ i.get_absolute_url }}">editar</a>
                   </p>
@@ -187,7 +187,7 @@ Eliminar
                 <td width="80px"></td>
                 <td width="80px"></td>
                 <td width="80px">
-                  <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="../../../direccion/nuevo/{{ lista_cliente.0.id }}/" style="float:righ;" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
+                  <a title="Agregar" data-toggle="tooltip" data-placement="right" title="Tooltip on top" href="../../../direccion/nuevo/{{ lista_cliente.0.id }}/" class="glyphicon-asterisk glyphicon glyphicon-plus"></a>
                 </td>
               </tr>
             </table>
@@ -205,7 +205,7 @@ Eliminar
 
               {{ lista_cliente.0.comentarios }}
 
-              <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../editar/{{lista_cliente.0.id}}/" style="float:right;" class="glyphicon-asterisk glyphicon glyphicon-edit"></a>
+              <a title="Editar" data-toggle="tooltip" data-placement="right" href="../../editar/{{lista_cliente.0.id}}/" class="glyphicon-asterisk glyphicon glyphicon-edit floatRight"></a>
             </td>
           </tr>
           <tr>
@@ -224,7 +224,7 @@ Eliminar
       <div class="panel panel-default">
         <!-- Default panel contents -->
         <!-- Table -->
-        <table class="table" style="text-align: center;">
+        <table class="table textAlignCenter">
           <tr class="">
             <th>Numero</th>
             <th>Fecha</th>
@@ -272,7 +272,7 @@ Eliminar
 <div class="panel panel-default">
   <!-- Default panel contents -->
   <!-- Table -->
-  <table class="table" style="text-align: center;">
+  <table class="table textAlignCenter">
     <tr class="">
       <th>Numero</th>
       <th>Fecha</th>

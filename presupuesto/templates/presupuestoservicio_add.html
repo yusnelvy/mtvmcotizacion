@@ -1,5 +1,7 @@
 {% extends "base_modal_form.html" %}
 
+{% load staticfiles %}
+
 {% block formulario %}
 
 <form action="" method="post" id="myform">
@@ -15,13 +17,13 @@
   <button class="btn btn-default btn-registrar registrar" type="submit">Registrar</button>
   <button class="btn btn-default" data-dismiss="modal" id="btn-cancelar" type="button">Cancelar</button>
 </form>
-<div class="alert alert-danger" id="seleccionServicio" style="display:none;" role="alert"></div>
+<div class="alert alert-danger displayNone" id="seleccionServicio" role="alert"></div>
 
 {% endblock formulario %}
 
 {% block style %}
 
-<link rel="stylesheet" href="/static/css/presupuestoForm/preServicio.css">
+<link rel="stylesheet" href="{% static 'css/preServicio.css' %}">
 
 {% endblock style %}
 

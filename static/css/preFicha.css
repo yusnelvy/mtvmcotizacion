@@ -111,3 +111,14 @@ tr:hover .boton-de-accion {
   color: #777;
   text-decoration: none;
 }
+.paddingAmbientes {
+  padding:0px 5px!important;
+}
+.marginLeftMueble {
+  margin-left:20px;
+}
+.btnControlMuebles {
+  cursor:pointer;
+  float:right;
+  padding:0 0 5px 5px;
+}

@@ -21,6 +21,8 @@ SECRET_KEY = 'z)sr!is=6dk1x82ajleb$wbqmen^cyrb1_jb7xjw0385mfzb%8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+TEMPLATE_DEBUG = False
+
 # Redirect when login is correct.
 LOGIN_REDIRECT_URL = "/home"
 
@@ -116,7 +118,7 @@ TEMPLATES = [
     },
 ]
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 ROOT_URLCONF = 'mtvmcotizacion.urls'
 

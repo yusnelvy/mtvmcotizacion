@@ -1,7 +1,7 @@
 $(document).ready(function () {
     if ($('#id_tipo_calculo').val() === 'Optimizado') {
         $("#optimizado").attr("checked", "checked");
-        radioColorBlue();
+        radioColorBlueTd();
         checkOptimizado();
         porc_descuentoBaOp(
             $("#descuento_recargooptimo"),
@@ -10,7 +10,7 @@ $(document).ready(function () {
             );
     }else if($('#id_tipo_calculo').val() == 'Basico'){
         $("#basico").attr("checked","checked");
-        radioColorBlue();
+        radioColorBlueTd();
         checkBasico();
         porc_descuentoBaOp(
             $("#descuento_regargobasico"),
@@ -19,7 +19,7 @@ $(document).ready(function () {
             );
     }else if ($('#id_tipo_calculo').val() == 'Revisado'){
         $("#revisado").attr("checked","checked");
-        radioColorBlue();
+        radioColorBlueTd();
         checkRevisado();
         EnableRevisadoInput();
         radioBenable();
@@ -35,7 +35,7 @@ $(document).ready(function () {
     }
 
     $('#basico').click(function() {
-        radioColorBlue();
+        radioColorBlueTd();
         checkBasico();
         radioBdisabled();
         limpiar('totalRecurso',0);
@@ -50,7 +50,7 @@ $(document).ready(function () {
     });
 
     $('#optimizado').click(function() {
-        radioColorBlue();
+        radioColorBlueTd();
         checkOptimizado();
         radioBdisabled();
         limpiar('totalRecurso',0);
@@ -66,7 +66,7 @@ $(document).ready(function () {
 
     $('#revisado').click(function() {
         EnableRevisadoInput();
-        radioColorBlue();
+        radioColorBlueTd();
         checkRevisado();
         radioBenable();
         descuentoRecargoj();
@@ -296,7 +296,7 @@ function proponerMontoTotalRecurso () {
     }
 }
 
-function radioColorBlue () {
+function radioColorBlueTd () {
     $("td:has(input[name=enviarPresupuesto])").removeClass('checkedBlue');
     $("td:has(input[name=enviarPresupuesto]:checked)").addClass('checkedBlue');
 }

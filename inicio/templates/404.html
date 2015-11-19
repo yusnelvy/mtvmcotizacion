@@ -1,0 +1,47 @@
+{% extends "base3.html" %}
+
+{% block ficha %}
+<style>
+    .enlceError {
+        background: #5BC0DE;
+    }
+</style>
+<h1 class="h1">{{error}} (error {{codigo}})</h1>
+
+{% if codigo == 404 %}
+
+    <p>Este enlace "<span class="enlceError">{{request.path}}</span>" no fue encontrado en el sistema.</p>
+<p>
+    Parece que has seguido un enlace mal.
+
+    Aquí hay un enlace a la <a href="/index/">página principal.</a> Ya sabes, por si acaso.
+</p>
+
+{% endif %}
+
+{% if codigo == 500 %}
+
+<p>Aquí hay un enlace a la <a href="/index/">página principal.</a></p>
+
+{% endif %}
+
+{% if codigo == 403 %}
+
+<p>Aquí hay un enlace a la <a href="/index/">página principal.</a></p>
+
+{% endif %}
+
+{% if codigo == 400 %}
+
+<p>Aquí hay un enlace a la <a href="/index/">página principal.</a></p>
+
+{% endif %}
+
+<script>
+    $(document).on('ready',function(){
+    $('.btn-menuSidebar').click();
+});
+</script>
+{% endblock ficha %}
+
+{% block footer_principal %}{% endblock footer_principal %}

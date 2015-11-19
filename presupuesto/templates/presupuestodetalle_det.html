@@ -1,80 +1,105 @@
 {% if lista_ambiente %}
 {% for ambiente in lista_ambiente %}
 
-<div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingOne{{forloop.counter}}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{forloop.counter}}" aria-expanded="true" aria-controls="collapseOne{{forloop.counter}}" style="cursor:pointer;">
-        <h3 class="panel-title" style="font-size: 20px;">
+        <div class="panel panel-default" id="{{ambiente.ambiente}}">
+            <div class="panel-heading paddingAmbientes" id="headingOne{{ forloop.counter }}" role="tab">
+                <h4 class="panel-title">
+                    <a aria-controls="collapseOne{{ forloop.counter }}" aria-expanded="true" class="t-ambiente" data-parent="#accordion" data-toggle="collapse" href="#collapseOne{{ forloop.counter }}" role="button">{{ambiente.ambiente|upper}}</a>
+                </h4>
+            </div>
+            <div aria-labelledby="headingOne{{ forloop.counter }}" class="panel-collapse collapse btn-colapsable in{% if forloop.first %} {% endif %}" id="collapseOne{{ forloop.counter }}" role="tabpanel">
+                <table class="table table-hover">
+                    <tr>
+                        <td width="7%"><strong>&nbsp; &nbsp;Cant.</strong></td>
+                        <td width="30%" class="marginLeftMueble">
+                            <strong>Mueble</strong>
+                        </td>
+                        <td width="15%">
+                            <strong>Tamaño/Ocupación</strong>
+                        </td>
+                        <td width="10%">
+                            <strong>Dimensiones</strong>
+                        </td>
+                        <td width="27%">
+                            <strong>Servicios</strong>
+                        </td>
+                        <td width="3.3333333%"></td>
+                        <td width="3.3333333%"></td>
+                        <td width="3.3333333%"></td>
+                    </tr>
 
-            {{ambiente.ambiente|upper}}
+                    {% for mueble in detalle_list %}
 
-        </h3>
-    </div>
-    <div id="collapseOne{{forloop.counter}}" class="panel-collapse collapse in{% if forloop.first %}  {% endif %}" role="tabpanel" aria-labelledby="headingOne{{forloop.counter}}">
-        <div class="panel-body">
-            <p style="padding-left:15px;font-size: 18px;">Muebles
-                <a data-toggle="modal" data-target="#myModalAmbiente" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{request.get_full_path}}&pre={{presupuesto.id}}&amb={{ ambiente.ambiente }}" title="Agregar mueble al ambiente {{ambiente.ambiente|upper}}" style="float:right;cursor:pointer;" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodal hidden-print" data-toggletooltip="tooltip" data-placement="left"></a>
-            </p>
-        </div>
-        <ul class="list-group">
+                    {% if ambiente.ambiente = mueble.ambiente %}
 
-            {% for mueble in detalle_list %}
+                    <tr class="tr-mueble">
+                        <td>&nbsp; &nbsp;{{ mueble.cantidad }}</td>
+                        <td>{{ mueble.mueble }}</td>
+                        <td>{{ mueble.tamano }} / {{ mueble.ocupacidad }}</td>
+                        <td>{{ mueble.ancho|floatformat:"0" }}x{{ mueble.largo|floatformat:"0" }}x{{ mueble.alto|floatformat:"0" }}</td>
+                        <td>
+                            <div>
+                                <span id="listservi{{ mueble.id }}">
 
-            {% if ambiente.ambiente = mueble.ambiente %}
+                                    {% regroup mueble.presupuesto_servicio_set.all by servicio as servicio_list %}
 
-            <li class="list-group-item" style="padding-left:40px;">
-                <div class="row">
-                    <div class="col-md-3">
-                        <p style="font-size: 16px;">{{mueble.mueble}}</p>
-                    </div>
-                    <div class="col-md-1">
-                        <p style="color:#777;">{{ mueble.tamano }}</p>
-                    </div>
-                    <div class="col-md-3">
-                        <p style="color:#777;">ocupación: {{ mueble.ocupacidad }}</p>
-                    </div>
-                    <div class="col-md-1">
-                        <p style="color:#777;">{{ mueble.ancho|floatformat:"0" }}x{{ mueble.largo|floatformat:"0" }}x{{ mueble.alto|floatformat:"0" }}</p>
-                    </div>
-                    <div class="col-md-4">
-                        <span style="color:#777;" id="listservi{{mueble.id}}">
+                                    {% for det_servicio in servicio_list %}
 
-                            Servicio:
+                                    <span class="{% if servicio %}servicioStyle{% endif %}">
 
-                            {% if servicio %}
+                                        {{ det_servicio.grouper }}
 
-                            {% for det_servicio in servicio %}
+                                        {% for item in det_servicio.list %}
 
-                            {% if det_servicio.detalle_presupuesto = mueble.id %}
+                                        {% if forloop.first %}
 
-                            {{ det_servicio.servicio }}
+                                        <a class="botonmodalEliminar boton-servicios glyphicon glyphicon-remove hidden-print btn2" data-nombre="{{ det_servicio.grouper }}" data-ask="Desea eliminar el registro: " data-boton="ELIMINAR" data-opcion="{% url 'upresupuestos:PresupuestoServicioDelete' item.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" title="Eliminar {{ det_servicio.grouper }}"></a>
 
-                            {% if forloop.last %}
+                                        {% endif %}
 
-                            {% else %} -
+                                        {% endfor %}
 
-                            {% endif %}
+                                    </span>
 
-                            {% endif %}
+                                    {% endfor %}
 
-                            {% endfor %}
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            {% if mueble.trasladable %}
+
+                            <a class="controles glyphicon glyphicon-wrench botonmodalFormulario hidden-print btn2 btnControlMuebles" data-name="{{ mueble.mueble|lower }}" data-nombre="Agregar servicio al mueble {{ mueble.mueble|lower }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{ request.get_full_path }}&pre={{ mueble.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
 
                             {% else %}
 
+                            <a class="controles glyphicon glyphicon-wrench hidden-print btn-disabled btnControlMuebles" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
+
                             {% endif %}
-                        </span>
-                        <a title="Agregar servicio al mueble {{mueble.mueble|lower}}" style="float:righ;cursor:pointer;" data-toggle="modal" data-target="#myModalServicio" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{request.get_full_path}}&pre={{ mueble.id }}" class="glyphicon-asterisk glyphicon glyphicon-plus botonmodalServicio hidden-print" data-toggletooltip="tooltip" data-placement="left"></a>
-                    </div>
-                </div>
-            </li>
 
-            {% endif %}
+                        </td>
+                        <td>
+                            <a class="controles botonmodalFormulario glyphicon glyphicon-edit hidden-print btn2 btnControlMuebles" data-nombre="Editar mueble" data-posicion="{{ ambiente.ambiente }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleUpdate' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Editar {{ mueble.mueble|lower }}"></a>
+                        </td>
+                        <td>
+                            <a class="controles botonmodalEliminar glyphicon glyphicon-remove hidden-print btn2 btnControlMuebles" data-ask="Desea eliminar el registro: " data-boton="ELIMINAR" data-nombre="{{ mueble.mueble|lower }}" data-numero="{{ mueble.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleDelete' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" title="Eliminar {{ mueble.mueble|lower }}"></a>
+                        </td>
+                    </tr>
 
-            {% endfor %}
+                    {% endif %}
 
-        </ul>
-    </div>
-</div>
+                    {% endfor %}
 
-{% endfor %}
+                    <tr>
+                        <td></td>
+                        <td colspan="7">
+                            <a class="btn-addmueble botonmodalFormulario hidden-print btn2" data-nombre="Agregar mueble" data-numero="" data-posicion="{{ ambiente.ambiente }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleView' %}?next={{ request.get_full_path }}&pre={{ presupuesto.id }}&amb={{ ambiente.ambiente }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar mueble al ambiente {{ ambiente.ambiente }}">Agregar otro mueble a {{ ambiente.ambiente }}</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        {% endfor %}
 
 {% endif %}

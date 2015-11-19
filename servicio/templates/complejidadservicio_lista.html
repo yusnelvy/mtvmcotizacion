@@ -16,12 +16,11 @@
 
 {% endblock footerLink %}
 
-{% block acceso_rapido_adicional%}
+{% block acceso_rapido %}
 
-<a id="addClass" style="cursor: pointer;" class="navbar-brand glyphicon glyphicon-collapse-down"></a>
-<a id="removeClass" style="display:none; cursor:pointer;" class="navbar-brand glyphicon glyphicon-collapse-up"></a>
+        <a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="{% if request.GET.next = None %}../../../{% else %}{{request.GET.next}}{% endif %}"><span class="glyphicon glyphicon-chevron-left"></span></a>
 
-{% endblock acceso_rapido_adicional%}
+{% endblock acceso_rapido %}
 
 {% block titulo %}
 
@@ -58,7 +57,7 @@ class="col-md-7"
 {% endif %}
 
 <li class="current">
-  <a style="color:#000;"> Página
+  <a class="fuenteNegra"> Página
 
     {{ servicios.number }}
 
@@ -111,24 +110,24 @@ class="col-md-7"
   {% for im in servicios %}
 
   <div class="panel panel-default">
-    <div style="cursor: pointer;" class="panel-heading" role="tab" id="heading{{im.servicio}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.servicio}}" aria-expanded="false" aria-controls="collapse{{im.servicio}}">
+    <div class="panel-heading cursorPointer" role="tab" id="heading{{im.servicio}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.servicio}}" aria-expanded="false" aria-controls="collapse{{im.servicio}}">
       <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{im.servicio}}" aria-expanded="false" aria-controls="collapse{{im.servicio}}">
 
           {{ im.servicio__servicio }}
 
         </a>
-        <span class="caret hidden-print" style="float:right;"></span>
+        <span class="caret hidden-print floatRight"></span>
       </h4>
     </div>
     <div id="collapse{{im.servicio}}" class="panel-collapse collapse btn-colapsable {% if forloop.first %} in {% endif %}" role="tabpanel" aria-labelledby="heading{{im.servicio}}">
-      <table class="table table-hover" id="tabla" style="text-align: center;">
+      <table class="table table-hover textAlignCenter" id="tabla">
         <tr class="">
           <th width="300" class="hidden-print">Complejidad</th>
           <th width="" class="hidden-print">Tarifa</th>
           <th width="" class="hidden-print">Factor tiempo</th>
           <th width="" class="hidden-print">
-            <a href="{% url 'uservicios:add_complejidadservicio' im.servicio %}" class="glyphicon glyphicon-plus" style="float:right;"></a>
+            <a href="{% url 'uservicios:add_complejidadservicio' im.servicio %}" class="glyphicon glyphicon-plus floatRight"></a>
           </th>
         </tr>
 

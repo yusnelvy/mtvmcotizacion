@@ -10,6 +10,13 @@
 
 {% endblock titulo %}
 
+{% block acceso_rapido %}
+
+    <a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="{% url 'upresupuestos:PresupuestoDetail' presupuesto.id %}"><span class="glyphicon glyphicon-chevron-left"></span></a>
+    <a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
+
+{% endblock acceso_rapido %}
+
 {% block link_navegacion %}
 
 <li class="linknav">
@@ -112,16 +119,16 @@
                 Teléfono: {{empresa.telefonos}}<br>
             </td>
             <td>
-                <span style="font-size:25px;"><strong>Presupuesto Nro: </strong> <span style=" float:right;">{{ presupuesto.id }}</span></span><br>
+                <span class="fontSize25"><strong>Presupuesto Nro: </strong> <span class=" floatRight">{{ presupuesto.id }}</span></span><br>
                 <strong>Cotizador:</strong>
-                <span style="float:right;">
+                <span class="floatRight">
 
                     {{presupuesto.cotizador.get_full_name}}
 
                 </span><br>
-                <strong>Fecha actual: </strong> <span style="float:right;">{{ now|date:"d/m/Y" }}</span> <br>
-                <strong>Fecha presupuesto: </strong><span style="float:right;">{{ presupuesto.fecha_creacion|date:"d/m/Y" }}</span> <br>
-                <strong>Fecha estimada de Mudanza: </strong><span style="float:right;">{{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}</span> <br>
+                <strong>Fecha actual: </strong> <span class="floatRight">{{ now|date:"d/m/Y" }}</span> <br>
+                <strong>Fecha presupuesto: </strong><span class="floatRight">{{ presupuesto.fecha_creacion|date:"d/m/Y" }}</span> <br>
+                <strong>Fecha estimada de Mudanza: </strong><span class="floatRight">{{ presupuesto.fecha_estimadamudanza|date:"d/m/Y" }}</span> <br>
             </td>
         </tr>
         <tr>
@@ -433,7 +440,7 @@
                     </div>
                     <div class="col-md-4 break-inside">
                         <h4>Detalles de vehículos</h4>
-                        <table class="table table-hover table-condensed table-bordered" align="center" style="display:inline-table">
+                        <table class="table table-hover table-condensed table-bordered displayInlineTable" align="center">
                             <tr align="center">
                                 <td width="40%">
                                     Cantidad: {{ presupuesto.cantidad_vehiculo}}
@@ -494,7 +501,7 @@
             <td colspan="4" class="border-none">
                 <div class="break-inside">
                     <h4>Detalles de los costos del presupuesto</h4>
-                    <table class="table table-hover table-condensed table-bordered" align="center" style="border: 2px solid #ddd;">
+                    <table class="table table-hover table-condensed table-bordered border2px" align="center">
                         <tr align="center">
                             <td width="200px"></td>
                             <td width="100px">Cantidad</td>
@@ -552,7 +559,7 @@
 
                             </td>
                         </tr>
-                        <tr align="center" style="border-top: 2px solid #ddd;">
+                        <tr align="center" class="borderTop2px">
                             <td>Valor por m<sup>3</sup> </td>
                             <td>{{presupuesto.total_m3|floatformat:"2"}}</td>
                             <td>{{direccion_origen.0.valor_metrocubico_complejiadad}}</td>
@@ -737,18 +744,18 @@
                             </td>
                         </tr>
 
-                        <tr align="center"  style="border-top: 2px solid #ddd;">
+                        <tr align="center"  class="borderTop2px">
                             <td>Valor de vehículos por hora</td>
                             <td></td>
                             <td></td>
                             <td>{{presupuesto.monto_vehiculo_hora}}</td>
-                            <td rowspan="2" style="vertical-align: middle;">
+                            <td rowspan="2" class="verticalAlign">
                                 {{presupuesto.vehiculomonto}}
                             </td>
-                            <td rowspan="2" style="vertical-align: middle;">
+                            <td rowspan="2" class="verticalAlign">
                                 {{presupuesto.vehiculomonto}}
                             </td>
-                            <td rowspan="2" style="vertical-align: middle;">
+                            <td rowspan="2" class="verticalAlign">
                                 {{presupuesto.monto_vehiculo_revisado}}
                             </td>
                         </tr>
@@ -758,7 +765,7 @@
                             <td></td>
                             <td>{{presupuesto.monto_vehiculo_recorrido}}</td>
                         </tr>
-                        <tr align="center" style="border-top: 2px solid #ddd;">
+                        <tr align="center" class="borderTop2px">
                             <td>Servicios aplicados</td>
                             <td></td>
                             <td></td>
@@ -778,7 +785,7 @@
                                 {{presupuesto.monto_materiales_revisado}}
                             </td>
                         </tr>
-                        <tr style="border-top: 2px solid #ddd;">
+                        <tr class="borderTop2px">
                             <td colspan="4">Valor total mudanza</td>
                             <td align="center">{{presupuesto.monto_mudanza_hrsdirectas}}</td>
                             <td align="center">{{presupuesto.monto_mundanza_hrsoptimas}}</td>
@@ -796,7 +803,7 @@
 
                             </td>
                         </tr>
-                        <tr style="border-top: 2px solid #ddd;">
+                        <tr class="borderTop2px">
                             <td colspan="4">
 
                                 {% if presupuesto.descuento_recargo == '-' %}
@@ -840,7 +847,7 @@
                                 {{presupuesto.monto_descuento_recargo}}
                             </td>
                         </tr>
-                        <tr style="border-top: 2px solid #ddd;">
+                        <tr class="borderTop2px">
                             <td colspan="4">Valor total mudanza revisado</td>
                             <td align="center">{{presupuesto.mudanzamontorevisadotoerico}}</td>
                             <td align="center">{{presupuesto.mudanzamontorevisadooptimo}}</td>
@@ -1068,7 +1075,7 @@
 
                     {% endfor %}
 
-                    <tr align="center" style="border-top: 2px solid #ddd;">
+                    <tr align="center" class="borderTop2px">
                         <td>Totales</td>
                         <td>{{totales.montoservicio}}</td>
                         <td>{% calular_horas totales.tiemposervicio %}</td>

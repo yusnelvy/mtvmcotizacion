@@ -24,7 +24,7 @@
 {% endif %}
 
 <li class="current">
-  <a style="color:#000;"> Página
+  <a class="fuenteNegra"> Página
 
     <select title="nro pag." onchange="window.location.href=this.value;">
       <option value="?page=0">ver todo</option>
@@ -78,12 +78,12 @@
 {% block cuerpo_tabla %}
 {% if servicios %}
 
-<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<table class="table table-hover table-bordered textAlignCenter" id="tabla">
 <tr class="active">
   <th>
     Servicios
-    <a href="?order_by=servicio" id="servicio" class="glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
-    <a href="?order_by=-servicio" id="-servicio"  class="glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
+    <a href="?order_by=servicio" id="servicio" class="glyphicon glyphicon-sort-by-alphabet btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-servicio" id="-servicio"  class="glyphicon glyphicon-sort-by-alphabet-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th width="80px">Materiales</th>
   <th>Complejidad</th>
@@ -110,7 +110,7 @@
 </table>
 {% else %}
 
-<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<table class="table table-hover table-bordered textAlignCenter" id="tabla">
 <tr><td> No se encontraron registros</td>
 </tr>
 </table>

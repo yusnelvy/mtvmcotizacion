@@ -37,11 +37,13 @@ urlpatterns = patterns('',  # C0103: El error es la forma del nombre urlpatterns
                            include('trabajador.urls', namespace="utrabajadores")),
                        url(r'^search/', include('haystack.urls')),)
 
+handler404 = 'mtvmcotizacion.views.handler404'
+handler500 = 'mtvmcotizacion.views.handler500'
+handler403 = 'mtvmcotizacion.views.handler403'
+Handler400 = 'mtvmcotizacion.views.handler400'
 # se agrego para probar los estilo
 if settings.DEBUG:
     urlpatterns += patterns('',
                             url(r'^static/(?P<path>.*)$',
                                 'django.views.static.serve',
                                 {'document_root': settings.STATICFILES_DIRS}),)
-
-

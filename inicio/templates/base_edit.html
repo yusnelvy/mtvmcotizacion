@@ -2,7 +2,7 @@
 
 {% block acceso_rapido %}
 
-        <a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
+        <a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="{% if request.GET.next = None %}../{% else %}{{request.GET.next}}{% endif %}"><span class="glyphicon glyphicon-chevron-left"></span></a>
 
 {% endblock acceso_rapido %}
 
@@ -27,6 +27,7 @@
             {% block cuerpo_form %}{% endblock cuerpo_form %}
 
             <button type="submit" class="btn btn-default registrar">Registrar</button>
+            <button type="submit" class="btn btn-default registrar">Registrar y seguir editando</button>
             <br>
 
         </form>
@@ -39,7 +40,7 @@
     </div>
 </div>
 <div class="ayuda well well-lg">
-    <button style="padding:0px;" type="button" class="ayuda_btn close" data-dismiss="modal" aria-label="Close" tabIndex="-1"><span aria-hidden="true">&times;</span></button>
+    <button type="button" class="ayuda_btn close padding0" data-dismiss="modal" aria-label="Close" tabIndex="-1"><span aria-hidden="true">&times;</span></button>
 
     {% block ayuda %}{% endblock ayuda %}
 
