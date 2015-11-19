@@ -1,9 +1,8 @@
 """
 Docstring documentación pendiente
 """
-
-from django.forms import ModelForm, TextInput
-from cliente.models import Cliente, Email, Sexo, Estado_civil
+from django.forms import ModelForm
+from cliente.models import Cliente, Email, Sexo, Estado_civil, TipoCliente
 from django import forms
 
 
@@ -25,7 +24,6 @@ class ClienteForm(ModelForm):
         model = Cliente
         fields = '__all__'
         search_fields = ['nombre_principal']
-        #widgets = {'fecha_nacimiento': TextInput(attrs={'type': "text"})}
         labels = {
             'nombre_principal': ('Nombre del cliente'),
             'dni': ('DNI - Documento Nacional de Identificación'),
@@ -72,4 +70,16 @@ class EstadoCivilForm(ModelForm):
         fields = '__all__'
         labels = {
             'estado_civil': ('Nombre del Estado civil')
+        }
+
+
+class TipoClienteForm(ModelForm):
+    """
+    Docstring documentación pendiente
+    """
+    class Meta:
+        model = TipoCliente
+        fields = '__all__'
+        labels = {
+            'tipo_cliente': ('Tipo de cliente')
         }

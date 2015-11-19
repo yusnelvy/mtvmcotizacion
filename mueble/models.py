@@ -122,7 +122,7 @@ class Tamano_Mueble(models.Model):
     def __init__(self, *args, **kwargs):
         super(Tamano_Mueble, self).__init__(*args, **kwargs)
 
-    tamano = models.ForeignKey(Tamano, on_delete=models.PROTECT)
+    tamano = models.ForeignKey(Tamano, on_delete=models.PROTECT, default=1)
     mueble = models.ForeignKey(Mueble, on_delete=models.PROTECT)
     ancho = models.DecimalField(max_digits=7, decimal_places=2)
     largo = models.DecimalField(max_digits=7, decimal_places=2)

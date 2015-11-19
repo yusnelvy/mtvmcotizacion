@@ -1,0 +1,87 @@
+{% extends 'base_lista.html' %}
+
+{% block link_navegacion %}
+
+<li class="linknav"><a href="{% url 'uclientes:lista_estadocivil' %}">Estado civil</a></li>
+<li class="linknav"><a href="{% url 'uclientes:lista_sexo' %}">Sexo</a></li>
+<li class="linknav"><a href="{% url 'udirecciones:lista_tipo_direccion' %}">Tipos de dirección</a></li>
+<li class="linknav"><a href="{% url 'utelefonos:lista_tipotelefono' %}">Tipos de teléfono</a></li>
+
+{% endblock link_navegacion %}
+
+{% block footerLink %}
+
+<li><a href="{% url 'uclientes:lista_estadocivil' %}">Estado civil</a></li>
+<li><a href="{% url 'uclientes:lista_sexo' %}">Sexo</a></li>
+<li><a href="{% url 'udirecciones:lista_tipo_direccion' %}">Tipos de dirección</a></li>
+<li><a href="{% url 'utelefonos:lista_tipotelefono' %}">Tipos de teléfono</a></li>
+
+{% endblock footerLink %}
+
+{% block titulo %}
+
+<title>Tipos de Cliente</title>
+
+{% endblock titulo %}
+
+{% block titulo_modal %}
+
+Eliminar Tipo de cliente
+
+{% endblock titulo_modal %}
+
+{% block validacion_modal %}
+
+<p>¿Realmente desea eliminar el registro: <strong id="modal_name"></strong>?</p>
+
+{% endblock validacion_modal %}
+
+{% block titulo_tabla %}
+
+<h2>Listado de tipos de clientes </h2>
+
+{% endblock titulo_tabla %}
+
+{% block contenidogeneral %}
+
+ <div id="search-results">
+   {% include "tipocliente_lista_search.html" %}
+ </div>
+
+{% endblock contenidogeneral%}
+
+{% block ayuda %}
+
+<div class="">
+  <p>Los <strong>Tipos de Cliente</strong> son las personas a las que se prestan los servicios de <strong>mudanza</strong>.</p>
+  <p>El registro de <strong>Tipos de Cliente</strong> conlleva el llenado de múltiples campos que aportan información sobre la persona a atender. Puede estar activo o inactivo.</p>
+  <p>De los <strong>Tipos de Cliente</strong> creados puede ver más detalles viendo la ficha del cliente.</p>
+  <p>Puede agregar más <strong>Tipos de Cliente</strong> presionando el botón <a title="Nuevo" class="" role="button" href="nuevo/" style="color: #777; font-size: 18px;"><span class="glyphicon-asterisk glyphicon glyphicon-plus"></span></a> en la barra de herramientas.</p>
+</div>
+
+{% endblock ayuda %}
+{% block js_sup %}
+
+<script>
+$(function(){
+
+  $('#search').keyup(function(){
+    $.ajax({
+      type: "POST",
+      url: "{% url 'uclientes:search_tipo_cliente' %}",
+      data: {
+        'search_text': $('#search').val(),
+        'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+      },
+      success: searchSuccess,
+      dataType: 'Html'
+    });
+  });
+});
+
+function searchSuccess(data, textStatus, jqXHR){
+  $('#search-results').html(data)
+}
+</script>
+
+{% endblock js_sup %}

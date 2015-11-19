@@ -96,7 +96,9 @@
       {{ i.pais }}
 
     </td>
-    <td width="80px"><a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'udirecciones:edit_pais' i.pk %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a></td>
+    <td width="80px">
+      <a title="Editar" data-toggle="tooltip" data-placement="right" href="{% url 'udirecciones:edit_pais' i.pk %}?next={{request.get_full_path}}" class="glyphicon glyphicon-edit"></a>
+    </td>
     <td width="80px">
       <a title="Eliminar" href="#myModal" role="button" class="glyphicon glyphicon-remove delete" data-target="#myModal" data-toggle="modal" id="{{i.pk}}" data-name="{{i.pais}}"></a>
     </td>

@@ -1,0 +1,92 @@
+{% extends "base_edit.html" %}
+
+{% block titulo %}
+
+<title>Tamaño de mueble</title>
+
+{% endblock titulo %}
+
+{% block titulo_form %}
+
+<h2>Agregar tamaño de mueble</h2>
+
+{% endblock titulo_form %}
+
+{% block cuerpo_form %}
+
+    <div class="form-group">
+        <select name="listamueble" id="listamueble">
+            <option value="">Seleccione el mueble</option>
+            {% for mu in mueble %}
+
+            <option value="{{mu.id}}">{{mu.mueble}}</option>
+
+            {% endfor %}
+
+        </select>
+        {{ formset.management_form }}
+        {% for form in formset %}
+            {{form.as_p}}
+        {% endfor %}
+
+    </div>
+<script type="text/javascript">
+$(document).ready(function() {
+    {% for ta in tamano %}
+
+    var tamano = document.getElementById("id_form-{{forloop.counter0}}-tamano");
+    for(var i=0; i<tamano.length; i++) {
+        if ("{{ta.id}}"==tamano[i].value) {
+            $('#id_form-{{forloop.counter0}}-tamano').val("{{ta.id}}");
+        }
+    }
+
+    {% endfor %}
+
+    $("#listamueble").on("change", function() {
+        id_lista_mueble = $("#listamueble").val();
+        {% for ta in tamano %}
+
+        var mueble = document.getElementById("id_form-{{forloop.counter0}}-mueble");
+        for(var i=0; i<mueble.length; i++) {
+            if (id_lista_mueble==mueble[i].value) {
+                $('#id_form-{{forloop.counter0}}-mueble').val(id_lista_mueble);
+            }
+        }
+        $.get('/mueble/tamano_mueble/nuevo',
+            {
+                id_lista_mueble: id_lista_mueble,
+                id_tamano: $("#id_form-{{forloop.counter0}}-tamano").val()
+            },
+            function(data) {
+                $("#id_form-{{forloop.counter0}}-ancho").val(data[0].ancho);
+                $("#id_form-{{forloop.counter0}}-largo").val(data[0].largo);
+                $("#id_form-{{forloop.counter0}}-alto").val(data[0].alto);
+                if (data[0].predefinido == true) {
+                    document.getElementById("id_form-{{forloop.counter0}}-predefinido").checked = true;
+                } else {
+                    document.getElementById("id_form-{{forloop.counter0}}-predefinido").checked = false;
+                }
+
+            });
+        {% endfor %}
+    });
+});
+
+</script>
+
+{% endblock cuerpo_form %}
+
+{% block ayuda %}
+
+<div class="">
+    <div class="">
+        <p>Los <strong>Servicios</strong> comprenden aquellas actividades que se realizan sobre un <strong>Mueble</strong> para lograr su traslado en las mejores condiciones posibles.</p>
+        <p>Los <strong>Servicios</strong> pueden sevir para proteger, modificar o brindar un tratamiento específico a cada <strong>Mueble</strong>.</p>
+        <p>Al momento de evaluar o realizar una mudanza, los <strong>Servicios</strong> serán una parte importante de la calidad percibida por el cliente, al igual que un componente que incide sobre el precio final de la misma.</p>
+        <p>La apropiada identificación de <strong>Servicios</strong> y su relación con los <strong>Materiales</strong> que involucran, serán claves para orientar la ejecución del trabajo de campo una vez contratada la mudanza.</p>
+        <p>Para lograr buena calidad de las listas es recomendable mantener un formato uniforme en la forma de escribir. Una buena alternativa es utilizar la primera letra en mayúsculas y el resto en minúsculas, a menos que sean siglas o nombres propios.</p>
+    </div>
+</div>
+
+{% endblock%}

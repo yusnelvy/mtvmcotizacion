@@ -32,6 +32,32 @@ def lista_pais(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_pais = request.POST['item_id']
+                p = Pais.objects.get(pk=id_pais)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.DatabaseError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "Error de BD"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
         lista_pais = Pais.objects.all().order_by(order_by)
@@ -76,7 +102,8 @@ def search_pais(request):
             try:
                 id_pais = request.POST['item_id']
                 p = Pais.objects.get(pk=id_pais)
-                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
@@ -94,7 +121,7 @@ def search_pais(request):
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -133,6 +160,28 @@ def lista_provincia(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_provincia = request.POST['item_id']
+                p = Provincia.objects.get(pk=id_provincia)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
         lista_provincia = Provincia.objects.all().order_by(order_by)
@@ -177,7 +226,8 @@ def search_provincia(request):
             try:
                 id_provincia = request.POST['item_id']
                 p = Provincia.objects.get(pk=id_provincia)
-                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
@@ -191,7 +241,7 @@ def search_provincia(request):
 
             except:
 
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -229,6 +279,29 @@ def lista_ciudad(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_ciudad = request.POST['item_id']
+                p = Ciudad.objects.get(pk=id_ciudad)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
     order_by = request.GET.get('order_by')
     if order_by:
         lista_ciudad = Ciudad.objects.all().order_by(order_by)
@@ -271,7 +344,8 @@ def search_ciudad(request):
             try:
                 id_ciudad = request.POST['item_id']
                 p = Ciudad.objects.get(pk=id_ciudad)
-                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
@@ -285,8 +359,9 @@ def search_ciudad(request):
 
             except:
 
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
         search_text = request.POST['search_text']
         if search_text is not None and search_text != u"":
             entry_query = get_query(search_text, ['ciudad', 'provincia__provincia', 'pais__pais', ])
@@ -326,6 +401,29 @@ def lista_zona(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_zona = request.POST['item_id']
+                p = Zona.objects.get(pk=id_zona)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
     order_by = request.GET.get('order_by')
     if order_by:
         lista_zona = Zona.objects.all().order_by(order_by)
@@ -369,7 +467,8 @@ def search_zona(request):
             try:
                 id_zona = request.POST['item_id']
                 p = Zona.objects.get(pk=id_zona)
-                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
@@ -383,7 +482,7 @@ def search_zona(request):
 
             except:
 
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
         search_text = request.POST['search_text']
         if search_text is not None and search_text != u"":
@@ -420,6 +519,29 @@ def lista_tipo_direccion(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_tipodireccion = request.POST['item_id']
+                p = Tipo_direccion.objects.get(pk=id_tipodireccion)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
     order_by = request.GET.get('order_by')
     if order_by:
         lista_tipodireccion = Tipo_direccion.objects.all().order_by(order_by)
@@ -463,7 +585,8 @@ def search_tipo_direccion(request):
             try:
                 id_tipodireccion = request.POST['item_id']
                 p = Tipo_direccion.objects.get(pk=id_tipodireccion)
-                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
@@ -477,7 +600,7 @@ def search_tipo_direccion(request):
 
             except:
 
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -510,7 +633,8 @@ def lista_direccion(request):
             try:
                 id_direccion = request.POST['item_id']
                 p = Direccion.objects.get(pk=id_direccion)
-                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
@@ -524,7 +648,7 @@ def lista_direccion(request):
 
             except:
 
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_direccion = Direccion.objects.all()
@@ -545,6 +669,29 @@ def lista_tipo_inmueble(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_tipoinmueble = request.POST['item_id']
+                p = Tipo_Inmueble.objects.get(pk=id_tipoinmueble)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
     order_by = request.GET.get('order_by')
     if order_by:
         lista_tipo_inmueble = Tipo_Inmueble.objects.all().order_by(order_by)
@@ -588,7 +735,8 @@ def search_tipo_inmueble(request):
             try:
                 id_tipoinmueble = request.POST['item_id']
                 p = Tipo_Inmueble.objects.get(pk=id_tipoinmueble)
-                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
@@ -602,7 +750,7 @@ def search_tipo_inmueble(request):
 
             except:
 
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -642,6 +790,29 @@ def lista_complejidad_inmueble(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                complejidad = request.POST['item_id']
+                p = Complejidad_Inmueble.objects.get(pk=complejidad)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
     order_by = request.GET.get('order_by')
     if order_by:
         lista_complejidad_inmueble = Complejidad_Inmueble.objects.all().order_by(order_by)
@@ -685,7 +856,8 @@ def search_complejidad_inmueble(request):
             try:
                 complejidad = request.POST['item_id']
                 p = Complejidad_Inmueble.objects.get(pk=complejidad)
-                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
@@ -699,7 +871,7 @@ def search_complejidad_inmueble(request):
 
             except:
 
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -734,7 +906,8 @@ def lista_inmueble(request, iddireccion):
             try:
                 inmueble = request.POST['item_id']
                 p = Inmueble.objects.get(pk=inmueble)
-                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                mensaje = {"status": "True", "item_id": p.id, "form": "del",
+                           "msj": "Se elimino el registro."}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
@@ -748,7 +921,7 @@ def lista_inmueble(request, iddireccion):
 
             except:
 
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     id_direccion = Direccion.objects.get(id=iddireccion)

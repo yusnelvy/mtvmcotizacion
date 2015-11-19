@@ -1,0 +1,135 @@
+{% block cantidad_tabla %}
+
+<h6>Cantidad de registros encontrados:
+  <span class="badge" id="count_reg">
+
+    {{ empresas.count }}
+
+  </span>
+</h6>
+
+{% endblock cantidad_tabla %}
+
+<nav class="nav-pagination">
+  <ul class="pagination">
+
+{% block pagination %}
+
+{% if page_obj.has_previous %}
+
+<li>
+  <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+<li class="current">
+  <a style="color:#000;"> Página
+
+    <select title="nro pag." onchange="window.location.href=this.value;">
+      <option value="?page=0">ver todo</option>
+      {% if page_obj.paginator.page_range %}
+
+      {% for p in page_obj.paginator.page_range %}
+      {% if p == page_obj.number %}
+
+      <option value="?page={{p}}" selected>{{p}}</option>
+
+      {% else %}
+
+      <option value="?page={{p}}">{{p}}</option>
+
+      {% endif %}
+
+      {% endfor %}
+
+      {% else %}
+      <option value="?page=1">paginar</option>
+      {% endif %}
+    </select>
+
+    de
+
+    {{ page_obj.paginator.num_pages }}
+
+    desde la empresa
+
+    {{ page_obj.start_index }}
+
+    hasta la empresa
+
+    {{ page_obj.end_index }}
+
+  </a>
+</li>
+
+{% if page_obj.has_next %}
+
+<li>
+  <a href="?page={{ page_obj.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endblock pagination %}
+
+  </ul>
+</nav>
+
+{% block cuerpo_tabla %}
+{% if empresas %}
+
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr class="active">
+  <th width="100px">
+    Empresa
+    <a href="?order_by=empresa">Asc</a>
+    <a href="?order_by=-empresa">Desc</a>
+  </th>
+  <th width="100px">
+    Responsable
+    <a href="?order_by=responsable">Asc</a>
+    <a href="?order_by=-responsable">Desc</a>
+  </th>
+  <th>
+    Dirección
+    <a href="?order_by=direccion">Asc</a>
+    <a href="?order_by=-direccion">Desc</a>
+  </th>
+  <th>
+    Cuit
+    <a href="?order_by=cuit">Asc</a>
+    <a href="?order_by=-cuit">Desc</a>
+  </th>
+  <th width="80px">Ficha</th>
+  <th width="80px">Eliminar</th>
+</tr>
+
+{% for i in empresas %}
+
+<tr id="tr{{i.id}}">
+  <td>{{ i.empresa }}</td>
+  <td>{{ i.responsable }}</td>
+  <td>{{ i.direccion }}</td>
+  <td>{{ i.cuit }}</td>
+  <td>
+    <a class="glyphicon glyphicon-file"  data-placement="left" data-toggletooltip="tooltip" href="{% url 'uempresas:EmpresaDetail' i.id %}?next={{request.get_full_path}}" title="Ver ficha"></a>
+  </td>
+  <td>
+    <a class="glyphicon glyphicon-remove botonmodalEliminar" data-nombre="{{ i.empresa }}" data-numero="{{ i.id }}" data-ask="Desea eliminar el registro: " data-boton="ELIMINAR" data-opcion="{% url 'uempresas:PresupuestoDelete' i.id %}" data-target=".eliminar" data-toggle="modal" data-placement="left" data-toggletooltip="tooltip" title="Eliminar registro {{ i.id }}"></a>
+  </td>
+</tr>
+
+{% endfor %}
+
+</table>
+{% else %}
+
+<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<tr><td> No se encontraron registros</td>
+</tr>
+</table>
+
+{% endif %}
+{% endblock cuerpo_tabla %}
+

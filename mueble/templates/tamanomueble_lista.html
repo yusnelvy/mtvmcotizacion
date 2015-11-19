@@ -22,7 +22,12 @@
 
 {% endblock footerLink %}
 
-{% block acceso_rapido_adicional%}{% endblock acceso_rapido_adicional%}
+{% block acceso_rapido %}
+<a title="Nuevo" class="navbar-brand" role="button" aria-expanded="false" href="../nuevo"><span class="glyphicon-asterisk glyphicon glyphicon-plus"></span></a>
+
+    <a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
+    <a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
+{% endblock acceso_rapido %}
 
 {% block titulo %}
 

@@ -810,7 +810,7 @@ class PresupuestoDetalleView(View):
 
                         estadoactual = EstadoDocumento.objects.filter(documento='Presupuesto',
                                                                       orden='4')
-                        agregarestado = PresupuestoEstado.objects.create(presupuesto_id=id_reg.id,
+                        agregarestado = PresupuestoEstado.objects.create(presupuesto_id=id_reg,
                                                                          estado_id=estadoactual[0].id,
                                                                          predefinido=True)
                         agregarestado.save()

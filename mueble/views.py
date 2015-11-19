@@ -8,33 +8,20 @@ from mueble.forms import TipoMuebleForm, OcupacionForm,\
     FormaMuebleForm, MuebleForm, TamanoForm, \
     TamanoMuebleForm, MuebleAmbienteForm, DensidadForm
 from ambiente.models import Ambiente
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 import simplejson as json
 import django.db
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView
+from django.views.generic import ListView, View
 from django.views.generic.detail import DetailView
 from django.db.models import Count
 from mtvmcotizacion.views import get_query
 from premisas.models import PerzonalizacionVisual
-
-
-class MuebleListView(ListView):
-
-    context_object_name = 'lista_mueble'
-    queryset = Mueble.objects.all()
-    template_name = 'mueble_lista.html'
-
-
-class TamanoMuebleListView(MuebleListView, ListView):
-
-    lista_m = MuebleListView()
-    context_object_name = 'buscar_tamanomueble'
-    queryset = Tamano_Mueble.objects.all()
-    template_name = 'tamanomueble_lista.html'
+from django.forms.formsets import formset_factory
+from django.contrib import messages
 
 
 def lista_mueble(request):
@@ -50,6 +37,26 @@ def lista_mueble(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_mueble = request.POST['item_id']
+                p = Mueble.objects.get(pk=id_mueble)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
         lista_mueble = Mueble.objects.all().order_by(order_by)
@@ -195,6 +202,26 @@ def lista_tipo_mueble(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_tipomueble = request.POST['item_id']
+                p = Tipo_Mueble.objects.get(pk=id_tipomueble)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
         lista_tipomueble = Tipo_Mueble.objects.all().order_by(order_by)
@@ -293,6 +320,26 @@ def lista_ocupacion(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_ocupacion = request.POST['item_id']
+                p = Ocupacion.objects.get(pk=id_ocupacion)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
         lista_ocupacion = Ocupacion.objects.all().order_by(order_by)
@@ -387,6 +434,26 @@ def lista_forma_mueble(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_formamueble = request.POST['item_id']
+                p = Forma_Mueble.objects.get(pk=id_formamueble)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
         lista_formamueble = Forma_Mueble.objects.all().order_by(order_by)
@@ -483,6 +550,26 @@ def lista_tamano(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_tamano = request.POST['item_id']
+                p = Tamano.objects.get(pk=id_tamano)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
         lista_tamano = Tamano.objects.all().order_by(order_by)
@@ -579,6 +666,26 @@ def lista_densidad(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+    if request.method == "POST":
+        if "item_id" in request.POST:
+            try:
+                id_densidad = request.POST['item_id']
+                p = Densidad.objects.get(pk=id_densidad)
+                mensaje = {"status": "True", "item_id": p.id, "form": "del"}
+                p.delete()
+
+                 # Elinamos objeto de la base de datos
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except django.db.IntegrityError:
+
+                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
+                tiene algun registro asociado"}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
+
+            except:
+                mensaje = {"status": "False", "form": "del", "msj": " "}
+                return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
         lista_densidad = Densidad.objects.all().order_by(order_by)
@@ -888,6 +995,57 @@ def add_tamanomueble(request, id_m):
     return render_to_response('tamanomueble_add.html',
                               {'form_tamanomueble': form_tamanomueble, 'create': True},
                               context_instance=RequestContext(request))
+
+
+class TamanoMuebleView(View):
+    form_class_formset = formset_factory(TamanoMuebleForm, extra=Tamano.objects.count())
+    template_name = 'tamanomueble_add2.html'
+
+    def get(self, request, *args, **kwargs):
+        """docstring"""
+        if self.request.is_ajax():
+            mueble_id = self.request.GET.get('id_lista_mueble')
+            tamano_id = self.request.GET.get('id_tamano')
+
+            tamanomueble = Tamano_Mueble.objects.filter(tamano_id=tamano_id,
+                                                        mueble_id=mueble_id)
+            if tamanomueble:
+                tamanomueble = [{
+                    'ancho': tamanomueble[0].ancho,
+                    'largo': tamanomueble[0].largo,
+                    'alto': tamanomueble[0].alto,
+                    'predefinido': tamanomueble[0].predefinido
+                    }]
+            else:
+                tamanomueble = [{
+                    'ancho': 0,
+                    'largo': 0,
+                    'alto': 0,
+                    'predefinido': False
+                    }]
+
+            return JsonResponse(tamanomueble, safe=False)
+
+        mueble = Mueble.objects.all()
+        tamano = Tamano.objects.all()
+        formset = self.form_class_formset()
+        return render(request, self.template_name, {'formset': formset,
+                                                    'tamano': tamano,
+                                                    'mueble': mueble})
+
+    def post(self, request, *args, **kwargs):
+        formset = self.form_class_formset(request.POST)
+
+        if formset.is_valid():
+            for form in formset:
+                form.save()
+
+            # <process form cleaned data>
+            messages.success(self.request, "Tamaño mueble registrado.")
+            return HttpResponseRedirect(reverse('umuebles:buscar_tamano_mueble',
+                                                args=(0,)))
+
+        return render(request, self.template_name, {'formset': formset})
 
 
 def add_muebleambiente(request, id_ti, origen):
