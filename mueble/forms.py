@@ -89,7 +89,6 @@ class TamanoMuebleForm(ModelForm):
     """Docstring"""
     def __init__(self, *args, **kwargs):
         super(TamanoMuebleForm, self).__init__(*args, **kwargs)
-        self.fields['tamano'].empty_label = "Seleccione el tamaño del mueble"
 
     class Meta:
         model = Tamano_Mueble

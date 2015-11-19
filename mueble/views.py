@@ -8,33 +8,20 @@ from mueble.forms import TipoMuebleForm, OcupacionForm,\
     FormaMuebleForm, MuebleForm, TamanoForm, \
     TamanoMuebleForm, MuebleAmbienteForm, DensidadForm
 from ambiente.models import Ambiente
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 import simplejson as json
 import django.db
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView
+from django.views.generic import ListView, View
 from django.views.generic.detail import DetailView
 from django.db.models import Count
 from mtvmcotizacion.views import get_query
 from premisas.models import PerzonalizacionVisual
-
-
-class MuebleListView(ListView):
-
-    context_object_name = 'lista_mueble'
-    queryset = Mueble.objects.all()
-    template_name = 'mueble_lista.html'
-
-
-class TamanoMuebleListView(MuebleListView, ListView):
-
-    lista_m = MuebleListView()
-    context_object_name = 'buscar_tamanomueble'
-    queryset = Tamano_Mueble.objects.all()
-    template_name = 'tamanomueble_lista.html'
+from django.forms.formsets import formset_factory
+from django.contrib import messages
 
 
 def lista_mueble(request):
@@ -1008,6 +995,57 @@ def add_tamanomueble(request, id_m):
     return render_to_response('tamanomueble_add.html',
                               {'form_tamanomueble': form_tamanomueble, 'create': True},
                               context_instance=RequestContext(request))
+
+
+class TamanoMuebleView(View):
+    form_class_formset = formset_factory(TamanoMuebleForm, extra=Tamano.objects.count())
+    template_name = 'tamanomueble_add2.html'
+
+    def get(self, request, *args, **kwargs):
+        """docstring"""
+        if self.request.is_ajax():
+            mueble_id = self.request.GET.get('id_lista_mueble')
+            tamano_id = self.request.GET.get('id_tamano')
+
+            tamanomueble = Tamano_Mueble.objects.filter(tamano_id=tamano_id,
+                                                        mueble_id=mueble_id)
+            if tamanomueble:
+                tamanomueble = [{
+                    'ancho': tamanomueble[0].ancho,
+                    'largo': tamanomueble[0].largo,
+                    'alto': tamanomueble[0].alto,
+                    'predefinido': tamanomueble[0].predefinido
+                    }]
+            else:
+                tamanomueble = [{
+                    'ancho': 0,
+                    'largo': 0,
+                    'alto': 0,
+                    'predefinido': False
+                    }]
+
+            return JsonResponse(tamanomueble, safe=False)
+
+        mueble = Mueble.objects.all()
+        tamano = Tamano.objects.all()
+        formset = self.form_class_formset()
+        return render(request, self.template_name, {'formset': formset,
+                                                    'tamano': tamano,
+                                                    'mueble': mueble})
+
+    def post(self, request, *args, **kwargs):
+        formset = self.form_class_formset(request.POST)
+
+        if formset.is_valid():
+            for form in formset:
+                form.save()
+
+            # <process form cleaned data>
+            messages.success(self.request, "Tamaño mueble registrado.")
+            return HttpResponseRedirect(reverse('umuebles:buscar_tamano_mueble',
+                                                args=(0,)))
+
+        return render(request, self.template_name, {'formset': formset})
 
 
 def add_muebleambiente(request, id_ti, origen):
