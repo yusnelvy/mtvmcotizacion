@@ -1,0 +1,124 @@
+.controles {
+  visibility: hidden;
+  cursor: pointer;
+  padding: 0 0 5px 5px;
+}
+
+.boton-servicios {
+  font-size: 10px;
+  color: #777;
+  cursor: pointer;
+}
+
+.boton-de-accion {
+  visibility: hidden;
+  cursor: pointer;
+  padding: 0 0 5px 5px;
+}
+
+.tr-mueble:hover .controles,
+.tr-direccion:hover .controles,
+tr:hover .boton-de-accion {
+  visibility: visible;
+}
+
+.tr-mueble:hover .servicioStyle {
+  background: #fff;
+}
+
+.t-ambiente {
+  cursor: pointer;
+  font-size: 18px;
+  display: inline-block;
+  padding: 10px 1px;
+  width: 100%;
+}
+
+.btn-addmueble {
+  font-size: 12px;
+  cursor: pointer;
+  z-index: 1000;
+  width: 17%;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.servicioStyle {
+  border: 1px solid #e7e7e7;
+  background: #f5f5f5;
+  border-radius: 5px;
+  margin-left:5px;
+  padding-left:5px;
+}
+
+@media (max-width:992px) {
+
+  .t-ambiente{
+    width: 100%;
+  }
+
+  .msj {
+    top: 110px!important;
+    left: 45%!important;
+  }
+}
+
+.msj {
+  position: fixed;
+  width: 360px;
+  top: 60px;
+  left: 50%;
+  text-align: center;
+  z-index: 1040;
+}
+
+#preDetalle {
+  background: #5cb85c;
+  color: #fff!important;
+  display: block;
+  padding: 10px 5px!important;
+  width: 100%;
+  text-decoration: none!important;
+}
+
+#preDetalle a:hover {
+  background: #5cb85c!important;
+  color: #fff!important;
+}
+
+.linknav>a>.glyphicon-ok {
+  float: right;
+  color: #5cb85c!important;
+}
+
+.linknav>a>.glyphicon-minus {
+  float: right;
+  color: #E38D13!important;
+}
+
+.linknav>a {
+  color: #777;
+  cursor: pointer;
+}
+
+.caretExpandirContraer {
+  color: #777;
+  float: right;
+  text-decoration: none;
+}
+
+.caretExpandirContraer:hover {
+  color: #777;
+  text-decoration: none;
+}
+.paddingAmbientes {
+  padding:0px 5px!important;
+}
+.marginLeftMueble {
+  margin-left:20px;
+}
+.btnControlMuebles {
+  cursor:pointer;
+  float:right;
+  padding:0 0 5px 5px;
+}

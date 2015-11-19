@@ -24,7 +24,7 @@
 {% endif %}
 
 <li class="current">
-  <a style="color:#000;"> Página
+  <a class="fuenteNegra"> Página
 
     {{ vehiculos.number }}
     <select title="nro pag." onchange="window.location.href=this.value;">
@@ -80,38 +80,38 @@
 {% block cuerpo_tabla %}
 {% if vehiculos %}
 
-<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<table class="table table-hover table-bordered textAlignCenter" id="tabla">
 <tr class="active">
   <th>Cant</th>
   <th>
     Modelo
-    <a href="?order_by=modelo">Asc</a>
-    <a href="?order_by=-modelo">Desc</a>
+    <a href="?order_by=modelo" id="modelo" class="hidden-print glyphicon glyphicon-sort-by-alphabet btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-modelo" id="-modelo"  class="hidden-print glyphicon glyphicon-sort-by-alphabet-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
-  <th>
+  <th width="130">
     Tarifa ($/h)
-    <a href="?order_by=tarifa_hora">Asc</a>
-    <a href="?order_by=-tarifa_hora">Desc</a>
+    <a href="?order_by=tarifa_hora" id="tarifa_hora" class="hidden-print glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-tarifa_hora" id="-tarifa_hora" class="hidden-print glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
-  <th>
+  <th width="130">
     Tarifa ($/Km)
-    <a href="?order_by=tarifa_recorrido">Asc</a>
-    <a href="?order_by=-tarifa_recorrido">Desc</a>
+    <a href="?order_by=tarifa_recorrido" id="tarifa_recorrido" class="hidden-print glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-tarifa_recorrido" id="-tarifa_recorrido" class="hidden-print glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
-  <th>
+  <th width="150">
     Capacidad (m3)
-    <a href="?order_by=capacidad_volumen">Asc</a>
-    <a href="?order_by=-capacidad_volumen">Desc</a>
+    <a href="?order_by=capacidad_volumen" id="capacidad_volumen" class="hidden-print glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-capacidad_volumen" id="-capacidad_volumen" class="hidden-print glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
-  <th>
+  <th width="150">
     Capacidad (Kg)
-    <a href="?order_by=capacidad_peso">Asc</a>
-    <a href="?order_by=-capacidad_peso">Desc</a>
+    <a href="?order_by=capacidad_peso" id="capacidad_peso" class="hidden-print glyphicon glyphicon-sort-by-order btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-capacidad_peso" id="-capacidad_peso" class="hidden-print glyphicon glyphicon-sort-by-order-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
-  <th>
+  <th width="130">
     Conductor
-    <a href="?order_by=cargo">Asc</a>
-    <a href="?order_by=-cargo">Desc</a>
+    <a href="?order_by=cargo" id="cargo" class="hidden-print glyphicon glyphicon-sort-by-alphabet btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+    <a href="?order_by=-cargo" id="-cargo"  class="hidden-print glyphicon glyphicon-sort-by-alphabet-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
   </th>
   <th>Editar</th>
   <th>Eliminar</th>
@@ -141,7 +141,7 @@
 </table>
 {% else %}
 
-<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<table class="table table-hover table-bordered textAlignCenter" id="tabla">
 <tr><td> No se encontraron registros</td>
 </tr>
 </table>
@@ -149,3 +149,15 @@
 {% endif %}
 {% endblock cuerpo_tabla %}
 
+{% block js_inf %}
+
+ <script>
+ ocultarASCDesc('modelo');
+ ocultarASCDesc('capacidad_peso');
+ ocultarASCDesc('cargo');
+ ocultarASCDesc('capacidad_volumen');
+ ocultarASCDesc('tarifa_recorrido');
+ ocultarASCDesc('tarifa_hora');
+</script>
+
+{% endblock js_inf %}

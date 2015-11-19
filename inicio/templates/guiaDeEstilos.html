@@ -15,25 +15,25 @@
 
 {% block link_navegacion %}
 
-<li class="linknav" id="" style="cursor: pointer;">
+<li class="linknav cursorPointer" id="">
     <a type="button" href="#tipografia">Tipografía</a>
 </li>
-<li class="linknav" id="" style="cursor: pointer;">
+<li class="linknav cursorPointer" id="">
     <a type="button" href="#colores">Paleta de colores</a>
 </li>
-<li class="linknav" id="" style="cursor: pointer;">
+<li class="linknav cursorPointer" id="">
     <a type="button" href="#iconos">Iconos</a>
 </li>
-<li class="linknav" id="" style="cursor: pointer;">
+<li class="linknav cursorPointer" id="">
     <a type="button" href="#botones">Botones</a>
 </li>
-<li class="linknav" id="" style="cursor: pointer;">
+<li class="linknav cursorPointer" id="">
     <a type="button" href="#formularios">Formularios</a>
 </li>
-<li class="linknav" id="" style="cursor: pointer;">
+<li class="linknav cursorPointer" id="">
     <a type="button" href="#listas">Listas</a>
 </li>
-<li class="linknav" id="" style="cursor: pointer;">
+<li class="linknav cursorPointer" id="">
     <a type="button" href="#barras">Barra vertical</a>
 </li>
 
@@ -75,6 +75,49 @@ class="col-md-12"
     background: #fff;
     border-bottom: 1px solid #e7e7e7;
 }
+.fondoBlanco{
+  background: #fff!important;
+}
+.fondoF5 {
+  background: #f5f5f5!important;
+}
+.fondoE7 {
+  background: #e7e7e7!important;
+}
+.fondo777 {
+  background: #777!important;
+}
+.fondoF5 {
+  background: #f5f5f5!important;
+}
+.fondoAzulC {
+  background: #337ab7!important;
+}
+.fondoNaranja {
+  background: #E38D13!important;
+}
+.fondoNegro {
+  background: #000!important;
+}
+.fondoVerde {
+  background: #5CB85C!important;
+}
+.fondoAzulInfo {
+  background: #5BC0DE!important;
+}
+.fondoWarning {
+  background: #F0AD4E!important;
+}
+.fondoDanger {
+  background: #D9534F!important;
+}
+.strongAlineado {
+  width:70px;
+  display:inline-block;
+}
+.colorPrimary {
+  color: #337ab7;
+}
 </style>
 <div class="page-header">
     <div class="h1">Guía de estilos</div>
@@ -111,7 +154,7 @@ class="col-md-12"
                     <br>
                     <br>
                     <table class="table table-condensed">
-                        <tr style="text-align:center;">
+                        <tr class="textAlignCenter">
                             <td colspan="80px">
                                 <a title="Eliminar" href="#" role="button" class="glyphicon" id="" data-name="">Agregar</a>
                             </td>
@@ -137,22 +180,22 @@ class="col-md-12"
     <h2>Paleta de colores </h2>
     <div class="row">
         <div class="col-md-3">
-            <div class="paleta panel panel-default" style="background: #fff;">
+            <div class="paleta panel panel-default fondoBlanco">
                 <div class="paleta-header">#FFF</div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="paleta panel panel-default" style="background: #f5f5f5;">
+            <div class="paleta panel panel-default fondoF5">
                 <div class="paleta-header">#F5F5F5</div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="paleta panel panel-default" style="background: #e7e7e7;">
+            <div class="paleta panel panel-default fondoE7">
                 <div class="paleta-header">#E7E7E7</div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="paleta panel" style="background: #777;">
+            <div class="paleta panel fondo777">
                 <div class="paleta-header">#777</div>
             </div>
         </div>
@@ -165,17 +208,17 @@ class="col-md-12"
             </div>
         </div>
         <div class="col-md-3">
-            <div class="paleta panel panel-default" style="background: #337ab7;">
+            <div class="paleta panel panel-default fondoAzulC">
                 <div class="paleta-header">#337AB7</div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="paleta panel" style="background: #E38D13;">
+            <div class="paleta panel fondoNaranja">
                 <div class="paleta-header">#E38D13</div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="paleta panel panel-default" style="background: #000;">
+            <div class="paleta panel panel-default fondoNegro">
                 <div class="paleta-header">#000</div>
             </div>
         </div>
@@ -183,22 +226,22 @@ class="col-md-12"
 
     <div class="row">
         <div class="col-md-3">
-            <div class="paleta panel" style="background: #5CB85C;">
+            <div class="paleta panel fondoVerde">
                 <div class="paleta-header">#5CB85C</div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="paleta panel panel-default" style="background: #5BC0DE;">
+            <div class="paleta panel panel-default fondoAzulInfo">
                 <div class="paleta-header">#5BC0DE</div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="paleta panel" style="background: #F0AD4E;">
+            <div class="paleta panel fondoWarning">
                 <div class="paleta-header">#F0AD4E</div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="paleta panel panel-default" style="background: #D9534F;">
+            <div class="paleta panel panel-default fondoDanger">
                 <div class="paleta-header">#D9534F</div>
             </div>
         </div>
@@ -309,22 +352,22 @@ class="col-md-12"
         <div class="col-md-6">
             <ul class="list-group">
                 <li class="list-group-item">
-                    <strong style="width:70px;display:inline-block;">Default: </strong> se usa como acción por defecto en toda la aplicación.
+                    <strong class="strongAlineado">Default: </strong> se usa como acción por defecto en toda la aplicación.
                 </li>
                 <li class="list-group-item">
-                    <strong style="width:70px;display:inline-block;">Primary: </strong> se usa como acción de selección de elementos.
+                    <strong class="strongAlineado">Primary: </strong> se usa como acción de selección de elementos.
                 </li>
                 <li class="list-group-item">
-                    <strong style="width:70px;display:inline-block;">Success: </strong> se usa como acción primaria para completar un proceso.
+                    <strong class="strongAlineado">Success: </strong> se usa como acción primaria para completar un proceso.
                 </li>
                 <li class="list-group-item">
-                    <strong style="width:70px;display:inline-block;">Info: </strong> <small>en construcción.</small>
+                    <strong class="strongAlineado">Info: </strong> <small>en construcción.</small>
                 </li>
                 <li class="list-group-item">
-                    <strong style="width:70px;display:inline-block;">Warning: </strong> <small>en construcción.</small>
+                    <strong class="strongAlineado">Warning: </strong> <small>en construcción.</small>
                 </li>
                 <li class="list-group-item">
-                    <strong style="width:70px;display:inline-block;">Danger: </strong> se usa como acción para la eliminación de un objeto.
+                    <strong class="strongAlineado">Danger: </strong> se usa como acción para la eliminación de un objeto.
                 </li>
             </ul>
         </div>
@@ -382,7 +425,7 @@ class="col-md-12"
 
                     <p>
                         <table class="table table-bordered">
-                            <tr style="text-align:center;">
+                            <tr class="textAlignCenter">
                                 <td width="15%">
                                     <input type="checkbox" name="enviarPresupuesto" onclick="radioColorBlue();" id="checkbox11">
                                     <label for="checkbox11" class="label1">Checkbox 1</label>
@@ -400,7 +443,7 @@ class="col-md-12"
                     </p>
                     <p>
                         <table class="table table-bordered">
-                            <tr style="text-align:center;">
+                            <tr class="textAlignCenter">
                                 <td width="15%">
                                     <input type="radio" name="enviarPresupuesto" onclick="radioColorBlue();" id="radio11">
                                     <label for="radio11" class="label1">Radio 1</label>
@@ -439,26 +482,26 @@ class="col-md-12"
                     <th width="80px">Editar</th>
                     <th width="80px">Eliminar</th>
                 </tr>
-                <tr style="text-align:center;">
+                <tr class="textAlignCenter">
                     <td>item 1</td>
                     <td>item 2</td>
                     <td>item 3</td>
                     <td>
-                        <span class="glyphicon glyphicon-edit" style="color:#337ab7;"></span>
+                        <span class="glyphicon glyphicon-edit colorPrimary"></span>
                     </td>
                     <td>
-                        <span class="glyphicon glyphicon-remove" style="color:#337ab7;"></span>
+                        <span class="glyphicon glyphicon-remove colorPrimary"></span>
                     </td>
                 </tr>
-                <tr style="text-align:center;">
+                <tr class="textAlignCenter">
                     <td>item 4</td>
                     <td>item 5</td>
                     <td>item 6</td>
                     <td>
-                        <span class="glyphicon glyphicon-edit" style="color:#337ab7;"></span>
+                        <span class="glyphicon glyphicon-edit colorPrimary"></span>
                     </td>
                     <td>
-                        <span class="glyphicon glyphicon-remove" style="color:#337ab7;"></span>
+                        <span class="glyphicon glyphicon-remove colorPrimary"></span>
                     </td>
                 </tr>
             </table>

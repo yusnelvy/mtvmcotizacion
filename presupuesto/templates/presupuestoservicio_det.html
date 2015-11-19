@@ -3,11 +3,11 @@
 {% for det_servicio in servicio %}
 
 {% if det_servicio.detalle_presupuesto = mueble.id %}
-<span class="{% if servicio %}servicioStyle{% endif %}" style="margin-left:5px;">
+<span class="{% if servicio %}servicioStyle{% endif %}">
 
 {{ det_servicio.servicio }}
 
-<a title="Eliminar {{ det_servicio.servicio }}" style="font-size:10px;color:#777;" href="{% url 'upresupuestos:PresupuestoServicioDelete' 1 %}?next={{request.get_full_path}}" class="glyphicon glyphicon-remove" data-toggletooltip="tooltip" data-placement="left"></a>
+<a title="Eliminar {{ det_servicio.servicio }}" href="{% url 'upresupuestos:PresupuestoServicioDelete' 1 %}?next={{request.get_full_path}}" class="glyphicon glyphicon-remove" data-toggletooltip="tooltip" data-placement="left"></a>
 </span>
 
 {% endif %}

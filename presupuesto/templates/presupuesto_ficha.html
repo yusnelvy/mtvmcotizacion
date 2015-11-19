@@ -31,11 +31,11 @@
 
 {% block widget_sidebar %}
 
-{% widget_sidebar "pasos" "Pasos a completar" %}
+{% widget_sidebar "pasos_presupuesto" "Pasos a completar" %}
 
 {% if presupuesto.dni and direccion_origen and direccion_destino and lista_ambiente %}
 
-{% widget_sidebar "acciones" "Acciones" %}
+{% widget_sidebar "acciones_ficha_presupuesto" "Acciones" %}
 
 {% endif %}
 
@@ -441,7 +441,7 @@ class="col-md-12"
         {% for ambiente in lista_ambiente %}
 
         <div class="panel panel-default" id="{{ambiente.ambiente}}">
-            <div class="panel-heading" style="padding:0px 5px!important;" id="headingOne{{ forloop.counter }}" role="tab">
+            <div class="panel-heading paddingAmbientes" id="headingOne{{ forloop.counter }}" role="tab">
                 <h4 class="panel-title">
                     <a aria-controls="collapseOne{{ forloop.counter }}" aria-expanded="true" class="t-ambiente" data-parent="#accordion" data-toggle="collapse" href="#collapseOne{{ forloop.counter }}" role="button">{{ambiente.ambiente|upper}}</a>
                 </h4>
@@ -450,7 +450,7 @@ class="col-md-12"
                 <table class="table table-hover">
                     <tr>
                         <td width="7%"><strong>&nbsp; &nbsp;Cant.</strong></td>
-                        <td width="30%" style="margin-left:20px;">
+                        <td width="30%" class="marginLeftMueble">
                             <strong>Mueble</strong>
                         </td>
                         <td width="15%">
@@ -508,20 +508,20 @@ class="col-md-12"
                         <td>
                             {% if mueble.trasladable %}
 
-                            <a class="controles glyphicon glyphicon-wrench botonmodalFormulario hidden-print btn2" data-name="{{ mueble.mueble|lower }}" data-nombre="Agregar servicio al mueble {{ mueble.mueble|lower }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{ request.get_full_path }}&pre={{ mueble.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
+                            <a class="controles glyphicon glyphicon-wrench botonmodalFormulario hidden-print btn2 btnControlMuebles" data-name="{{ mueble.mueble|lower }}" data-nombre="Agregar servicio al mueble {{ mueble.mueble|lower }}" data-opcion="{% url 'upresupuestos:PresupuestoServicioView' %}?next={{ request.get_full_path }}&pre={{ mueble.id }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
 
                             {% else %}
 
-                            <a class="controles glyphicon glyphicon-wrench hidden-print btn-disabled" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
+                            <a class="controles glyphicon glyphicon-wrench hidden-print btn-disabled btnControlMuebles" title="Agregar servicio al mueble {{ mueble.mueble|lower }}"></a>
 
                             {% endif %}
 
                         </td>
                         <td>
-                            <a class="controles botonmodalFormulario glyphicon glyphicon-edit hidden-print btn2" data-nombre="Editar mueble" data-posicion="{{ ambiente.ambiente }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleUpdate' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Editar {{ mueble.mueble|lower }}"></a>
+                            <a class="controles botonmodalFormulario glyphicon glyphicon-edit hidden-print btn2 btnControlMuebles" data-nombre="Editar mueble" data-posicion="{{ ambiente.ambiente }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleUpdate' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target="#myModalFormulario" data-toggle="modal" data-toggletooltip="tooltip" title="Editar {{ mueble.mueble|lower }}"></a>
                         </td>
                         <td>
-                            <a class="controles botonmodalEliminar glyphicon glyphicon-remove hidden-print btn2" data-ask="Desea eliminar el registro: " data-boton="ELIMINAR" data-nombre="{{ mueble.mueble|lower }}" data-numero="{{ mueble.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleDelete' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" style="cursor:pointer; float:right; padding:0px0 5px 5px;" title="Eliminar {{ mueble.mueble|lower }}"></a>
+                            <a class="controles botonmodalEliminar glyphicon glyphicon-remove hidden-print btn2 btnControlMuebles" data-ask="Desea eliminar el registro: " data-boton="ELIMINAR" data-nombre="{{ mueble.mueble|lower }}" data-numero="{{ mueble.id }}" data-opcion="{% url 'upresupuestos:PresupuestoDetalleDelete' mueble.id %}?next={{ request.get_full_path }}" data-placement="left" data-target=".eliminar" data-toggle="modal" data-toggletooltip="tooltip" title="Eliminar {{ mueble.mueble|lower }}"></a>
                         </td>
                     </tr>
 
@@ -550,7 +550,7 @@ class="col-md-12"
     {% endif %}
 
 </div><!--fin acordion-->
-<div style="display:block;height:600px;width:100%;"></div>
+<div class="espacioBlanco"></div>
 <!-- Modal Formularios-->
 <div  aria-hidden="true" aria-labelledby="myModalLabelFormulario" class="modal fade" tabindex="-1" id="myModalFormulario" role="dialog">
     <div class="modal-dialog " role="document">
@@ -595,7 +595,7 @@ class="col-md-12"
         </div>
     </div>
 </div>
-<div class="alert alert-success msj notific" id="msjGuardado" style="display:none;" role="alert">Guardado</div>
+<div class="alert alert-success msj notific displayNone" id="msjGuardado" role="alert">Guardado</div>
 
 {% if messages %}
 

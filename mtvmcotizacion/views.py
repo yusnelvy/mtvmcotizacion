@@ -1,7 +1,8 @@
 from django.contrib.auth import logout
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponseRedirect
 from django.db.models import Q
+from django.template import RequestContext
 import re
 
 
@@ -57,3 +58,42 @@ def get_query(query_string, search_fields):
             query = query & or_query
     return query
 
+
+def handler404(request):
+    """error 404"""
+    error = "Pagina no encontrada"
+    response = render_to_response('404.html',
+                                  {'codigo': 404, 'error': error},
+                                  context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
+
+
+def handler500(request):
+    """error 500"""
+    error = "Error de servidor"
+    response = render_to_response('404.html',
+                                  {'codigo': 500, 'error': error},
+                                  context_instance=RequestContext(request))
+    response.status_code = 500
+    return response
+
+
+def handler403(request):
+    """error 403"""
+    error = "Error, pagina prohibida acceso denegado."
+    response = render_to_response('404.html',
+                                  {'codigo': 403, 'error': error},
+                                  context_instance=RequestContext(request))
+    response.status_code = 403
+    return response
+
+
+def handler400(request):
+    """error 400"""
+    error = "Error, solicitud incorrecta."
+    response = render_to_response('404.html',
+                                  {'codigo': 400, 'error': error},
+                                  context_instance=RequestContext(request))
+    response.status_code = 400
+    return response

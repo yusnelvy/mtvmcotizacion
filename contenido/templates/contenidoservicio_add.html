@@ -6,6 +6,12 @@
 
 {% endblock titulo %}
 
+{% block acceso_rapido %}
+
+        <a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="{% if request.GET.next = None %}../../0/{% else %}{{request.GET.next}}{% endif %}"><span class="glyphicon glyphicon-chevron-left"></span></a>
+
+{% endblock acceso_rapido %}
+
 {% block titulo_form %}
 
 <h2>Agregar contenido servicio </h2>

@@ -24,7 +24,7 @@
 {% endif %}
 
 <li class="current">
-  <a style="color:#000;"> Página
+  <a class="fuenteNegra"> Página
     <select title="nro pag." onchange="window.location.href=this.value;">
       <option value="?page=0">ver todo</option>
 
@@ -84,7 +84,7 @@
 
 {% if presupuestos %}
 
-<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<table class="table table-hover table-bordered textAlignCenter" id="tabla">
 <tr class="active">
   <th width="50px">N°</th>
   <th width="100px">
@@ -151,7 +151,7 @@
 
 {% else %}
 
-<table class="table table-hover table-bordered" id="tabla" style="text-align: center;">
+<table class="table table-hover table-bordered textAlignCenter" id="tabla">
 <tr><td> No se encontraron registros</td>
 </tr>
 </table>

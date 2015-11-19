@@ -245,7 +245,6 @@ class PresupuestoDetalleForm(ModelForm):
             'largo', \
             'alto', \
             'cantidad', \
-            'trasladable', \
             'lista_ocupacion', \
             'descripcion_contenido', \
             'descripcion_densidadcontenido', \
@@ -260,7 +259,8 @@ class PresupuestoDetalleForm(ModelForm):
             'capacidad_volumen_contenedor', \
             'peso_contenido', \
             'peso_contenedor', \
-            'descripcion_contenedor'
+            'descripcion_contenedor', \
+            'trasladable'
 
         labels = {
             'ancho': ('Ancho del mueble (cms)'),

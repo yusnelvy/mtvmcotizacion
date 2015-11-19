@@ -1,9 +1,9 @@
 """
 Docstring documentación pendiente
 """
-
-from django.forms import ModelForm, DateInput
+from django.forms import ModelForm
 from cliente.models import Cliente, Email, Sexo, Estado_civil, TipoCliente
+from django import forms
 
 
 class ClienteForm(ModelForm):
@@ -15,11 +15,15 @@ class ClienteForm(ModelForm):
         self.fields['sexo'].empty_label = "Seleccione el sexo"
         self.fields['estado_civil'].empty_label = "Seleccione el estado civil"
 
+    fecha_nacimiento = forms.DateField(
+        label='Fecha de nacimiento:',
+        widget=forms.DateInput(format='%d-%m-%Y', attrs={'class': ''}),
+        input_formats=('%Y-%m-%d', '%d/%m/%Y',))
+
     class Meta:
         model = Cliente
         fields = '__all__'
         search_fields = ['nombre_principal']
-        widgets = {'fecha_nacimiento': DateInput(attrs={'type': "date"})}
         labels = {
             'nombre_principal': ('Nombre del cliente'),
             'dni': ('DNI - Documento Nacional de Identificación'),

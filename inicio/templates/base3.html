@@ -6,21 +6,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link href="/static/css/estilosForm.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/presupuestoForm/preDatosPersonales.css">
-    <link href="/static/css/animate.css" rel="stylesheet">
-    <link href="/static/css/jquery-ui.css" rel="stylesheet">
-    <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/fuentes/style.css">
-    <link rel="stylesheet" href="/static/css/presupuestoFicha/preFicha.css">
-    <link rel="stylesheet" href="/static/css/presupuestoForm/preRevisar.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/imprimir.css" media="print" />
-    <link rel="stylesheet" href="/static/css/jquery-ui.css">
-    <script src="/static/jquery/jquery-2.1.4.js"></script>
-    <script language="Javascript" src="/static/js/ajax.js"></script>
-    <script src="/static/js/jquery-ui.js"></script>
-    <!--    <script src="/static/js/prototype.js"></script> -->
-    <script src="/static/js/prototype-comp.js"></script>
+
+    {% include "css.html" %}
+
+    <!--Jquery and plugins of jquery-->
+    <script src="{% static 'jquery/jquery-2.1.4.js' %}"></script>
+    <script src="{% static 'jquery/jquery.form.min.js' %}"></script>
+    <script src="{% static 'jquery-ui-datepiker/jquery-ui.js' %}"></script>
 
     {% block js_sup %}{% endblock js_sup %}
 
@@ -37,7 +29,7 @@
 
     {% endblock modal %}
 
-    <nav class="navbar navbar-default navbar-fixed-top navbarPrincipal" style="">
+    <nav class="navbar navbar-default navbar-fixed-top navbarPrincipal">
         <div class="container-fluid">
             <div class="navbar-header">
 
@@ -58,7 +50,7 @@
             <div id="wrapper">
                 <!-- Sidebar -->
                 <div id="sidebar-wrapper" class="hidden-print">
-                    <a href="#menu-toggle" class="glyphicon glyphicon-remove navbar-brand menu-toggle" id="" style="float:right;z-index:1001;" title="Cerrar"></a>
+                    <a href="#menu-toggle" class="glyphicon glyphicon-remove navbar-brand menu-toggle btn-menuSidebar" id="" title="Cerrar"></a>
                     <ul class="sidebar-nav">
                         <li class="sidebar-brand">
                             <a href="#">

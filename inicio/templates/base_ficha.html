@@ -5,7 +5,7 @@
 {% block widgetAcciones %}{% endblock widgetAcciones %}
 
 {% block acceso_rapido %}
-    <a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="javascript:history.back();"><span class="glyphicon glyphicon-chevron-left"></span></a>
+    <a title="Volver" class="navbar-brand" role="button" aria-expanded="false" href="../../"><span class="glyphicon glyphicon-chevron-left"></span></a>
     <a title="Imprimir" class="navbar-brand" role="button" aria-expanded="false" onclick="window.print();"><span class="glyphicon glyphicon-print"></span></a>
 {% endblock acceso_rapido %}
 
@@ -43,7 +43,7 @@
     </div>
 </div>
 <div class="ayuda well well-lg">
-    <button style="padding:0px;" type="button" class="ayuda_btn close" data-dismiss="modal" aria-label="Close" tabIndex="-1"><span aria-hidden="true">&times;</span></button>
+    <button type="button" class="ayuda_btn close padding0" data-dismiss="modal" aria-label="Close" tabIndex="-1"><span aria-hidden="true">&times;</span></button>
 
     {% block ayuda %}{% endblock ayuda %}
 
