@@ -1,4 +1,4 @@
-{% extends "base_edit.html" %}
+{% extends "base_ficha.html" %}
 
 {% block titulo %}
 
@@ -6,17 +6,49 @@
 
 {% endblock titulo %}
 
-{% block titulo_form %}
+{% block titulo_ficha %}
 
-<h2>Agregar tamaño de mueble</h2>
+<h2>Tamaños de muebles</h2>
 
-{% endblock titulo_form %}
+{% endblock titulo_ficha %}
 
-{% block cuerpo_form %}
+{% block col1 %}class="col-md-4"{% endblock col1 %}
 
-    <div class="form-group">
+{% block content1 %}
+<style>
+    .caret {
+        top:16px!important;
+        right: 12px!important;
+    }
+    td {
+        text-align: center;
+        max-width: 100px;
+    }
+    td input {
+        display: block;
+        max-width: 80px;
+        text-align: right;
+        margin: auto!important;
+        border-right: hidden !important;
+        background: transparent;
+    }
+    td input::-webkit-inner-spin-button,
+    td input::-webkit-outer-spin-button  {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+    td select {
+        display: none;
+    }
+</style>
+
+<form action="" method="post" id="myformEdit">
+{% csrf_token %}
+<div class="form-group">
         <select name="listamueble" id="listamueble">
-            <option value="">Seleccione el mueble</option>
+            <option value="0">Seleccione el mueble</option>
             {% for mu in mueble %}
 
             <option value="{{mu.id}}">{{mu.mueble}}</option>
@@ -24,20 +56,69 @@
             {% endfor %}
 
         </select>
+</div>
+
+
+{% endblock content1 %}
+
+{% block col2 %}class="col-md-8"{% endblock col2 %}
+
+{% block content2 %}
+
+        <div class="form-group">
+<table class="table table-bordered table-hover">
         {{ formset.management_form }}
+        <tr class="active">
+            <td></td>
+            <th>Ancho (cm)</th>
+            <th>Largo (cm)</th>
+            <th>Alto (cm)</th>
+            <th>Predefinido</th>
+        </tr>
+
         {% for form in formset %}
-            {{form.as_p}}
+        <tr>
+            <td>{{form.tamano}} <label class="mTamano{{forloop.counter0}}"></label></td>
+            <td>{{form.ancho}}</td>
+            <td>{{form.largo}}</td>
+            <td>{{form.alto}}</td>
+            <td>{{form.predefinido}}</td>
+        </tr>
+        <span class="elementNone">{{form.mueble}}</span>
         {% endfor %}
 
-    </div>
+</table>
+        </div>
+
+          <button type="submit" class="btn btn-default registrar">Registrar</button>
+            <br>
+
+        </form>
+
+{% endblock content2 %}
+
+{% block js_inf %}
+
 <script type="text/javascript">
+$('#listamueble').zelect( {
+    placeholder:'Seleccione el mueble'
+});
 $(document).ready(function() {
+enterNone();
+$('.zelected').click();
+$( ".zelected" ).focus(function() {
+  //$('.zelected').click();
+});
+$('.zelected').attr('tabindex', '1');
+$('#listamueble').val('{{request.GET.item}}');
     {% for ta in tamano %}
 
     var tamano = document.getElementById("id_form-{{forloop.counter0}}-tamano");
     for(var i=0; i<tamano.length; i++) {
         if ("{{ta.id}}"==tamano[i].value) {
             $('#id_form-{{forloop.counter0}}-tamano').val("{{ta.id}}");
+            $('.mTamano{{forloop.counter0}}').text($("#id_form-{{forloop.counter0}}-tamano option:selected").text());
+            Switchbootstrap('form-{{forloop.counter0}}-predefinido');
         }
     }
 
@@ -45,6 +126,7 @@ $(document).ready(function() {
 
     $("#listamueble").on("change", function() {
         id_lista_mueble = $("#listamueble").val();
+        $('#id_form-0-ancho').focus();
         {% for ta in tamano %}
 
         var mueble = document.getElementById("id_form-{{forloop.counter0}}-mueble");
@@ -64,18 +146,26 @@ $(document).ready(function() {
                 $("#id_form-{{forloop.counter0}}-alto").val(data[0].alto);
                 if (data[0].predefinido == true) {
                     document.getElementById("id_form-{{forloop.counter0}}-predefinido").checked = true;
+                    $('#id_form-{{forloop.counter0}}-predefinido').bootstrapSwitch('state', true);
                 } else {
                     document.getElementById("id_form-{{forloop.counter0}}-predefinido").checked = false;
+                    $('#id_form-{{forloop.counter0}}-predefinido').bootstrapSwitch('state', false);
                 }
 
             });
         {% endfor %}
     });
+
+$('a').attr('tabindex', '-1');
+
+$("input").click(function(){
+  this.select();
+});
 });
 
 </script>
 
-{% endblock cuerpo_form %}
+{% endblock js_inf %}
 
 {% block ayuda %}
 
