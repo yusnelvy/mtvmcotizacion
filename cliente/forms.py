@@ -17,7 +17,7 @@ class ClienteForm(ModelForm):
 
     fecha_nacimiento = forms.DateField(
         label='Fecha de nacimiento:',
-        widget=forms.DateInput(format='%d-%m-%Y', attrs={'class': ''}),
+        widget=forms.DateInput(format='%d/%m/%Y', attrs={'class': ''}),
         input_formats=('%Y-%m-%d', '%d/%m/%Y',))
 
     class Meta:

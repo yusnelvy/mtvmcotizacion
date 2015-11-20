@@ -11,6 +11,7 @@ import simplejson as json
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from mtvmcotizacion.views import get_query
 from premisas.models import PerzonalizacionVisual
+from django.contrib import messages
 
 
 # Create your views here.
@@ -138,13 +139,19 @@ def add_cargotrabajador(request):
     if request.method == 'POST':
         form_cargotrabajador = CargotrabajadorForm(request.POST)
         if form_cargotrabajador.is_valid():
-            form_cargotrabajador.save()
-            return HttpResponseRedirect(reverse('utrabajadores:lista_cargotrabajador'))
+            id_reg = form_cargotrabajador.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('utrabajadores:edit_cargotrabajador',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('utrabajadores:lista_cargotrabajador'))
 
     else:
         form_cargotrabajador = CargotrabajadorForm()
     return render_to_response('cargotrabajador_add.html',
-                              {'form_cargotrabajador': form_cargotrabajador, 'create': True},
+                              {'form_cargotrabajador': form_cargotrabajador,
+                               'create': True},
                               context_instance=RequestContext(request))
 
 
@@ -163,15 +170,20 @@ def edit_cargotrabajador(request, pk):
         if form_edit_cargotrabajador.is_valid():
             # formulario validado correctamente
             form_edit_cargotrabajador.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
             else:
-                return HttpResponseRedirect(reverse('utrabajadores:lista_cargotrabajador'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('utrabajadores:lista_cargotrabajador'))
     else:
         # formulario inicial
         form_edit_cargotrabajador = CargotrabajadorForm(instance=id_cargo)
 
     return render_to_response('cargotrabajador_edit.html',
-                              {'form_edit_cargotrabajador': form_edit_cargotrabajador, 'create': False},
+                              {'form_edit_cargotrabajador': form_edit_cargotrabajador,
+                               'create': False},
                               context_instance=RequestContext(request))

@@ -1043,11 +1043,15 @@ class DatosPrecargadoUpdate(UpdateView):
         self.object = form.save(commit=False)
         self.object.save()
 
-        redirect_to = self.request.GET['next']
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
+        if 'regEdit' in self.request.POST:
+            messages.success(self.request, "Registro guardado.")
+            return HttpResponseRedirect(self.request.get_full_path())
         else:
-            return render_to_response(self.template_name, self.get_context_data())
+            redirect_to = self.request.GET['next']
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return render_to_response(self.template_name, self.get_context_data())
 
 
 class PresupuestoUpdate(UpdateView):

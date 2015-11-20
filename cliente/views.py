@@ -17,6 +17,7 @@ import django.db
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from mtvmcotizacion.views import get_query
 from premisas.models import PerzonalizacionVisual
+from django.contrib import messages
 
 
 # Create your views here.
@@ -585,9 +586,15 @@ def add_cliente(request):
             cliente_form = ClienteForm(request.POST)
 
             if cliente_form.is_valid():
-                cliente_form.save()
-                mensaje = 'Se ha guardado la información del cliente'
-                return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
+                id_reg = cliente_form.save()
+
+                if 'regEdit' in request.POST:
+                    messages.success(request, "Registro guardado.")
+                    return HttpResponseRedirect(reverse('uclientes:edit_cliente',
+                                                        args=(id_reg.id,)))
+                else:
+                    mensaje = 'Se ha guardado la información del cliente'
+                    return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
 
         except Exception as ex:
             cliente_form = ClienteForm()
@@ -608,9 +615,14 @@ def add_sexo(request):
             sexo_form = SexoForm(request.POST)
 
             if sexo_form.is_valid():
-                sexo_form.save()
+                id_reg = sexo_form.save()
 
-                return HttpResponseRedirect(reverse('uclientes:lista_sexo'))
+                if 'regEdit' in request.POST:
+                    messages.success(request, "Registro guardado.")
+                    return HttpResponseRedirect(reverse('uclientes:edit_sexo',
+                                                        args=(id_reg.id,)))
+                else:
+                    return HttpResponseRedirect(reverse('uclientes:lista_sexo'))
 
         except Exception as ex:
             sexo_form = SexoForm()
@@ -632,9 +644,14 @@ def add_estadocivil(request):
             estadocivil_form = EstadoCivilForm(request.POST)
 
             if estadocivil_form.is_valid():
-                estadocivil_form.save()
+                id_reg = estadocivil_form.save()
 
-                return HttpResponseRedirect(reverse('uclientes:lista_estadocivil'))
+                if 'regEdit' in request.POST:
+                    messages.success(request, "Registro guardado.")
+                    return HttpResponseRedirect(reverse('uclientes:edit_estado_civil',
+                                                        args=(id_reg.id,)))
+                else:
+                    return HttpResponseRedirect(reverse('uclientes:lista_estadocivil'))
 
         except Exception as ex:
             estadocivil_form = EstadoCivilForm()
@@ -657,7 +674,14 @@ def add_email(request, id_cli):
             if email_form.is_valid():
                 id_reg = email_form.save()
                 id_cli = Email.objects.get(id=id_reg.id)
-                return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
+
+                if 'regEdit' in request.POST:
+                    messages.success(request, "Registro guardado.")
+                    return HttpResponseRedirect(reverse('uclientes:edit_email',
+                                                        args=(id_reg.id,)))
+                else:
+                    return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
+
         except Exception as ex:
             mensaje = "se ha producido un error"+str(ex)
             email_form = EmailForm()
@@ -678,9 +702,15 @@ def add_tipocliente(request):
             tipocliente_form = TipoClienteForm(request.POST)
 
             if tipocliente_form.is_valid():
-                tipocliente_form.save()
-                mensaje = 'Se ha guardado la información del tipo de cliente'
-                return HttpResponseRedirect(reverse('uclientes:lista_tipo_cliente'))
+                id_reg = tipocliente_form.save()
+
+                if 'regEdit' in request.POST:
+                    messages.success(request, "Registro guardado.")
+                    return HttpResponseRedirect(reverse('uclientes:edit_tipocliente',
+                                                        args=(id_reg.id,)))
+                else:
+                    mensaje = 'Se ha guardado la información del tipo de cliente'
+                    return HttpResponseRedirect(reverse('uclientes:lista_tipo_cliente'))
 
         except Exception as ex:
             tipocliente_form = TipoClienteForm()
@@ -707,18 +737,23 @@ def edit_cliente(request, pk):
         mensaje = "se ha producido un error"+str(ex)
 
     if request.method == 'POST':
+        mensaje = ""
         # formulario enviado
         editar_clie = ClienteForm(request.POST, instance=id_clie)
 
         if editar_clie.is_valid():
             # formulario validado correctamente
             editar_clie.save()
-            #return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
-            return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_clie.id,)))
 
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+            else:
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('uclientes:ficha_cliente',
+                                                        args=(id_clie.id,)))
     else:
         # formulario inicial
         editar_clie = ClienteForm(instance=id_clie)
@@ -739,9 +774,11 @@ def edit_email(request, id_cli, pk):
         if form_edit_email.is_valid():
             # formulario validado correctamente
             form_edit_email.save()
-
-            #return HttpResponseRedirect(reverse('uclientes:lista_email'))
-            return HttpResponseRedirect('../../../')
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+            else:
+                return HttpResponseRedirect('../../../')
     else:
         # formulario inicial
         form_edit_email = EmailForm(instance=id_email)
@@ -762,8 +799,11 @@ def edit_sexo(request, pk):
         if form_edit_sexo.is_valid():
             # formulario validado correctamente
             form_edit_sexo.save()
-
-            return HttpResponseRedirect(reverse('uclientes:lista_sexo'))
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+            else:
+                return HttpResponseRedirect(reverse('uclientes:lista_sexo'))
 
     else:
         # formulario inicial
@@ -785,8 +825,11 @@ def edit_estado_civil(request, pk):
         if form_edit_estadocivil.is_valid():
             # formulario validado correctamente
             form_edit_estadocivil.save()
-
-            return HttpResponseRedirect(reverse('uclientes:lista_estadocivil'))
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+            else:
+                return HttpResponseRedirect(reverse('uclientes:lista_estadocivil'))
 
     else:
         # formulario inicial
@@ -815,12 +858,14 @@ def edit_tipocliente(request, pk):
         if editar_tipocliente.is_valid():
             # formulario validado correctamente
             editar_tipocliente.save()
-            #return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
-            return HttpResponseRedirect(reverse('uclientes:lista_tipo_cliente', args=(id_tipocliente.id,)))
-
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+            else:
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('uclientes:lista_tipo_cliente'))
     else:
         # formulario inicial
         editar_tipocliente = TipoClienteForm(instance=id_tipocliente)

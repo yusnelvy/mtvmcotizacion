@@ -39,6 +39,7 @@ from django.views.generic import View
 from django.conf import settings
 from mtvmcotizacion.views import get_query
 from premisas.models import PerzonalizacionVisual
+from django.contrib import messages
 
 
 # Create your views here.
@@ -653,8 +654,13 @@ def add_estadocotizacion(request):
     if request.method == 'POST':
         form_estadocotizacion = EstadoCotizacionForm(request.POST)
         if form_estadocotizacion.is_valid():
-            form_estadocotizacion.save()
-            return HttpResponseRedirect(reverse('ucotizaciones:lista_estado_cotizacion'))
+            id_reg = form_estadocotizacion.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('ucotizaciones:edit_estadocotizacion',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('ucotizaciones:lista_estado_cotizacion'))
 
     else:
         form_estadocotizacion = EstadoCotizacionForm()
@@ -669,8 +675,13 @@ def add_piso(request):
     if request.method == 'POST':
         form_piso = PisoForm(request.POST)
         if form_piso.is_valid():
-            form_piso.save()
-            return HttpResponseRedirect(reverse('ucotizaciones:lista_piso'))
+            id_reg = form_piso.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('ucotizaciones:edit_piso',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('ucotizaciones:lista_piso'))
 
     else:
         form_piso = PisoForm()
@@ -685,8 +696,13 @@ def add_tiempocarga(request):
     if request.method == 'POST':
         form_tiempocarga = TiempoCargaForm(request.POST)
         if form_tiempocarga.is_valid():
-            form_tiempocarga.save()
-            return HttpResponseRedirect(reverse('ucotizaciones:lista_tiempocarga'))
+            id_reg = form_tiempocarga.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('ucotizaciones:edit_tiempocarga',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('ucotizaciones:lista_tiempocarga'))
 
     else:
         form_tiempocarga = TiempoCargaForm()
@@ -701,8 +717,13 @@ def add_cotizacion(request):
     if request.method == 'POST':
         form_cotizacion = CotizacionForm(request.POST)
         if form_cotizacion.is_valid():
-            form_cotizacion.save()
-            return HttpResponseRedirect(reverse('ucotizaciones:lista_cotizacion'))
+            id_reg = form_cotizacion.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('ucotizaciones:edit_cotizacion',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('ucotizaciones:lista_cotizacion'))
 
     else:
         form_cotizacion = CotizacionForm()
@@ -717,8 +738,13 @@ def add_vehiculo(request):
     if request.method == 'POST':
         form_vehiculo = VehiculoForm(request.POST)
         if form_vehiculo.is_valid():
-            form_vehiculo.save()
-            return HttpResponseRedirect(reverse('ucotizaciones:lista_vehiculo'))
+            id_reg = form_vehiculo.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('ucotizaciones:edit_vehiculo',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('ucotizaciones:lista_vehiculo'))
 
     else:
         form_vehiculo = VehiculoForm()
@@ -953,8 +979,13 @@ def edit_piso(request, pk):
         if editar_piso.is_valid():
             # formulario validado correctamente
             editar_piso.save()
+            if 'regEdit' in request.POST:
 
-            return HttpResponseRedirect(reverse('ucotizaciones:lista_piso'))
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
+            else:
+                return HttpResponseRedirect(reverse('ucotizaciones:lista_piso'))
 
     else:
         # formulario inicial
@@ -981,7 +1012,13 @@ def edit_tiempocarga(request, pk):
         if editar_tiempocarga.is_valid():
             # formulario validado correctamente
             editar_tiempocarga.save()
-            return HttpResponseRedirect(reverse('ucotizaciones:lista_tiempocarga'))
+            if 'regEdit' in request.POST:
+
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
+            else:
+                return HttpResponseRedirect(reverse('ucotizaciones:lista_tiempocarga'))
 
     else:
         # formulario inicial
@@ -1012,15 +1049,17 @@ def edit_cotizacion(request, pk):
             # formulario validado correctamente
             editar_cotizacion.save()
 
-            #prueba para actualizar un campo calculable
-            #reporter = Cotizacion.objects.filter(pk=id_reg.id)
-            #reporter.update(cantidad_ambientes=F('cantidad_ambientes')+1)
+            if 'regEdit' in request.POST:
 
-        if redirect_to:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
 
-            return HttpResponseRedirect(redirect_to)
-        else:
-            return HttpResponseRedirect(reverse('ucotizaciones:lista_cotizacion'))
+            else:
+                if redirect_to:
+
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('ucotizaciones:lista_cotizacion'))
 
     else:
         # formulario inicial
@@ -1049,11 +1088,16 @@ def edit_vehiculo(request, pk):
         if editar_vehiculo.is_valid():
             # formulario validado correctamente
             editar_vehiculo.save()
+            if 'regEdit' in request.POST:
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('ucotizaciones:lista_vehiculo'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('ucotizaciones:lista_vehiculo'))
 
     else:
         # formulario inicial

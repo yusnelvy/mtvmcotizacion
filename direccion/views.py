@@ -15,6 +15,7 @@ import django.db
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from mtvmcotizacion.views import get_query
 from premisas.models import PerzonalizacionVisual
+from django.contrib import messages
 
 
 # Create your views here.
@@ -937,8 +938,13 @@ def add_pais(request):
     if request.method == 'POST':
         form_pais = PaisForm(request.POST)
         if form_pais.is_valid():
-            form_pais.save()
-            return HttpResponseRedirect(reverse('udirecciones:lista_pais'))
+            id_reg = form_pais.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('udirecciones:edit_pais',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('udirecciones:lista_pais'))
     else:
         form_pais = PaisForm()
     return render_to_response('pais_add.html',
@@ -951,8 +957,13 @@ def add_provincia(request):
     if request.method == 'POST':
         form_provincia = ProvinciaForm(request.POST)
         if form_provincia.is_valid():
-            form_provincia.save()
-            return HttpResponseRedirect(reverse('udirecciones:lista_provincia'))
+            id_reg = form_provincia.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('udirecciones:edit_provincia',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('udirecciones:lista_provincia'))
     else:
         form_provincia = ProvinciaForm()
     return render_to_response('provincia_add.html',
@@ -965,8 +976,13 @@ def add_ciudad(request):
     if request.method == 'POST':
         form_ciudad = CiudadForm(request.POST)
         if form_ciudad.is_valid():
-            form_ciudad.save()
-            return HttpResponseRedirect(reverse('udirecciones:lista_ciudad'))
+            id_reg = form_ciudad.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('udirecciones:edit_ciudad',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('udirecciones:lista_ciudad'))
     else:
         form_ciudad = CiudadForm()
     return render_to_response('ciudad_add.html',
@@ -979,8 +995,13 @@ def add_zona(request):
     if request.method == 'POST':
         form_zona = ZonaForm(request.POST, request.FILES)
         if form_zona.is_valid():
-            form_zona.save()
-            return HttpResponseRedirect(reverse('udirecciones:lista_zona'))
+            id_reg = form_zona.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('udirecciones:edit_zona',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('udirecciones:lista_zona'))
     else:
         form_zona = ZonaForm()
     return render_to_response('zona_add.html',
@@ -993,8 +1014,13 @@ def add_tipo_direccion(request):
     if request.method == 'POST':
         form_tipodireccion = TipoDireccionForm(request.POST)
         if form_tipodireccion.is_valid():
-            form_tipodireccion.save()
-            return HttpResponseRedirect(reverse('udirecciones:lista_tipo_direccion'))
+            id_reg = form_tipodireccion.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('udirecciones:edit_tipo_direccion',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('udirecciones:lista_tipo_direccion'))
     else:
         form_tipodireccion = TipoDireccionForm()
 
@@ -1025,8 +1051,13 @@ def add_tipo_inmueble(request):
     if request.method == 'POST':
         form_tipo_inmueble = TipoInmuebleForm(request.POST)
         if form_tipo_inmueble.is_valid():
-            form_tipo_inmueble.save()
-            return HttpResponseRedirect(reverse('udirecciones:lista_tipo_inmueble'))
+            id_reg = form_tipo_inmueble.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('udirecciones:edit_tipo_inmueble',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('udirecciones:lista_tipo_inmueble'))
     else:
         form_tipo_inmueble = TipoInmuebleForm()
 
@@ -1040,8 +1071,13 @@ def add_complejidad_inmueble(request):
     if request.method == 'POST':
         form_complejidad = ComplejidadInmuebleForm(request.POST)
         if form_complejidad.is_valid():
-            form_complejidad.save()
-            return HttpResponseRedirect(reverse('udirecciones:lista_complejidad_inmueble'))
+            id_reg = form_complejidad.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('udirecciones:edit_complejidad_inmueble',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('udirecciones:lista_complejidad_inmueble'))
     else:
         form_complejidad = ComplejidadInmuebleForm()
 
@@ -1057,7 +1093,12 @@ def add_inmueble(request):
         if form_inmueble.is_valid():
             id_reg = form_inmueble.save()
             id_di = Inmueble.objects.get(id=id_reg.id)
-            return HttpResponseRedirect(reverse('udirecciones:lista_inmueble', args=(id_di.direccion.id,)))
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('udirecciones:edit_inmueble',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('udirecciones:lista_inmueble', args=(id_di.direccion.id,)))
     else:
         form_inmueble = InmuebleForm()
 
@@ -1080,11 +1121,16 @@ def edit_pais(request, pk):
         if form_edit_pais.is_valid():
             # formulario validado correctamente
             form_edit_pais.save()
+            if 'regEdit' in request.POST:
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('udirecciones:lista_pais'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('udirecciones:lista_pais'))
     else:
         # formulario inicial
         form_edit_pais = PaisForm(instance=pais)
@@ -1107,11 +1153,16 @@ def edit_provincia(request, pk):
         if form_edit_provincia.is_valid():
             # formulario validado correctamente
             form_edit_provincia.save()
+            if 'regEdit' in request.POST:
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('udirecciones:lista_provincia'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('udirecciones:lista_provincia'))
 
     else:
         # formulario inicial
@@ -1135,12 +1186,17 @@ def edit_ciudad(request, pk):
         if form_edit_ciudad.is_valid():
             # formulario validado correctamente
             form_edit_ciudad.save()
+            if 'regEdit' in request.POST:
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
 
-                return HttpResponseRedirect(reverse('udirecciones:lista_ciudad'))
+                    return HttpResponseRedirect(reverse('udirecciones:lista_ciudad'))
 
     else:
         # formulario inicial
@@ -1164,11 +1220,16 @@ def edit_zona(request, pk):
         if form_edit_zona.is_valid():
             # formulario validado correctamente
             form_edit_zona.save()
+            if 'regEdit' in request.POST:
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('udirecciones:lista_zona'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('udirecciones:lista_zona'))
 
     else:
         # formulario inicial
@@ -1192,11 +1253,16 @@ def edit_tipo_direccion(request, pk):
         if form_edit_tipodireccion.is_valid():
             # formulario validado correctamente
             form_edit_tipodireccion.save()
+            if 'regEdit' in request.POST:
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('udirecciones:lista_tipo_direccion'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('udirecciones:lista_tipo_direccion'))
 
     else:
         # formulario inicial
@@ -1221,12 +1287,19 @@ def edit_direccion(request, pk):
             # formulario validado correctamente
             id_reg = form_edit_direccion.save()
             id_cli = Direccion.objects.get(id=id_reg.id)
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
+            if 'regEdit' in request.POST:
 
-            #return HttpResponseRedirect(reverse('udirecciones:lista_direccion'))
-            return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
+            else:
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+
+                    #return HttpResponseRedirect(reverse('udirecciones:lista_direccion'))
+                    return HttpResponseRedirect(reverse('uclientes:ficha_cliente',
+                                                        args=(id_cli.cliente.id,)))
 
     else:
         # formulario inicial
@@ -1248,11 +1321,17 @@ def edit_tipo_inmueble(request, pk):
 
         if form_edit_tipo_inmueble.is_valid():
             form_edit_tipo_inmueble.save()
+            if 'regEdit' in request.POST:
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('udirecciones:lista_tipo_inmueble'))
+
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('udirecciones:lista_tipo_inmueble'))
     else:
         form_edit_tipo_inmueble = TipoInmuebleForm(instance=tipo_inmueble)
 
@@ -1270,7 +1349,13 @@ def edit_complejidad_inmueble(request, pk):
         form_edit_complejidad_inmueble = ComplejidadInmuebleForm(request.POST, instance=complejidad_inmueble)
         if form_edit_complejidad_inmueble.is_valid():
             form_edit_complejidad_inmueble.save()
-            return HttpResponseRedirect(reverse('udirecciones:lista_complejidad_inmueble'))
+            if 'regEdit' in request.POST:
+
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
+            else:
+                return HttpResponseRedirect(reverse('udirecciones:lista_complejidad_inmueble'))
     else:
         form_edit_complejidad_inmueble = ComplejidadInmuebleForm(instance=complejidad_inmueble)
 
@@ -1289,11 +1374,17 @@ def edit_inmueble(request, pk):
         form_edit_inmueble = InmuebleForm(request.POST, instance=inmueble)
         if form_edit_inmueble.is_valid():
             form_edit_inmueble.save()
+            if 'regEdit' in request.POST:
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('udirecciones:lista_inmueble', args=(inmueble.direccion.id,)))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('udirecciones:lista_inmueble',
+                                                        args=(inmueble.direccion.id,)))
     else:
         form_edit_inmueble = InmuebleForm(instance=inmueble)
 

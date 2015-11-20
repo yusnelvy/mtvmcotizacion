@@ -22,7 +22,6 @@ from mtvmcotizacion.views import get_query
 from premisas.models import PerzonalizacionVisual
 from django.forms.formsets import formset_factory
 from django.contrib import messages
-import urllib
 
 
 def lista_mueble(request):
@@ -118,7 +117,9 @@ def search_mueble(request):
 
         search_text = request.POST['search_text']
         if search_text is not None and search_text != u"":
-            entry_query = get_query(search_text, ['mueble', 'tipo_mueble__tipo_mueble', 'forma__forma'])
+            entry_query = get_query(search_text, ['mueble',
+                                                  'tipo_mueble__tipo_mueble',
+                                                  'forma__forma'])
             lista_mueble = Mueble.objects.filter(entry_query)
         else:
             lista_mueble = Mueble.objects.all()
@@ -153,8 +154,13 @@ def add_mueble(request):
     if request.method == 'POST':
         form_mueble = MuebleForm(request.POST)
         if form_mueble.is_valid():
-            form_mueble.save()
-            return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
+            id_reg = form_mueble.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('umuebles:edit_mueble',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
     else:
         form_mueble = MuebleForm()
     return render_to_response('mueble_add.html',
@@ -175,18 +181,24 @@ def edit_mueble(request, pk):
         if form_edit_mueble.is_valid():
             # formulario validado correctamente
             form_edit_mueble.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
             else:
-                return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('umuebles:lista_mueble'))
 
     else:
         # formulario inicial
         form_edit_mueble = MuebleForm(instance=mueble)
 
     return render_to_response('mueble_edit.html',
-                              {'form_edit_mueble': form_edit_mueble, 'mueble': mueble, 'create': False},
+                              {'form_edit_mueble': form_edit_mueble,
+                               'mueble': mueble,
+                               'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -807,7 +819,9 @@ def buscar_tamano_mueble(request, idmueble=0):
     if idmueble != '0':
         try:
             buscar_tamanomueble = Tamano_Mueble.objects.filter(mueble=idmueble)
-            listar_tamano = Tamano_Mueble.objects.filter(mueble=idmueble).values('tamano', 'tamano__descripcion', 'mueble').annotate(tcount=Count('tamano')).order_by('tamano')
+            listar_tamano = Tamano_Mueble.objects.filter(mueble=idmueble).values('tamano',
+                                                                                 'tamano__descripcion',
+                                                                                 'mueble').annotate(tcount=Count('tamano')).order_by('tamano')
             lista_mueble = Mueble.objects.filter(id=idmueble)
             mensaje = ""
 
@@ -822,7 +836,9 @@ def buscar_tamano_mueble(request, idmueble=0):
     else:
         buscar_tamanomueble = Tamano_Mueble.objects.all()
         lista_mueble = Mueble.objects.all()
-        listar_tamano = Tamano_Mueble.objects.values('tamano', 'tamano__descripcion', 'mueble').annotate(tcount=Count('tamano')).order_by('tamano')
+        listar_tamano = Tamano_Mueble.objects.values('tamano',
+                                                     'tamano__descripcion',
+                                                     'mueble').annotate(tcount=Count('tamano')).order_by('tamano')
 
         mensaje = ""
 
@@ -838,7 +854,11 @@ def buscar_tamano_mueble(request, idmueble=0):
         # If page is out of range (e.g. 9999), deliver last page of results.
         lista_muebles = paginator.page(paginator.num_pages)
 
-    context = {'buscar_tamanomueble': buscar_tamanomueble, 'lista_muebles': lista_muebles, 'lista_mueble': lista_mueble, 'listar_tamano': listar_tamano, 'mensaje': mensaje}
+    context = {'buscar_tamanomueble': buscar_tamanomueble,
+               'lista_muebles': lista_muebles,
+               'lista_mueble': lista_mueble,
+               'listar_tamano': listar_tamano,
+               'mensaje': mensaje}
 
     return render(request, 'tamanomueble_lista.html', context)
 
@@ -907,7 +927,8 @@ def buscar_mueble_ambiente(request, idambiente=0):
         muebleambientes = paginator.page(paginator.num_pages)
 
     context = {'buscar_muebleambiente': buscar_muebleambiente,
-               'muebleambientes': muebleambientes, 'ambiente': idambiente, 'mensaje': mensaje, 'lista_ambiente': lista_ambiente}
+               'muebleambientes': muebleambientes, 'ambiente': idambiente,
+               'mensaje': mensaje, 'lista_ambiente': lista_ambiente}
     return render(request, 'muebleambiente_lista.html', context)
 
 
@@ -917,8 +938,13 @@ def add_tipo_mueble(request):
     if request.method == 'POST':
         form_tipomueble = TipoMuebleForm(request.POST)
         if form_tipomueble.is_valid():
-            form_tipomueble.save()
-            return HttpResponseRedirect(reverse('umuebles:lista_tipo_mueble'))
+            id_reg = form_tipomueble.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('umuebles:edit_tipo_mueble',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('umuebles:lista_tipo_mueble'))
     else:
         form_tipomueble = TipoMuebleForm()
     return render_to_response('tipomueble_add.html',
@@ -931,8 +957,13 @@ def add_ocupacion(request):
     if request.method == 'POST':
         form_ocupacion = OcupacionForm(request.POST)
         if form_ocupacion.is_valid():
-            form_ocupacion.save()
-            return HttpResponseRedirect(reverse('umuebles:lista_ocupacion'))
+            id_reg = form_ocupacion.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('umuebles:edit_ocupacion',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('umuebles:lista_ocupacion'))
     else:
         form_ocupacion = OcupacionForm()
     return render_to_response('ocupacion_add.html',
@@ -945,8 +976,13 @@ def add_formamueble(request):
     if request.method == 'POST':
         form_formamueble = FormaMuebleForm(request.POST)
         if form_formamueble.is_valid():
-            form_formamueble.save()
-            return HttpResponseRedirect(reverse('umuebles:lista_forma_mueble'))
+            id_reg = form_formamueble.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('umuebles:edit_forma_mueble',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('umuebles:lista_forma_mueble'))
     else:
         form_formamueble = FormaMuebleForm()
     return render_to_response('formamueble_add.html',
@@ -959,8 +995,13 @@ def add_tamano(request):
     if request.method == 'POST':
         form_tamano = TamanoForm(request.POST)
         if form_tamano.is_valid():
-            form_tamano.save()
-            return HttpResponseRedirect(reverse('umuebles:lista_tamano'))
+            id_reg = form_tamano.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('umuebles:edit_tamano',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('umuebles:lista_tamano'))
     else:
         form_tamano = TamanoForm()
     return render_to_response('tamano_add.html',
@@ -973,8 +1014,13 @@ def add_densidad(request):
     if request.method == 'POST':
         form_densidad = DensidadForm(request.POST)
         if form_densidad.is_valid():
-            form_densidad.save()
-            return HttpResponseRedirect(reverse('umuebles:lista_densidad'))
+            id_reg = form_densidad.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('umuebles:edit_densidad',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('umuebles:lista_densidad'))
     else:
         form_densidad = DensidadForm()
     return render_to_response('densidad_add.html',
@@ -989,7 +1035,13 @@ def add_tamanomueble(request, id_m):
         if form_tamanomueble.is_valid():
             id_reg = form_tamanomueble.save()
             id_tm = Tamano_Mueble.objects.get(id=id_reg.id)
-            return HttpResponseRedirect(reverse('umuebles:buscar_tamano_mueble', args=(id_tm.mueble.id,)))
+
+            if 'regEdit' in request.POST:
+                messages.success(self.request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('umuebles:TamanoMuebleView') + "?%s" % 'item=' + id_tm.mueble.id)
+            else:
+                return HttpResponseRedirect(reverse('umuebles:buscar_tamano_mueble',
+                                                    args=(id_tm.mueble.id,)))
 
     else:
         form_tamanomueble = TamanoMuebleForm(initial={'mueble': id_m})
@@ -1062,8 +1114,7 @@ class TamanoMuebleView(View):
 
             # <process form cleaned data>
             messages.success(self.request, "Registro guardado.")
-            return HttpResponseRedirect(reverse('umuebles:buscar_tamano_mueble',
-                                                args=(0,)))
+            return HttpResponseRedirect(reverse('umuebles:TamanoMuebleView') + "?%s" % 'item=' + item)
         else:
             for form in formset:
                 tamanomueble = Tamano_Mueble.objects.filter(tamano_id=form.cleaned_data['tamano'],
@@ -1104,11 +1155,17 @@ def add_muebleambiente(request, id_ti, origen):
             id_reg = form_muebleambiente.save()
             id_am = Mueble_Ambiente.objects.get(id=id_reg.id)
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('umuebles:edit_muebleambiente',
+                                                    args=(id_reg.id,)))
             else:
-                return HttpResponseRedirect(reverse('umuebles:buscar_mueble_ambiente',
-                                                    args=(id_am.ambiente.id,)))
+
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('umuebles:buscar_mueble_ambiente',
+                                                        args=(id_am.ambiente.id,)))
     else:
         form_muebleambiente = MuebleAmbienteForm(initial=data)
 
@@ -1135,18 +1192,24 @@ def edit_tipo_mueble(request, pk):
         if form_edit_tipomueble.is_valid():
             # formulario validado correctamente
             form_edit_tipomueble.save()
+            if 'regEdit' in request.POST:
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('umuebles:lista_tipo_mueble'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('umuebles:lista_tipo_mueble'))
 
     else:
         # formulario inicial
         form_edit_tipomueble = TipoMuebleForm(instance=tipomueble)
 
     return render_to_response('tipomueble_edit.html',
-                              {'form_edit_tipomueble': form_edit_tipomueble, 'tipomueble': tipomueble, 'create': False},
+                              {'form_edit_tipomueble': form_edit_tipomueble,
+                               'tipomueble': tipomueble, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -1163,18 +1226,24 @@ def edit_ocupacion(request, pk):
         if form_edit_ocupacion.is_valid():
             # formulario validado correctamente
             form_edit_ocupacion.save()
+            if 'regEdit' in request.POST:
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('umuebles:lista_ocupacion'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('umuebles:lista_ocupacion'))
 
     else:
         # formulario inicial
         form_edit_ocupacion = OcupacionForm(instance=ocupacion)
 
     return render_to_response('ocupacion_edit.html',
-                              {'form_edit_ocupacion': form_edit_ocupacion, 'ocupacion': ocupacion, 'create': False},
+                              {'form_edit_ocupacion': form_edit_ocupacion,
+                               'ocupacion': ocupacion, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -1191,17 +1260,24 @@ def edit_forma_mueble(request, pk):
         if form_edit_formamueble.is_valid():
             # formulario validado correctamente
             form_edit_formamueble.save()
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+            if 'regEdit' in request.POST:
+
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('umuebles:lista_forma_mueble'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('umuebles:lista_forma_mueble'))
 
     else:
         # formulario inicial
         form_edit_formamueble = FormaMuebleForm(instance=formamueble)
 
     return render_to_response('formamueble_edit.html',
-                              {'form_edit_formamueble': form_edit_formamueble, 'formamueble': formamueble, 'create': False},
+                              {'form_edit_formamueble': form_edit_formamueble,
+                               'formamueble': formamueble, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -1218,18 +1294,24 @@ def edit_tamano(request, pk):
         if form_edit_tamano.is_valid():
             # formulario validado correctamente
             form_edit_tamano.save()
+            if 'regEdit' in request.POST:
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('umuebles:lista_tamano'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('umuebles:lista_tamano'))
 
     else:
         # formulario inicial
         form_edit_tamano = TamanoForm(instance=tamano)
 
     return render_to_response('tamano_edit.html',
-                              {'form_edit_tamano': form_edit_tamano, 'tamano': tamano, 'create': False},
+                              {'form_edit_tamano': form_edit_tamano,
+                               'tamano': tamano, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -1246,18 +1328,24 @@ def edit_densidad(request, pk):
         if form_edit_densidad.is_valid():
             # formulario validado correctamente
             form_edit_densidad.save()
+            if 'regEdit' in request.POST:
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('umuebles:lista_densidad'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('umuebles:lista_densidad'))
 
     else:
         # formulario inicial
         form_edit_densidad = DensidadForm(instance=densidad)
 
     return render_to_response('densidad_edit.html',
-                              {'form_edit_densidad': form_edit_densidad, 'densidad': densidad, 'create': False},
+                              {'form_edit_densidad': form_edit_densidad,
+                               'densidad': densidad, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -1274,18 +1362,25 @@ def edit_tamanomueble(request, pk):
         if form_edit_tamanomueble.is_valid():
             # formulario validado correctamente
             form_edit_tamanomueble.save()
+            if 'regEdit' in request.POST:
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('umuebles:buscar_tamano_mueble', args=(tamanomueble.mueble.id,)))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('umuebles:buscar_tamano_mueble',
+                                                        args=(tamanomueble.mueble.id,)))
 
     else:
         # formulario inicial
         form_edit_tamanomueble = TamanoMuebleForm(instance=tamanomueble)
 
     return render_to_response('tamanomueble_edit.html',
-                              {'form_edit_tamanomueble': form_edit_tamanomueble, 'create': False},
+                              {'form_edit_tamanomueble': form_edit_tamanomueble,
+                               'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -1302,11 +1397,17 @@ def edit_muebleambiente(request, pk):
         if form_edit_muebleambiente.is_valid():
             # formulario validado correctamente
             form_edit_muebleambiente.save()
+            if 'regEdit' in request.POST:
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
 
-            return HttpResponseRedirect(reverse('umuebles:buscar_mueble_ambiente', args=(muebleambiente.ambiente.id,)))
+            else:
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+
+                return HttpResponseRedirect(reverse('umuebles:buscar_mueble_ambiente',
+                                                    args=(muebleambiente.ambiente.id,)))
 
     else:
         # formulario inicial

@@ -15,6 +15,7 @@ import django.db
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from mtvmcotizacion.views import get_query
 from premisas.models import PerzonalizacionVisual
+from django.contrib import messages
 
 
 def lista_ambiente(request):
@@ -209,8 +210,14 @@ def add_ambiente(request):
     if request.method == 'POST':
         form_ambiente = AmbienteForm(request.POST)
         if form_ambiente.is_valid():
-            form_ambiente.save()
-            return HttpResponseRedirect(reverse('uambientes:lista_ambiente'))
+            id_reg = form_ambiente.save()
+
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('uambientes:edit_ambiente',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('uambientes:lista_ambiente'))
     else:
         form_ambiente = AmbienteForm()
     return render_to_response('ambiente_add.html',
@@ -272,10 +279,16 @@ def edit_ambiente(request, pk):
             # formulario validado correctamente
             form_edit_ambiente.save()
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+            if 'regEdit' in request.POST:
+
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('uambientes:lista_ambiente'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('uambientes:lista_ambiente'))
 
     else:
         # formulario inicial
