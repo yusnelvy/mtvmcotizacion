@@ -22,6 +22,7 @@ from mtvmcotizacion.views import get_query
 from premisas.models import PerzonalizacionVisual
 from django.forms.formsets import formset_factory
 from django.contrib import messages
+import urllib
 
 
 def lista_mueble(request):
@@ -998,7 +999,9 @@ def add_tamanomueble(request, id_m):
 
 
 class TamanoMuebleView(View):
-    form_class_formset = formset_factory(TamanoMuebleForm, extra=Tamano.objects.count())
+    form_class_formset = formset_factory(TamanoMuebleForm,
+                                         extra=Tamano.objects.count(),
+                                         max_num=Tamano.objects.count())
     template_name = 'tamanomueble_add2.html'
 
     def get(self, request, *args, **kwargs):
@@ -1028,23 +1031,54 @@ class TamanoMuebleView(View):
 
         mueble = Mueble.objects.all()
         tamano = Tamano.objects.all()
-        formset = self.form_class_formset()
+        if self.request.GET.get('item'):
+            tamanomueble = Tamano_Mueble.objects.filter(mueble_id=self.request.GET.get('item'))
+            data = []
+            for item in tamanomueble:
+                data.append({'tamano': item.tamano,
+                             'mueble': item.mueble,
+                             'ancho': item.ancho,
+                             'largo': item.largo,
+                             'alto': item.alto,
+                             'predefinido': item.predefinido
+                             })
+
+            formset = self.form_class_formset(initial=data)
+        else:
+            formset = self.form_class_formset()
+
         return render(request, self.template_name, {'formset': formset,
                                                     'tamano': tamano,
                                                     'mueble': mueble})
 
     def post(self, request, *args, **kwargs):
         formset = self.form_class_formset(request.POST)
+        item = request.POST.get('listamueble')
 
         if formset.is_valid():
             for form in formset:
+                #params = urllib.urlencode({'mueble': 'form.cleaned_data["mueble"]'})
                 form.save()
 
             # <process form cleaned data>
-            messages.success(self.request, "Tamaño mueble registrado.")
+            messages.success(self.request, "Registro guardado.")
             return HttpResponseRedirect(reverse('umuebles:buscar_tamano_mueble',
                                                 args=(0,)))
+        else:
+            for form in formset:
+                tamanomueble = Tamano_Mueble.objects.filter(tamano_id=form.cleaned_data['tamano'],
+                                                            mueble_id=form.cleaned_data['mueble'])
 
+                if tamanomueble:
+                    tamanomueble.update(ancho=form.cleaned_data['ancho'],
+                                        largo=form.cleaned_data['largo'],
+                                        alto=form.cleaned_data['alto'],
+                                        predefinido=form.cleaned_data['predefinido'])
+                else:
+                    form.save()
+
+            messages.success(self.request, "Registro guardado.")
+            return HttpResponseRedirect(reverse('umuebles:TamanoMuebleView') + "?%s" % 'item=' + item)
         return render(request, self.template_name, {'formset': formset})
 
 
