@@ -38,6 +38,7 @@
                     <ul class="list-group">
                         <li class="list-group-item"><a href="{% url 'uclientes:lista_cliente' %}">Clientes activos</a><a class="glyphicon glyphicon-new-window floatRight" href="{% url 'uclientes:lista_cliente' %}" target="_blank"></a></li>
                         <li class="list-group-item"><a href="{% url 'uclientes:lista_cliente' %}">Todos los clientes</a><a class="glyphicon glyphicon-new-window floatRight" href="{% url 'uclientes:lista_cliente' %}" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="{% url 'uclientes:lista_tipo_cliente' %}">Tipos de clientes</a><a class="glyphicon glyphicon-new-window floatRight" href="{% url 'uclientes:lista_tipo_cliente' %}" target="_blank"></a></li>
                         <li class="list-group-item"><a href="{% url 'utelefonos:lista_tipotelefono' %}">Tipos de teléfonos</a><a class="glyphicon glyphicon-new-window floatRight" href="{% url 'uclientes:lista_cliente' %}" target="_blank"></a></li>
                     </ul>
                 </div>
@@ -95,7 +96,7 @@
                         <li class="list-group-item"><a href="{% url 'umuebles:lista_forma_mueble' %}">Tamaños de muebles</a><a class="glyphicon glyphicon-new-window floatRight" href="{% url 'umuebles:lista_forma_mueble' %}" target="_blank"></a></li>
                         <li class="list-group-item"><a href="{% url 'umuebles:lista_ocupacion' %}">Niveles de ocupación de muebles</a><a class="glyphicon glyphicon-new-window floatRight" href="{% url 'umuebles:lista_ocupacion' %}" target="_blank"></a></li>
                         <li class="list-group-item"><a href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}">Muebles comunes por ambiente</a><a class="glyphicon glyphicon-new-window floatRight" href="{% url 'umuebles:buscar_mueble_ambiente' 0 %}" target="_blank"></a></li>
-                        <li class="list-group-item"><a href="{% url 'umuebles:buscar_tamano_mueble' 0 %}">Medidas básicas por tamaño de mueble</a><a class="glyphicon glyphicon-new-window floatRight" href="{% url 'umuebles:buscar_tamano_mueble' 0 %}" target="_blank"></a></li>
+                        <li class="list-group-item"><a href="{% url 'umuebles:TamanoMuebleView' %}">Medidas básicas por tamaño de mueble</a><a class="glyphicon glyphicon-new-window floatRight" href="{% url 'umuebles:TamanoMuebleView' %}" target="_blank"></a></li>
                     </ul>
                 </div>
             </div>

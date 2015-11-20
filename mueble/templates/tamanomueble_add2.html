@@ -46,6 +46,7 @@
 
 <form action="" method="post" id="myformEdit">
 {% csrf_token %}
+<h4 class="elementHidden">detalle del mueble</h4>
 <div class="form-group">
         <select name="listamueble" id="listamueble">
             <option value="0">Seleccione el mueble</option>
@@ -64,12 +65,12 @@
 {% block col2 %}class="col-md-8"{% endblock col2 %}
 
 {% block content2 %}
-
+<h4>Detalle del mueble <span id="spanNmueble">"Seleccione un mueble"</span></h4>
         <div class="form-group">
 <table class="table table-bordered table-hover">
         {{ formset.management_form }}
         <tr class="active">
-            <td></td>
+            <th></th>
             <th>Ancho (cm)</th>
             <th>Largo (cm)</th>
             <th>Alto (cm)</th>
@@ -99,18 +100,35 @@
 
 {% block js_inf %}
 
+
 <script type="text/javascript">
+//$('input[type=checkbox]').bootstrapSwitch();
+
 $('#listamueble').zelect( {
     placeholder:'Seleccione el mueble'
 });
 $(document).ready(function() {
 enterNone();
+
+
+            $('.registrar').addClass('btn-disabled');
+
+
 $('.zelected').click();
 $( ".zelected" ).focus(function() {
   //$('.zelected').click();
 });
 $('.zelected').attr('tabindex', '1');
 $('#listamueble').val('{{request.GET.item}}');
+
+{% if request.GET.item == None %}
+
+{% else %}
+$('#spanNmueble').text($('#listamueble option:selected').text().toLowerCase());
+$('.zelected').css('color', '#000').text($('#listamueble option:selected').text());
+{% endif %}
+
+
     {% for ta in tamano %}
 
     var tamano = document.getElementById("id_form-{{forloop.counter0}}-tamano");
@@ -118,15 +136,21 @@ $('#listamueble').val('{{request.GET.item}}');
         if ("{{ta.id}}"==tamano[i].value) {
             $('#id_form-{{forloop.counter0}}-tamano').val("{{ta.id}}");
             $('.mTamano{{forloop.counter0}}').text($("#id_form-{{forloop.counter0}}-tamano option:selected").text());
-            Switchbootstrap('form-{{forloop.counter0}}-predefinido');
         }
-    }
 
+    }
     {% endfor %}
 
     $("#listamueble").on("change", function() {
+
         id_lista_mueble = $("#listamueble").val();
+
+        if (id_lista_mueble == 0){
+            $('.registrar').addClass('btn-disabled');
+        }else{
+        $('.registrar').removeClass('btn-disabled');
         $('#id_form-0-ancho').focus();
+        $('#spanNmueble').text($('#listamueble option:selected').text().toLowerCase());
         {% for ta in tamano %}
 
         var mueble = document.getElementById("id_form-{{forloop.counter0}}-mueble");
@@ -146,14 +170,17 @@ $('#listamueble').val('{{request.GET.item}}');
                 $("#id_form-{{forloop.counter0}}-alto").val(data[0].alto);
                 if (data[0].predefinido == true) {
                     document.getElementById("id_form-{{forloop.counter0}}-predefinido").checked = true;
-                    $('#id_form-{{forloop.counter0}}-predefinido').bootstrapSwitch('state', true);
+                //$('#id_form-{{forloop.counter0}}-predefinido').bootstrapSwitch('state', true);
                 } else {
                     document.getElementById("id_form-{{forloop.counter0}}-predefinido").checked = false;
-                    $('#id_form-{{forloop.counter0}}-predefinido').bootstrapSwitch('state', false);
+                //$('#id_form-{{forloop.counter0}}-predefinido').bootstrapSwitch('state', false);
                 }
 
             });
+
         {% endfor %}
+        }
+
     });
 
 $('a').attr('tabindex', '-1');
@@ -161,6 +188,23 @@ $('a').attr('tabindex', '-1');
 $("input").click(function(){
   this.select();
 });
+
+{% if messages %}
+
+{% for message in messages %}
+
+$('.registrar').removeClass('btn-disabled');
+var msj = document.getElementById('msjEliminado');
+$(msj).text('{{ message }}');
+$(msj).fadeIn();
+setTimeout(function() {
+    $(msj).fadeOut();
+}, 1000);
+
+
+{% endfor %}
+
+{% endif %}
 });
 
 </script>
