@@ -25,16 +25,26 @@ from django.views.generic import UpdateView
 def lista_pais(request):
     """docstring"""
     if request.user.id is not None:
-        try:
-            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                          request.user.id,
-                                                                          tipo="paginacion")
-        except PerzonalizacionVisual.DoesNotExist:
+
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+        if len(nropag) == 0:
             nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                           tipo="paginacion")
+
+        range_gap = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                         request.user.id,
+                                                                         tipo="rangopaginacion")
+        if len(range_gap) == 0:
+            range_gap = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                             tipo="rangopaginacion")
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+
+        range_gap = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                         tipo="rangopaginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -89,8 +99,30 @@ def lista_pais(request):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             paises = paginator.page(paginator.num_pages)
+    if page:
 
-    context = {'lista_pais': lista_pais, 'paises': paises}
+        if int(page) > int(range_gap[0]['valor']):
+            start = int(page)-int(range_gap[0]['valor'])
+        else:
+            start = 1
+
+        if int(page) < paginator.num_pages-int(range_gap[0]['valor']):
+            end = int(page)+int(range_gap[0]['valor'])+1
+        else:
+            end = paginator.num_pages+1
+    else:
+        if 1 > int(range_gap[0]['valor']):
+            start = 1-int(range_gap[0]['valor'])
+        else:
+            start = 1
+
+        if 1 < paginator.num_pages-int(range_gap[0]['valor']):
+            end = 1+int(range_gap[0]['valor'])+1
+        else:
+            end = paginator.num_pages+1
+
+    context = {'lista_pais': lista_pais, 'paises': paises,
+               'page_range2': range(start, end)}
     #return render(request, 'pais_lista.html', context)
     return render_to_response('pais_lista.html',
                               context, context_instance=RequestContext(request))
@@ -98,16 +130,26 @@ def lista_pais(request):
 
 def search_pais(request):
     if request.user.id is not None:
-        try:
-            nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
-                                                                          request.user.id,
-                                                                          tipo="paginacion")
-        except PerzonalizacionVisual.DoesNotExist:
+
+        nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                      request.user.id,
+                                                                      tipo="paginacion")
+        if len(nropag) == 0:
             nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                           tipo="paginacion")
+
+        range_gap = PerzonalizacionVisual.objects.values('valor').filter(usuario=
+                                                                         request.user.id,
+                                                                         tipo="rangopaginacion")
+        if len(range_gap) == 0:
+            range_gap = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                             tipo="rangopaginacion")
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+
+        range_gap = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                         tipo="rangopaginacion")
     if request.method == "POST":
         if "item_id" in request.POST:
             try:
@@ -162,8 +204,32 @@ def search_pais(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         paises = paginator.page(paginator.num_pages)
 
+    if page:
+
+        if int(page) > int(range_gap[0]['valor']):
+            start = int(page)-int(range_gap[0]['valor'])
+        else:
+            start = 1
+
+        if int(page) < paginator.num_pages-int(range_gap[0]['valor']):
+            end = int(page)+int(range_gap[0]['valor'])+1
+        else:
+            end = paginator.num_pages+1
+    else:
+        if 1 > int(range_gap[0]['valor']):
+            start = 1-int(range_gap[0]['valor'])
+        else:
+            start = 1
+
+        if 1 < paginator.num_pages-int(range_gap[0]['valor']):
+            end = 1+int(range_gap[0]['valor'])+1
+        else:
+            end = paginator.num_pages+1
+
     return render_to_response('pais_lista_search.html',
-                              {'lista_pais': lista_pais, 'paises': paises})
+                              {'lista_pais': lista_pais,
+                               'paises': paises,
+                               'page_range': range(start, end)})
 
 
 def lista_provincia(request):
@@ -1258,10 +1324,13 @@ def edit_pais(request, pk):
         # formulario inicial
         form_edit_pais = PaisForm(instance=pais)
 
-        if request.REQUEST.get('next', '').split("?")[1].split("=")[0] == 'page':
-            page = request.REQUEST.get('next', '').split("?")[1].split("=")[1]
-        elif request.REQUEST.get('next', '').split("?")[1].split("=")[0] == 'order_by':
-            order_by = request.REQUEST.get('next', '').split("?")[1].split("=")[1]
+        variable = request.REQUEST.get('next', '').split("?")
+        if len(variable) > 1:
+
+            if variable[1].split("=")[0] == 'page':
+                page = request.REQUEST.get('next', '').split("?")[1].split("=")[1]
+            elif variable[1].split("=")[0] == 'order_by':
+                order_by = request.REQUEST.get('next', '').split("?")[1].split("=")[1]
 
         if order_by:
             lista_pais = Pais.objects.all().order_by(order_by)

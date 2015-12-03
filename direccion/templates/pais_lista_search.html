@@ -94,6 +94,21 @@
   </a>
 </li>
 
+
+{% for p in page_range2 %}
+  {% if p == paises.number %}
+   <li class="active">
+      <a href="?page={{p}}&order_by={{request.GET.order_by}}">{{p}}</a>
+      </li>
+  {% else %}
+
+      <li>
+      <a href="?page={{p}}&order_by={{request.GET.order_by}}">{{p}}</a>
+      </li>
+      {% endif %}
+
+{% endfor %}
+
 {% if paises.has_next %}
 
 {% if request.GET.order_by %}
