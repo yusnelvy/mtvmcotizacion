@@ -470,48 +470,11 @@ que sobreescribe el diseño Bootstrap
 }
 
 @media(max-width:768px) {
-    .navbarPrincipal.toggled {
-        margin-left: 250px!important;
-    }
 
-    .navbarPrincipal {
-      margin-left: 0px!important;
-    }
-
-    .navbarPrincipal.toggled #menuSidebar {
-      display: none!important;
-    }
-    #menuSidebar {
-      display: block!important;
-    }
 }
 
 @media(min-width:768px) {
-    #wrapper {
-        padding-left: 250px;
-    }
 
-    #wrapper.toggled {
-        padding-left: 0;
-    }
-
-    #sidebar-wrapper {
-        width: 250px;
-    }
-
-    #wrapper.toggled #sidebar-wrapper {
-        width: 0;
-    }
-
-    #page-content-wrapper {
-        padding: 0;
-        position: relative;
-    }
-
-    #wrapper.toggled #page-content-wrapper {
-        position: relative;
-        margin-right: 0;
-    }
 }
 
 .titleAcciones {
@@ -670,7 +633,7 @@ que sobreescribe el diseño Bootstrap
   border-top: 2px solid #ddd!important;
 }
 
-.form-group .zelect {
+.buscadorSelect .zelect {
       display: inline-block;
       background-color: white;
       min-width: 300px;
@@ -680,22 +643,22 @@ que sobreescribe el diseño Bootstrap
       border-radius: 6px;
       position: relative;
     }
-    .form-group .zelected {
+    .buscadorSelect .zelected {
       font-weight: bold;
       padding-left: 10px;
     }
-    .form-group .zelected.placeholder {
+    .buscadorSelect .zelected.placeholder {
       color: #999f82;
     }
-    .form-group .zelected:hover {
+    .buscadorSelect .zelected:hover {
       border-color: #c0c4ab;
       box-shadow: inset 0px 5px 8px -6px #dbdece;
     }
-    .form-group .zelect.open {
+    .buscadorSelect .zelect.open {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }
-    .form-group .dropdown {
+    .buscadorSelect .dropdown {
       background-color: white;
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
@@ -708,7 +671,7 @@ que sobreescribe el diseño Bootstrap
       z-index: 2;
       padding: 3px 5px 3px 3px;
     }
-    .form-group .dropdown input {
+    .buscadorSelect .dropdown input {
       font-family: sans-serif;
       outline: none;
       font-size: 14px;
@@ -718,19 +681,19 @@ que sobreescribe el diseño Bootstrap
       width: 100%;
       padding: 7px 0 7px 10px;
     }
-    .form-group .dropdown ol {
+    .buscadorSelect .dropdown ol {
       padding: 0;
       margin: 3px 0 0 0;
       list-style-type: none;
       max-height: 400px;
       overflow-y: scroll;
     }
-    .form-group .dropdown li {
+    .buscadorSelect .dropdown li {
       padding-left: 10px;
     }
-    .form-group .dropdown li.current {
+    .buscadorSelect .dropdown li.current {
       background-color: #e9ebe1;
     }
-    .form-group .dropdown .no-results {
+    .buscadorSelect .dropdown .no-results {
       margin-left: 10px;
     }

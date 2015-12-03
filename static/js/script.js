@@ -99,24 +99,7 @@ $('.eliminar').on('hidden.bs.modal', function () {
         $('#search').focus();
     }, 600);
 });
-var cont = 1;
- $(".menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-        $(".navbarPrincipal").toggleClass("toggled");
 
-        //$(".navbarPrincipal").css('margin-left', '0');
-
-         if(cont == 1){
-
-            cont = 0;
-            $('#menuSidebar').css('display', 'block');
-        } else {
-            cont = 1;
-
-            $('#menuSidebar').css('display', 'none');
-        }
-    });
 
  /*ayuda*/
 
@@ -279,3 +262,31 @@ Switchbootstrap('ascensor_servicio');
 Switchbootstrap('recuperable');
 Switchbootstrap('contenedor');
 
+$('.menu-toggle').click(function(){
+
+   $.get('/sidebarUpdate/',
+      {},
+      function(data) {
+        //alert(data.sidebarStatus);
+      });
+
+});
+
+var cont = 1;
+ $(".menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+        $(".navbarPrincipal").toggleClass("toggled");
+
+        //$(".navbarPrincipal").css('margin-left', '0');
+
+         if(cont == 1){
+
+            cont = 0;
+            $('#menuSidebar').css('display', 'block');
+        } else {
+            cont = 1;
+
+            $('#menuSidebar').css('display', 'none');
+        }
+    });

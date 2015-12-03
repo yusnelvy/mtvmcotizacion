@@ -7,6 +7,16 @@ function autofitIframe (id) {
     }
 }
 
+function dropNav() {
+    if($(window).width() <= 753){
+        $('.btnNav').addClass('elementNone');
+        $('.dropNav').removeClass('elementNone');
+    }else{
+        $('.btnNav').removeClass('elementNone');
+        $('.dropNav').addClass('elementNone');
+    }
+}
+
 $(".resumenPresupuesto").on('click', function(evento2) {
     evento2.preventDefault();
     var opcion = $(this).data('opcion');
@@ -122,4 +132,8 @@ $('#myModalFormulario').on('hidden.bs.modal', function () {
         $('.id_opcionFormulario').attr('src', '');
         setTimeout(function() {$('#msjGuardado').fadeOut();}, 500);
     }, 500);
+});
+dropNav();
+$(window).resize(function(){
+    dropNav();
 });

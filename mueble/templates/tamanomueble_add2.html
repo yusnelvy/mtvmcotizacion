@@ -47,7 +47,7 @@
 <form action="" method="post" id="myformEdit">
 {% csrf_token %}
 <h4 class="elementHidden">detalle del mueble</h4>
-<div class="form-group">
+<div class="form-group buscadorSelect">
         <select name="listamueble" id="listamueble">
             <option value="0">Seleccione el mueble</option>
             {% for mu in mueble %}
