@@ -7,7 +7,7 @@ from django.shortcuts import render, render_to_response
 from ambiente.models import Ambiente, Ambiente_Tipo_inmueble
 from ambiente.forms import AmbienteForm, AmbienteTipoInmuebleForm
 from direccion.models import Tipo_Inmueble
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 import simplejson as json
@@ -35,22 +35,31 @@ def lista_ambiente(request):
         if "item_id" in request.POST:
             try:
                 id_ambiente = request.POST['item_id']
-                p = Ambiente.objects.get(pk=id_ambiente)
+
+                try:
+                    p = Ambiente.objects.get(pk=id_ambiente)
+                except Ambiente.DoesNotExist:
+                    raise Http404
+
                 mensaje = {"status": "True", "item_id": p.id, "form": "del",
                            "msj": "Se elimino el registro."}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
                 mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     order_by = request.GET.get('order_by')
@@ -98,22 +107,32 @@ def search_ambiente(request):
         if "item_id" in request.POST:
             try:
                 id_ambiente = request.POST['item_id']
-                p = Ambiente.objects.get(pk=id_ambiente)
+
+                try:
+                    p = Ambiente.objects.get(pk=id_ambiente)
+                except Ambiente.DoesNotExist:
+                    raise Http404
+
                 mensaje = {"status": "True", "item_id": p.id, "form": "del",
                            "msj": "Se elimino el registro."}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request,
+                                 "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
                 mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar ")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -160,22 +179,30 @@ def lista_ambiente_tipo_inmueble(request):
         if "item_id" in request.POST:
             try:
                 id_ambtipoinmueble = request.POST['item_id']
-                p = Ambiente_Tipo_inmueble.objects.get(pk=id_ambtipoinmueble)
+                try:
+                    p = Ambiente_Tipo_inmueble.objects.get(pk=id_ambtipoinmueble)
+                except Ambiente_Tipo_inmueble.DoesNotExist:
+                    raise Http404
+
                 mensaje = {"status": "True", "item_id": p.id, "form": "del",
                            "msj": "Se elimino el registro."}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del", "msj":
+                           "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar"}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     lista_inmueble = Tipo_Inmueble.objects.filter()
@@ -198,9 +225,15 @@ def lista_ambiente_tipo_inmueble(request):
 
 def buscar_ambiente(request, id_tipoinmueble):
     """docstring"""
-    tipo_inmueble = Ambiente_Tipo_inmueble.objects.get(id=id_tipoinmueble)
+    try:
+        tipo_inmueble = Ambiente_Tipo_inmueble.objects.get(id=id_tipoinmueble)
+    except Ambiente_Tipo_inmueble.DoesNotExist:
+        raise Http404
+    try:
+        lista_ambiente = Ambiente.objects.filter(pk=tipo_inmueble.ambiente_id)
+    except Ambiente.DoesNotExist:
+        raise Http404
 
-    lista_ambiente = Ambiente.objects.filter(pk=tipo_inmueble.ambiente_id)
     context = {'lista_ambiente': lista_ambiente}
     return render(request, 'ambiente_lista.html', context)
 
@@ -280,7 +313,6 @@ def edit_ambiente(request, pk):
             form_edit_ambiente.save()
 
             if 'regEdit' in request.POST:
-
                 messages.success(request, "Registro guardado.")
                 return HttpResponseRedirect(request.get_full_path())
 
@@ -308,7 +340,8 @@ def edit_ambiente_tipoinmueble(request, pk):
 
     if request.method == 'POST':
         # formulario enviado
-        form_edit_ambtipoinmueble = AmbienteTipoInmuebleForm(request.POST, instance=ambtipoinmueble)
+        form_edit_ambtipoinmueble = AmbienteTipoInmuebleForm(request.POST,
+                                                             instance=ambtipoinmueble)
 
         if form_edit_ambtipoinmueble.is_valid():
             # formulario validado correctamente

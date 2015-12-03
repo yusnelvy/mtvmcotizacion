@@ -14,6 +14,24 @@
 
 {% block cuerpo_form %}
 
+<ul class="pager">
+    {% if pais_previous %}
+        <li class="previous">
+            <a href="{% url 'udirecciones:edit_pais' pais_previous.id %}?next={{request.GET.next}}{% if request.GET.page %}&page={{request.GET.page}}{% elif request.GET.order_by %}&order_by={{request.GET.order_by}}{% endif %}">&larr; Anterior</a>
+        </li>
+    {% else %}
+        <li class="previous disabled"><a href="#">&larr; Anterior</a></li>
+    {% endif %}
+
+    {% if pais_next %}
+        <li class="next">
+            <a href="{% url 'udirecciones:edit_pais' pais_next.id %}?next={{request.GET.next}}{% if request.GET.page %}&page={{request.GET.page}}{% elif request.GET.order_by %}&order_by={{request.GET.order_by}}{% endif %}">Siguiente &rarr;</a>
+        </li>
+    {% else %}
+        <li class="next disabled"><a href="#">Siguiente &rarr;</a></li>
+    {% endif %}
+</ul>
+
 <div class="form-group">
 
   {{ form_edit_pais.as_p }}

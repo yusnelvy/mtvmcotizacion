@@ -1,6 +1,6 @@
 """Doctsring"""
 from django.shortcuts import render, render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, JsonResponse, Http404
+from django.http import HttpResponseRedirect, JsonResponse, Http404, HttpResponse
 from django.views.generic import ListView, DetailView, View, UpdateView, DeleteView
 from presupuesto.models import Presupuesto, Presupuesto_Detalle, \
     Presupuesto_direccion, Presupuesto_servicio, DatosPrecargado, \
@@ -29,7 +29,6 @@ from decimal import Decimal
 
 from io import BytesIO
 
-from django.http import HttpResponse
 from reportlab.platypus import SimpleDocTemplate, Paragraph, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
@@ -1064,12 +1063,15 @@ class PresupuestoUpdate(UpdateView):
             self.object = form.save(commit=False)
             self.object.save()
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+            messages.success(request, "Registro guardado.")
             return JsonResponse(mensaje, safe=False)
 
         except:
             tb = sys.exc_info()[2]
             tbinfo = traceback.format_tb(tb)[0]
-            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            mensaje = {'estatus': 'error',
+                       'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            messages.success(request, 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo))
             return JsonResponse(mensaje, safe=False)
 
 
@@ -1098,6 +1100,7 @@ class PresupuestoDireccionUpdate(UpdateView):
             self.object.save()
 
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+            messages.success(request, "Registro guardado.")
             return JsonResponse(mensaje, safe=False)
 
         except:
@@ -1105,6 +1108,7 @@ class PresupuestoDireccionUpdate(UpdateView):
             tb = sys.exc_info()[2]
             tbinfo = traceback.format_tb(tb)[0]
             mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            messages.success(request, 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo))
             return JsonResponse(mensaje, safe=False)
 
 
@@ -1331,6 +1335,7 @@ class PresupuestoDetalleUpdate(UpdateView):
 
             transaction.savepoint_commit(sql)
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+            messages.success(request, "Registro guardado.")
             return JsonResponse(mensaje, safe=False)
 
         except:
@@ -1339,6 +1344,7 @@ class PresupuestoDetalleUpdate(UpdateView):
             tbinfo = traceback.format_tb(tb)[0]
             mensaje = {'estatus': 'error',
                        'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            messages.success(request, 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo))
             return JsonResponse(mensaje, safe=False)
 
 
@@ -1360,6 +1366,7 @@ class PresupuestoServicioUpdate(UpdateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.save()
+        messages.success(request, "Registro guardado.")
 
         redirect_to = self.request.GET['next']
         if redirect_to:
@@ -1383,13 +1390,16 @@ class PresupuestoDelete(DeleteView):
 
             transaction.savepoint_commit(sql)
             mensaje = {'estatus': 'ok', 'msj': 'Registro eliminado'}
+            messages.success(request, "Registro eliminado.")
             return JsonResponse(mensaje, safe=False)
         except:
             transaction.savepoint_rollback(sql)
 
             tb = sys.exc_info()[2]
             tbinfo = traceback.format_tb(tb)[0]
-            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            mensaje = {'estatus': 'error',
+                       'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            messages.success(request, 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo))
             return JsonResponse(mensaje, safe=False)
 
 
@@ -1420,13 +1430,15 @@ class PresupuestoAnular(DeleteView):
 
             transaction.savepoint_commit(sql)
             mensaje = {'estatus': 'ok', 'msj': 'Registro anulado'}
+            messages.success(request, "Registro anulado.")
             return JsonResponse(mensaje, safe=False)
         except:
             transaction.savepoint_rollback(sql)
-
             tb = sys.exc_info()[2]
             tbinfo = traceback.format_tb(tb)[0]
-            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            mensaje = {'estatus': 'error',
+                       'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            messages.success(request, 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo))
             return JsonResponse(mensaje, safe=False)
 
 
@@ -1481,15 +1493,18 @@ class PresupuestoDireccionDelete(DeleteView):
 
             transaction.savepoint_commit(sql)
             mensaje = {'estatus': 'ok', 'msj': 'Registro eliminado'}
+            messages.success(request, "Registro eliminado.")
             return JsonResponse(mensaje, safe=False)
         except IntegrityError:
             transaction.savepoint_rollback(sql)
             mensaje = {'estatus': 'error', 'msj': 'Error de integridad'}
+            messages.success(request, "Error de integridad.")
             return JsonResponse(mensaje, safe=False)
 
         except DatabaseError:
             transaction.savepoint_rollback(sql)
             mensaje = {'estatus': 'error', 'msj': 'Error de conexión'}
+            messages.success(request, "Error de conexión.")
             return JsonResponse(mensaje, safe=False)
 
         except:
@@ -1497,7 +1512,9 @@ class PresupuestoDireccionDelete(DeleteView):
 
             tb = sys.exc_info()[2]
             tbinfo = traceback.format_tb(tb)[0]
-            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            mensaje = {'estatus': 'error',
+                       'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            messages.success(request, 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo))
             return JsonResponse(mensaje, safe=False)
 
 
@@ -1527,13 +1544,16 @@ class PresupuestoDetalleDelete(DeleteView):
 
             transaction.savepoint_commit(sql)
             mensaje = {'estatus': 'ok', 'msj': 'Registro eliminado'}
+            messages.success(request, "Registro eliminado.")
             return JsonResponse(mensaje, safe=False)
         except:
             transaction.savepoint_rollback(sql)
 
             tb = sys.exc_info()[2]
             tbinfo = traceback.format_tb(tb)[0]
-            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            mensaje = {'estatus': 'error',
+                       'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            messages.success(request, 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo))
             return JsonResponse(mensaje, safe=False)
 
 
@@ -1567,13 +1587,16 @@ class PresupuestoServicioDelete(DeleteView):
 
             transaction.savepoint_commit(sql)
             mensaje = {'estatus': 'ok', 'msj': 'Registro eliminado'}
+            messages.success(request, "Registro eliminado.")
             return JsonResponse(mensaje, safe=False)
         except:
             transaction.savepoint_rollback(sql)
 
             tb = sys.exc_info()[2]
             tbinfo = traceback.format_tb(tb)[0]
-            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            mensaje = {'estatus': 'error',
+                       'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            messages.success(request, 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo))
             return JsonResponse(mensaje, safe=False)
 
 
@@ -1762,12 +1785,15 @@ def PresupuestoDireccionOrden(request, pk):
                     direccionactual.update(orden=(F('orden')-1))
 
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
+            messages.success(request, "Registro guardado.")
             return JsonResponse(mensaje, safe=False)
         except:
 
             tb = sys.exc_info()[2]
             tbinfo = traceback.format_tb(tb)[0]
-            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            mensaje = {'estatus': 'error',
+                       'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            messages.success(request, 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo))
             return JsonResponse(mensaje, safe=False)
 
 
@@ -1836,6 +1862,7 @@ class PresupuestoRevisarUpdateView(UpdateView):
             estado.update(tiempo_total=round(tiempototal, 2))
 
             transaction.savepoint_commit(sql)
+            messages.success(request, "Registro guardado.")
             redirect_to = self.request.REQUEST.get('next', '')
             if redirect_to:
                 return HttpResponseRedirect(redirect_to)
@@ -1847,7 +1874,9 @@ class PresupuestoRevisarUpdateView(UpdateView):
 
             tb = sys.exc_info()[2]
             tbinfo = traceback.format_tb(tb)[0]
-            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            mensaje = {'estatus': 'error',
+                       'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            messages.success(request, 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo))
             return JsonResponse(mensaje, safe=False)
 
 
@@ -2317,12 +2346,15 @@ def PresupuestoFinalizadoCliente(request, pk):
 
             transaction.savepoint_commit(sql)
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado', 'nexturl': nexturl}
+            messages.success(request, "Registro guardado.")
             return JsonResponse(mensaje, safe=False)
         except:
             transaction.savepoint_rollback(sql)
             tb = sys.exc_info()[2]
             tbinfo = traceback.format_tb(tb)[0]
-            mensaje = {'estatus': 'error', 'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            mensaje = {'estatus': 'error',
+                       'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
+            messages.success(request, 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo))
             return JsonResponse(mensaje, safe=False)
 
 

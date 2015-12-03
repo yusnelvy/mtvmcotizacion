@@ -2,6 +2,7 @@
 
 from django.conf.urls import patterns, url
 from direccion import views
+from direccion.views import PaisUpdate
 
 urlpatterns = patterns('',
                        url(r'^$',
@@ -34,6 +35,9 @@ urlpatterns = patterns('',
                        url(r'^pais/editar/(?P<pk>\d+)$',
                            views.edit_pais,
                            name='edit_pais'),
+                       url(r'^pais/editar2/(?P<pk>\d+)$',
+                           PaisUpdate.as_view(),
+                           name='PaisUpdate'),
                        url(r'^pais/search_pais/$',
                            views.search_pais,
                            name='search_pais'),
