@@ -4,7 +4,7 @@ from contenido.models import Contenido, \
 from mueble.models import Mueble
 from contenido.forms import ContenidoForm, \
     ContenidoTipicoForm, ContenidoServicioForm
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 import simplejson as json
@@ -13,6 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from mtvmcotizacion.views import get_query
 from premisas.models import PerzonalizacionVisual
+from django.contrib import messages
 
 
 # Create your views here.
@@ -34,21 +35,29 @@ def lista_contenido(request):
         if "item_id" in request.POST:
             try:
                 id_contenido = request.POST['item_id']
-                p = Contenido.objects.get(pk=id_contenido)
+                try:
+                    p = Contenido.objects.get(pk=id_contenido)
+                except Contenido.DoesNotExist:
+                    raise Http404
+
                 mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar."}
+                messages.success(request, "Error al eliminar.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     order_by = request.GET.get('order_by')
@@ -92,21 +101,29 @@ def search_contenido(request):
         if "item_id" in request.POST:
             try:
                 id_contenido = request.POST['item_id']
-                p = Contenido.objects.get(pk=id_contenido)
+                try:
+                    p = Contenido.objects.get(pk=id_contenido)
+                except Contenido.DoesNotExist:
+                    raise Http404
+
                 mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar."}
+                messages.success(request, "Error al eliminar.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -149,21 +166,29 @@ def buscar_contenidotipico(request, idmueble=0):
         if "item_id" in request.POST:
             try:
                 id_contenidotipico = request.POST['item_id']
-                p = Contenido_Tipico.objects.get(pk=id_contenidotipico)
+                try:
+                    p = Contenido_Tipico.objects.get(pk=id_contenidotipico)
+                except Contenido_Tipico.DoesNotExist:
+                    raise Http404
+
                 mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar."}
+                messages.success(request, "Error al eliminar.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     if idmueble != '0':
@@ -216,21 +241,28 @@ def buscar_contenidoservicio(request, idservicio=0):
         if "item_id" in request.POST:
             try:
                 id_contenidoservicio = request.POST['item_id']
-                p = Contenido_Servicio.objects.get(pk=id_contenidoservicio)
+                try:
+                    p = Contenido_Servicio.objects.get(pk=id_contenidoservicio)
+                except Contenido_Servicio.DoesNotExist:
+                    raise Http404
+
                 mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del", "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar."}
+                messages.success(request, "Error al eliminar..")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     if idservicio != '0':
@@ -270,8 +302,13 @@ def add_contenido(request):
     if request.method == 'POST':
         form_contenido = ContenidoForm(request.POST)
         if form_contenido.is_valid():
-            form_contenido.save()
-            return HttpResponseRedirect(reverse('ucontenidos:lista_contenido'))
+            id_reg = form_contenido.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('ucontenidos:edit_contenido',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('ucontenidos:lista_contenido'))
     else:
         form_contenido = ContenidoForm()
     return render_to_response('contenido_add.html',
@@ -284,12 +321,19 @@ def add_contenidotipico(request, id_m):
     if request.method == 'POST':
         form_contenidotipico = ContenidoTipicoForm(request.POST)
         if form_contenidotipico.is_valid():
-            form_contenidotipico.save()
-            return HttpResponseRedirect(reverse('ucontenidos:buscar_contenidotipico', args=('0')))
+            id_reg = form_contenidotipico.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('ucontenidos:edit_contenidotipico',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('ucontenidos:buscar_contenidotipico',
+                                                    args=('0')))
     else:
         form_contenidotipico = ContenidoTipicoForm(initial={'mueble': id_m})
     return render_to_response('contenidotipico_add.html',
-                              {'form_contenidotipico': form_contenidotipico, 'create': True},
+                              {'form_contenidotipico': form_contenidotipico,
+                               'create': True},
                               context_instance=RequestContext(request))
 
 
@@ -298,12 +342,19 @@ def add_contenidoservicio(request, id_c):
     if request.method == 'POST':
         form_contenidoservicio = ContenidoServicioForm(request.POST)
         if form_contenidoservicio.is_valid():
-            form_contenidoservicio.save()
-            return HttpResponseRedirect(reverse('ucontenidos:buscar_contenidoservicio', args=('0')))
+            id_reg = form_contenidoservicio.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('ucontenidos:edit_contenidoservicio',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('ucontenidos:buscar_contenidoservicio',
+                                                    args=('0')))
     else:
         form_contenidoservicio = ContenidoServicioForm(initial={'contenido': id_c})
     return render_to_response('contenidoservicio_add.html',
-                              {'form_contenidoservicio': form_contenidoservicio, 'create': True},
+                              {'form_contenidoservicio': form_contenidoservicio,
+                               'create': True},
                               context_instance=RequestContext(request))
 
 
@@ -321,17 +372,24 @@ def edit_contenido(request, pk):
         if form_edit_contenido.is_valid():
             # formulario validado correctamente
             form_edit_contenido.save()
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
-            return HttpResponseRedirect(reverse('ucontenidos:lista_contenido'))
+            if 'regEdit' in request.POST:
+
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
+            else:
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('ucontenidos:lista_contenido'))
 
     else:
         # formulario inicial
         form_edit_contenido = ContenidoForm(instance=contenido)
 
     return render_to_response('contenido_edit.html',
-                              {'form_edit_contenido': form_edit_contenido, 'create': False},
+                              {'form_edit_contenido': form_edit_contenido,
+                               'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -347,18 +405,25 @@ def edit_contenidotipico(request, pk):
         if form_edit_contenidotipico.is_valid():
             # formulario validado correctamente
             form_edit_contenidotipico.save()
+            if 'regEdit' in request.POST:
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('ucontenidos:buscar_contenidotipico', args=(contenidotipico.mueble.id,)))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('ucontenidos:buscar_contenidotipico',
+                                                        args=(contenidotipico.mueble.id,)))
 
     else:
         # formulario inicial
         form_edit_contenidotipico = ContenidoTipicoForm(instance=contenidotipico)
 
     return render_to_response('contenidotipico_edit.html',
-                              {'form_edit_contenidotipico': form_edit_contenidotipico, 'create': False},
+                              {'form_edit_contenidotipico': form_edit_contenidotipico,
+                               'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -368,18 +433,26 @@ def edit_contenidoservicio(request, pk):
 
     if request.method == 'POST':
         # formulario enviado
-        form_edit_contenidoservicio = ContenidoServicioForm(request.POST, instance=contenidoservicio)
+        form_edit_contenidoservicio = ContenidoServicioForm(request.POST,
+                                                            instance=contenidoservicio)
 
         if form_edit_contenidoservicio.is_valid():
             # formulario validado correctamente
             form_edit_contenidoservicio.save()
+            if 'regEdit' in request.POST:
 
-            return HttpResponseRedirect(reverse('ucontenidos:buscar_contenidoservicio', args=(contenidoservicio.servicio.id,)))
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
+            else:
+                return HttpResponseRedirect(reverse('ucontenidos:buscar_contenidoservicio',
+                                                    args=(contenidoservicio.servicio.id,)))
 
     else:
         # formulario inicial
         form_edit_contenidoservicio = ContenidoServicioForm(instance=contenidoservicio)
 
     return render_to_response('contenidoservicio_edit.html',
-                              {'form_edit_contenidoservicio': form_edit_contenidoservicio, 'create': False},
+                              {'form_edit_contenidoservicio': form_edit_contenidoservicio,
+                               'create': False},
                               context_instance=RequestContext(request))

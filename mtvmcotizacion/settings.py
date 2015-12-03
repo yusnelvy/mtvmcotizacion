@@ -203,9 +203,9 @@ DATETIME_INPUT_FORMATS = (
 # Configuración de email
 EMAIL_HOST = 'smtp.gmail.com'
 
-EMAIL_HOST_USER = 'yusnelvy@gmail.com'
+EMAIL_HOST_USER = 'desarrollomtvm@gmail.com'
 
-EMAIL_HOST_PASSWORD = 'yuny5832'
+EMAIL_HOST_PASSWORD = 'mtvmudarte'
 
 EMAIL_PORT = 587
 

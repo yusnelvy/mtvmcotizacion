@@ -9,6 +9,7 @@ import simplejson as json
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from mtvmcotizacion.views import get_query
 from premisas.models import PerzonalizacionVisual
+from django.contrib import messages
 
 
 # Create your views here.
@@ -35,16 +36,19 @@ def lista_tipotelefono(request):
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False", "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
@@ -94,16 +98,19 @@ def search_tipotelefono(request):
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False", "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -141,16 +148,19 @@ def lista_telefono(request):
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False", "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     telefono = Telefono.objects.all()
@@ -165,8 +175,13 @@ def add_tipotelefono(request):
     if request.method == 'POST':
         form_tipotelefono = TipoTelefonoForm(request.POST)
         if form_tipotelefono.is_valid():
-            form_tipotelefono.save()
-            return HttpResponseRedirect(reverse('utelefonos:lista_tipotelefono'))
+            id_reg = form_tipotelefono.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('utelefonos:edit_tipotelefono',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('utelefonos:lista_tipotelefono'))
 
     else:
         form_tipotelefono = TipoTelefonoForm()
@@ -184,11 +199,16 @@ def add_telefono(request, id_cli):
         if form_telefono.is_valid():
             id_reg = form_telefono.save()
             id_cli = Telefono.objects.get(id=id_reg.id)
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
-            #return HttpResponseRedirect(reverse('utelefonos:lista_telefono'))return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
-            return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('utelefonos:edit_telefono',
+                                                    args=(id_reg.id,)))
+            else:
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('uclientes:ficha_cliente',
+                                                        args=(id_cli.cliente.id,)))
     else:
         form_telefono = TelefonoForm(initial={'cliente': id_cli})
     return render_to_response('telefono_add.html',
@@ -210,13 +230,19 @@ def edit_tipotelefono(request, pk):
             # formulario validado correctamente
             form_edit_tipotelefono.save()
 
-            return HttpResponseRedirect(reverse('utelefonos:lista_tipotelefono'))
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
+            else:
+                return HttpResponseRedirect(reverse('utelefonos:lista_tipotelefono'))
     else:
         # formulario inicial
         form_edit_tipotelefono = TipoTelefonoForm(instance=id_tipo)
 
     return render_to_response('tipotelefono_edit.html',
-                              {'form_edit_tipotelefono': form_edit_tipotelefono, 'create': False},
+                              {'form_edit_tipotelefono': form_edit_tipotelefono,
+                               'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -235,17 +261,21 @@ def edit_telefono(request, pk):
             # formulario validado correctamente
             id_reg = form_edit_telefono.save()
             id_cli = Telefono.objects.get(id=id_reg.id)
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
 
-            #return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
-            #return HttpResponseRedirect('../../cliente/ficha_cliente/')
-            return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
+            else:
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('uclientes:ficha_cliente',
+                                                        args=(id_cli.cliente.id,)))
     else:
         # formulario inicial
         form_edit_telefono = TelefonoForm(instance=id_telefono)
 
     return render_to_response('telefono_edit.html',
-                              {'form_edit_telefono': form_edit_telefono, 'telefono': id_telefono, 'create': False},
+                              {'form_edit_telefono': form_edit_telefono,
+                               'telefono': id_telefono, 'create': False},
                               context_instance=RequestContext(request))

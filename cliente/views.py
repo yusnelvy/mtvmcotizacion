@@ -7,7 +7,7 @@ from telefono.models import Telefono
 from direccion.models import Direccion
 from cliente.forms import ClienteForm, EmailForm, SexoForm,\
     EstadoCivilForm, TipoClienteForm
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
@@ -17,6 +17,7 @@ import django.db
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from mtvmcotizacion.views import get_query
 from premisas.models import PerzonalizacionVisual
+from django.contrib import messages
 
 
 # Create your views here.
@@ -38,21 +39,28 @@ def lista_sexo(request):
         if "item_id" in request.POST:
             try:
                 id_sexo = request.POST['item_id']
-                p = Sexo.objects.get(pk=id_sexo)
+                try:
+                    p = Sexo.objects.get(pk=id_sexo)
+                except Sexo.DoesNotExist:
+                    raise Http404
                 mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                 p.delete()
 
-                 # Elinamos objeto de la base de datos
+                # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar"}
+                messages.success(request, "Error al eliminar.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
@@ -97,21 +105,28 @@ def search_sexo(request):
         if "item_id" in request.POST:
             try:
                 id_sexo = request.POST['item_id']
-                p = Sexo.objects.get(pk=id_sexo)
+                try:
+                    p = Sexo.objects.get(pk=id_sexo)
+                except Sexo.DoesNotExist:
+                    raise Http404
                 mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                 p.delete()
 
-                 # Elinamos objeto de la base de datos
+                # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar"}
+                messages.success(request, "Error al eliminar.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -155,21 +170,28 @@ def lista_estadocivil(request):
         if "item_id" in request.POST:
             try:
                 id_estadocivil = request.POST['item_id']
-                p = Estado_civil.objects.get(pk=id_estadocivil)
+                try:
+                    p = Estado_civil.objects.get(pk=id_estadocivil)
+                except Estado_civil.DoesNotExist:
+                    raise Http404
                 mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:  # ERROR requiere definir un tipo de error para la excepción
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar"}
+                messages.success(request, "Error al eliminar.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     order_by = request.GET.get('order_by')
@@ -215,21 +237,28 @@ def search_estadocivil(request):
         if "item_id" in request.POST:
             try:
                 id_estadocivil = request.POST['item_id']
-                p = Estado_civil.objects.get(pk=id_estadocivil)
+                try:
+                    p = Estado_civil.objects.get(pk=id_estadocivil)
+                except Estado_civil.DoesNotExist:
+                    raise Http404
                 mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:  # ERROR requiere definir un tipo de error para la excepción
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar"}
+                messages.success(request, "Error al eliminar.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -272,21 +301,28 @@ def lista_cliente(request):
         if "item_id" in request.POST:
             try:
                 id_cliente = request.POST['item_id']
-                p = Cliente.objects.get(pk=id_cliente)
+                try:
+                    p = Cliente.objects.get(pk=id_cliente)
+                except Cliente.DoesNotExist:
+                    raise Http404
                 mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar."}
+                messages.success(request, "Error al eliminar.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
@@ -330,21 +366,28 @@ def search_cliente(request):
         if "item_id" in request.POST:
             try:
                 id_cliente = request.POST['item_id']
-                p = Cliente.objects.get(pk=id_cliente)
+                try:
+                    p = Cliente.objects.get(pk=id_cliente)
+                except Cliente.DoesNotExist:
+                    raise Http404
                 mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar."}
+                messages.success(request, "Error al eliminar.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -376,21 +419,27 @@ def lista_email(request, id_cli):
         if "item_id" in request.POST:
             try:
                 id_email = request.POST['item_id']
-                p = Email.objects.get(pk=id_email)
+                try:
+                    p = Email.objects.get(pk=id_email)
+                except Email.DoesNotExist:
+                    raise Http404
                 mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False", "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar."}
+                messages.success(request, "Error al eliminar.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     cliente = Cliente.objects.get(id=id_cli)
@@ -406,21 +455,28 @@ def lista_telefono_cliente(request, id_cli):
         if "item_id" in request.POST:
             try:
                 id_telefono = request.POST['item_id']
-                p = Telefono.objects.get(pk=id_telefono)
+                try:
+                    p = Telefono.objects.get(pk=id_telefono)
+                except Telefono.DoesNotExist:
+                    raise Http404
                 mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar."}
+                messages.success(request, "Error al eliminar.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     cliente = Cliente.objects.get(id=id_cli)
@@ -437,21 +493,28 @@ def lista_direccioncliente(request, id_cli):
         if "item_id" in request.POST:
             try:
                 id_direccion = request.POST['item_id']
-                p = Direccion.objects.get(pk=id_direccion)
+                try:
+                    p = Direccion.objects.get(pk=id_direccion)
+                except Direccion.DoesNotExist:
+                    raise Http404
                 mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "Error al eliminar.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar."}
+                messages.success(request, "Error al eliminar.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     cliente = Cliente.objects.get(id=id_cli)
@@ -479,21 +542,28 @@ def lista_tipo_cliente(request):
         if "item_id" in request.POST:
             try:
                 id_tipocliente = request.POST['item_id']
-                p = TipoCliente.objects.get(pk=id_tipocliente)
+                try:
+                    p = TipoCliente.objects.get(pk=id_tipocliente)
+                except TipoCliente.DoesNotExist:
+                    raise Http404
                 mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar."}
+                messages.success(request, "Error al eliminar.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
@@ -537,21 +607,28 @@ def search_tipo_cliente(request):
         if "item_id" in request.POST:
             try:
                 id_tipocliente = request.POST['item_id']
-                p = TipoCliente.objects.get(pk=id_tipocliente)
+                try:
+                    p = TipoCliente.objects.get(pk=id_tipocliente)
+                except TipoCliente.DoesNotExist:
+                    raise Http404
                 mensaje = {"status": "True", "item_id": p.id, "form": "del"}
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False",
+                           "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar."}
+                messages.success(request, "Error al eliminar.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -585,9 +662,15 @@ def add_cliente(request):
             cliente_form = ClienteForm(request.POST)
 
             if cliente_form.is_valid():
-                cliente_form.save()
-                mensaje = 'Se ha guardado la información del cliente'
-                return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
+                id_reg = cliente_form.save()
+
+                if 'regEdit' in request.POST:
+                    messages.success(request, "Registro guardado.")
+                    return HttpResponseRedirect(reverse('uclientes:edit_cliente',
+                                                        args=(id_reg.id,)))
+                else:
+                    mensaje = 'Se ha guardado la información del cliente'
+                    return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
 
         except Exception as ex:
             cliente_form = ClienteForm()
@@ -608,9 +691,14 @@ def add_sexo(request):
             sexo_form = SexoForm(request.POST)
 
             if sexo_form.is_valid():
-                sexo_form.save()
+                id_reg = sexo_form.save()
 
-                return HttpResponseRedirect(reverse('uclientes:lista_sexo'))
+                if 'regEdit' in request.POST:
+                    messages.success(request, "Registro guardado.")
+                    return HttpResponseRedirect(reverse('uclientes:edit_sexo',
+                                                        args=(id_reg.id,)))
+                else:
+                    return HttpResponseRedirect(reverse('uclientes:lista_sexo'))
 
         except Exception as ex:
             sexo_form = SexoForm()
@@ -632,9 +720,14 @@ def add_estadocivil(request):
             estadocivil_form = EstadoCivilForm(request.POST)
 
             if estadocivil_form.is_valid():
-                estadocivil_form.save()
+                id_reg = estadocivil_form.save()
 
-                return HttpResponseRedirect(reverse('uclientes:lista_estadocivil'))
+                if 'regEdit' in request.POST:
+                    messages.success(request, "Registro guardado.")
+                    return HttpResponseRedirect(reverse('uclientes:edit_estado_civil',
+                                                        args=(id_reg.id,)))
+                else:
+                    return HttpResponseRedirect(reverse('uclientes:lista_estadocivil'))
 
         except Exception as ex:
             estadocivil_form = EstadoCivilForm()
@@ -657,7 +750,14 @@ def add_email(request, id_cli):
             if email_form.is_valid():
                 id_reg = email_form.save()
                 id_cli = Email.objects.get(id=id_reg.id)
-                return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
+
+                if 'regEdit' in request.POST:
+                    messages.success(request, "Registro guardado.")
+                    return HttpResponseRedirect(reverse('uclientes:edit_email',
+                                                        args=(id_reg.id,)))
+                else:
+                    return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_cli.cliente.id,)))
+
         except Exception as ex:
             mensaje = "se ha producido un error"+str(ex)
             email_form = EmailForm()
@@ -678,9 +778,15 @@ def add_tipocliente(request):
             tipocliente_form = TipoClienteForm(request.POST)
 
             if tipocliente_form.is_valid():
-                tipocliente_form.save()
-                mensaje = 'Se ha guardado la información del tipo de cliente'
-                return HttpResponseRedirect(reverse('uclientes:lista_tipo_cliente'))
+                id_reg = tipocliente_form.save()
+
+                if 'regEdit' in request.POST:
+                    messages.success(request, "Registro guardado.")
+                    return HttpResponseRedirect(reverse('uclientes:edit_tipocliente',
+                                                        args=(id_reg.id,)))
+                else:
+                    mensaje = 'Se ha guardado la información del tipo de cliente'
+                    return HttpResponseRedirect(reverse('uclientes:lista_tipo_cliente'))
 
         except Exception as ex:
             tipocliente_form = TipoClienteForm()
@@ -707,18 +813,23 @@ def edit_cliente(request, pk):
         mensaje = "se ha producido un error"+str(ex)
 
     if request.method == 'POST':
+        mensaje = ""
         # formulario enviado
         editar_clie = ClienteForm(request.POST, instance=id_clie)
 
         if editar_clie.is_valid():
             # formulario validado correctamente
             editar_clie.save()
-            #return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
-            return HttpResponseRedirect(reverse('uclientes:ficha_cliente', args=(id_clie.id,)))
 
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+            else:
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('uclientes:ficha_cliente',
+                                                        args=(id_clie.id,)))
     else:
         # formulario inicial
         editar_clie = ClienteForm(instance=id_clie)
@@ -739,9 +850,11 @@ def edit_email(request, id_cli, pk):
         if form_edit_email.is_valid():
             # formulario validado correctamente
             form_edit_email.save()
-
-            #return HttpResponseRedirect(reverse('uclientes:lista_email'))
-            return HttpResponseRedirect('../../../')
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+            else:
+                return HttpResponseRedirect('../../../')
     else:
         # formulario inicial
         form_edit_email = EmailForm(instance=id_email)
@@ -762,8 +875,11 @@ def edit_sexo(request, pk):
         if form_edit_sexo.is_valid():
             # formulario validado correctamente
             form_edit_sexo.save()
-
-            return HttpResponseRedirect(reverse('uclientes:lista_sexo'))
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+            else:
+                return HttpResponseRedirect(reverse('uclientes:lista_sexo'))
 
     else:
         # formulario inicial
@@ -785,8 +901,11 @@ def edit_estado_civil(request, pk):
         if form_edit_estadocivil.is_valid():
             # formulario validado correctamente
             form_edit_estadocivil.save()
-
-            return HttpResponseRedirect(reverse('uclientes:lista_estadocivil'))
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+            else:
+                return HttpResponseRedirect(reverse('uclientes:lista_estadocivil'))
 
     else:
         # formulario inicial
@@ -815,12 +934,14 @@ def edit_tipocliente(request, pk):
         if editar_tipocliente.is_valid():
             # formulario validado correctamente
             editar_tipocliente.save()
-            #return HttpResponseRedirect(reverse('uclientes:lista_cliente'))
-        if redirect_to:
-            return HttpResponseRedirect(redirect_to)
-        else:
-            return HttpResponseRedirect(reverse('uclientes:lista_tipo_cliente', args=(id_tipocliente.id,)))
-
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+            else:
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('uclientes:lista_tipo_cliente'))
     else:
         # formulario inicial
         editar_tipocliente = TipoClienteForm(instance=id_tipocliente)
@@ -861,8 +982,12 @@ def delete_telefono(request, id_cli):
     cod = request.GET.get('codigo', '')
 
     if cod:
-        p = Telefono.objects.get(id=cod)
+        try:
+            p = Telefono.objects.get(id=cod)
+        except Telefono.DoesNotExist:
+            raise Http404
         p.delete()
+        messages.success(request, "Se elimino el registro.")
         return render_to_response('cliente_ficha.html', {"cod": cod, "exito": True})
     return render_to_response('cliente_ficha.html')
 
@@ -871,8 +996,12 @@ def delete_direccion(request, id_cli):
     cod = request.GET.get('codigo', '')
 
     if cod:
-        p = Direccion.objects.get(id=cod)
+        try:
+            p = Direccion.objects.get(id=cod)
+        except Direccion.DoesNotExist:
+            raise Http404
         p.delete()
+        messages.success(request, "Se elimino el registro.")
         return render_to_response('cliente_ficha.html', {"cod": cod, "exito": True})
     return render_to_response('cliente_ficha.html')
 
@@ -880,7 +1009,11 @@ def delete_direccion(request, id_cli):
 def delete_email(request, id_cli):
     cod = request.GET.get('codigo', '')
     if cod:
-        p = Email.objects.get(id=cod)
+        try:
+            p = Email.objects.get(id=cod)
+        except Email.DoesNotExist:
+            raise Http404
         p.delete()
+        messages.success(request, "Se elimino el registro.")
         return render_to_response('cliente_ficha.html', {"cod": cod, "exito": True})
     return render_to_response('cliente_ficha.html')

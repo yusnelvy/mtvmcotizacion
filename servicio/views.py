@@ -15,6 +15,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from mtvmcotizacion.views import get_query
 from premisas.models import PerzonalizacionVisual
+from django.contrib import messages
 
 
 # Create your views here.
@@ -41,16 +42,19 @@ def lista_servicio(request):
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False", "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     order_by = request.GET.get('order_by')
@@ -100,16 +104,19 @@ def search_servicio(request):
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False", "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -157,16 +164,19 @@ def lista_unidad(request):
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False", "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
@@ -215,16 +225,19 @@ def search_unidad(request):
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False", "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -272,16 +285,19 @@ def lista_material(request):
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False", "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
@@ -330,16 +346,19 @@ def search_material(request):
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False", "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -395,16 +414,19 @@ def lista_contenedor(request):
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False", "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     order_by = request.GET.get('order_by')
@@ -428,7 +450,9 @@ def lista_contenedor(request):
             # If page is out of range (e.g. 9999), deliver last page of results.
             materiales = paginator.page(paginator.num_pages)
 
-    context = {'lista_material': lista_material, 'materiales': materiales, 'contenedor': 'contenedor'}
+    context = {'lista_material': lista_material,
+               'materiales': materiales,
+               'contenedor': 'contenedor'}
     return render(request, 'material_lista.html', context)
 
 
@@ -454,16 +478,19 @@ def lista_complejidad(request):
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False", "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
     order_by = request.GET.get('order_by')
     if order_by:
@@ -486,7 +513,8 @@ def lista_complejidad(request):
             # If page is out of range (e.g. 9999), deliver last page of results.
             complejidades = paginator.page(paginator.num_pages)
 
-    context = {'lista_complejidad': lista_complejidad, 'complejidades': complejidades}
+    context = {'lista_complejidad': lista_complejidad,
+               'complejidades': complejidades}
     return render(request, 'complejidad_lista.html', context)
 
 
@@ -512,16 +540,19 @@ def search_complejidad(request):
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False", "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
         search_text = request.POST['search_text']
@@ -543,7 +574,8 @@ def search_complejidad(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         complejidades = paginator.page(paginator.num_pages)
 
-    context = {'lista_complejidad': lista_complejidad, 'complejidades': complejidades}
+    context = {'lista_complejidad': lista_complejidad,
+               'complejidades': complejidades}
     return render_to_response('complejidad_lista_search.html', context)
 
 
@@ -569,16 +601,19 @@ def buscar_servicio_material(request, idserv=0, idmat=0):
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False", "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     if int(idmat) != 0 | int(idserv) != 0:
@@ -630,16 +665,19 @@ def buscar_complejidad_servicio(request, idserv=0, idcomp=0):
                 p.delete()
 
                  # Elinamos objeto de la base de datos
+                messages.success(request, "Se elimino el registro.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except django.db.IntegrityError:
 
-                mensaje = {"status": "False", "form": "del", "msj": "No se puede eliminar porque \
-                tiene algun registro asociado"}
+                mensaje = {"status": "False", "form": "del",
+                           "msj": "No se puede eliminar porque tiene algun registro asociado"}
+                messages.success(request, "No se puede eliminar porque tiene algun registro asociado.")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
             except:
-                mensaje = {"status": "False", "form": "del", "msj": " "}
+                mensaje = {"status": "False", "form": "del", "msj": "Error al eliminar "}
+                messages.success(request, "Error al eliminar")
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
 
     if int(idcomp) != 0 | int(idserv) != 0:
@@ -662,7 +700,10 @@ def buscar_complejidad_servicio(request, idserv=0, idcomp=0):
         # If page is out of range (e.g. 9999), deliver last page of results.
         servicios = paginator.page(paginator.num_pages)
 
-    context = {'buscar_complejidadservicio': buscar_complejidadservicio, 'servicios': servicios, 'listar_servicios': listar_servicios, 'idserv': idserv}
+    context = {'buscar_complejidadservicio': buscar_complejidadservicio,
+               'servicios': servicios,
+               'listar_servicios': listar_servicios,
+               'idserv': idserv}
     return render(request, 'complejidadservicio_lista.html', context)
 
 
@@ -672,8 +713,13 @@ def add_servicio(request):
     if request.method == 'POST':
         form_servicio = ServicioForm(request.POST)
         if form_servicio.is_valid():
-            form_servicio.save()
-            return HttpResponseRedirect(reverse('uservicios:lista_servicio'))
+            id_reg = form_servicio.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('uservicios:edit_servicio',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('uservicios:lista_servicio'))
     else:
         form_servicio = ServicioForm()
     return render_to_response('servicio_add.html',
@@ -686,8 +732,13 @@ def add_unidad(request):
     if request.method == 'POST':
         form_unidad = UnidadForm(request.POST)
         if form_unidad.is_valid():
-            form_unidad.save()
-            return HttpResponseRedirect(reverse('uservicios:lista_unidad'))
+            id_reg = form_unidad.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('uservicios:edit_unidad',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('uservicios:lista_unidad'))
     else:
         form_unidad = UnidadForm()
     return render_to_response('unidad_add.html',
@@ -700,8 +751,13 @@ def add_material(request):
     if request.method == 'POST':
         form_material = MaterialForm(request.POST)
         if form_material.is_valid():
-            form_material.save()
-            return HttpResponseRedirect(reverse('uservicios:lista_material'))
+            id_reg = form_material.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('uservicios:edit_material',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('uservicios:lista_material'))
     else:
         form_material = MaterialForm()
     return render_to_response('material_add.html',
@@ -714,8 +770,13 @@ def add_complejidad(request):
     if request.method == 'POST':
         form_complejidad = ComplejidadForm(request.POST)
         if form_complejidad.is_valid():
-            form_complejidad.save()
-            return HttpResponseRedirect(reverse('uservicios:lista_complejidad'))
+            id_reg = form_complejidad.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('uservicios:edit_complejidad',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('uservicios:lista_complejidad'))
     else:
         form_complejidad = ComplejidadForm()
     return render_to_response('complejidad_add.html',
@@ -728,12 +789,19 @@ def add_serviciomaterial(request, id_ser):
     if request.method == 'POST':
         form_serviciomaterial = ServicioMaterialForm(request.POST)
         if form_serviciomaterial.is_valid():
-            form_serviciomaterial.save()
-            return HttpResponseRedirect(reverse('uservicios:buscar_servicio_material', args=('0', '0')))
+            id_reg = form_serviciomaterial.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('uservicios:servicio_material',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('uservicios:buscar_servicio_material',
+                                                    args=('0', '0')))
     else:
         form_serviciomaterial = ServicioMaterialForm(initial={'servicio': id_ser})
     return render_to_response('serviciomaterial_add.html',
-                              {'form_serviciomaterial': form_serviciomaterial, 'create': True},
+                              {'form_serviciomaterial': form_serviciomaterial,
+                               'create': True},
                               context_instance=RequestContext(request))
 
 
@@ -742,12 +810,19 @@ def add_complejidadservicio(request, id_ser):
     if request.method == 'POST':
         form_complejidadservicio = ComplejidadServicioForm(request.POST)
         if form_complejidadservicio.is_valid():
-            form_complejidadservicio.save()
-            return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio', args=(id_ser, '0')))
+            id_reg = form_complejidadservicio.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(reverse('uservicios:edit_complejidadservicio',
+                                                    args=(id_reg.id,)))
+            else:
+                return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio',
+                                                    args=(id_ser, '0')))
     else:
         form_complejidadservicio = ComplejidadServicioForm(initial={'servicio': id_ser})
     return render_to_response('complejidadservicio_add.html',
-                              {'form_complejidadservicio': form_complejidadservicio, 'create': True},
+                              {'form_complejidadservicio': form_complejidadservicio,
+                               'create': True},
                               context_instance=RequestContext(request))
 
 
@@ -765,18 +840,23 @@ def edit_servicio(request, pk):
         if form_edit_servicio.is_valid():
             # formulario validado correctamente
             form_edit_servicio.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
             else:
-                return HttpResponseRedirect(reverse('uservicios:lista_servicio'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('uservicios:lista_servicio'))
 
     else:
         # formulario inicial
         form_edit_servicio = ServicioForm(instance=servicio)
 
     return render_to_response('servicio_edit.html',
-                              {'form_edit_servicio': form_edit_servicio, 'servicio': servicio, 'create': False},
+                              {'form_edit_servicio': form_edit_servicio,
+                               'servicio': servicio, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -793,18 +873,23 @@ def edit_unidad(request, pk):
         if form_edit_unidad.is_valid():
             # formulario validado correctamente
             form_edit_unidad.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
             else:
-                return HttpResponseRedirect(reverse('uservicios:lista_unidad'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('uservicios:lista_unidad'))
 
     else:
         # formulario inicial
         form_edit_unidad = UnidadForm(instance=unidad)
 
     return render_to_response('unidad_edit.html',
-                              {'form_edit_unidad': form_edit_unidad, 'unidad': unidad, 'create': False},
+                              {'form_edit_unidad': form_edit_unidad,
+                               'unidad': unidad, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -821,18 +906,23 @@ def edit_material(request, pk):
         if form_edit_material.is_valid():
             # formulario validado correctamente
             form_edit_material.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
             else:
-                return HttpResponseRedirect(reverse('uservicios:lista_material'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('uservicios:lista_material'))
 
     else:
         # formulario inicial
         form_edit_material = MaterialForm(instance=material)
 
     return render_to_response('material_edit.html',
-                              {'form_edit_material': form_edit_material, 'material': material, 'create': False},
+                              {'form_edit_material': form_edit_material,
+                               'material': material, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -849,18 +939,23 @@ def edit_complejidad(request, pk):
         if form_edit_complejidad.is_valid():
             # formulario validado correctamente
             form_edit_complejidad.save()
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
 
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
             else:
-                return HttpResponseRedirect(reverse('uservicios:lista_complejidad'))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('uservicios:lista_complejidad'))
 
     else:
         # formulario inicial
         form_edit_complejidad = ComplejidadForm(instance=complejidad)
 
     return render_to_response('complejidad_edit.html',
-                              {'form_edit_complejidad': form_edit_complejidad, 'complejidad': complejidad, 'create': False},
+                              {'form_edit_complejidad': form_edit_complejidad,
+                               'complejidad': complejidad, 'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -872,24 +967,31 @@ def edit_complejidadservicio(request, pk):
 
     if request.method == 'POST':
         # formulario enviado
-        form_edit_complejidadservicio = ComplejidadServicioForm(request.POST, instance=complejidadservicio)
+        form_edit_complejidadservicio = ComplejidadServicioForm(request.POST,
+                                                                instance=complejidadservicio)
 
         if form_edit_complejidadservicio.is_valid():
             # formulario validado correctamente
             form_edit_complejidadservicio.save()
 
-            #return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio'))
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
+
             else:
-                return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio', args=(complejidadservicio.servicio.id, 0,)))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('uservicios:buscar_complejidad_servicio',
+                                                        args=(complejidadservicio.servicio.id, 0,)))
 
     else:
         # formulario inicial
         form_edit_complejidadservicio = ComplejidadServicioForm(instance=complejidadservicio)
 
     return render_to_response('complejidadservicio_edit.html',
-                              {'form_edit_complejidadservicio': form_edit_complejidadservicio, 'create': False},
+                              {'form_edit_complejidadservicio': form_edit_complejidadservicio,
+                               'create': False},
                               context_instance=RequestContext(request))
 
 
@@ -901,21 +1003,27 @@ def edit_serviciomaterial(request, pk):
 
     if request.method == 'POST':
         # formulario enviado
-        form_edit_serviciomaterial = ServicioMaterialForm(request.POST, instance=serviciomaterial)
+        form_edit_serviciomaterial = ServicioMaterialForm(request.POST,
+                                                          instance=serviciomaterial)
 
         if form_edit_serviciomaterial.is_valid():
             # formulario validado correctamente
             form_edit_serviciomaterial.save()
-
-            if redirect_to:
-                return HttpResponseRedirect(redirect_to)
+            if 'regEdit' in request.POST:
+                messages.success(request, "Registro guardado.")
+                return HttpResponseRedirect(request.get_full_path())
             else:
-                return HttpResponseRedirect(reverse('uservicios:buscar_servicio_material', args=(serviciomaterial.servicio.id, 0,)))
+                if redirect_to:
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    return HttpResponseRedirect(reverse('uservicios:buscar_servicio_material',
+                                                        args=(serviciomaterial.servicio.id, 0,)))
 
     else:
         # formulario inicial
         form_edit_serviciomaterial = ServicioMaterialForm(instance=serviciomaterial)
 
     return render_to_response('serviciomaterial_edit.html',
-                              {'form_edit_serviciomaterial': form_edit_serviciomaterial, 'create': False},
+                              {'form_edit_serviciomaterial': form_edit_serviciomaterial,
+                               'create': False},
                               context_instance=RequestContext(request))

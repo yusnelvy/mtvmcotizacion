@@ -14,36 +14,69 @@
 {% block pagination %}
 
 {% if paises.has_previous %}
+{% if request.GET.order_by %}
 
-<li>
-  <a href="?page={{ paises.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-</li>
+  <li>
+    <a href="?page={{ paises.previous_page_number }}&order_by={{request.GET.order_by}}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+  </li>
 
+{% else %}
+
+  <li>
+    <a href="?page={{ paises.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+  </li>
+
+{% endif %}
 {% endif %}
 
 <li class="current">
   <a class="fuenteNegra"> Página
 
     <select title="nro pag." onchange="window.location.href=this.value;">
-    <option value="?page=0">ver todo</option>
-    {% if paises.paginator.page_range %}
+      {% if request.GET.order_by %}
 
-    {% for p in paises.paginator.page_range %}
-    {% if p == paises.number %}
+      <option value="?page=0&order_by={{request.GET.order_by}}">ver todo</option>
+      {% if paises.paginator.page_range %}
 
-    <option value="?page={{p}}" selected>{{p}}</option>
+      {% for p in paises.paginator.page_range %}
+      {% if p == paises.number %}
 
-    {% else %}
+      <option value="?page={{p}}&order_by={{request.GET.order_by}}" selected>{{p}}</option>
 
-    <option value="?page={{p}}">{{p}}</option>
+      {% else %}
 
-    {% endif %}
+      <option value="?page={{p}}&order_by={{request.GET.order_by}}">{{p}}</option>
 
-    {% endfor %}
+      {% endif %}
 
-    {% else %}
-    <option value="?page=1">paginar</option>
-    {% endif %}
+      {% endfor %}
+
+      {% else %}
+      <option value="?page=1&order_by={{request.GET.order_by}}">paginar</option>
+      {% endif %}
+      {% else %}
+
+      <option value="?page=0">ver todo</option>
+      {% if paises.paginator.page_range %}
+
+      {% for p in paises.paginator.page_range %}
+      {% if p == paises.number %}
+
+      <option value="?page={{p}}" selected>{{p}}</option>
+
+      {% else %}
+
+      <option value="?page={{p}}">{{p}}</option>
+
+      {% endif %}
+
+      {% endfor %}
+
+      {% else %}
+      <option value="?page=1">paginar</option>
+      {% endif %}
+
+      {% endif %}
     </select>
 
     de
@@ -61,11 +94,32 @@
   </a>
 </li>
 
+
+{% for p in page_range2 %}
+  {% if p == paises.number %}
+   <li class="active">
+      <a href="?page={{p}}&order_by={{request.GET.order_by}}">{{p}}</a>
+      </li>
+  {% else %}
+
+      <li>
+      <a href="?page={{p}}&order_by={{request.GET.order_by}}">{{p}}</a>
+      </li>
+      {% endif %}
+
+{% endfor %}
+
 {% if paises.has_next %}
 
-<li>
-  <a href="?page={{ paises.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-</li>
+{% if request.GET.order_by %}
+  <li>
+    <a href="?page={{ paises.next_page_number }}&order_by={{request.GET.order_by}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+  </li>
+{% else %}
+  <li>
+    <a href="?page={{ paises.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+  </li>
+{% endif %}
 
 {% endif %}
 
@@ -74,6 +128,7 @@
 </nav>
 
 {% block cuerpo_tabla %}
+
 {% if paises %}
 
 <table class="table table-hover table-bordered textAlignCenter" id="tabla">
@@ -81,8 +136,18 @@
   <tr class="active">
     <th>
       Pais
-      <a href="?order_by=pais" id="pais" class="glyphicon glyphicon-sort-by-alphabet btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
-      <a href="?order_by=-pais" id="-pais"  class="glyphicon glyphicon-sort-by-alphabet-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
+      {% if request.GET.page %}
+
+        <a href="?order_by=pais&page={{request.GET.page}}" id="pais" class="glyphicon glyphicon-sort-by-alphabet btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+        <a href="?order_by=-pais&page={{request.GET.page}}" id="-pais"  class="glyphicon glyphicon-sort-by-alphabet-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
+
+      {% else %}
+
+        <a href="?order_by=pais" id="pais" class="glyphicon glyphicon-sort-by-alphabet btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Asc"></a>
+        <a href="?order_by=-pais" id="-pais"  class="glyphicon glyphicon-sort-by-alphabet-alt btn-ordenarLista" data-placement="left" data-toggletooltip="tooltip" title="Desc"></a>
+
+      {% endif %}
+
     </th>
     <th width="80px">Editar</th>
     <th width="80px">Eliminar</th>
