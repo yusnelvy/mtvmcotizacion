@@ -9,10 +9,7 @@
 
     {% include "css.html" %}
 
-    <!--Jquery and plugins of jquery-->
-    <script src="{% static 'jquery/jquery-2.1.4.js' %}"></script>
-    <script src="{% static 'jquery/jquery.form.min.js' %}"></script>
-    <script src="{% static 'jquery-ui-datepiker/jquery-ui.js' %}"></script>
+    {% include "scriptJquery.html" %}
 
     {% block js_sup %}{% endblock js_sup %}
 
@@ -58,7 +55,11 @@
                             </a>
                         </li>
 
-                        {% block link_navegacion %}{% endblock link_navegacion %}
+                        {% block link_navegacion %}
+
+                            {% include "sidebarcss.html" %}
+
+                        {% endblock link_navegacion %}
 
                         <div class="widgetSidebar">
 

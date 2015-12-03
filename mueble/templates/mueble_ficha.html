@@ -38,53 +38,43 @@
 
 {% endblock titulo_ficha %}
 
+{% block col1 %}
+
+class="col-md-8"
+
+{% endblock col1 %}
+
 {% block content1 %}
 
-<table class="table table-hover table-bordered">
+<table class="table table-bordered">
   <tr>
-    <td>Tipo de mueble:</td>
-    <td>{{ object.tipo_mueble }}</td>
+    <td><b>Tipo de mueble: </b>{{ object.tipo_mueble }}</td>
+    <td rowspan="4" class="">
+      <ul>
+        <li>{{ object.trasladable|yesno:"Mueble trasladable,Mueble no trasladable" }}</li>
+        <li>{{ object.apilable|yesno:"Mueble apiladable,Mueble no apiladable" }} </li>
+        <li>{{ object.capacidad_carga|yesno:"Puede soportar objetos pesados,No puede soportar objetos pesados" }}</li>
+        <li>{{ object.capacidad_interna|yesno:"Puede contener objetos en su interior,No puede contener objetos en su interior" }}</li>
+      </ul>
+    </td>
   </tr>
   <tr>
-    <td>Forma del mueble:</td>
-    <td>{{ object.forma }}</td>
+    <td><b>Forma del mueble: </b>{{ object.forma }}</td>
+
   </tr>
   <tr>
-    <td>Nivel de ocupación típica:</td>
-    <td>{{ object.ocupacion }}</td>
+    <td><b>Nivel de ocupación típica: </b>{{ object.ocupacion }}</td>
+
   </tr>
   <tr>
-    <td>% de capacidad interna:</td>
-    <td>{{ object.capacidad }}</td>
-  </tr>
-  <tr>
-    <td colspan="2">{{ object.trasladable|yesno:"Mueble trasladable,Mueble no trasladable" }}</td>
-  </tr>
-  <tr>
-    <td colspan="2">{{ object.apilable|yesno:"Mueble apiladable,Mueble no apiladable" }}</td>
-  </tr>
-  <tr>
-    <td colspan="2">{{ object.capacidad_carga|yesno:"Puede soportar objetos pesados,No puede soportar objetos pesados" }}</td>
-  </tr>
-  <tr>
-    <td colspan="2">{{ object.capacidad_interna|yesno:"Puede contener objetos en su interior,No puede contener objetos en su interior" }}</td>
+    <td><b>% de capacidad interna: </b>{{ object.capacidad }}</td>
+
   </tr>
 </table>
 
-
-
-
-
-
-
-
 {% endblock content1 %}
 
-{% block content2 %}
-
-
-
-{% endblock content2 %}
+{% block content2 %}{% endblock content2 %}
 
 {% block ayuda %}
 

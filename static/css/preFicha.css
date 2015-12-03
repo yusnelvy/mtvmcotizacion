@@ -122,3 +122,27 @@ tr:hover .boton-de-accion {
   float:right;
   padding:0 0 5px 5px;
 }
+.enfocar {
+  background: #dff0d8!important;
+  color:#3c763d;
+  box-shadow: 1px 1px 3px 1px #d6e9c6, 1px 1px 3px 1px #d6e9c6!important;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+.fuenteBlanca {
+  color: #fff!important;
+  cursor: pointer;
+}
+.dropUl {
+  background: #265A88!important;
+  color: #fff!important;
+  left: -130px;
+}
+.dropUl li a {
+  color: #fff!important;
+}
+.dropUl li a:hover {
+  background: rgba(255,255,255,0.2)!important;
+}

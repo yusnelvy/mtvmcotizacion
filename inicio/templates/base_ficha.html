@@ -50,10 +50,9 @@
 </div>
 <!--EndModal-->
 
+{% block titulo_ficha %}{% endblock titulo_ficha %}
+
 <div {% block col1 %}class="col-md-5"{% endblock col1 %}>
-
-
-    {% block titulo_ficha %}{% endblock titulo_ficha %}
 
     <nav class="nav-pagination hidden-print">
         <ul class="pagination" >
@@ -66,7 +65,6 @@
     {% block content1 %}{% endblock content1 %}
 
 </div>
-<div class="col-md-2"></div>
 
 <div {% block col2 %}class="col-md-5"{% endblock col2 %}>
 

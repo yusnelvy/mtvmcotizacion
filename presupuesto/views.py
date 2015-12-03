@@ -149,7 +149,7 @@ def search_presupuesto(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         page_obj = paginator.page(paginator.num_pages)
 
-    context = {'presupuestos': presupuestos, 'page_obj': page_obj}
+    context = {'presupuestos': presupuestos, 'page_obj': page_obj, 'page_next': paginator}
     return render_to_response('presupuesto_lista_search.html', context)
 
 
@@ -1062,6 +1062,8 @@ class PresupuestoUpdate(UpdateView):
         try:
             self.object = form.save(commit=False)
             self.object.save()
+            messages.success(self.request, "Datos basicos registrado con exito.",
+                             extra_tags=self.object.id)
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
             messages.success(request, "Registro guardado.")
             return JsonResponse(mensaje, safe=False)
@@ -1098,6 +1100,8 @@ class PresupuestoDireccionUpdate(UpdateView):
             self.object.valor_ocupacidad = ocupacidad_inmueble.valor
 
             self.object.save()
+            messages.success(self.request, "Dirección guardada con exito.",
+                             extra_tags=self.object.id)
 
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
             messages.success(request, "Registro guardado.")

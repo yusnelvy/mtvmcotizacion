@@ -37,7 +37,10 @@ urlpatterns = patterns('',  # C0103: El error es la forma del nombre urlpatterns
                            include('trabajador.urls', namespace="utrabajadores")),
                        url(r'^gestiondocumento/',
                            include('gestiondocumento.urls', namespace="ugestiondocumentos")),
-                       url(r'^search/', include('haystack.urls')),)
+                       url(r'^search/', include('haystack.urls')),
+                       url(r'^sidebarUpdate/$',
+                           'mtvmcotizacion.views.sidebarUpdate',
+                           name='sidebarUpdate'))
 
 handler404 = 'mtvmcotizacion.views.handler404'
 handler500 = 'mtvmcotizacion.views.handler500'

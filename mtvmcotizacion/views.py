@@ -1,9 +1,10 @@
 from django.contrib.auth import logout
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.db.models import Q
 from django.template import RequestContext
 import re
+from premisas.models import PerzonalizacionVisual
 
 
 def logout_page(request):
@@ -97,3 +98,30 @@ def handler400(request):
                                   context_instance=RequestContext(request))
     response.status_code = 400
     return response
+
+
+def sidebarUpdate(request):
+    """e"""
+    sidebarStatus = PerzonalizacionVisual.objects.filter(usuario__username="std",
+                                                        tipo="sidebarClosedOpen")
+
+    if sidebarStatus[0].valor == '0':
+        sidebarStatus.update(valor=1)
+    else:
+        sidebarStatus.update(valor=0)
+
+    sidebarStatus = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                         tipo="sidebarClosedOpen")
+
+    mensaje = {'estatus': 'ok', 'msj': 'Registro guardado', 'sidebarStatus': sidebarStatus[0]['valor']}
+    return JsonResponse(mensaje, safe=False)
+
+
+def sidebar(request):
+    """e"""
+    all_categories = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
+                                                                          tipo="sidebarClosedOpen")
+
+    return {
+        'sidebar': all_categories[0]['valor'],
+    }
