@@ -9,6 +9,12 @@
 
 {% block content %}
 
+<div class="container-fluid">
+
+{% block titulo_form %}{% endblock titulo_form %}
+
+</div>
+
 <div {% block col_edit %}
 
     class="col-md-5"
@@ -18,7 +24,7 @@
 >
     <div class="">
 
-        {% block titulo_form %}{% endblock titulo_form %}
+
 
         <form action="" method="post" id="myformEdit">
 

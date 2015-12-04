@@ -9,121 +9,148 @@
 </h6>
 
 {% endblock cantidad_tabla %}
+
 <nav class="nav-pagination hidden-print">
 <ul class="pagination" >
+
 {% block pagination %}
 
-{% if paises.has_previous %}
-{% if request.GET.order_by %}
+{% if request.GET.page == "0" %}
 
-  <li>
-    <a href="?page={{ paises.previous_page_number }}&order_by={{request.GET.order_by}}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-  </li>
+<li><a href="?page=1">Paginar</a></li>
 
 {% else %}
 
-  <li>
-    <a href="?page={{ paises.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-  </li>
+{% if paises.has_previous %}
 
-{% endif %}
-{% endif %}
+{% if request.GET.order_by %}
 
-<li class="current">
-  <a class="fuenteNegra"> Página
-
-    <select title="nro pag." onchange="window.location.href=this.value;">
-      {% if request.GET.order_by %}
-
-      <option value="?page=0&order_by={{request.GET.order_by}}">ver todo</option>
-      {% if paises.paginator.page_range %}
-
-      {% for p in paises.paginator.page_range %}
-      {% if p == paises.number %}
-
-      <option value="?page={{p}}&order_by={{request.GET.order_by}}" selected>{{p}}</option>
-
-      {% else %}
-
-      <option value="?page={{p}}&order_by={{request.GET.order_by}}">{{p}}</option>
-
-      {% endif %}
-
-      {% endfor %}
-
-      {% else %}
-      <option value="?page=1&order_by={{request.GET.order_by}}">paginar</option>
-      {% endif %}
-      {% else %}
-
-      <option value="?page=0">ver todo</option>
-      {% if paises.paginator.page_range %}
-
-      {% for p in paises.paginator.page_range %}
-      {% if p == paises.number %}
-
-      <option value="?page={{p}}" selected>{{p}}</option>
-
-      {% else %}
-
-      <option value="?page={{p}}">{{p}}</option>
-
-      {% endif %}
-
-      {% endfor %}
-
-      {% else %}
-      <option value="?page=1">paginar</option>
-      {% endif %}
-
-      {% endif %}
-    </select>
-
-    de
-
-    {{ paises.paginator.num_pages }}
-
-    Desde el pais
-
-    {{ paises.start_index }}
-
-    hasta el pais
-
-    {{ paises.end_index }}
-
-  </a>
+<li>
+  <a href="?page={{ paises.previous_page_number }}&order_by={{request.GET.order_by}}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
 </li>
+
+{% else %}
+
+<li>
+  <a href="?page={{ paises.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+{% else %}
+
+{% if request.GET.order_by %}
+
+<li class="btn-disabled">
+  <a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% else %}
+
+<li class="btn-disabled">
+  <a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endif %}
+
+
+
+{% if request.GET.page == "1" %}
+
+<li class="btn-disabled">
+  <a href="?page=1&order_by={{request.GET.order_by}}">Primero...</a>
+</li>
+
+{% else %}
+
+<li class="">
+  <a href="?page=1&order_by={{request.GET.order_by}}">Primero...</a>
+</li>
+
+{% endif %}
 
 
 {% for p in page_range2 %}
-  {% if p == paises.number %}
-   <li class="active">
-      <a href="?page={{p}}&order_by={{request.GET.order_by}}">{{p}}</a>
-      </li>
-  {% else %}
 
-      <li>
-      <a href="?page={{p}}&order_by={{request.GET.order_by}}">{{p}}</a>
-      </li>
-      {% endif %}
+{% if p == paises.number %}
+
+<li class="active">
+  <a href="?page={{p}}&order_by={{request.GET.order_by}}">{{p}}</a>
+</li>
+
+{% else %}
+
+<li>
+  <a href="?page={{p}}&order_by={{request.GET.order_by}}">{{p}}</a>
+</li>
+
+{% endif %}
+
 
 {% endfor %}
+
+{% if paises.paginator.num_pages %}
+
+{% if request.GET.page == ultimo %}
+
+<li class="btn-disabled">
+  <a href="?page={{paises.paginator.num_pages}}&order_by={{request.GET.order_by}}">...Ultimo</a>
+</li>
+
+{% else %}
+
+<li class="">
+  <a href="?page={{paises.paginator.num_pages}}&order_by={{request.GET.order_by}}">...Ultimo</a>
+</li>
+
+{% endif %}
+
+{% endif %}
+
+
 
 {% if paises.has_next %}
 
 {% if request.GET.order_by %}
-  <li>
-    <a href="?page={{ paises.next_page_number }}&order_by={{request.GET.order_by}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-  </li>
+
+<li>
+  <a href="?page={{ paises.next_page_number }}&order_by={{request.GET.order_by}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
 {% else %}
-  <li>
-    <a href="?page={{ paises.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-  </li>
+
+<li>
+  <a href="?page={{ paises.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
 {% endif %}
+
+{% else %}
+
+{% if request.GET.order_by %}
+
+<li class="btn-disabled">
+  <a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% else %}
+
+<li class="btn-disabled">
+  <a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+</li>
+
+{% endif %}
+
+{% endif %}
+
+<li><a href="?page=0">Ver todo</a></li>
 
 {% endif %}
 
 {% endblock pagination %}
+
    </ul>
 </nav>
 
