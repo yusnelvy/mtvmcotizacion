@@ -62,7 +62,7 @@ class Cliente(models.Model):
     adicional3 = models.CharField(max_length=50, blank=True)
     adicional4 = models.CharField(max_length=50, blank=True)
     activo = models.BooleanField(default=True)
-    tipo_cliente = models.ForeignKey(TipoCliente)
+    tipo_cliente = models.ForeignKey(TipoCliente, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.nombre_principal

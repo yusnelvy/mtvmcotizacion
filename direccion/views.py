@@ -807,7 +807,8 @@ def lista_direccion(request):
 
     lista_direccion = Direccion.objects.all()
     context = {'lista_direccion': lista_direccion}
-    return render(request, 'direccion_lista.html', context)
+    #return render(request, 'direccion_lista.html', context)
+    return HttpResponseRedirect(reverse('uinicio:pantalla_inicial'))
 
 
 def lista_tipo_inmueble(request):
@@ -1352,21 +1353,36 @@ def edit_pais(request, pk):
                 # If page is out of range (e.g. 9999), deliver last page of results.
                 paises = paginator.page(paginator.num_pages)
 
-        countitem = int(nropag[0]['valor'])
-        for i in range(0, countitem):
-            if(paises.object_list[i].id == pais.id):
-                if paises.has_previous:
+        if page != '0':
+            countitem = int(nropag[0]['valor'])
+            for i in range(0, countitem):
+                if(paises.object_list[i].id == pais.id):
+                    if paises.has_previous:
+                        try:
+                            previousitem = paises.object_list[i-1].id
+                        except:
+                            previousitem = None
+
+                    if paises.has_next:
+                        try:
+                            nextitem = paises.object_list[i+1].id
+                        except:
+                            nextitem = None
+                    break
+        else:
+            countitem = len(paises)
+            for i in range(0, countitem):
+                if(paises[i].id == pais.id):
                     try:
-                        previousitem = paises.object_list[i-1].id
+                        previousitem = paises[i-1].id
                     except:
                         previousitem = None
-
-                if paises.has_next:
                     try:
-                        nextitem = paises.object_list[i+1].id
+                        nextitem = paises[i+1].id
                     except:
                         nextitem = None
-                break
+                    break
+
         try:
             pais_previous = Pais.objects.get(pk=previousitem)
         except:
@@ -1383,7 +1399,6 @@ def edit_pais(request, pk):
                                'paises': paises,
                                'page': page,
                                'order_by': order_by,
-                               'end_index': paises.end_index,
                                'create': False},
                               context_instance=RequestContext(request))
 
@@ -1410,7 +1425,6 @@ class PaisUpdate(UpdateView):
             context['pais_next'] = None
         context['form_edit_pais'] = PaisForm(instance=pais)
         return context
-
 
 
 def edit_provincia(request, pk):
