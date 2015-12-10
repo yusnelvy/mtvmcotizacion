@@ -1108,6 +1108,24 @@
 
     </table>
 </div>
+<div class="alert alert-success msj notific displayNone" id="msjGuardado" role="alert">Guardado</div>
+
+{% if messages %}
+
+{% for message in messages %}
+
+<script>
+var msj = document.getElementById('msjGuardado');
+$(msj).text('{{ message }}');
+$(msj).fadeIn();
+setTimeout(function() {
+    $(msj).fadeOut();
+}, 4000);
+</script>
+
+{% endfor %}
+
+{% endif %}
 
 {% endblock content1 %}
 

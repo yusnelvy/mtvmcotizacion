@@ -1864,7 +1864,7 @@ class PresupuestoRevisarUpdateView(UpdateView):
             estado.update(tiempo_total=round(tiempototal, 2))
 
             transaction.savepoint_commit(sql)
-            messages.success(self.request, "Registro guardado.")
+            messages.success(self.request, "Revisión finalizada.")
             redirect_to = self.request.REQUEST.get('next', '')
             if redirect_to:
                 return HttpResponseRedirect(redirect_to)

@@ -77,7 +77,7 @@ $('input[name="pisos_ascensor_servicio"]').focusout(function() {
 });
 
 
-$("input[name=pisos][value=1]").attr('checked', 'checked');
+//$("input[name=pisos][value=1]").attr('checked', 'checked');
 radioColorBlue('pisos_ascensor');
 radioColorBlue('pisos_ascensor_servicio');
 radioColorBlue('lista_ocupacion');

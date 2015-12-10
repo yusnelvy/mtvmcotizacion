@@ -45,6 +45,7 @@
 
     </div>
 </div>
+<div class="alert alert-success msj notific displayNone" id="msjGuardado" role="alert">Guardado</div>
 <div class="ayuda well well-lg">
     <button type="button" class="ayuda_btn close padding0" data-dismiss="modal" aria-label="Close" tabIndex="-1"><span aria-hidden="true">&times;</span></button>
 
@@ -66,6 +67,23 @@
       return false;
     }
   });
+
+{% if messages %}
+
+{% for message in messages %}
+
+var msj = document.getElementById('msjGuardado');
+$(msj).width('400px');
+$(msj).text('{{ message }}');
+//$(msj).append('<a class="btn btn-link" href="#">deshacer</a>');
+$(msj).fadeIn();
+setTimeout(function() {
+    $(msj).fadeOut();
+}, 4000);
+
+{% endfor %}
+
+{% endif %}
 
 </script>
 

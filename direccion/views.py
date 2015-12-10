@@ -1310,10 +1310,10 @@ def edit_pais(request, pk):
 
         if form_edit_pais.is_valid():
             # formulario validado correctamente
-            form_edit_pais.save()
+            pais = form_edit_pais.save()
             if 'regEdit' in request.POST:
 
-                messages.success(request, "Registro guardado.")
+                messages.success(request, "País " + pais.pais + "  guardado con éxito.")
                 return HttpResponseRedirect(request.get_full_path())
 
             else:
