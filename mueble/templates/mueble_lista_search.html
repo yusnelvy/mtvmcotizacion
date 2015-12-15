@@ -73,9 +73,24 @@
   </ul>
 </nav>
 {% block cuerpo_tabla %}
+{% comment %}
+  <a href="#" onClick ="$('#tabla').tableExport({type: 'json', escape: 'false'});">JSON</a>
+<a href="#" onClick ="$('#tabla').tableExport({type: 'json', escape: 'false', ignoreColumn: '[2,3]'});">JSON (ignoreColumn)</a>
+<a href="#" onClick ="$('#tabla').tableExport({type: 'json', escape: 'true'});">JSON (with Escape)</a>
+<a href="#" onClick ="$('#tabla').tableExport({type: 'sql'});">SQL</a>
+<a href="#" onClick ="$('#tabla').tableExport({type: 'doc', escape: 'false'});">Word</a>
+<a href="#" onClick ="$('#tabla').tableExport({type: 'powerpoint', escape: 'false'});">PowerPoint</a>
+<a href="#" onClick ="$('#tabla').tableExport({type: 'png', escape: 'false'});">PNG</a>
+{% endcomment %}
+Exportar a :
+<a href="#" onClick ="$('#tabla').tableExport({type: 'xml', escape: 'false'});">XML</a>
+<a href="#" onClick ="$('#tabla').tableExport({type: 'csv', escape: 'false'});">CSV</a>
+<a href="#" onClick ="$('#tabla').tableExport({type: 'txt', escape: 'false'});">TXT</a>
+<a href="#" onClick ="$('#tabla').tableExport({type: 'excel', escape: 'false'});">XLS</a>
+<a href="#" onClick ="$('#tabla').tableExport({type: 'pdf', escape: 'false'});">PDF</a>
 {% if muebles %}
-
 <table class="table table-hover table-bordered textAlignCenter" id="tabla">
+<thead>
 <tr class="active">
   <th>
     Mueble
@@ -101,7 +116,8 @@
   <th width="80px">Editar</th>
   <th width="80px">Eliminar</th>
 </tr>
-
+</thead>
+<tbody>
 {% for i in muebles %}
 
 <tr id="tr{{i.id}}">
@@ -122,6 +138,7 @@
 </tr>
 
 {% endfor %}
+</tbody>
 </table>
 
 {% else %}

@@ -37,7 +37,15 @@ def lista_mueble(request):
     else:
         nropag = PerzonalizacionVisual.objects.values('valor').filter(usuario__username="std",
                                                                       tipo="paginacion")
+
+    order_by = request.GET.get('order_by')
+    if order_by:
+        lista_mueble = Mueble.objects.all().order_by(order_by)
+    else:
+        lista_mueble = Mueble.objects.all()
+
     if request.method == "POST":
+
         if "item_id" in request.POST:
             try:
                 id_mueble = request.POST['item_id']
@@ -62,11 +70,6 @@ def lista_mueble(request):
                 messages.success(request, "Error al eliminar")
 
                 return HttpResponse(json.dumps(mensaje), content_type='application/json')
-    order_by = request.GET.get('order_by')
-    if order_by:
-        lista_mueble = Mueble.objects.all().order_by(order_by)
-    else:
-        lista_mueble = Mueble.objects.all()
 
     paginator = Paginator(lista_mueble, nropag[0]['valor'])
     # Show 25 contacts per page

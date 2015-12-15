@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -53,8 +53,7 @@ INSTALLED_APPS = (
     'formtools',
     'premisas',
     'presupuesto.templatetags',
-    'gestiondocumento',
-    'import_export'
+    'gestiondocumento'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -70,7 +69,7 @@ MIDDLEWARE_CLASSES = (
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+        'PATH': os.path.join(os.path.dirname(os.path.dirname(__file__)), 'whoosh_index'),
     },
 }
 
@@ -89,7 +88,7 @@ TEMPLATES = [
         # DIRS: Lista de directorios donde el engine debe encontrar
         # los archivos de Templates
         'DIRS': [
-            os.path.join(os.path.dirname(__file__), 'template').replace('\\', '/'),
+            os.path.join(os.path.dirname(os.path.dirname(__file__)), 'template').replace('\\', '/'),
         ],
         # APP_DIRS: Lista de directorios donde se deben buscar los
         # templates específicos de aplicaciones en una carpeta llamada
@@ -128,24 +127,6 @@ WSGI_APPLICATION = 'mtvmcotizacion.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_mtvmcotizacion',
-        'USER': 'root',
-        'PASSWORD': 'md123',
-        'HOST': '',
-        'PORT': '',
-    },
-    'prd': {
-        'NAME': 'db_mtvmcotizacion_prd',
-        'ENGINE': 'django.db.backends.mysql',
-        'USER': 'root',
-        'PASSWORD': 'md123'
-    }
-}
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
