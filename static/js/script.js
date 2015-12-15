@@ -261,6 +261,7 @@ Switchbootstrap('ascensor');
 Switchbootstrap('ascensor_servicio');
 Switchbootstrap('recuperable');
 Switchbootstrap('contenedor');
+Switchbootstrap('my-checkbox');
 
 $('.menu-toggle').click(function(){
 
