@@ -122,6 +122,7 @@ def lista_pais(request):
             end = paginator.num_pages+1
 
     context = {'lista_pais': lista_pais, 'paises': paises,
+               'ultimo': str(paginator.num_pages),
                'page_range2': range(start, end)}
     #return render(request, 'pais_lista.html', context)
     return render_to_response('pais_lista.html',
@@ -205,7 +206,6 @@ def search_pais(request):
         paises = paginator.page(paginator.num_pages)
 
     if page:
-
         if int(page) > int(range_gap[0]['valor']):
             start = int(page)-int(range_gap[0]['valor'])
         else:
@@ -229,7 +229,8 @@ def search_pais(request):
     return render_to_response('pais_lista_search.html',
                               {'lista_pais': lista_pais,
                                'paises': paises,
-                               'page_range': range(start, end)})
+                               'ultimo': str(paginator.num_pages),
+                               'page_range2': range(start, end)})
 
 
 def lista_provincia(request):
@@ -1310,10 +1311,10 @@ def edit_pais(request, pk):
 
         if form_edit_pais.is_valid():
             # formulario validado correctamente
-            form_edit_pais.save()
+            pais = form_edit_pais.save()
             if 'regEdit' in request.POST:
 
-                messages.success(request, "Registro guardado.")
+                messages.success(request, "País " + pais.pais + "  guardado con éxito.")
                 return HttpResponseRedirect(request.get_full_path())
 
             else:

@@ -1065,7 +1065,6 @@ class PresupuestoUpdate(UpdateView):
             messages.success(self.request, "Datos basicos registrado con exito.",
                              extra_tags=self.object.id)
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
-            messages.success(request, "Registro guardado.")
             return JsonResponse(mensaje, safe=False)
 
         except:
@@ -1104,7 +1103,6 @@ class PresupuestoDireccionUpdate(UpdateView):
                              extra_tags=self.object.id)
 
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
-            messages.success(request, "Registro guardado.")
             return JsonResponse(mensaje, safe=False)
 
         except:
@@ -1339,7 +1337,7 @@ class PresupuestoDetalleUpdate(UpdateView):
 
             transaction.savepoint_commit(sql)
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado'}
-            messages.success(request, "Registro guardado.")
+            messages.success(self.request, "Registro guardado.")
             return JsonResponse(mensaje, safe=False)
 
         except:
@@ -1348,7 +1346,7 @@ class PresupuestoDetalleUpdate(UpdateView):
             tbinfo = traceback.format_tb(tb)[0]
             mensaje = {'estatus': 'error',
                        'msj': 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo)}
-            messages.success(request, 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo))
+            messages.success(self.request, 'Ocurrio un error : ' + str(tb) + ' ' + str(tbinfo))
             return JsonResponse(mensaje, safe=False)
 
 
@@ -1866,7 +1864,7 @@ class PresupuestoRevisarUpdateView(UpdateView):
             estado.update(tiempo_total=round(tiempototal, 2))
 
             transaction.savepoint_commit(sql)
-            messages.success(request, "Registro guardado.")
+            messages.success(self.request, "Revisión finalizada.")
             redirect_to = self.request.REQUEST.get('next', '')
             if redirect_to:
                 return HttpResponseRedirect(redirect_to)

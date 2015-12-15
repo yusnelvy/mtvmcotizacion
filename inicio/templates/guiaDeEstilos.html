@@ -16,25 +16,31 @@
 {% block link_navegacion %}
 
 <li class="linknav cursorPointer" id="">
-    <a type="button" href="#tipografia">Tipografía</a>
+    <a class="scrollSpy" type="button" href="#tipografia">Tipografía</a>
 </li>
 <li class="linknav cursorPointer" id="">
-    <a type="button" href="#colores">Paleta de colores</a>
+    <a class="scrollSpy" type="button" href="#colores">Paleta de colores</a>
 </li>
 <li class="linknav cursorPointer" id="">
-    <a type="button" href="#iconos">Iconos</a>
+    <a class="scrollSpy" type="button" href="#iconos">Iconos</a>
 </li>
 <li class="linknav cursorPointer" id="">
-    <a type="button" href="#botones">Botones</a>
+    <a class="scrollSpy" type="button" href="#botones">Botones</a>
 </li>
 <li class="linknav cursorPointer" id="">
-    <a type="button" href="#formularios">Formularios</a>
+    <a class="scrollSpy" type="button" href="#formularios">Formularios</a>
 </li>
 <li class="linknav cursorPointer" id="">
-    <a type="button" href="#listas">Listas</a>
+    <a class="scrollSpy" type="button" href="#listas">Listas</a>
 </li>
 <li class="linknav cursorPointer" id="">
-    <a type="button" href="#barras">Barra vertical</a>
+    <a class="scrollSpy" type="button" href="#barras">Barra vertical</a>
+</li>
+<li class="linknav cursorPointer" id="">
+    <a class="scrollSpy" type="button" href="#navbar-img">Barra principal</a>
+</li>
+<li class="linknav cursorPointer" id="">
+    <a class="scrollSpy" type="button" href="#footer-img">Pie de página</a>
 </li>
 
 {% endblock link_navegacion %}
@@ -54,6 +60,10 @@ class="col-md-12"
 {% block content1 %}
 
 <style>
+.caret {
+    top:16px!important;
+    right: 12px!important;
+}
 .paleta {
     display: block;
     width: 100%;
@@ -329,6 +339,26 @@ class="col-md-12"
                 </td>
                 <td>Ayuda</td>
             </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></td>
+                <td>Ordenar desde la Z hasta la A</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-sort-by-alphabet"></span></td>
+                <td>Ordenar desde la A hasta la Z</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-sort-by-order-alt"></span></td>
+                <td>Ordenación descendente</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-sort-by-order"></span></td>
+                <td>Ordenación ascendente</td>
+            </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-ban-circle"></span></td>
+                <td>Anular</td>
+            </tr>
         </table>
     </div>
 </div>
@@ -383,25 +413,33 @@ class="col-md-12"
         <div class="col-md-6">
             <div>
                 <div class="panel-body form-group">
-                    <p>
+                    <p class="jumbotron"> Utilizamos este <b>input</b> para el texto común:<br><br>
                         <input type="text" placeholder="Texto">
                     </p>
-                    <p>
+                    <p class="jumbotron"> Utilizamos este <b>input</b> para datos numéricos:<br><br>
                         <input type="number" value="1">
                     </p>
-                    <p>
+                    <p class="jumbotron"> Utilizamos este <b>input</b> para el uso de contraseñas:<br><br>
                         <input type="password" placeholder="Password">
                     </p>
-                    <p>
-                        <label for="checkbox">
-                            <input type="checkbox" id="checkbox"> Checkbox 1
-                        </label>
-                        <label for="checkbox2">
-                            <input type="checkbox" id="checkbox2"> Checkbox 2
-                        </label>
-                        <label for="checkbox3">
-                            <input type="checkbox" id="checkbox3"> Checkbox 3
-                        </label>
+                    <p class="jumbotron">
+                        Para los <b>"True"</b> y <b>"False"</b> tenemos el siguiente componente: <br><br>
+                        <input type="checkbox" name="my-checkbox" checked="checked">
+                    </p>
+                    <p class="buscadorSelect jumbotron">
+                        Se utiliza para buscar entre las opciones de un select. <br><br>
+                        <select name="name" id="lista">
+                           <option value="">Item 1</option>
+                           <option value="">Item 2</option>
+                           <option value="">Item 3</option>
+                           <option value="">Item 4</option>
+                           <option value="">Item 5</option>
+                           <option value="">Item 6</option>
+                           <option value="">Item 7</option>
+                           <option value="">Item 8</option>
+                           <option value="">Item 9</option>
+                           <option value="">Item 10</option>
+                        </select>
                     </p>
                 </div>
             </div>
@@ -409,33 +447,34 @@ class="col-md-12"
         <div class="col-md-6">
             <div>
                 <div class="panel-body form-group">
-                    <p>
+                    <p class="jumbotron"> Utilizamos este <b>Select</b> para los datos de selección:<br><br>
                         <select name="selectname" id="select">
                             <option value="1">Opción 1</option>
                             <option value="2">Opción 2</option>
                             <option value="3">Opción 3</option>
                         </select>
                     </p>
-                    <p>
+                    <p class="jumbotron"> Utilizamos este <b>input date</b>, con widget de Jquery-ui para las fechas:<br><br>
                         <input type="text" id="date1" placeholder="Fecha">
                     </p>
-                    <p>
+                    <p class="jumbotron"> Utilizamos este <b>input text</b> para los datos de búsquedas:<br><br>
                         <input type="text" placeholder="Buscar...">
                     </p>
-
+                    <div class="jumbotron">
+                        Para los <b>input "checked" y "radios"</b> utilizamos los siguientes estilos:<br><br>
                     <p>
                         <table class="table table-bordered">
                             <tr class="textAlignCenter">
                                 <td width="15%">
-                                    <input type="checkbox" name="enviarPresupuesto" onclick="radioColorBlue();" id="checkbox11">
+                                    <input type="checkbox" name="enviarPresupuesto" onclick="ColorBlue();" id="checkbox11" checked="checked">
                                     <label for="checkbox11" class="label1">Checkbox 1</label>
                                 </td>
                                 <td width="15%">
-                                    <input type="checkbox" name="enviarPresupuesto" onclick="radioColorBlue();" id="checkbox22">
+                                    <input type="checkbox" name="enviarPresupuesto" onclick="ColorBlue();" id="checkbox22" checked="checked">
                                     <label for="checkbox22" class="label1">Checkbox 2</label>
                                 </td>
                                 <td width="15%">
-                                    <input type="checkbox" name="enviarPresupuesto" onclick="radioColorBlue();" id="checkbox33">
+                                    <input type="checkbox" name="enviarPresupuesto" onclick="ColorBlue();" id="checkbox33" checked="checked">
                                     <label for="checkbox33" class="label1">Checkbox 3</label>
                                 </td>
                             </tr>
@@ -445,20 +484,21 @@ class="col-md-12"
                         <table class="table table-bordered">
                             <tr class="textAlignCenter">
                                 <td width="15%">
-                                    <input type="radio" name="enviarPresupuesto" onclick="radioColorBlue();" id="radio11">
+                                    <input type="radio" name="enviarPresupuesto" onclick="ColorBlue();" id="radio11">
                                     <label for="radio11" class="label1">Radio 1</label>
                                 </td>
                                 <td width="15%">
-                                    <input type="radio" name="enviarPresupuesto" onclick="radioColorBlue();" id="radio22">
+                                    <input type="radio" name="enviarPresupuesto" onclick="ColorBlue();" id="radio22" checked="checked">
                                     <label for="radio22" class="label1">Radio 2</label>
                                 </td>
                                 <td width="15%">
-                                    <input type="radio" name="enviarPresupuesto" onclick="radioColorBlue();" id="radio33">
+                                    <input type="radio" name="enviarPresupuesto" onclick="ColorBlue();" id="radio33">
                                     <label for="radio33" class="label1">Radio 3</label>
                                 </td>
                             </tr>
                         </table>
                     </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -510,29 +550,36 @@ class="col-md-12"
 </div>
 <div id="barras">
     <h2>Barra vertical</h2>
-    <p>
-        La barra vertical se usa para la navegación. tiene un fondo #F5F5F5, <br>
-        borde #E7E7E7, color de fuente #777 <small><a href="#colores">ver en la paleta de colores</a></small> <br>
-        el tamaño de la fuente es de 12px Sans-Serif.
-    </p>
-    <small>Ejemplo:</small>
+
     <div class="row">
-        <div class="col-md-12">
-            <img src="/static/img/barra-vertical.png" alt="">
+        <div class="col-md-5">
+            <p>
+                La barra vertical se usa para la navegación y widgets como lo es botones de acción, tiene un fondo #265a88,
+                sin borde, color de fuente #fff <small><a class="scrollSpy" href="#colores">ver en la paleta de colores</a></small>
+                el tamaño de la fuente es de 14px Sans-Serif.
+            </p>
         </div>
+        <div class="col-md-6 col-md-offset-1">
+            <p>
+                <small>Ejemplo:</small>
+            </p>
+            <img src="/static/img/sidebar.png" alt="">
+         </div>
     </div>
 </div>
 <div id="navbar-img">
-    <h2>Nav bar</h2>
+    <h2>Barra principal</h2>
+    <p>El navbar se usa para los accesos rápidos, notificaciones y acceso de sesiones. <br>Esta diseñado con un color de fondo #265a88, con bordes internos de color #fff. <br>Tiene un tamaño de fuente de 18px y un color de texto #fff. </p>
     <small>Ejemplo:</small>
     <div class="row">
         <div class="col-md-12">
-            <img src="/static/img/nav-bar.png" alt="" width="100%">
+            <img src="/static/img/navbar.png" alt="" width="100%">
         </div>
     </div>
 </div>
 <div id="footer-img">
     <h2>Footer</h2>
+    <p>El footer es un componente informativo y de alternativas para seguir navegando por la aplicación. tiene un color de fondo ruidoso de color #000 y fuente de color #fff y #777 con un tamaño de 18px. </p>
     <small>Ejemplo:</small>
     <div class="row">
         <div class="col-md-12">
@@ -547,8 +594,9 @@ class="col-md-12"
 <br>
 <style>
 input[name=enviarPresupuesto] {
-    width: 1px;
-    height: 1px;
+    width: 0;
+    height: 0;
+    display: none;
 }
 .checkedBlue {
     background: #337ab7;
@@ -563,14 +611,22 @@ input[name=enviarPresupuesto] {
 }
 </style>
 <script>
-function radioColorBlue(){
+function ColorBlue(){
     $("td:has(input[name=enviarPresupuesto])").removeClass('checkedBlue');
     $("td:has(input[name=enviarPresupuesto]:checked)").addClass('checkedBlue');
 }
-
+ColorBlue();
 $(function() {
     $( "#date1" ).datepicker();
 });
 
 </script>
 {% endblock content1 %}
+
+{% block js_inf %}
+<script>
+$('#lista').zelect( {
+    placeholder:'Seleccione'
+});
+</script>
+{% endblock js_inf %}

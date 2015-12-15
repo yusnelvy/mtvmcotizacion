@@ -283,6 +283,7 @@ que sobreescribe el diseño Bootstrap
 .radioselect-ul li label input {
   width: 0;
   height: 0;
+  display: none;
 }
 
 .btn-verde {

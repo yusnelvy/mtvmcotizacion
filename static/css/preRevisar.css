@@ -12,6 +12,10 @@
     appearance: none;
     margin: 0;
 }
+.input-re,
+.input-descuento-recargo {
+    -moz-appearance:textfield;
+}
 
 .input-re-no-border {
     border-color: transparent;
