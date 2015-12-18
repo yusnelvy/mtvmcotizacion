@@ -2348,7 +2348,7 @@ def PresupuestoFinalizadoCliente(request, pk):
 
             transaction.savepoint_commit(sql)
             mensaje = {'estatus': 'ok', 'msj': 'Registro guardado', 'nexturl': nexturl}
-            messages.success(request, "Registro guardado.")
+            #messages.success(request, "Registro guardado.")
             return JsonResponse(mensaje, safe=False)
         except:
             transaction.savepoint_rollback(sql)
